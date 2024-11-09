@@ -1,0 +1,54 @@
+database name BRGY_MAYPANDAN
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY NOT NULL,
+    fName VARCHAR(255) NOT NULL,
+    mName VARCHAR(255) NULL,
+    lName VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE categories (
+    categoryId SERIAL PRIMARY KEY NOT NULL,
+    categoryName VARCHAR(255) NOT NULL
+);
+-- needs data on what are the lists of categories on items
+
+CREATE TABLE inventory (
+    id SERIAL PRIMARY KEY NOT NULL,
+    iName VARCHAR(255) NOT NULL,
+    quantity INT DEFAULT 0,
+    dateAdded DATE NOT NULL,
+    categoryId INT REFERENCES categories(categoryId) NOT NULL,
+    isFunctional BOOLEAN DEFAULT TRUE
+);
+
+-- residents classification
+CREATE TABLE rClassification (
+    rClassificationId SERIAL PRIMARY KEY NOT NULL,
+    rClassificationName VARCHAR(255) NOT NULL
+);
+-- needs data on what are the lists of classification on residents
+
+-- houses classification
+CREATE TABLE hClassification (
+    hClassificationId SERIAL PRIMARY KEY NOT NULL,
+    hClassificationName VARCHAR(255) NOT NULL
+);
+-- needs data on what are the lists of classification on houses
+
+CREATE TABLE residents (
+    id SERIAL PRIMARY KEY NOT NULL,
+    fName VARCHAR(255) NOT NULL,
+    mName VARCHAR(255) NULL,
+    lName VARCHAR(255) NOT NULL,
+    street VARCHAR(255) NULL,
+    purok VARCHAR(255) NULL,
+    barangay VARCHAR(255) NULL,
+    city VARCHAR(255) NULL,
+    province VARCHAR(255) NULL,
+    rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,
+    hClassificationId INT REFERENCES hClassification(hClassificationId) NOT NULL,
+    isElectricity BOOLEAN DEFAULT TRUE
+);
