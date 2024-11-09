@@ -49,7 +49,7 @@ CREATE TABLE residents (
     city VARCHAR(255) NULL,
     province VARCHAR(255) NULL,
     birthDate DATE NOT NULL,
-    age INT NOT NULL, -- AUTO COMPUTE BASED ON BIRTHDATE
+    age INT NOT NULL,
     picture TEXT DEFAULT '',
     signature TEXT DEFAULT '',
     rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,
