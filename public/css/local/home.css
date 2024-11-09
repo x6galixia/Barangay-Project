@@ -1,0 +1,10 @@
+.requestForm {
+  padding: 0 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.requestForm>button {
+  margin-top: 20px;
+}
