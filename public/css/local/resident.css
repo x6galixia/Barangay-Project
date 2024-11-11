@@ -10,6 +10,10 @@
   gap: 24px;
 }
 
+#add-resident {
+  width: 60%;
+}
+
 #add-resident form #submit_add_resident {
   width: fit-content;
   align-self: end;
@@ -18,9 +22,14 @@
 
 
 
+
 .inputWithLabel>div {
   display: flex;
   gap: 12px;
+}
+
+.inputWithLabel>div>input {
+  width: 100%;
 }
 
 .residentUploadImage {
