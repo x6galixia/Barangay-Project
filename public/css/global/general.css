@@ -1,8 +1,12 @@
 * {
   margin: 0;
-  font-family: sans-serif;
 }
-
+body{
+  font-family: 'Poppins';
+}
+.heading{
+  font-family: 'Poppins';
+}
 :root {
   --green-color: #33A90F;
   --font-size: 1.5rem;
@@ -36,12 +40,6 @@ header>.LogoSection>h1 {
   font-size: 1rem;
 }
 
-header>nav {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  z-index: 10;
-}
 
 header>nav>ul {
   display: flex;
@@ -55,6 +53,7 @@ header>nav>ul>li {
   font-weight: 600;
   letter-spacing: 2px;
   cursor: pointer;
+  font-family: sans-serif !important;
 }
 
 .selected {
@@ -70,20 +69,22 @@ header>nav>ul>li {
 .mainContainer>.heading {
   color: #444516;
   text-align: center;
-  font-family: Inter;
+  font-family: 'Poppins';
   font-size: 2rem;
   font-style: normal;
-  font-weight: 700;
+  font-weight: bolder;
   line-height: normal;
   letter-spacing: 1.8px;
   text-transform: uppercase;
   margin-bottom: 40px;
+
 }
 
 .inputWithLabel {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  width: 100%;
 }
 
 
@@ -241,7 +242,10 @@ table>tbody>tr {
   background-color: var(--green-color);
   color: white;
   padding: 12px;
+  width: 80px;
+  text-align: center;
   outline: none;
+  font-size: 13px;
   border-radius: 10px;
   border: none;
   font-weight: bold;
@@ -273,4 +277,78 @@ input[type="search"] {
 
 input[type="search"]::placeholder {
   font-style: italic;
+}
+
+/* pop up */
+.overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: .5;
+  display: none;
+  z-index: 1;
+}
+
+.pop-up,
+.pop-up-confirm {
+  position: fixed;
+  min-width: 620px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  background: #FFF;
+  /* box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25); */
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  padding: 30px 60px;
+  display: none;
+  overflow: auto;
+  z-index: 2;
+  max-height: 80%;
+}
+
+.pop-up>.close-container {
+  margin: 0 -60px;
+  margin-top: -30px;
+  display: grid;
+  place-items: end;
+  padding: 12px;
+}
+
+.pop-up>.close-container>img {
+  cursor: pointer;
+}
+
+.pop-up>.heading {
+  color: #444516;
+  text-align: center;
+  font-style: normal;
+  line-height: normal;
+  margin-bottom: 40px;
+}
+
+.pop-up-confirm {
+  display: none !important;
+}
+
+.pop-up-confirm>div {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  text-align: center;
+}
+
+.pop-up-confirm>div>main {
+  justify-content: center;
+  display: flex;
+  gap: 12px;
+}
+
+.visible {
+  display: block !important;
 }

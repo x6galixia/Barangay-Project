@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/global/general.css">
     <link rel="stylesheet" href="../css/local/resident.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <title>
         <%= title %>
     </title>
@@ -44,17 +45,17 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>GERNA MARK EUGENE GARCIA</td>
+                            <td>Gerna Mark Eugene Garcia</td>
                             <td>08-02-2003</td>
                             <td>21</td>
-                            <td>MALE</td>
-                            <td>COLLEGE</td>
-                            <td>AMBOT</td>
-                            <td>WOOD</td>
-                            <td>YES</td>
-                            <td>GRIPO/MINERAL</td>
-                            <td>YES</td>
-                            <td>AMBOT</td>
+                            <td>Male</td>
+                            <td>College</td>
+                            <td>Ambot</td>
+                            <td>Wood</td>
+                            <td>Yes</td>
+                            <td>Gripo/Mineral</td>
+                            <td>Yes</td>
+                            <td>Ambot</td>
                             <td>4ps</td>
                         </tr>
                     </tbody>
@@ -64,13 +65,232 @@
                 <a href="" aria-label="Previous Page">Previous</a>
                 <a href="" aria-label="Next Page">Next</a>
             </div>
-            <button class="addingForTable">
+            <button id="add-resident-button" onclick="popUp_button(this)" class="addingForTable">
                 ADD RESIDENT
             </button>
+
+            <!-- Pop Up -->
+            <div class="pop-up" id="add-resident">
+                <div class="close-container">
+                    <img src="../icon/close.svg" alt="" class="close_popUp">
+                </div>
+                <h1 class="heading">ADD RESIDENT</h1>
+                <main>
+                    <form action="/resident/dashboard/add-resident" method="POST" enctype="multipart/form-data">
+                        <div class="add-resident-input-container">
+                            <div class="row">
+                                <div class="inputWithLabel" id="surubadan">
+                                    <label>Last Name</label>
+                                    <input type="text" aria-label="Last Name" name="last_name" required>
+                                </div>
+                                <div class="inputWithLabel">
+                                    <label>First Name</label>
+                                    <input type="text" aria-label="First Name" name="first_name" required>
+                                </div>
+                                <div class="inputWithLabel">
+                                    <label>Middle Name</label>
+                                    <input type="text" aria-label="Middle Name" name="middle_name" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="inputWithLabel" id="masubad">
+                                    <label>Gender</label>
+                                    <select name="gender" aria-label="Gender" id="" required>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="inputWithLabel">
+                                    <label>Birthdate</label>
+                                    <input type="date" aria-label="Birthdate" name="birthdate" required>
+                                </div>
+                                <div class="inputWithLabel">
+                                    <label>Age</label>
+                                    <input type="number" aria-label="Age" class="age" name="age" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="inputWithLabel">
+                                    <label>Educational Attainment</label>
+                                    <input type="text" aria-label="Educational Attainment" name="educAttainment"
+                                        required>
+                                </div>
+                                <div class="inputWithLabel">
+                                    <label>Occupation</label>
+                                    <input type="text" aria-label="Occupation" name="occupation" required>
+                                </div>
+                                <div class="inputWithLabel">
+                                    <label>Water Source</label>
+                                    <input type="text" aria-label="Water Source" name="waterSource" required>
+                                </div>
+                            </div>
+                            <div class="inputWithLabel">
+                                <label>Address</label>
+                                <div>
+                                    <input type="text" placeholder="Street" aria-label="Street" name="street">
+                                    <input type="text" placeholder="Barangay" aria-label="Barangay" name="barangay">
+                                    <input type="text" placeholder="City" aria-label="City" name="city">
+                                    <input type="text" placeholder="Province" aria-label="Province" name="province">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="inputWithLabel">
+                                    <label>Housing Materials</label>
+                                    <select name="housingMaterials" id="" aria-label="Housing Materials">
+                                        <option value="Concrete">Concrete</option>
+                                        <option value="Semi-concrete">Semi-concrete</option>
+                                        <option value="Wood">Wood</option>
+                                    </select>
+                                </div>
+                                <div class="inputWithLabel">
+                                    <label>With CR</label>
+                                    <select name="wCR" id="" aria-label="With CR">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="inputWithLabel">
+                                    <label>Energized</label>
+                                    <select name="energized" id="" aria-label="Energized">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="inputWithLabel">
+                                    <label>With 40m Building Zone</label>
+                                    <select name="buildingZone" id="" aria-label="With 40m Building Zine">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="inputWithLabel">
+                                    <label>Senior</label>
+                                    <select name="senior" id="" aria-label="Senior">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="inputWithLabel">
+                                    <label>Solo Parent</label>
+                                    <select name="soloParent" id="" aria-label="Solo Parent">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="inputWithLabel">
+                                    <label>PWD</label>
+                                    <select name="pwd" id="" aria-label="PWD">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="inputWithLabel">
+                                    <label>Youth</label>
+                                    <select name="youth" id="" aria-label="Youth">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="inputWithLabel">
+                                    <label>4ps</label>
+                                    <select name="4ps" id="" aria-label="4ps">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="inputWithLabel">
+                                    <label>Sectors</label>
+                                    <select name="sectors" id="" aria-label="Sectors">
+                                        <option value="Government Employee">Government Employee</option>
+                                        <option value="Private employee">Private employee</option>
+                                        <option value="Carpenters">Carpenters</option>
+                                        <option value="Farmers">Farmers</option>
+                                        <option value="Fisherman">Fisherman</option>
+                                        <option value="Business Entrepreneur">Business Entrepreneur</option>
+                                        <option value="Drivers">Drivers</option>
+                                        <option value="OFW">OFW</option>
+                                        <option value="Kasambahay">Kasambahay</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="ID-container">
+                                <label>ID Picture</label>
+                                <div class="image-preview" id="imagePreview">
+                                    <p>No image uploaded</p>
+                                </div>
+                                <div class="buttons">
+                                    <button type="button" class="button capture"
+                                        onclick="captureImage()">Capture</button>
+                                    <button type="button" class="button upload"
+                                        onclick="triggerUpload()">Upload</button>
+                                    <input type="file" id="fileInput" accept="image/*" onchange="displayImage(event)">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" id="submit_add_resident" onclick="popUp_button(this)">SUBMIT</button>
+                        <div class="pop-up-confirm" id="reject_dispense">
+                            <div>
+                                <div class="reject-heading">
+                                    <img src="../icon/warning.svg" alt="">
+                                    <h2>Rejecting a dispense request will <br>
+                                        automatically delete from the list</h2>
+                                </div>
+                                <main>
+                                    <h2>Are sure you want to reject this dispense request?</h2>
+                                    <div>
+                                        <button type="button" class="button-bordered close_confirm">No</button>
+                                        <button type="submit" class="button-bordered">Yes</button>
+                                    </div>
+                                </main>
+                            </div>
+                        </div>
+                        <div class="pop-up-confirm" id="submit_dispense">
+                            <div>
+                                <h2>Do you want to add this beneficiary?</h2>
+                                <main>
+                                    <button type="button" class="button-bordered close_confirm">No</button>
+                                    <button type="submit" class="button-green">Yes</button>
+                                </main>
+                            </div>
+                        </div>
+                    </form>
+                </main>
+            </div>
         </main>
 </body>
+<script src="../../js/global/pop-up.js"></script>
 <script>
     document.querySelector("header>nav>ul>li:nth-child(3)").classList.toggle("selected");
+
+    // Function to simulate image capture
+    function captureImage() {
+        alert("Capture functionality is not implemented in this demo.");
+    }
+
+    // Function to trigger file input click
+    function triggerUpload() {
+        document.getElementById("fileInput").click();
+    }
+
+    // Function to display the selected image
+    function displayImage(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview");
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = `<p>No image uploaded</p>`;
+        }
+    }
 </script>
 
 </html>
