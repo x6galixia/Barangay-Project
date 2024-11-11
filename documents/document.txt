@@ -13,11 +13,10 @@ CREATE TABLE categories (
     categoryId SERIAL PRIMARY KEY NOT NULL,
     categoryName VARCHAR(255) NOT NULL
 );
--- needs data on what are the lists of categories on items
 
 CREATE TABLE inventory (
     id SERIAL PRIMARY KEY NOT NULL,
-    iName VARCHAR(255) NOT NULL,
+    iName VARCHAR(255) NOT NULL,  
     quantity INT DEFAULT 0,
     dateAdded DATE NOT NULL,
     categoryId INT REFERENCES categories(categoryId) NOT NULL,
@@ -29,17 +28,38 @@ CREATE TABLE rClassification (
     rClassificationId SERIAL PRIMARY KEY NOT NULL,
     rClassificationName VARCHAR(255) NOT NULL
 );
--- needs data on what are the lists of classification on residents
+
+INSERT INTO rClassification (rClassificationName)
+VALUES 
+    ('Government employee'),
+    ('Private employee'),
+    ('Carpenters'),
+    ('Farmers'),
+    ('Fisherman'),
+    ('Business entrepreneurs'),
+    ('Drivers'),
+    ('OFW'),
+    ('Kasambahay');
+
+-- Government employee, Private employee, Carpenters, Farmers, Fisherman, Business entrepreneurs, Drivers, OFW, Kasambahay
 
 -- houses classification
 CREATE TABLE hClassification (
     hClassificationId SERIAL PRIMARY KEY NOT NULL,
     hClassificationName VARCHAR(255) NOT NULL
 );
--- needs data on what are the lists of classification on houses
+
+INSERT INTO hClassification (hClassificationName)
+VALUES 
+    ('Concrete'),
+    ('Wood'),
+    ('Semi-concrete');
+
+-- concrete, wood, semi-concrete, 
 
 CREATE TABLE residents (
     id SERIAL PRIMARY KEY NOT NULL,
+    idNumber VARCHAR(255) NULL,
     fName VARCHAR(255) NOT NULL,
     mName VARCHAR(255) NULL,
     lName VARCHAR(255) NOT NULL,
@@ -50,9 +70,18 @@ CREATE TABLE residents (
     province VARCHAR(255) NULL,
     birthDate DATE NOT NULL,
     age INT NOT NULL,
+    gender VARCHAR(10) NULL CHECK (gender IN ('Male', 'Female')),
     picture TEXT DEFAULT '',
     signature TEXT DEFAULT '',
+    eAttainment VARCHAR(255), NULL,
+    occupation VARCHAR(255) NULL,
     rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,
     hClassificationId INT REFERENCES hClassification(hClassificationId) NOT NULL,
-    isElectricity BOOLEAN DEFAULT TRUE
+    isSenior BOOLEAN DEFAULT FALSE,
+    isPwd BOOLEAN DEFAULT FALSE,
+    isSoloParent BOOLEAN DEFAULT FALSE,
+    isYouth BOOLEAN DEFAULT FALSE,
+    is4ps BOOLEAN DEFAULT FALSE
 );
+
+--statistics based on rClassification & age & hClassification
