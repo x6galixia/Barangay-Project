@@ -1,13 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/global/general.css">
-    <title><%= title %></title>
+    <link rel="stylesheet" href="../css/local/resident.css">
+    <title>
+        <%= title %>
+    </title>
 </head>
+
 <body>
     <%- include("../includes/header.ejs") %>
-    
+
+        <main class="mainContainer">
+            <div class="heading">LIST OF RESIDENT</div>
+            <div class="tableActionOne">
+                <input type="search" placeholder="Search">
+                <select class="residents-dropdown" name="resident"">
+                    <option value=" residents">Residents</option>
+                    <option value="non-residents">Non-Residents</option>
+
+                </select>
+            </div>
+            <div class="tableContainer">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>FULLNAME</th>
+                            <th>BIRTHDATE</th>
+                            <th>AGE</th>
+                            <th>GENDER</th>
+                            <th>EDUC'L ATTAINMENT</th>
+                            <th>OCCUPATION</th>
+                            <th>HOUSING MATERIALS</th>
+                            <th>WITH CR</th>
+                            <th>WATER SOURCE</th>
+                            <th>ENERGIZED</th>
+                            <th>WITH 40m BUILDING ZONE</th>
+                            <th>REMARKS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GERNA MARK EUGENE GARCIA</td>
+                            <td>08-02-2003</td>
+                            <td>21</td>
+                            <td>MALE</td>
+                            <td>COLLEGE</td>
+                            <td>AMBOT</td>
+                            <td>WOOD</td>
+                            <td>YES</td>
+                            <td>GRIPO/MINERAL</td>
+                            <td>YES</td>
+                            <td>AMBOT</td>
+                            <td>4ps</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div aria-label="Page navigation" id="paginationButton">
+                <a href="" aria-label="Previous Page">Previous</a>
+                <a href="" aria-label="Next Page">Next</a>
+            </div>
+            <button class="addingForTable">
+                ADD RESIDENT
+            </button>
+        </main>
 </body>
+<script>
+    document.querySelector("header>nav>ul>li:nth-child(3)").classList.toggle("selected");
+</script>
+
 </html>

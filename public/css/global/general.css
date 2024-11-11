@@ -8,6 +8,10 @@
   --shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
+body::-webkit-scrollbar {
+  display: none;
+}
+
 
 header {
   background-color: var(--green-color);
@@ -99,6 +103,14 @@ select {
   height: 38px;
 }
 
+input {
+  border-radius: 10px;
+  padding: 4px 8px;
+  outline: none;
+  border: 1px solid black;
+  height: 38px;
+}
+
 button {
   background-color: var(--green-color);
   color: white;
@@ -183,4 +195,81 @@ button {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+
+.tableContainer {
+  width: 100%;
+  overflow: scroll;
+  max-height: 700px;
+  height: fit-content;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.tableContainer::-webkit-scrollbar {
+  display: none;
+}
+
+table {
+  margin-top: 32px;
+  border-collapse: collapse;
+  min-width: 100%;
+}
+
+table>thead>tr {
+  height: 40px;
+  background-color: var(--green-color);
+  color: #fff;
+}
+
+table>thead>tr>th,
+table>tbody>tr>td {
+  padding: 12px;
+  text-wrap: nowrap;
+  font-weight: 400;
+}
+
+table>tbody>tr {
+  height: 40px;
+  border-bottom: 1px solid #848383;
+  text-align: center;
+}
+
+#paginationButton a {
+  background-color: var(--green-color);
+  color: white;
+  padding: 12px;
+  outline: none;
+  border-radius: 10px;
+  border: none;
+  font-weight: bold;
+  letter-spacing: 2px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+#paginationButton {
+  margin-top: 40px;
+  display: flex;
+  gap: 16px;
+}
+
+.addingForTable {
+  display: flex;
+  margin-left: auto;
+}
+
+.tableActionOne {
+  display: flex;
+  justify-content: space-between;
+}
+
+input[type="search"] {
+  width: 30%;
+}
+
+input[type="search"]::placeholder {
+  font-style: italic;
 }
