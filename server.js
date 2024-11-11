@@ -9,6 +9,9 @@ const flash = require("express-flash");
 const compression = require("compression");
 const bodyParser = require('body-parser');
 
+//-------DATABASES IMPORTING-------//
+const mPool = require("./models/mDatabase");
+
 //-------ROUTES--------//
 const homeRouter = require("./routes/home/home");
 const archiveRouter = require("./routes/archive/archive");
@@ -16,6 +19,11 @@ const inventoryRouter = require("./routes/inventory/inventory");
 const residentsRouter = require("./routes/residents/residents");
 const servicesRouter = require("./routes/services/services");
 const statisticsRouter = require("./routes/statistics/statistics");
+
+//-------CONNECTING TO DATABASE-------//
+Promise.all([
+    mPool.connect().then(() => console.log("Connected to database")),
+  ]).catch((err) => console.error("Error connecting to database:", err));
 
 //-------INITIALIZING VIEW ENGINE AND PATH------//
 app.set("view engine", "ejs");
