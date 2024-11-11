@@ -1,5 +1,6 @@
 * {
   margin: 0;
+  font-family: sans-serif;
 }
 
 :root {
@@ -24,7 +25,7 @@ header>.LogoSection {
   align-items: center;
   text-align: center;
   gap: 80px;
-  background-image: url("../../images/headBackground.png");
+  background-image: url("../images/headBackground.png");
   padding: 20px 0;
   background-size: cover;
   background-position: center;
