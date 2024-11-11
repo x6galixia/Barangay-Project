@@ -1,13 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/global/general.css">
-    <title><%= title %></title>
+    <link rel="stylesheet" href="../css/local/serbices.css">
+    <title>
+        <%= title %>
+    </title>
 </head>
+
 <body>
     <%- include("../includes/header.ejs") %>
-    
+        <main class="mainContainer">
+            <div class="heading">REQUEST LIST</div>
+            <div class="tableContainer">
+                <button class="addingForTable">
+                    RECENT TRANSACTION
+                </button>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>FULLNAME</th>
+                            <th>PURPOSE</th>
+                            <th>DATE</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Gerna Mark Eugene Garcia</td>
+                            <td>Brgy. CLEARANCE</td>
+                            <td>November 22, 2024</td>
+                            <td><button>Print</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
 </body>
+<script>
+    document.querySelector("header>nav>ul>li:nth-child(2)").classList.toggle("selected");
+</script>
+
 </html>

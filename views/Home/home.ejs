@@ -6,7 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../css/global/general.css">
   <link rel="stylesheet" href="../css/local/home.css">
-  <title><%= title %></title>
+  <title>
+    <%= title %>
+  </title>
 </head>
 
 <body>
@@ -21,55 +23,81 @@
             <span class="slider round"></span>
           </label>
         </div>
-        <div class="inputWithLabel">
-          <label for="">Name</label>
-          <input type="text">
+        <div class="formInputContainer">
+          <div>
+            <div class="inputWithLabel">
+              <label for="">Last Name</label>
+              <input type="text">
+            </div>
+            <div class="inputWithLabel">
+              <label for="">First Name</label>
+              <input type="text">
+            </div>
+            <div class="inputWithLabel">
+              <label for="">Middle Name</label>
+              <input type="text">
+            </div>
+            <div class="inputWithLabel">
+              <label for="">Age</label>
+              <input type="text">
+            </div>
+            <div class="inputWithLabel">
+              <label for="">Birthday</label>
+              <input type="date">
+            </div>
+          </div>
+          <div>
+            <div class="inputWithLabel">
+              <label for="">Birthplace</label>
+              <input type="text">
+            </div>
+            <div class="inputWithLabel">
+              <label for="">Civil Status</label>
+              <input type="text">
+            </div>
+            <div class="inputWithLabel">
+              <label for="">Purok</label>
+              <input type="text">
+            </div>
+            <div class="inputWithLabel">
+              <label for="">Gross Income</label>
+              <input type="text">
+            </div>
+            <div class="inputWithLabel">
+              <label for="">Purpose</label>
+              <select class="services-dropdown" name="services"">
+                <option value=" default" disabled selected>
+                Select a Services
+                </option>
+                <option value="Brgy. Clearance">Brgy. Clearance</option>
+                <option value="Building Clearance">Building Clearance</option>
+                <option value="Burial Certificate">Burial Certificate</option>
+                <option value="Business Clearance">Business Clearance</option>
+                <option value="Business Closure">Business Closure</option>
+                <option value="Good Moral">Good Moral</option>
+                <option value="Guardianship">Guardianship</option>
+                <option value="Income">Income</option>
+                <option value="Indigency">Indigency</option>
+                <option value="Land no claim">Land no claim</option>
+                <option value="Late Registration">Late Registration</option>
+                <option value="No Duplication">No Duplication</option>
+                <option value="Panumduman">Panumduman</option>
+                <option value="RA 11261">RA 11261</option>
+                <option value="Residency">Residency</option>
+                <option value="Same Person">Same Person</option>
+                <option value="Singleness">Singleness</option>
+                <option value="Solo Parent">Solo Parent</option>
+              </select>
+            </div>
+          </div>
         </div>
-        <div class="inputWithLabel">
-          <label for="">Name</label>
-          <input type="text">
-        </div>
-        <div class="inputWithLabel">
-          <label for="">Name</label>
-          <input type="text">
-        </div>
-        <div class="inputWithLabel">
-          <label for="">Name</label>
-          <input type="text">
-        </div>
-        <div class="inputWithLabel">
-          <label for="">Name</label>
-          <input type="text">
-        </div>
-        <div class="inputWithLabel">
-          <label for="">Purpose</label>
-          <select class="services-dropdown" name="services"">
-            <option value=" default" disabled selected>
-            Select a Services
-            </option>
-            <option value="Brgy. Clearance">Brgy. Clearance</option>
-            <option value="Building Clearance">Building Clearance</option>
-            <option value="Burial Certificate">Burial Certificate</option>
-            <option value="Business Clearance">Business Clearance</option>
-            <option value="Business Closure">Business Closure</option>
-            <option value="Good Moral">Good Moral</option>
-            <option value="Guardianship">Guardianship</option>
-            <option value="Income">Income</option>
-            <option value="Indigency">Indigency</option>
-            <option value="Land no claim">Land no claim</option>
-            <option value="Late Registration">Late Registration</option>
-            <option value="No Duplication">No Duplication</option>
-            <option value="Panumduman">Panumduman</option>
-            <option value="RA 11261">RA 11261</option>
-            <option value="Residency">Residency</option>
-            <option value="Same Person">Same Person</option>
-            <option value="Singleness">Singleness</option>
-            <option value="Solo Parent">Solo Parent</option>
-          </select>
-        </div>
+
         <button>SUBMIT</button>
       </form>
     </main>
 </body>
+<script>
+  document.querySelector("header>nav>ul>li:first-child").classList.toggle("selected");
+</script>
 
 </html>

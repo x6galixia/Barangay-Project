@@ -1,13 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/global/general.css">
-    <title><%= title %></title>
+    <title>
+        <%= title %>
+    </title>
 </head>
+
 <body>
     <%- include("../includes/header.ejs") %>
-    
+        <main class="mainContainer">
+            <div class="heading">Archives</div>
+            <div class="tableActionOne">
+                <input type="search" placeholder="Search">
+                <select class="archives-dropdown" name="archives"">
+            <option value=" All">All</option>
+                    <option value="ambot">ambot</option>
+
+                </select>
+            </div>
+            <div class="tableContainer">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>NAME</th>
+                            <th>DATE</th>
+                            <th>AMBOT</th>
+                            <th>AMBOT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Computer</td>
+                            <td>August 02, 1999</td>
+                            <td>ambot</td>
+                            <td>ambot</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div aria-label="Page navigation" id="paginationButton">
+                <a href="" aria-label="Previous Page">Previous</a>
+                <a href="" aria-label="Next Page">Next</a>
+            </div>
+            <button class="addingForTable">
+                ADD DOCUMENTS
+            </button>
+        </main>
 </body>
+<script>
+    document.querySelector("header>nav>ul>li:nth-child(5)").classList.toggle("selected");
+</script>
+
 </html>
