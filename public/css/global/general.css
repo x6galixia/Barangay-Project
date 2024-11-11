@@ -1,8 +1,12 @@
 * {
   margin: 0;
-  font-family: sans-serif;
 }
-
+body{
+  font-family: 'Poppins';
+}
+.heading{
+  font-family: 'Poppins';
+}
 :root {
   --green-color: #33A90F;
   --font-size: 1.5rem;
@@ -55,6 +59,7 @@ header>nav>ul>li {
   font-weight: 600;
   letter-spacing: 2px;
   cursor: pointer;
+  font-family: sans-serif !important;
 }
 
 .selected {
@@ -70,14 +75,15 @@ header>nav>ul>li {
 .mainContainer>.heading {
   color: #444516;
   text-align: center;
-  font-family: Inter;
+  font-family: 'Poppins';
   font-size: 2rem;
   font-style: normal;
-  font-weight: 700;
+  font-weight: bolder;
   line-height: normal;
   letter-spacing: 1.8px;
   text-transform: uppercase;
   margin-bottom: 40px;
+
 }
 
 .inputWithLabel {
@@ -241,7 +247,10 @@ table>tbody>tr {
   background-color: var(--green-color);
   color: white;
   padding: 12px;
+  width: 80px;
+  text-align: center;
   outline: none;
+  font-size: 13px;
   border-radius: 10px;
   border: none;
   font-weight: bold;
