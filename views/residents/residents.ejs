@@ -42,22 +42,7 @@
                             <th>REMARKS</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Gerna Mark Eugene Garcia</td>
-                            <td>08-02-2003</td>
-                            <td>21</td>
-                            <td>Male</td>
-                            <td>College</td>
-                            <td>Ambot</td>
-                            <td>Wood</td>
-                            <td>Yes</td>
-                            <td>Gripo/Mineral</td>
-                            <td>Yes</td>
-                            <td>Ambot</td>
-                            <td>4ps</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="residentsTableBody"></tbody>
                 </table>
             </div>
             <div aria-label="Page navigation" id="paginationButton">
@@ -300,6 +285,7 @@
         </main>
 </body>
 <script src="../../js/global/pop-up.js"></script>
+<script src="../../js/local/residents/residents-api.js"></script>
 <script>
     document.querySelector("header>nav>ul>li:nth-child(3)").classList.toggle("selected");
 
