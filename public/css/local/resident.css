@@ -4,6 +4,10 @@
   gap: 12px;
 }
 
+#add-resident .row {
+  flex-wrap: wrap;
+}
+
 #add-resident form {
   display: flex;
   flex-direction: column;
@@ -22,6 +26,10 @@
 
 
 
+
+.inputWithLabel {
+  flex: 1;
+}
 
 .inputWithLabel>div {
   display: flex;
