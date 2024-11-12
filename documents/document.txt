@@ -29,45 +29,17 @@ CREATE TABLE rClassification (
     rClassificationName VARCHAR(255) NOT NULL
 );
 
-INSERT INTO rClassification (rClassificationName)
-VALUES 
-    ('Government employee'),
-    ('Private employee'),
-    ('Carpenters'),
-    ('Farmers'),
-    ('Fisherman'),
-    ('Business entrepreneurs'),
-    ('Drivers'),
-    ('OFW'),
-    ('Kasambahay');
-
--- Government employee, Private employee, Carpenters, Farmers, Fisherman, Business entrepreneurs, Drivers, OFW, Kasambahay
-
 -- houses classification
 CREATE TABLE hClassification (
     hClassificationId SERIAL PRIMARY KEY NOT NULL,
     hClassificationName VARCHAR(255) NOT NULL
 );
 
-INSERT INTO hClassification (hClassificationName)
-VALUES 
-    ('Concrete'),
-    ('Wood'),
-    ('Semi-concrete');
--- concrete, wood, semi-concrete, 
-
 -- water source classification
 CREATE TABLE wClassification (
     wClassificationId SERIAL PRIMARY KEY NOT NULL,
     wClassificationName VARCHAR(255) NOT NULL
 );
-
-INSERT INTO wClassification (wClassificationName)
-VALUES 
-    ('Water Pump'),
-    ('Spring'),
-    ('Deep well'),
-    ('Public water');
 
 CREATE TABLE residents (
     residentsId SERIAL PRIMARY KEY NOT NULL,
@@ -87,10 +59,9 @@ CREATE TABLE residents (
     signature TEXT DEFAULT '',
     eAttainment VARCHAR(255) NULL,
     occupation VARCHAR(255) NULL,
-    rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL, -- this is sector in table
-    hClassificationId INT REFERENCES hClassification(hClassificationId) NOT NULL, -- this is housing materials in table
-    waterSource INT REFERENCES wClassification(wClassificationId) NOT NULL, -- this is sector in table
-    isSenior BOOLEAN DEFAULT FALSE,
+    rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,
+    hClassificationId INT REFERENCES hClassification(hClassificationId) NOT NULL,
+    waterSource INT REFERENCES wClassification(wClassificationId) NOT NULL,
     isPwd BOOLEAN DEFAULT FALSE,
     isSoloParent BOOLEAN DEFAULT FALSE,
     isYouth BOOLEAN DEFAULT FALSE,
@@ -102,9 +73,33 @@ CREATE TABLE residents (
 
 CREATE TABLE requests (
     id SERIAL PRIMARY KEY NOT NULL,
-    residentsId INT REFERENCES residents(residentsId) NOT NULL,
+    residentsId INT REFERENCES residents(residentsId) NOT NULL,    
     dateAdded DATE NULL,
-    purpose TEXT NULL
+    purpose TEXT NULL,
+    isReleased BOOLEAN DEFAULT FALSE
 );
 
 --statistics based on rClassification & age & hClassification
+
+INSERT INTO wClassification (wClassificationName)VALUES 
+    ('Water Pump'),
+    ('Spring'),
+    ('Deep well'),
+    ('Public water');
+
+INSERT INTO hClassification (hClassificationName)VALUES 
+    ('Concrete'),
+    ('Wood'),
+    ('Semi-concrete');
+-- concrete, wood, semi-concrete, 
+
+INSERT INTO rClassification (rClassificationName)VALUES 
+    ('Government employee'),
+    ('Private employee'),
+    ('Carpenters'),
+    ('Farmers'),
+    ('Fisherman'),
+    ('Business entrepreneurs'),
+    ('Drivers'),
+    ('OFW'),
+    ('Kasambahay');
