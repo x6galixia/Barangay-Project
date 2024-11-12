@@ -69,7 +69,8 @@ CREATE TABLE residents (
     is4ps BOOLEAN DEFAULT FALSE,
     isWithCr BOOLEAN DEFAULT FALSE,
     isWith40mZone BOOLEAN DEFAULT FALSE,
-    isEnergized BOOLEAN DEFAULT FALSE
+    isEnergized BOOLEAN DEFAULT FALSE,
+    isResident BOOLEAN DEFAULT TRUE    
 );
 
 INSERT INTO wClassification (wClassificationName)VALUES 
