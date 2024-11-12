@@ -14,7 +14,6 @@
 
 <body>
     <%- include("../includes/header.ejs") %>
-
         <main class="mainContainer">
             <div class="heading">LIST OF RESIDENT</div>
             <div class="tableActionOne">
@@ -43,22 +42,7 @@
                             <th>REMARKS</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Gerna Mark Eugene Garcia</td>
-                            <td>08-02-2003</td>
-                            <td>21</td>
-                            <td>Male</td>
-                            <td>College</td>
-                            <td>Ambot</td>
-                            <td>Wood</td>
-                            <td>Yes</td>
-                            <td>Gripo/Mineral</td>
-                            <td>Yes</td>
-                            <td>Ambot</td>
-                            <td>4ps</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="residentsTableBody"></tbody>
                 </table>
             </div>
             <div aria-label="Page navigation" id="paginationButton">
@@ -78,6 +62,7 @@
                 <main>
                     <form action="/resident/dashboard/add-resident" method="POST" enctype="multipart/form-data">
                         <div class="add-resident-input-container">
+                            <h3>Resident Personal Information</h3>
                             <div class="row">
                                 <div class="inputWithLabel" id="surubadan">
                                     <label>Last Name</label>
@@ -120,89 +105,6 @@
                                     <input type="text" aria-label="Occupation" name="occupation" required>
                                 </div>
                                 <div class="inputWithLabel">
-                                    <label>Water Source</label>
-                                    <input type="text" aria-label="Water Source" name="waterSource" required>
-                                </div>
-                            </div>
-                            <div class="inputWithLabel">
-                                <label>Address</label>
-                                <div>
-                                    <input type="text" placeholder="Street" aria-label="Street" name="street">
-                                    <input type="text" placeholder="Barangay" aria-label="Barangay" name="barangay">
-                                    <input type="text" placeholder="City" aria-label="City" name="city">
-                                    <input type="text" placeholder="Province" aria-label="Province" name="province">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="inputWithLabel">
-                                    <label>Housing Materials</label>
-                                    <select name="housingMaterials" id="" aria-label="Housing Materials">
-                                        <option value="Concrete">Concrete</option>
-                                        <option value="Semi-concrete">Semi-concrete</option>
-                                        <option value="Wood">Wood</option>
-                                    </select>
-                                </div>
-                                <div class="inputWithLabel">
-                                    <label>With CR</label>
-                                    <select name="wCR" id="" aria-label="With CR">
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                                <div class="inputWithLabel">
-                                    <label>Energized</label>
-                                    <select name="energized" id="" aria-label="Energized">
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                                <div class="inputWithLabel">
-                                    <label>With 40m Building Zone</label>
-                                    <select name="buildingZone" id="" aria-label="With 40m Building Zine">
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="inputWithLabel">
-                                    <label>Senior</label>
-                                    <select name="senior" id="" aria-label="Senior">
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                                <div class="inputWithLabel">
-                                    <label>Solo Parent</label>
-                                    <select name="soloParent" id="" aria-label="Solo Parent">
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                                <div class="inputWithLabel">
-                                    <label>PWD</label>
-                                    <select name="pwd" id="" aria-label="PWD">
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                                <div class="inputWithLabel">
-                                    <label>Youth</label>
-                                    <select name="youth" id="" aria-label="Youth">
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                                <div class="inputWithLabel">
-                                    <label>4ps</label>
-                                    <select name="4ps" id="" aria-label="4ps">
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="inputWithLabel">
                                     <label>Sectors</label>
                                     <select name="sectors" id="" aria-label="Sectors">
                                         <option value="Government Employee">Government Employee</option>
@@ -214,22 +116,142 @@
                                         <option value="Drivers">Drivers</option>
                                         <option value="OFW">OFW</option>
                                         <option value="Kasambahay">Kasambahay</option>
+                                        <option value="None">None</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="ID-container">
-                                <label>ID Picture</label>
-                                <div class="image-preview" id="imagePreview">
-                                    <p>No image uploaded</p>
+                            <hr>
+                            <h3>House Classification</h1>
+                                <div class="row">
+                                    <div class="inputWithLabel">
+                                        <label>Water Source</label>
+                                        <select name="waterSource" id="" aria-label="Water Source">
+                                            <option value="Water Pump">Water Pump</option>
+                                            <option value="Spring">Spring</option>
+                                            <option value="Deep Well">Deep Well</option>
+                                            <option value="Public Water">Public Water</option>
+                                        </select>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Housing Materials</label>
+                                        <select name="housingMaterials" id="" aria-label="Housing Materials">
+                                            <option value="Concrete">Concrete</option>
+                                            <option value="Semi-concrete">Semi-concrete</option>
+                                            <option value="Wood">Wood</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="buttons">
-                                    <button type="button" class="button capture"
-                                        onclick="captureImage()">Capture</button>
-                                    <button type="button" class="button upload"
-                                        onclick="triggerUpload()">Upload</button>
-                                    <input type="file" id="fileInput" accept="image/*" onchange="displayImage(event)">
+                                <div class="row">
+                                    <div class="inputWithLabel">
+                                        <label>With CR</label>
+                                        <select name="wCR" id="" aria-label="With CR">
+                                            <option value="False">No</option>
+                                            <option value="True">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Energized</label>
+                                        <select name="energized" id="" aria-label="Energized">
+                                            <option value="False">No</option>
+                                            <option value="True">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>With 40m Building Zone</label>
+                                        <select name="buildingZone" id="" aria-label="With 40m Building Zine">
+                                            <option value="False">No</option>
+                                            <option value="True">Yes</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                                <hr>
+                                <h3>Resident Classification</h3>
+                                <div class="row">
+                                    <div class="inputWithLabel">
+                                        <label>Senior</label>
+                                        <select name="senior" id="" aria-label="Senior">
+                                            <option value="False">No</option>
+                                            <option value="True">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Solo Parent</label>
+                                        <select name="soloParent" id="" aria-label="Solo Parent">
+                                            <option value="False">No</option>
+                                            <option value="True">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>PWD</label>
+                                        <select name="pwd" id="" aria-label="PWD">
+                                            <option value="False">No</option>
+                                            <option value="True">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Youth</label>
+                                        <select name="youth" id="" aria-label="Youth">
+                                            <option value="False">No</option>
+                                            <option value="True">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>4ps</label>
+                                        <select name="4ps" id="" aria-label="4ps">
+                                            <option value="False">No</option>
+                                            <option value="True">Yes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <hr>
+                                <h3>Address</h3>
+                                <div class="row">
+                                    <div class="inputWithLabel">
+                                        <label for="">Purok</label>
+                                        <select name="purok" id="" aria-label="Purok">
+                                            <option value="Seguidila">Seguidila</option>
+                                            <option value="Sitaw">Sitaw</option>
+                                            <option value="Maypangdan">Maypangdan</option>
+                                            <option value="Petchay">Petchay</option>
+                                            <option value="Ampalaya">Ampalaya</option>
+                                            <option value="Mustaza">Mustaza</option>
+                                            <option value="Kalabasa">Kalabasa</option>
+                                        </select>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Street</label>
+                                        <input type="text" aria-label="Street" name="street" required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Barangay</label>
+                                        <input type="text" aria-label="Barangay" name="barangay" required
+                                            value="Maypangdan">
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>City</label>
+                                        <input type="text" aria-label="City" name="city" required value="Borongan City">
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Province</label>
+                                        <input type="text" aria-label="Province" name="province" required
+                                            value="Eastern Samar">
+                                    </div>
+                                </div>
+                                <hr>
+                                <h3>ID Picture</h3>
+                                <div class="ID-container">
+                                    <div class="image-preview" id="imagePreview">
+                                        <p>No image uploaded</p>
+                                    </div>
+                                    <div class="buttons">
+                                        <button type="button" class="button capture"
+                                            onclick="captureImage()">Capture</button>
+                                        <button type="button" class="button upload"
+                                            onclick="triggerUpload()">Upload</button>
+                                        <input type="file" id="fileInput" accept="image/*"
+                                            onchange="displayImage(event)">
+                                    </div>
+                                </div>
                         </div>
                         <button type="button" id="submit_add_resident" onclick="popUp_button(this)">SUBMIT</button>
                         <div class="pop-up-confirm" id="reject_dispense">
@@ -263,6 +285,7 @@
         </main>
 </body>
 <script src="../../js/global/pop-up.js"></script>
+<script src="../../js/local/residents/residents-api.js"></script>
 <script>
     document.querySelector("header>nav>ul>li:nth-child(3)").classList.toggle("selected");
 
