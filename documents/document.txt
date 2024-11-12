@@ -43,6 +43,7 @@ CREATE TABLE wClassification (
 
 CREATE TABLE residents (
     residentsId SERIAL PRIMARY KEY NOT NULL,
+    globalId VARCHAR(255) NOT NULL UNIQUE,
     idNumber VARCHAR(255) NULL,
     fName VARCHAR(255) NOT NULL,
     mName VARCHAR(255) NULL,
@@ -71,16 +72,6 @@ CREATE TABLE residents (
     isEnergized BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE requests (
-    id SERIAL PRIMARY KEY NOT NULL,
-    residentsId INT REFERENCES residents(residentsId) NOT NULL,    
-    dateAdded DATE NULL,
-    purpose TEXT NULL,
-    isReleased BOOLEAN DEFAULT FALSE
-);
-
---statistics based on rClassification & age & hClassification
-
 INSERT INTO wClassification (wClassificationName)VALUES 
     ('Water Pump'),
     ('Spring'),
@@ -103,3 +94,11 @@ INSERT INTO rClassification (rClassificationName)VALUES
     ('Drivers'),
     ('OFW'),
     ('Kasambahay');
+
+CREATE TABLE requests (
+    id SERIAL PRIMARY KEY NOT NULL,
+    residentsId INT REFERENCES residents(residentsId) NOT NULL,    
+    dateAdded DATE NULL,
+    purpose TEXT NULL,
+    isReleased BOOLEAN DEFAULT FALSE
+);

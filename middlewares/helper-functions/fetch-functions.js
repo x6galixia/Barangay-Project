@@ -1,5 +1,6 @@
 const mPool = require("../../models/mDatabase");
 
+//fetch function for residents
 async function fetchResidentsLists(page, limit) {
   const offset = (page - 1) * limit;
 
@@ -14,6 +15,7 @@ async function fetchResidentsLists(page, limit) {
 
     const getResidentsList = await mPool.query(`
       SELECT 
+        r.globalId,
         r.residentsId, 
         r.idNumber, 
         r.fName, 
