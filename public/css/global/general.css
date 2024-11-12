@@ -1,12 +1,15 @@
 * {
   margin: 0;
 }
-body{
+
+body {
   font-family: 'Poppins';
 }
-.heading{
+
+.heading {
   font-family: 'Poppins';
 }
+
 :root {
   --green-color: #33A90F;
   --font-size: 1.5rem;
@@ -351,4 +354,48 @@ input[type="search"]::placeholder {
 
 .visible {
   display: block !important;
+}
+
+
+/* triple dot css */
+.menu-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.dot {
+  cursor: pointer;
+}
+
+.triple-dot {
+  margin-bottom: -240px;
+  margin-left: -150px;
+  position: absolute;
+  display: none;
+}
+
+.triple-dot .visible {
+  display: block;
+}
+
+.menu {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+  background-color: #FFF;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.menu button {
+  width: auto;
+  color: white;
+}
+
+.menu button:hover {
+  background-color: #44a130;
+  color: #FFF;
 }
