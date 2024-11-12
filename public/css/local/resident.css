@@ -4,10 +4,18 @@
   gap: 12px;
 }
 
+#add-resident .row {
+  flex-wrap: wrap;
+}
+
 #add-resident form {
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+#add-resident {
+  width: 60%;
 }
 
 #add-resident form #submit_add_resident {
@@ -18,9 +26,18 @@
 
 
 
+
+.inputWithLabel {
+  flex: 1;
+}
+
 .inputWithLabel>div {
   display: flex;
   gap: 12px;
+}
+
+.inputWithLabel>div>input {
+  width: 100%;
 }
 
 .residentUploadImage {

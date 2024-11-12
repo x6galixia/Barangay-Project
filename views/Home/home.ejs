@@ -16,6 +16,7 @@
   <%- include("../includes/header.ejs") %>
     <main class="mainContainer">
       <div class="heading">Service Request Form</div>
+      <input type="text" id="qrInput" required style="opacity: 0; position: fixed; transform: translate(-50%, -50%),;">
       <form action="" class="requestForm">
         <div class="scanSwitch">
           Scan QR
@@ -97,6 +98,7 @@
       </form>
     </main>
 </body>
+<script src="../../js/local/request-api.js"></script>
 <script>
   document.querySelector("header>nav>ul>li:first-child").classList.toggle("selected");
 </script>
