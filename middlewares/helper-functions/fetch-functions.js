@@ -43,7 +43,8 @@ async function fetchResidentsLists(page, limit) {
         r.isWithCr, 
         r.isWith40mZone, 
         r.isEnergized,
-        r.isResident
+        r.isResident,
+        r.civil_status
       FROM residents r
       LEFT JOIN rClassification rc ON r.rClassificationId = rc.rClassificationId
       LEFT JOIN hClassification hc ON r.hClassificationId = hc.hClassificationId
