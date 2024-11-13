@@ -41,6 +41,20 @@ CREATE TABLE wClassification (
     wClassificationName VARCHAR(255) NOT NULL
 );
 
+-- in case of emergency contact person 
+CREATE TABLE contactPerson(
+     contactPersonId SERIAL PRIMARY KEY NOT NULL,
+     fName VARCHAR(255) NOT NULL,
+     mName VARCHAR(255) NULL,
+     lName VARCHAR(255) NOT NULL,
+     street VARCHAR(255) NULL,
+     purok VARCHAR(255) NULL,
+     barangay VARCHAR(255) NULL,
+     city VARCHAR(255) NULL,
+     province VARCHAR(255) NULL,
+     contactNumber VARCHAR(50) NULL
+);
+
 CREATE TABLE residents (
     residentsId SERIAL PRIMARY KEY NOT NULL,
     globalId VARCHAR(255) NOT NULL UNIQUE,
@@ -62,7 +76,8 @@ CREATE TABLE residents (
     occupation VARCHAR(255) NULL,
     rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,
     hClassificationId INT REFERENCES hClassification(hClassificationId) NOT NULL,
-    waterSource INT REFERENCES wClassification(wClassificationId) NOT NULL,
+    waterSourceId INT REFERENCES wClassification(wClassificationId) NOT NULL,
+    emergencyContactId INT REFERENCES contactPerson(contactPersonId) NOT NULL,
     isPwd BOOLEAN DEFAULT FALSE,
     isSoloParent BOOLEAN DEFAULT FALSE,
     isYouth BOOLEAN DEFAULT FALSE,
@@ -70,7 +85,8 @@ CREATE TABLE residents (
     isWithCr BOOLEAN DEFAULT FALSE,
     isWith40mZone BOOLEAN DEFAULT FALSE,
     isEnergized BOOLEAN DEFAULT FALSE,
-    isResident BOOLEAN DEFAULT TRUE    
+    isResident BOOLEAN DEFAULT TRUE,
+    civilStatus VARCHAR(50) NULL CHECK (civilStatus IN ('Single', 'Married', 'Divorced'))
 );
 
 INSERT INTO wClassification (wClassificationName)VALUES 

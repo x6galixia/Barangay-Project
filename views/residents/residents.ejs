@@ -45,10 +45,16 @@
                     <tbody id="residentsTableBody"></tbody>
                 </table>
             </div>
-            <div aria-label="Page navigation" id="paginationButton">
-                <a href="" aria-label="Previous Page">Previous</a>
-                <a href="" aria-label="Next Page">Next</a>
-            </div>
+            <nav aria-label="Page navigation" id="paginationNav">
+                <% if (totalPages > 1) { %>
+                  <% if (currentPage > 1) { %>
+                    <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>" aria-label="Previous Page">Previous</a>
+                  <% } %>
+                  <% if (currentPage < totalPages) { %>
+                    <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>" aria-label="Next Page">Next</a>
+                  <% } %>
+                <% } %>
+              </nav>              
             <button id="add-resident-button" onclick="popUp_button(this)" class="addingForTable">
                 ADD RESIDENT
             </button>
