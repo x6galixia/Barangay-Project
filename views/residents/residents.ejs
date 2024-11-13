@@ -51,15 +51,17 @@
                 </table>
             </div>
             <nav aria-label="Page navigation" id="paginationNav">
-                <% if (totalPages > 1) { %>
-                  <% if (currentPage > 1) { %>
-                    <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>" aria-label="Previous Page">Previous</a>
-                  <% } %>
-                  <% if (currentPage < totalPages) { %>
-                    <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>" aria-label="Next Page">Next</a>
-                  <% } %>
-                <% } %>
-              </nav>              
+                <% if (totalPages> 1) { %>
+                    <% if (currentPage> 1) { %>
+                        <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>"
+                            aria-label="Previous Page">Previous</a>
+                        <% } %>
+                            <% if (currentPage < totalPages) { %>
+                                <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>"
+                                    aria-label="Next Page">Next</a>
+                                <% } %>
+                                    <% } %>
+            </nav>
             <button id="add-resident-button" onclick="popUp_button(this)" class="addingForTable">
                 ADD RESIDENT
             </button>

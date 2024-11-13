@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         // Loop through the residents and create table rows
         residents.forEach(resident => {
             const row = document.createElement('tr');
-
+            console.log(data);
             row.innerHTML = `
                 <td>${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}</td>
                 <td>${new Date(resident.birthdate).toLocaleDateString()}</td>
@@ -128,7 +128,8 @@ function attachDotEventListeners() {
 
 window.popUp_three_dot = function (button) {
     const action = button.textContent.trim();
-    const residentID = button.closest('.triple-dot').querySelector('.menu').getAttribute('data-id');
+    const menu = button.closest('.menu');
+    const residentID = menu.getAttribute('data-id');
 
     if (action === 'Delete' && residentID) {
         alert("Delete!");
@@ -208,15 +209,15 @@ window.popUp_three_dot = function (button) {
     if (action === 'Generate ID' && residentID) {
 
         const id_card = document.getElementById("generate-ID");
-        const globalIDForQR = document.getElementById("generate-id").getAttribute('data-globalId');
+        const globalIDForQR = button.getAttribute('data-globalId');
         id_card.classList.add("visible");
         overlay.classList.toggle("visible");
 
-        document.getElementById('fullname').innerText = document.getElementById("generate-id").getAttribute('data-fullname');
-        document.getElementById('civilStatus').innerText = document.getElementById("generate-id").getAttribute('data-civil_status');
-        document.getElementById('birthdate').innerText = document.getElementById("generate-id").getAttribute('data-birthdate');
-        document.getElementById('address').innerText = document.getElementById("generate-id").getAttribute('data-address');
-        document.getElementById('idNumber').innerText = document.getElementById("generate-id").getAttribute('data-idNumber');
+        document.getElementById('fullname').innerText = button.getAttribute('data-fullname');
+        document.getElementById('civilStatus').innerText = button.getAttribute('data-civil_status');
+        document.getElementById('birthdate').innerText = button.getAttribute('data-birthdate');
+        document.getElementById('address').innerText = button.getAttribute('data-address');
+        document.getElementById('idNumber').innerText = button.getAttribute('data-idNumber');
 
 
         //         var picture;
@@ -246,7 +247,6 @@ window.popUp_three_dot = function (button) {
 
             const secretKey = "MnDev"; // Use a strong secret key for encryption
             const encryptedData = encryptData(json, secretKey); // Encrypt the JSON data
-            console.log("Encrypted Data:", encryptedData);
 
             // Now proceed with the QR code generation
             const qr = qrcode(0, 'L');
@@ -258,7 +258,6 @@ window.popUp_three_dot = function (button) {
             const decryptedData = decryptData(encryptedData, secretKey);
 
             // Log the decrypted data to the console
-            console.log("Decrypted Data:", decryptedData);
         }
 
         generateQRCode();

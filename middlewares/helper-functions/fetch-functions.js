@@ -21,8 +21,11 @@ async function fetchResidentsLists(page, limit) {
           rc.rClassificationName AS residentClassification, 
           hc.hClassificationName AS houseClassification, 
           wc.wClassificationName AS waterSource,
-          cp.fName AS emergencyContactFName, cp.mName AS emergencyContactMName, 
-          cp.lName AS emergencyContactLName, cp.contactNumber AS emergencyContactNumber,
+          cp.fname AS emergencyContactFName, cp.mname AS emergencyContactMName, 
+          cp.lname AS emergencyContactLName, cp.contactnumber AS emergencyContactNumber,
+          cp.street AS emergencyContactStreet, cp.purok AS emergencyContactPurok, 
+          cp.barangay AS emergencyContactBarangay, cp.city AS emergencyContactCity,
+          cp.province AS emergencyContactProvince,
           r.isPwd, r.isSoloParent, r.isYouth, r.is4ps, r.isWithCr, r.isWith40mZone, 
           r.isEnergized, r.isResident, r.civilStatus
       FROM residents r
@@ -34,7 +37,12 @@ async function fetchResidentsLists(page, limit) {
       LIMIT $1 OFFSET $2;
     `, [limit, offset]);
 
-    return { getResidentsList: getResidentsList.rows, totalPages, totalItems };
+    // Return the fetched data along with pagination details
+    return {
+      getResidentsList: getResidentsList.rows,
+      totalPages,
+      totalItems
+    };
   } catch (err) {
     console.error("Error fetching residents list: ", err.message, err.stack);
     throw new Error("Error fetching residents list");

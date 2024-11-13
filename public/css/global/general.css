@@ -241,7 +241,7 @@ table>tbody>tr {
   text-align: center;
 }
 
-#paginationButton a {
+#paginationNav a {
   background-color: var(--green-color);
   color: white;
   padding: 12px;
