@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/global/general.css">
     <link rel="stylesheet" href="../css/local/resident.css">
+    <link rel="stylesheet" href="../css/local/id.css">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <title>
         <%= title %>
@@ -34,12 +35,14 @@
                             <th>GENDER</th>
                             <th>EDUC'L ATTAINMENT</th>
                             <th>OCCUPATION</th>
+                            <th>PUROK</th>
                             <th>HOUSING MATERIALS</th>
                             <th>WITH CR</th>
                             <th>WATER SOURCE</th>
                             <th>ENERGIZED</th>
                             <th>WITH 40m BUILDING ZONE</th>
                             <th>REMARKS</th>
+                            <th>ACTION</th>
                         </tr>
                     </thead>
                     <tbody id="residentsTableBody"></tbody>
@@ -60,6 +63,7 @@
             </button>
 
             <!-- Pop Up -->
+            <!-- Add Resident -->
             <div class="pop-up" id="add-resident">
                 <div class="close-container">
                     <img src="../icon/close.svg" alt="" class="close_popUp">
@@ -286,6 +290,104 @@
                             </div>
                         </div>
                     </form>
+                </main>
+            </div>
+            <!-- Generate ID -->
+            <div class="pop-up" id="generate-ID">
+                <div class="close-container">
+                    <img src="../icon/close.svg" alt="" class="close_popUp">
+                </div>
+                <h1 class="heading">BARANGAY ID</h1>
+                <main>
+                    <div class="center">
+                        <div class="id-container">
+                            <div class="first-layout">
+                                <div><img src="../images/logo3.png" alt=""></div>
+                                <div>
+                                    <p>Republic of the Philippines <br>
+                                        Province of Eastern Samar <br>
+                                        City of Borongan <br>
+                                        BARANGAY MAYPANGDAN</p>
+                                </div>
+                                <div><img src="../images/logo4.png" alt=""></div>
+                            </div>
+                            <div class="sub-head">
+                                <h2>BARANGAY ID</h2>
+                            </div>
+
+                            <div class="id-img">
+                                <img src="../images/wow.jpg" alt="">
+                                <p id="idNumber">ID NUMBER</p>
+                                <H2 id="fullname">ADRIANE S. GARCIA</H2>
+                                <h2 class="perso-info">PERSONAL INFORMATION</h2>
+                            </div>
+
+                            <div class="personal-info">
+                                <p>
+                                    <span class="Civil-stat">Civil Status:</span>
+                                    <span class="value" id="civilStatus">Single</span>
+                                </p>
+                                <p>
+                                    <span class="Civil-stat">Birthdate:</span>
+                                    <span class="value" id="birthdate">May 1, 2003</span>
+                                </p>
+                                <p>
+                                    <span class="Civil-stat" style="margin-right: 2px;">Address:</span>
+                                    <span class="value" id="address">Purok Sitaw, Brgy. Maypangdan, <br> Borongan
+                                        City</span>
+                                </p>
+                            </div>
+
+                            <div class="signature-container">
+                                <hr class="signature-line">
+                                <span class="signature-text">Signature</span>
+                            </div>
+                        </div>
+                        <div class="id-back">
+                            <div class="lgu">
+                                <h2>LGU-MAYPANGDAN</h2>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is to certify that the bearer of this card
+                                    whose
+                                    picture and signature appear herein is a resident of Barangay Maypangdan Borongan
+                                    City.
+                                </p>
+                            </div>
+                            <div class="qr-img">
+                                <img src="../images/qr.png" alt="">
+                            </div>
+                            <div class="qr-imager">
+                                <div>
+                                    <p>This card is non-transferrable.</p>
+                                    <p>Valid only until December 31, 2024</p>
+                                </div>
+                            </div>
+                            <div class="notify">
+                                <h2>INCASE OF EMERGENCY, NOTIFY:</h2>
+                            </div>
+                            <div class="personal-info">
+                                <p>
+                                    <span class="Civil-stat">Contact Person:</span>
+                                    <span class="values">ADELITA G. ENCINAS</span>
+                                </p>
+                                <p>
+                                    <span class="Civil-stat">Contact Number:</span>
+                                    <span class="value">0997-329-4122</span>
+                                </p>
+                                <p style="display: flex; flex-wrap: wrap; ">
+                                    <span class="Civil-stat" style="margin-right: 2px;">Address:</span>
+                                    <span class="value">Brgy. Maypangdan Borongan City, <br> Eastern Samar</span>
+                                </p>
+                                <div class="signature-containers">
+                                    <p class="name">IAN C. GONZALEZ</p>
+                                    <p class="position">Punong Baranggay</p>
+                                </div>
+                            </div>
+                            <div class="bottom">
+
+                            </div>
+                        </div>
+
+                    </div>
                 </main>
             </div>
         </main>
