@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../css/local/resident.css">
     <link rel="stylesheet" href="../css/local/id.css">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <title>
         <%= title %>
     </title>
@@ -49,15 +51,17 @@
                 </table>
             </div>
             <nav aria-label="Page navigation" id="paginationNav">
-                <% if (totalPages > 1) { %>
-                  <% if (currentPage > 1) { %>
-                    <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>" aria-label="Previous Page">Previous</a>
-                  <% } %>
-                  <% if (currentPage < totalPages) { %>
-                    <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>" aria-label="Next Page">Next</a>
-                  <% } %>
-                <% } %>
-              </nav>              
+                <% if (totalPages> 1) { %>
+                    <% if (currentPage> 1) { %>
+                        <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>"
+                            aria-label="Previous Page">Previous</a>
+                        <% } %>
+                            <% if (currentPage < totalPages) { %>
+                                <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>"
+                                    aria-label="Next Page">Next</a>
+                                <% } %>
+                                    <% } %>
+            </nav>
             <button id="add-resident-button" onclick="popUp_button(this)" class="addingForTable">
                 ADD RESIDENT
             </button>
@@ -352,8 +356,7 @@
                                     City.
                                 </p>
                             </div>
-                            <div class="qr-img">
-                                <img src="../images/qr.png" alt="">
+                            <div class="qr-img" id="qrcode">
                             </div>
                             <div class="qr-imager">
                                 <div>
