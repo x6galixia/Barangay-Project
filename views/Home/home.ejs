@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../css/global/general.css">
   <link rel="stylesheet" href="../css/local/home.css">
   <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <title>
     <%= title %>
   </title>
@@ -18,6 +19,7 @@
       <div class="heading">Service Request Form</div>
       <input type="text" id="qrInput" required style="opacity: 0; position: fixed; transform: translate(-50%, -50%),;">
       <form action="" class="requestForm">
+        <input type="hidden" id="qrOutput" name="patient_id" style="position: absolute;">
         <div class="scanSwitch">
           Scan QR
           <label class="switch">
@@ -29,41 +31,41 @@
           <div>
             <div class="inputWithLabel">
               <label for="">Last Name</label>
-              <input type="text">
+              <input type="text" id="lastname">
             </div>
             <div class="inputWithLabel">
               <label for="">First Name</label>
-              <input type="text">
+              <input type="text" id="firstname">
             </div>
             <div class="inputWithLabel">
               <label for="">Middle Name</label>
-              <input type="text">
+              <input type="text" id="middlename">
             </div>
             <div class="inputWithLabel">
               <label for="">Age</label>
-              <input type="text">
+              <input type="number" id="age">
             </div>
             <div class="inputWithLabel">
               <label for="">Birthday</label>
-              <input type="date">
+              <input type="date" id="birthdate">
             </div>
           </div>
           <div>
             <div class="inputWithLabel">
               <label for="">Birthplace</label>
-              <input type="text">
+              <input type="text" id="birthplace">
             </div>
             <div class="inputWithLabel">
               <label for="">Civil Status</label>
-              <input type="text">
+              <input type="text" id="civilStatus">
             </div>
             <div class="inputWithLabel">
               <label for="">Purok</label>
-              <input type="text">
+              <input type="text" id="purok">
             </div>
             <div class="inputWithLabel">
               <label for="">Gross Income</label>
-              <input type="text">
+              <input type="text" id="grossIncome">
             </div>
             <div class="inputWithLabel">
               <label for="">Purpose</label>
