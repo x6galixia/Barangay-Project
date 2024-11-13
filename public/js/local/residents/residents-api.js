@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const residentsTableBody = document.getElementById('residentsTableBody');
     const page = 1;  // You can manage pagination or keep it fixed for now
     const limit = 10; // Number of records per page
+    const overlay = document.getElementById("overlay");
 
     try {
         // Fetch the residents list using the fetch API
@@ -24,8 +25,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             row.innerHTML = `
                 <td>${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}</td>
                 <td>${new Date(resident.birthdate).toLocaleDateString()}</td>
-                <td>${resident.lname} ${resident.fname} ${resident.mname ? resident.mname : ''}</td>
-                <td>${new Date(resident.birthdate).toLocaleDateString()}</td>
                 <td>${resident.age}</td>
                 <td>${resident.gender}</td>
                 <td>${resident.eattainment || 'N/A'}</td>
@@ -43,7 +42,13 @@ document.addEventListener("DOMContentLoaded", async function () {
                     <div class="menu" data-id="${resident.globalid}">
                         <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
                         <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
-                        <button id="generate-id" onclick="popUp_three_dot(this)">Generate ID</button>
+                        <button id="generate-id" onclick="popUp_three_dot(this)"
+                        data-fullname="${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}"
+                        data-idNumber="${resident.idnumber}"
+                        data-civil_status="${resident.civil_status}"
+                        data-birthdate="${new Date(resident.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}"
+                        data-address="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
+                        >Generate ID</button>
                     </div>
                 </div>
             </td>
@@ -185,10 +190,16 @@ window.popUp_three_dot = function (button) {
         //     });
     }
     if (action === 'Generate ID' && residentID) {
-        alert("Generate!");
 
-        // const id_card = document.getElementById("id");
-        // id_card.classList.add("visible");
+        const id_card = document.getElementById("generate-ID");
+        id_card.classList.add("visible");
+        overlay.classList.toggle("visible");
+
+        document.getElementById('fullname').innerText = document.getElementById("generate-id").getAttribute('data-fullname');
+        document.getElementById('civilStatus').innerText = document.getElementById("generate-id").getAttribute('data-civil_status');
+        document.getElementById('birthdate').innerText = document.getElementById("generate-id").getAttribute('data-birthdate');
+        document.getElementById('address').innerText = document.getElementById("generate-id").getAttribute('data-address');
+        document.getElementById('idNumber').innerText = document.getElementById("generate-id").getAttribute('data-idNumber');
 
         // fetch(`/pharmacy-records/beneficiary/${beneficiaryId}`)
         //     .then(response => {
