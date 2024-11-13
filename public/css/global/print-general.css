@@ -1,0 +1,71 @@
+body {
+    background-color: beige;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.A4 {
+    width: 8.27in;
+    height: 11.69in;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+/* headers */
+.cert-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cert-header img {
+    width: 90%;
+    height: 19px;
+    margin-top: 5px;
+}
+
+.certificate-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.certificate-logo h6 {
+    text-align: center;
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: 1px;
+    word-spacing: 2px;
+    line-height: 18px;
+    margin-bottom: 5px;
+}
+
+/* logo img */
+.certificate-logo img {
+    width: 100px;
+    height: 100px;
+}
+
+/* titles */
+.title {
+    color: red;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 32px;
+}
+
+
+/* contextt  */
+.context {
+    text-align: justify;
+    margin: 30px 60px;
+}
+
+.context p {
+    font-size: 16px;
+    text-indent: 30px;
+    margin-bottom: 20px;
+}
+
