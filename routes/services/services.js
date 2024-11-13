@@ -7,4 +7,9 @@ router.get("/dashboard", (req, res) => {
     });
 });
 
+
+router.get("/indigency", (req, res) => {
+    res.render("services/indigency");
+});
+
 module.exports = router;
