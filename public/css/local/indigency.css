@@ -1,0 +1,48 @@
+main {
+    padding: 2em;
+}
+
+.certified {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: auto;
+}
+
+
+.wala {
+    text-indent: 0 !important;
+    margin-bottom: 20px;
+}
+
+.seal {
+    margin: 30px 60px;
+}
+
+.A4 {
+    position: relative;
+}
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+@media print {
+
+    header, button {
+        display: none;
+    }
+
+    .A4 {
+        display: block !important;
+    }
+}
+
+
+
