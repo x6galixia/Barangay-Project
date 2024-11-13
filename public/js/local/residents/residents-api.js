@@ -1,11 +1,14 @@
 document.addEventListener("DOMContentLoaded", async function () {
     const residentsTableBody = document.getElementById('residentsTableBody');
-    const page = 1;  // You can manage pagination or keep it fixed for now
-    const limit = 10; // Number of records per page
+
+    // Get URL parameters for page and limit, fallback to page 1, limit 10
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = parseInt(urlParams.get('page')) || 1;
+    const limit = parseInt(urlParams.get('limit')) || 10;
 
     try {
-        // Fetch the residents list using the fetch API
-        const response = await fetch(`/residents/dashboard?ajax=true`);
+        // Fetch the residents list using the fetch API, include page and limit in the URL
+        const response = await fetch(`/residents/dashboard?ajax=true&page=${page}&limit=${limit}`);
         if (!response.ok) {
             throw new Error("Failed to fetch residents data");
         }
@@ -54,12 +57,28 @@ document.addEventListener("DOMContentLoaded", async function () {
             `;
 
             residentsTableBody.appendChild(row);
-            console.log(data);
         });
+
+        // Update the pagination links
+        updatePaginationLinks(data.currentPage, data.totalPages);
 
     } catch (error) {
         console.error("Error fetching residents data: ", error);
         residentsTableBody.innerHTML = '<tr><td colspan="12">Error loading data</td></tr>';
+    }
+
+    // Function to dynamically update pagination links
+    function updatePaginationLinks(currentPage, totalPages) {
+        const paginationNav = document.getElementById('paginationNav');
+        paginationNav.innerHTML = '';
+
+        if (currentPage > 1) {
+            paginationNav.innerHTML += `<a href="?page=${currentPage - 1}&limit=${limit}" aria-label="Previous Page">Previous</a>`;
+        }
+
+        if (currentPage < totalPages) {
+            paginationNav.innerHTML += `<a href="?page=${currentPage + 1}&limit=${limit}" aria-label="Next Page">Next</a>`;
+        }
     }
     attachDotEventListeners();
 });

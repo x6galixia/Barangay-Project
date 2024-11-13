@@ -151,6 +151,10 @@ html {
     align-items: center;
     margin-top: 14px;
 }
+.qr-img img{
+    width: 110px;
+    height: 110px;
+}
 
 .qr-imager p::before {
     content: "•";

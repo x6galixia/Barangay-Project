@@ -1,6 +1,6 @@
 const mPool = require("../../models/mDatabase");
 
-//fetch function for residents
+// Fetch function for residents with pagination
 async function fetchResidentsLists(page, limit) {
   const offset = (page - 1) * limit;
 
@@ -15,47 +15,28 @@ async function fetchResidentsLists(page, limit) {
 
     const getResidentsList = await mPool.query(`
       SELECT 
-        r.globalId,
-        r.residentsId, 
-        r.idNumber, 
-        r.fName, 
-        r.mName, 
-        r.lName, 
-        r.street, 
-        r.purok, 
-        r.barangay, 
-        r.city, 
-        r.province, 
-        r.birthDate, 
-        r.age, 
-        r.gender, 
-        r.picture, 
-        r.signature, 
-        r.eAttainment, 
-        r.occupation, 
-        rc.rClassificationName AS residentClassification, 
-        hc.hClassificationName AS houseClassification, 
-        wc.wClassificationName AS waterSource,
-        r.isPwd, 
-        r.isSoloParent, 
-        r.isYouth, 
-        r.is4ps, 
-        r.isWithCr, 
-        r.isWith40mZone, 
-        r.isEnergized,
-        r.isResident,
-        r.civil_status
+          r.globalId, r.residentsId, r.idNumber, r.fName, r.mName, r.lName, 
+          r.street, r.purok, r.barangay, r.city, r.province, r.birthDate, r.age, 
+          r.gender, r.picture, r.signature, r.eAttainment, r.occupation, 
+          rc.rClassificationName AS residentClassification, 
+          hc.hClassificationName AS houseClassification, 
+          wc.wClassificationName AS waterSource,
+          cp.fName AS emergencyContactFName, cp.mName AS emergencyContactMName, 
+          cp.lName AS emergencyContactLName, cp.contactNumber AS emergencyContactNumber,
+          r.isPwd, r.isSoloParent, r.isYouth, r.is4ps, r.isWithCr, r.isWith40mZone, 
+          r.isEnergized, r.isResident, r.civilStatus
       FROM residents r
       LEFT JOIN rClassification rc ON r.rClassificationId = rc.rClassificationId
       LEFT JOIN hClassification hc ON r.hClassificationId = hc.hClassificationId
-      LEFT JOIN wClassification wc ON r.waterSource = wc.wClassificationId
+      LEFT JOIN wClassification wc ON r.waterSourceId = wc.wClassificationId
+      LEFT JOIN contactPerson cp ON r.emergencyContactId = cp.contactPersonId
       ORDER BY r.fName
       LIMIT $1 OFFSET $2;
     `, [limit, offset]);
 
-    return { getResidentsList: getResidentsList.rows, totalPages };
+    return { getResidentsList: getResidentsList.rows, totalPages, totalItems };
   } catch (err) {
-    console.error("Error: ", err.message, err.stack);
+    console.error("Error fetching residents list: ", err.message, err.stack);
     throw new Error("Error fetching residents list");
   }
 }
