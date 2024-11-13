@@ -1,131 +1,150 @@
-*{
+* {
     margin: 0;
 }
-body, html{
+
+body,
+html {
     font-family: sans-serif;
 }
-.id-container{
-    background: url('background.png'); /* Set the height to the image height */
+
+.id-container {
+    background: url('../../images/background.png');
     background-size: cover;
     height: 451px;
     width: 298px;
     background-position: center;
     background-repeat: no-repeat;
     background-color: #EFFAEC;
+    border: 1px solid #000;
 }
 
-.center
-{
-    top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      position: absolute;
+.id-container #address {
+    overflow-wrap: break-word;
+}
+
+.center {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: grey;
-    width: 50%;
-    height: 700px;
     gap: 20px;
 
 }
-.first-layout{
+
+.first-layout {
     margin-top: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 6px;
 }
-.first-layout p{
+
+.first-layout p {
     font-size: 11px;
     text-align: center;
 }
-.first-layout img{
+
+.first-layout img {
     height: 45px;
     width: 45px;
 }
-.sub-head{
+
+.sub-head {
     text-align: center;
     margin-top: 11px;
 }
-.sub-head h2{
+
+.sub-head h2 {
     font-size: 20px;
 }
-.id-img{
+
+.id-img {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-top: 22px;
 }
-.id-img img{
+
+.id-img img {
     height: 110px;
     width: 110px;
     border: 1px solid black;
 }
-.id-img p{
+
+.id-img p {
     font-size: 9px;
     margin-top: 5px;
 }
-.id-img h2{
+
+.id-img h2 {
     font-size: 18px;
     margin-top: 2px;
 }
-.perso-info{
+
+.perso-info {
     font-size: 11px !important;
     margin-top: 6px;
 }
-.personal-info{
+
+.personal-info {
     width: auto;
     padding: 0 31px;
     margin-top: 12px;
-    
+
 }
-.personal-info p{
+
+.personal-info p {
     font-size: 10px;
     padding: 4px 0;
 }
+
 .signature-container {
     text-align: center;
     margin-top: 30px;
     padding: 0 86px;
 }
 
-.signature-container hr{
+.signature-container hr {
     border: 0;
-    border-top: 1px solid black ;
+    border-top: 1px solid black;
 }
-.signature-container span{
+
+.signature-container span {
     font-size: 9px;
     font-style: italic;
 }
 
-.id-back{/* Set the height to the image height */
+.id-back {
+    /* Set the height to the image height */
     position: relative;
     height: 451px;
     width: 298px;
-    background-image: url('bottom.png');
+    background-image: url('../../images/bottom.png');
     background-position: bottom;
     background-repeat: no-repeat;
     background-color: #EFFAEC;
-    
+    border: 1px solid #000;
 }
-.lgu{
+
+.lgu {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-top: 36px;
 }
-.lgu h2{
+
+.lgu h2 {
     font-size: 20px;
 }
-.lgu p{
+
+.lgu p {
     margin-top: 15px;
-    font-size: 11px;
+    font-size: 12px;
     padding: 0 20px;
 }
-.qr-img{
+
+.qr-img {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -133,12 +152,13 @@ body, html{
     margin-top: 14px;
 }
 
-.qr-imager p::before{
+.qr-imager p::before {
     content: "•";
-    margin-right: 10px; /* Bullet symbol */
+    margin-right: 10px;
+    /* Bullet symbol */
 }
 
-.qr-imager{
+.qr-imager {
     font-size: 11px;
     display: flex;
     flex-direction: column;
@@ -146,29 +166,38 @@ body, html{
     justify-content: center;
     margin-top: 5px;
 }
-.notify h2{
+
+.notify h2 {
     font-size: 11px;
 }
-.notify{
+
+.notify {
     text-align: center;
     margin-top: 14px;
 }
-.values{
+
+.values {
     text-decoration: underline;
 }
+
 .signature-containers {
     margin-top: 19px;
     text-align: center;
     color: white;
 }
-.signature-containers .name{
+
+.signature-containers .name {
     font-size: 11px;
     font-weight: bold;
 }
-.signature-containers .position{
+
+.signature-containers .position {
     font-size: 9px;
     font-style: italic;
 }
-.Civil-stat, .values, .value{
+
+.Civil-stat,
+.values,
+.value {
     font-weight: 550;
 }
