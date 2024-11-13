@@ -1,9 +1,7 @@
-//residents-api.js
 document.addEventListener("DOMContentLoaded", async function () {
     const residentsTableBody = document.getElementById('residentsTableBody');
     const page = 1;  // You can manage pagination or keep it fixed for now
     const limit = 10; // Number of records per page
-    const overlay = document.getElementById("overlay");
 
     try {
         // Fetch the residents list using the fetch API
@@ -45,6 +43,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                         <button id="generate-id" onclick="popUp_three_dot(this)"
                         data-fullname="${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}"
                         data-idNumber="${resident.idnumber}"
+                        data-globalId="${resident.globalid}"
                         data-civil_status="${resident.civil_status}"
                         data-birthdate="${new Date(resident.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}"
                         data-address="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
@@ -64,7 +63,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
     attachDotEventListeners();
 });
-
 // Helper function to generate remarks based on resident data
 function generateRemarks(resident) {
     const remarks = [];
@@ -83,11 +81,11 @@ function attachDotEventListeners() {
             if (tripleDotContainer) {
                 tripleDotContainer.classList.toggle("visible");
                 if (tripleDotContainer.classList.contains("visible")) {
-                    clearInterval(pollIntervalId);
+                    // clearInterval(pollIntervalId);
                     isDotMenuOpen = true;
                 } else {
-                    pollIntervalId = setInterval(fetchBeneficiaryUpdates, POLL_INTERVAL);
-                    isDotMenuOpen = false;
+                    // pollIntervalId = setInterval(fetchBeneficiaryUpdates, POLL_INTERVAL);
+                    // isDotMenuOpen = false;
                 }
             }
         });
@@ -98,8 +96,8 @@ function attachDotEventListeners() {
                 const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
                 if (tripleDotContainer && tripleDotContainer.classList.contains("visible")) {
                     tripleDotContainer.classList.remove("visible");
-                    pollIntervalId = setInterval(fetchBeneficiaryUpdates, POLL_INTERVAL);
-                    isDotMenuOpen = false;
+                    // pollIntervalId = setInterval(fetchBeneficiaryUpdates, POLL_INTERVAL);
+                    // isDotMenuOpen = false;
                 }
             }
         });
@@ -108,7 +106,6 @@ function attachDotEventListeners() {
 }
 
 // const update_beneficiary = document.getElementById("update-beneficiary");
-// const overlay = document.querySelector(".overlay");
 
 window.popUp_three_dot = function (button) {
     const action = button.textContent.trim();
@@ -192,6 +189,7 @@ window.popUp_three_dot = function (button) {
     if (action === 'Generate ID' && residentID) {
 
         const id_card = document.getElementById("generate-ID");
+        const globalIDForQR = document.getElementById("generate-id").getAttribute('data-globalId');
         id_card.classList.add("visible");
         overlay.classList.toggle("visible");
 
@@ -200,37 +198,6 @@ window.popUp_three_dot = function (button) {
         document.getElementById('birthdate').innerText = document.getElementById("generate-id").getAttribute('data-birthdate');
         document.getElementById('address').innerText = document.getElementById("generate-id").getAttribute('data-address');
         document.getElementById('idNumber').innerText = document.getElementById("generate-id").getAttribute('data-idNumber');
-
-        // fetch(`/pharmacy-records/beneficiary/${beneficiaryId}`)
-        //     .then(response => {
-        //         if (!response.ok) throw new Error('Network response was not ok');
-        //         return response.json();
-        //     })
-        //     .then(beneficiaryData => {
-        //         console.log(beneficiaryData.beneficiary_id);
-        //         var full_name = beneficiaryData.last_name + ", " + beneficiaryData.first_name + " " + beneficiaryData.middle_name;
-        //         var address = beneficiaryData.street + " " + beneficiaryData.barangay + " " + beneficiaryData.city + " " + beneficiaryData.province;
-        //         var status;
-        //         var phone;
-
-        //         if (!beneficiaryData.phone || isNaN(beneficiaryData.phone) || beneficiaryData.phone.length < 11) {
-        //             phone = "None";
-        //         } else {
-        //             phone = beneficiaryData.phone;
-        //         }
-
-        //         if (beneficiaryData.senior_citizen === "Yes") {
-        //             status = "Senior Citizen";
-        //         } else if (beneficiaryData.pwd === "Yes") {
-        //             status = "PWD";
-        //         } else {
-        //             status = "";
-        //         }
-
-        //         document.getElementById("beneficiary-name").innerText = full_name;
-        //         document.getElementById("beneficiary-status").innerText = status;
-        //         document.getElementById("beneficiary-address").innerText = address;
-        //         document.getElementById("beneficiary-phone").innerText = phone;
 
 
         //         var picture;
@@ -255,27 +222,27 @@ window.popUp_three_dot = function (button) {
         //         }
 
 
-        //         async function generateQRCode() {
-        //             const json = `${beneficiaryData.beneficiary_id}`;
+        async function generateQRCode() {
+            const json = `${globalIDForQR}`;
 
-        //             const secretKey = "KimGalicia"; // Use a strong secret key for encryption
-        //             const encryptedData = encryptData(json, secretKey); // Encrypt the JSON data
-        //             console.log("Encrypted Data:", encryptedData);
+            const secretKey = "MnDev"; // Use a strong secret key for encryption
+            const encryptedData = encryptData(json, secretKey); // Encrypt the JSON data
+            console.log("Encrypted Data:", encryptedData);
 
-        //             // Now proceed with the QR code generation
-        //             const qr = qrcode(0, 'L');
-        //             qr.addData(encryptedData); // Add encrypted data to QR code
-        //             qr.make();
+            // Now proceed with the QR code generation
+            const qr = qrcode(0, 'L');
+            qr.addData(encryptedData); // Add encrypted data to QR code
+            qr.make();
 
-        //             const size = 4;
-        //             document.getElementById('qrcode').innerHTML = qr.createImgTag(size, size);
-        //             const decryptedData = decryptData(encryptedData, secretKey);
+            const size = 4;
+            document.getElementById('qrcode').innerHTML = qr.createImgTag(size, size);
+            const decryptedData = decryptData(encryptedData, secretKey);
 
-        //             // Log the decrypted data to the console
-        //             console.log("Decrypted Data:", decryptedData);
-        //         }
+            // Log the decrypted data to the console
+            console.log("Decrypted Data:", decryptedData);
+        }
 
-        //         generateQRCode();
+        generateQRCode();
 
         //     })
         //     .catch(error => {
@@ -283,4 +250,15 @@ window.popUp_three_dot = function (button) {
         //         alert('Failed to fetch beneficiary data. Please try again.');
         //     });
     }
+
+    function encryptData(data, secretKey) {
+        return CryptoJS.AES.encrypt(data, secretKey).toString();
+    }
+
+    // Decrypt function
+    function decryptData(cipherText, secretKey) {
+        const bytes = CryptoJS.AES.decrypt(cipherText, secretKey);
+        return bytes.toString(CryptoJS.enc.Utf8);
+    }
+
 };

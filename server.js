@@ -9,6 +9,7 @@ const flash = require("express-flash");
 const compression = require("compression");
 const bodyParser = require('body-parser');
 
+
 //-------DATABASES IMPORTING-------//
 const mPool = require("./models/mDatabase");
 
@@ -30,6 +31,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/node_modules", express.static(path.join(__dirname, "node_modules")));
+
 
 //-------MIDDLEWARE CONFIGURATION-------//
 app.use(compression());
@@ -72,7 +74,7 @@ app.use("/statistics", statisticsRouter);
 
 app.get("/", (req, res) => {
     res.redirect("/home/dashboard");
-}); 
+});
 
 //------ERROR HANDLING-------//
 app.use((err, req, res, next) => {
