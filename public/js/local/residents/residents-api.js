@@ -50,6 +50,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                         data-civil_status="${resident.civil_status}"
                         data-birthdate="${new Date(resident.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}"
                         data-address="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
+                        data-Contactfullname="${resident.emergencycontactfname} ${resident.emergencycontactmname ? resident.emergencycontactmname : ''} ${resident.emergencycontactlname}"
+                        data-ContactPhone="${resident.emergencycontactnumber}"
+                        data-Contactaddress="Purok ${resident.emergencycontactpurok}, ${resident.emergencycontactbarangay}, ${resident.emergencycontactcity}"
                         >Generate ID</button>
                     </div>
                 </div>
@@ -218,6 +221,9 @@ window.popUp_three_dot = function (button) {
         document.getElementById('birthdate').innerText = button.getAttribute('data-birthdate');
         document.getElementById('address').innerText = button.getAttribute('data-address');
         document.getElementById('idNumber').innerText = button.getAttribute('data-idNumber');
+        document.getElementById('emergencyContactName').innerText = button.getAttribute('data-contactFullName');
+        document.getElementById('emergencyContactNumber').innerText = button.getAttribute('data-contactPhone');
+        document.getElementById('emergencyContactAddress').innerText = button.getAttribute('data-contactAddress');
 
 
         //         var picture;
