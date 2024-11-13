@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.error("Error fetching residents data: ", error);
         residentsTableBody.innerHTML = '<tr><td colspan="12">Error loading data</td></tr>';
     }
-
+  
     // Function to dynamically update pagination links
     function updatePaginationLinks(currentPage, totalPages) {
         const paginationNav = document.getElementById('paginationNav');
@@ -79,6 +79,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             paginationNav.innerHTML += `<a href="?page=${currentPage + 1}&limit=${limit}" aria-label="Next Page">Next</a>`;
         }
     }
+    attachDotEventListeners();
 });
 
 // Helper function to generate remarks based on resident data
