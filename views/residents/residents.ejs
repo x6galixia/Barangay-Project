@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../css/local/resident.css">
     <link rel="stylesheet" href="../css/local/id.css">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <title>
         <%= title %>
     </title>
@@ -49,15 +51,17 @@
                 </table>
             </div>
             <nav aria-label="Page navigation" id="paginationNav">
-                <% if (totalPages > 1) { %>
-                  <% if (currentPage > 1) { %>
-                    <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>" aria-label="Previous Page">Previous</a>
-                  <% } %>
-                  <% if (currentPage < totalPages) { %>
-                    <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>" aria-label="Next Page">Next</a>
-                  <% } %>
-                <% } %>
-              </nav>              
+                <% if (totalPages> 1) { %>
+                    <% if (currentPage> 1) { %>
+                        <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>"
+                            aria-label="Previous Page">Previous</a>
+                        <% } %>
+                            <% if (currentPage < totalPages) { %>
+                                <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>"
+                                    aria-label="Next Page">Next</a>
+                                <% } %>
+                                    <% } %>
+            </nav>
             <button id="add-resident-button" onclick="popUp_button(this)" class="addingForTable">
                 ADD RESIDENT
             </button>
@@ -319,10 +323,11 @@
                                 <img src="../images/wow.jpg" alt="">
                                 <p id="idNumber">ID NUMBER</p>
                                 <H2 id="fullname">ADRIANE S. GARCIA</H2>
-                                <h2 class="perso-info">PERSONAL INFORMATION</h2>
+                                
                             </div>
 
                             <div class="personal-info">
+                                <h2 class="perso-info">PERSONAL INFORMATION</h2>
                                 <p>
                                     <span class="Civil-stat">Civil Status:</span>
                                     <span class="value" id="civilStatus">Single</span>
@@ -346,14 +351,13 @@
                         <div class="id-back">
                             <div class="lgu">
                                 <h2>LGU-MAYPANGDAN</h2>
-                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is to certify that the bearer of this card
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is to certify that the bearer of this card
                                     whose
                                     picture and signature appear herein is a resident of Barangay Maypangdan Borongan
                                     City.
                                 </p>
                             </div>
-                            <div class="qr-img">
-                                <img src="../images/qr.png" alt="">
+                            <div class="qr-img" id="qrcode">
                             </div>
                             <div class="qr-imager">
                                 <div>
@@ -361,21 +365,23 @@
                                     <p>Valid only until December 31, 2024</p>
                                 </div>
                             </div>
-                            <div class="notify">
-                                <h2>INCASE OF EMERGENCY, NOTIFY:</h2>
-                            </div>
+                            
                             <div class="personal-info">
+                                <div class="notify">
+                                    <h2>INCASE OF EMERGENCY, NOTIFY:</h2>
+                                </div>
                                 <p>
                                     <span class="Civil-stat">Contact Person:</span>
-                                    <span class="values">ADELITA G. ENCINAS</span>
+                                    <span class="values" id="emergencyContactName">ADELITA G. ENCINAS</span>
                                 </p>
                                 <p>
                                     <span class="Civil-stat">Contact Number:</span>
-                                    <span class="value">0997-329-4122</span>
+                                    <span class="value" id="emergencyContactNumber">0997-329-4122</span>
                                 </p>
                                 <p style="display: flex; flex-wrap: wrap; ">
                                     <span class="Civil-stat" style="margin-right: 2px;">Address:</span>
-                                    <span class="value">Brgy. Maypangdan Borongan City, <br> Eastern Samar</span>
+                                    <span class="value" id="emergencyContactAddress">Brgy. Maypangdan Borongan City,
+                                        <br> Eastern Samar</span>
                                 </p>
                                 <div class="signature-containers">
                                     <p class="name">IAN C. GONZALEZ</p>
