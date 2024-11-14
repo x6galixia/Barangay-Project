@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/global/general.css">
+    <link rel="stylesheet" href="../css/local/archive.css">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <title>
         <%= title %>
@@ -43,17 +44,80 @@
                     </tbody>
                 </table>
             </div>
-            <div aria-label="Page navigation" id="paginationButton">
+            <nav aria-label="Page navigation" id="paginationNav">
                 <a href="" aria-label="Previous Page">Previous</a>
                 <a href="" aria-label="Next Page">Next</a>
-            </div>
-            <button class="addingForTable">
+            </nav>
+            <button class="addingForTable" id="add-document-button" onclick="popUp_button(this)">
                 ADD DOCUMENTS
             </button>
         </main>
+
+        <!-- Pop Up -->
+        <!-- Add Inbentory -->
+        <div class="pop-up" id="add-document">
+            <div class="close-container">
+                <img src="../icon/close.svg" alt="" class="close_popUp">
+            </div>
+            <h1 class="heading">ADD DOCUMENT</h1>
+            <main>
+                <form action="/resident/dashboard/add-resident" method="POST" enctype="multipart/form-data">
+                    <div class="add-inventory-input-container">
+                        <div class="row">
+                            <div class="inputWithLabel" id="surubadan">
+                                <label>Name</label>
+                                <input type="text" aria-label="Name" name="dName" required>
+                            </div>
+                            <div class="inputWithLabel">
+                                <label>Date</label>
+                                <input type="date" aria-label="Date" name="date" required>
+                            </div>
+                            <div class="inputWithLabel" id="masubad">
+                                <label>Document Type</label>
+                                <select name="docType" aria-label="Document Type" id="" required>
+                                    <option value="Panumduman">Panumduman</option>
+                                    <option value="Ambot">Ambot</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="ID-container">
+                            <div class="image-preview" id="imagePreview">
+                                <p>No image uploaded</p>
+                            </div>
+                            <div class="buttons">
+                                <button type="button" class="button upload" onclick="triggerUpload()">Upload</button>
+                                <input type="file" id="fileInput" accept="image/*" onchange="displayImage(event)">
+                            </div>
+                        </div>
+                    </div>
+                    <button id="submit_add_document">SUBMIT</button>
+                </form>
+            </main>
+        </div>
 </body>
+<script src="../../js/global/pop-up.js"></script>
 <script>
     document.querySelector("header>nav>ul>li:nth-child(5)").classList.toggle("selected");
+    // Function to trigger file input click
+    function triggerUpload() {
+        document.getElementById("fileInput").click();
+    }
+
+    // Function to display the selected image
+    function displayImage(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview");
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = `<p>No image uploaded</p>`;
+        }
+    }
 </script>
 
 </html>

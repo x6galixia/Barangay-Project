@@ -110,7 +110,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (residentClassificationSection) {
                 residentClassificationSection.style.display = 'none';
             }
-
         }
     });
 
