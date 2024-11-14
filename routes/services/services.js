@@ -36,7 +36,6 @@ router.get("/dashboard", async (req, res) => {
     }
 });
 
-
 router.get("/print-services", (req, res) => {
     res.render("services/print-services");
 });

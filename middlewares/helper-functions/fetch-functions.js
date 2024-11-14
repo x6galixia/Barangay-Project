@@ -1,5 +1,6 @@
 const mPool = require("../../models/mDatabase");
 
+//fetch function for residents list that inlude search
 async function fetchResidentsLists(page, limit, searchQuery = '') {
   let offset = (page - 1) * limit;
 
@@ -112,9 +113,6 @@ async function fetchRequestLists(page, limit) {
     throw new Error("Error fetching residents list");
   }
 }
-
-
-
 
 module.exports = {
   fetchResidentsLists,
