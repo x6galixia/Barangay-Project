@@ -37,8 +37,8 @@ router.get("/dashboard", async (req, res) => {
 });
 
 
-router.get("/indigency", (req, res) => {
-    res.render("services/indigency");
+router.get("/print-services", (req, res) => {
+    res.render("services/print-services");
 });
 
 module.exports = router;
