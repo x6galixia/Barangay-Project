@@ -18,8 +18,8 @@
     <main class="mainContainer">
       <div class="heading">Service Request Form</div>
       <input type="text" id="qrInput" required style="opacity: 0; position: fixed; transform: translate(-50%, -50%),;">
-      <form action="" class="requestForm">
-        <input type="hidden" id="qrOutput" name="patient_id" style="position: absolute;">
+      <form action="/home/service-request-form" method="POST" class="requestForm">
+        <input type="hidden" id="qrOutput" name="id" style="position: absolute;">
         <div class="scanSwitch">
           Scan QR
           <label class="switch">
@@ -69,7 +69,7 @@
             </div>
             <div class="inputWithLabel">
               <label for="">Purpose</label>
-              <select class="services-dropdown" name="services"">
+              <select class="services-dropdown" name="purpose"">
                 <option value=" default" disabled selected>
                 Select a Services
                 </option>
@@ -98,6 +98,17 @@
 
         <button>SUBMIT</button>
       </form>
+
+      <% if (messages.success) { %>
+        <div class="alert alert-success">
+          <%= messages.success %>
+        </div>
+        <% } %>
+          <% if (messages.error) { %>
+            <div class="alert alert-danger">
+              <%= messages.error %>
+            </div>
+            <% } %>
     </main>
 </body>
 <script src="../../js/local/request-api.js"></script>

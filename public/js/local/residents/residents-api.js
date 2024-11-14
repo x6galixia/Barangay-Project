@@ -8,31 +8,31 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     async function fetchResidents(searchQuery = '') {
         console.log("Search Query: ", searchQuery); // Debug search query
-        
+
         try {
             const response = await fetch(`/residents/dashboard?ajax=true&page=${page}&limit=${limit}&search=${encodeURIComponent(searchQuery)}`);
             if (!response.ok) {
                 throw new Error("Failed to fetch residents data");
             }
-    
+
             const data = await response.json();
             const residents = data.getResidentsList;
-    
+
             // Clear the table body before appending
             residentsTableBody.innerHTML = '';
-    
+
             // Loop through the residents and create table rows
             residents.forEach(resident => {
                 const row = document.createElement('tr');
-    
+
                 row.innerHTML = `
+                        <td>${resident.purok || 'N/A'}</td>
                         <td>${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}</td>
                         <td>${new Date(resident.birthdate).toLocaleDateString()}</td>
                         <td>${resident.age}</td>
                         <td>${resident.gender}</td>
                         <td>${resident.eattainment || 'N/A'}</td>
                         <td>${resident.occupation || 'N/A'}</td>
-                        <td>${resident.purok || 'N/A'}</td>
                         <td>${resident.houseclassification || 'N/A'}</td>
                         <td>${resident.isWithCr ? 'Yes' : 'No'}</td>
                         <td>${resident.watersource || 'N/A'}</td>
@@ -40,51 +40,51 @@ document.addEventListener("DOMContentLoaded", async function () {
                         <td>${resident.iswith40mzone ? 'Yes' : 'No'}</td>
                         <td>${generateRemarks(resident)}</td>
                         <td class="menu-row">
-                        <img class="dot" src="../icon/triple-dot.svg" alt="">
-                        <div class="triple-dot">
-                            <div class="menu" data-id="${resident.globalid}">
-                                <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
-                                <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
-                                <button id="generate-id" onclick="popUp_three_dot(this)"
-                                data-fullname="${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}"
-                                data-idNumber="${resident.idnumber}"
-                                data-globalId="${resident.globalid}"
-                                data-civil_status="${resident.civil_status}"
-                                data-birthdate="${new Date(resident.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}"
-                                data-address="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
-                                data-Contactfullname="${resident.emergencycontactfname} ${resident.emergencycontactmname ? resident.emergencycontactmname : ''} ${resident.emergencycontactlname}"
-                                data-ContactPhone="${resident.emergencycontactnumber}"
-                                data-Contactaddress="Purok ${resident.emergencycontactpurok}, ${resident.emergencycontactbarangay}, ${resident.emergencycontactcity}"
-                                >Generate ID</button>
+                            <img class="dot" src="../icon/triple-dot.svg" alt="">
+                            <div class="triple-dot">
+                                <div class="menu" data-id="${resident.globalid}">
+                                    <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
+                                    <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
+                                    <button id="generate-id" onclick="popUp_three_dot(this)"
+                                    data-fullname="${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}"
+                                    data-idNumber="${resident.idnumber}"
+                                    data-globalId="${resident.globalid}"
+                                    data-civil_status="${resident.civil_status}"
+                                    data-birthdate="${new Date(resident.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}"
+                                    data-address="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
+                                    data-Contactfullname="${resident.emergencycontactfname} ${resident.emergencycontactmname ? resident.emergencycontactmname : ''} ${resident.emergencycontactlname}"
+                                    data-ContactPhone="${resident.emergencycontactnumber}"
+                                    data-Contactaddress="Purok ${resident.emergencycontactpurok}, ${resident.emergencycontactbarangay}, ${resident.emergencycontactcity}"
+                                    >Generate ID</button>
+                                </div>
                             </div>
-                        </div>
-                    </td>
+                        </td>
                     `;
-    
+
                 residentsTableBody.appendChild(row);
             });
-    
+
             updatePaginationLinks(data.currentPage, data.totalPages);
         } catch (error) {
             console.error("Error fetching residents data: ", error);
             residentsTableBody.innerHTML = '<tr><td colspan="14">Error loading data</td></tr>';
         }
     }
-    
 
-	// Search event listener
+
+    // Search event listener
     searchInput.addEventListener('input', (event) => {
         const searchQuery = event.target.value;
         fetchResidents(searchQuery); // Fetch residents with search query
     });
 
-	fetchResidents().then(attachDotEventListeners);
-  
+    fetchResidents().then(attachDotEventListeners);
+
     // Function to dynamically update pagination links
     function updatePaginationLinks(currentPage, totalPages) {
         const paginationNav = document.getElementById('paginationNav');
         paginationNav.innerHTML = '';
-        
+
         if (currentPage > 1) {
             paginationNav.innerHTML += `<a href="?page=${currentPage - 1}&limit=${limit}&search=${encodeURIComponent(searchInput.value)}" aria-label="Previous Page">Previous</a>`;
         }
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             paginationNav.innerHTML += `<a href="?page=${currentPage + 1}&limit=${limit}&search=${encodeURIComponent(searchInput.value)}" aria-label="Next Page">Next</a>`;
         }
     }
-    
+
     attachDotEventListeners();
 });
 

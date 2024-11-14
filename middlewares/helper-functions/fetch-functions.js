@@ -51,6 +51,9 @@ async function fetchResidentsLists(page, limit, searchQuery = '') {
         wc.wClassificationName AS waterSource,
         cp.fname AS emergencyContactFName, cp.mname AS emergencyContactMName,
         cp.lname AS emergencyContactLName, cp.contactNumber AS emergencyContactNumber,
+        cp.street AS emergencyContactStreet, cp.purok AS emergencyContactPurok, 
+        cp.barangay AS emergencyContactBarangay, cp.city AS emergencyContactCity,
+        cp.province AS emergencyContactProvince,
         r.isPwd, r.isSoloParent, r.isYouth, r.is4ps, r.isWithCr, r.isWith40mZone,
         r.isEnergized, r.isResident, r.civilStatus
       FROM residents r
@@ -65,6 +68,7 @@ async function fetchResidentsLists(page, limit, searchQuery = '') {
 
     // Pass the correct parameters for residents query
     const residentsResult = await mPool.query(residentsQuery, residentsValues);
+    console.log(residentsResult);
 
     return { getResidentsList: residentsResult.rows, totalPages };
   } catch (err) {
@@ -73,6 +77,46 @@ async function fetchResidentsLists(page, limit, searchQuery = '') {
   }
 }
 
+// Fetch function for request where released is false
+async function fetchRequestLists(page, limit) {
+  const offset = (page - 1) * limit;
+
+  try {
+    const totalItemsResult = await mPool.query(`
+      SELECT COUNT(*) as count
+      FROM requests r
+      WHERE r.isReleased = false;
+    `);
+
+    const totalItems = parseInt(totalItemsResult.rows[0].count, 10);
+    const totalPages = Math.ceil(totalItems / limit);
+
+    const getRequestList = await mPool.query(`
+      SELECT 
+          r.residentsid, r.dateadded, r.purpose, r.isReleased,
+          rd.fname, rd.mname, rd.lname
+      FROM requests r
+      LEFT JOIN residents rd ON r.residentsid = rd.residentsid
+      WHERE r.isReleased = false
+      ORDER BY r.dateadded
+      LIMIT $1 OFFSET $2;
+    `, [limit, offset]);
+
+    return {
+      getRequestList: getRequestList.rows,
+      totalPages,
+      totalItems
+    };
+  } catch (err) {
+    console.error("Error fetching residents list: ", err.message, err.stack);
+    throw new Error("Error fetching residents list");
+  }
+}
+
+
+
+
 module.exports = {
-  fetchResidentsLists
+  fetchResidentsLists,
+  fetchRequestLists
 };

@@ -1,18 +1,48 @@
-body {
+main {
     background-color: beige;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+
+/* paper size */
 .A4 {
     width: 8.27in;
     height: 11.69in;
     box-sizing: border-box;
     background-color: white;
+    position: relative;
 }
 
-/* headers */
+
+
+
+/* logo's backggound */
+
+.bg-logo {
+    position: absolute;
+    z-index: 1;
+    top: 54%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 91%;
+    height: auto;
+}
+
+.mahusay-logo {
+    position: absolute;
+    z-index: 2;
+    width: 140px;
+    height: 90px;
+    bottom: 7%;
+    right: 10%;
+}
+
+
+
+
+/* certificares headers */
 .cert-header {
     display: flex;
     flex-direction: column;
@@ -50,10 +80,12 @@ body {
 
 /* titles */
 .title {
+    position: relative;
+    z-index: 2;
     color: red;
     text-align: center;
     margin-top: 20px;
-    margin-bottom: 32px;
+    margin-bottom: 48px;
 }
 
 
@@ -61,11 +93,50 @@ body {
 .context {
     text-align: justify;
     margin: 30px 60px;
+    position: relative;
+    z-index: 2;
 }
 
+
 .context p {
-    font-size: 16px;
     text-indent: 30px;
     margin-bottom: 20px;
+}
+
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+
+main {
+    padding: 2em;
+}
+
+.certified {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: auto;
+}
+
+
+.wala {
+    text-indent: 0 !important;
+    margin-bottom: 20px;
+}
+
+.seal {
+    position: relative;
+    z-index: 2;
+    margin: 30px 60px;
 }
 
