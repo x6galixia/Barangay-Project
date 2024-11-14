@@ -32,9 +32,8 @@ document.addEventListener("DOMContentLoaded", async function () {
               <td>${request.fname} ${request.mname ? request.mname : ''} ${request.lname}</td>
               <td>${request.purpose}</td>
               <td>${formattedDate}</td>
-              <td><button>Print</button></td>
+              <td><button id="${request.purpose}" onclick="popUp_three_dot(this)>Print</button></td>
           `;
-
       requestTableBody.appendChild(row);
     });
     updatePaginationLinks(data.currentPage, data.totalPages);

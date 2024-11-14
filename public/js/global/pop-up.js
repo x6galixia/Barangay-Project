@@ -8,6 +8,8 @@ function formatDate(date) {
 
 //resident
 const addResident = document.getElementById("add-resident");
+const addInventory = document.getElementById("add-inventory");
+const addDocument = document.getElementById("add-document");
 
 
 const overlay = document.querySelector(".overlay");
@@ -20,6 +22,18 @@ function popUp_button(button) {
   if (buttonId === "add-resident-button") {
     addResident.classList.toggle("visible");
   }
+
+  //inbentory
+  if (buttonId === "add-inventory-button") {
+    addInventory.classList.toggle("visible");
+  }
+
+  //archie
+  if (buttonId === "add-document-button") {
+    addDocument.classList.toggle("visible");
+  }
+
+
   overlay.classList.add("visible");
 }
 
