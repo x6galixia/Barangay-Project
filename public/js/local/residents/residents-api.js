@@ -8,31 +8,31 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     async function fetchResidents(searchQuery = '') {
         console.log("Search Query: ", searchQuery); // Debug search query
-        
+
         try {
             const response = await fetch(`/residents/dashboard?ajax=true&page=${page}&limit=${limit}&search=${encodeURIComponent(searchQuery)}`);
             if (!response.ok) {
                 throw new Error("Failed to fetch residents data");
             }
-    
+
             const data = await response.json();
             const residents = data.getResidentsList;
-    
+
             // Clear the table body before appending
             residentsTableBody.innerHTML = '';
-    
+
             // Loop through the residents and create table rows
             residents.forEach(resident => {
                 const row = document.createElement('tr');
-    
+
                 row.innerHTML = `
+                        <td>${resident.purok || 'N/A'}</td>
                         <td>${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}</td>
                         <td>${new Date(resident.birthdate).toLocaleDateString()}</td>
                         <td>${resident.age}</td>
                         <td>${resident.gender}</td>
                         <td>${resident.eattainment || 'N/A'}</td>
                         <td>${resident.occupation || 'N/A'}</td>
-                        <td>${resident.purok || 'N/A'}</td>
                         <td>${resident.houseclassification || 'N/A'}</td>
                         <td>${resident.isWithCr ? 'Yes' : 'No'}</td>
                         <td>${resident.watersource || 'N/A'}</td>
@@ -56,31 +56,31 @@ document.addEventListener("DOMContentLoaded", async function () {
                             </div>
                             </td>
                     `;
-    
+
                 residentsTableBody.appendChild(row);
             });
-    
+
             updatePaginationLinks(data.currentPage, data.totalPages);
         } catch (error) {
             console.error("Error fetching residents data: ", error);
             residentsTableBody.innerHTML = '<tr><td colspan="14">Error loading data</td></tr>';
         }
     }
-    
 
-	// Search event listener
+
+    // Search event listener
     searchInput.addEventListener('input', (event) => {
         const searchQuery = event.target.value;
         fetchResidents(searchQuery); // Fetch residents with search query
     });
 
-	fetchResidents();
-  
+    fetchResidents();
+
     // Function to dynamically update pagination links
     function updatePaginationLinks(currentPage, totalPages) {
         const paginationNav = document.getElementById('paginationNav');
         paginationNav.innerHTML = '';
-        
+
         if (currentPage > 1) {
             paginationNav.innerHTML += `<a href="?page=${currentPage - 1}&limit=${limit}&search=${encodeURIComponent(searchInput.value)}" aria-label="Previous Page">Previous</a>`;
         }
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             paginationNav.innerHTML += `<a href="?page=${currentPage + 1}&limit=${limit}&search=${encodeURIComponent(searchInput.value)}" aria-label="Next Page">Next</a>`;
         }
     }
-    
+
     attachDotEventListeners();
 });
 // Helper function to generate remarks based on resident data
