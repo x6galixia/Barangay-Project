@@ -16,9 +16,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // Select columns to be hidden or shown
         const columnsToHide = ["HOUSING MATERIALS", "WITH CR", "WATER SOURCE", "ENERGIZED", "WITH 40M BUILDING ZONE", "REMARKS"];
-
         const headers = document.querySelectorAll('table thead th');
-
         const rows = document.querySelectorAll('table tbody tr');
 
         function toggleColumns(show) {
@@ -34,6 +32,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             });
         }
 
+        // toggle the resident classification
+        const residentClassificationSection = document.getElementById('residentClassification');
 
 
         if (selectedValue === " residents") {
@@ -78,10 +78,12 @@ document.addEventListener("DOMContentLoaded", async function () {
                 </div>
             `);
 
-            if (addressWhileStudying) addressWhileStudying.style.display = "none";
-
-
             toggleColumns(true);
+            if (addressWhileStudying) addressWhileStudying.style.display = "none";
+            if (residentClassificationSection) {
+                residentClassificationSection.style.display = 'block';
+            }
+
             //fetch resident
             fetchResidents().then(attachDotEventListeners);
 
@@ -103,9 +105,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (purok) purok.remove();
             if (street) street.remove();
 
-            addressWhileStudying.style.display = "block";
-
             toggleColumns(false);
+            addressWhileStudying.style.display = "block";
+            if (residentClassificationSection) {
+                residentClassificationSection.style.display = 'none';
+            }
+
         }
     });
 
