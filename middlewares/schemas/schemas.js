@@ -1,8 +1,7 @@
 const Joi = require('joi');
 
 const requestSchema = Joi.object({
-    id: Joi.number().integer().required(),
-    dateAdded: Joi.date().required(),
+    id: Joi.string().required(),
     purpose: Joi.string().required()
 });
 
