@@ -1,50 +1,78 @@
 const mPool = require("../../models/mDatabase");
 
-// Fetch function for residents with pagination
-async function fetchResidentsLists(page, limit) {
-  const offset = (page - 1) * limit;
+async function fetchResidentsLists(page, limit, searchQuery = '') {
+  let offset = (page - 1) * limit;
+
+  limit = parseInt(limit, 10);
+  offset = parseInt(offset, 10);
+
+  // Initialize values with limit and offset for the residents query
+  let residentsValues = [limit, offset];
+
+  // Define the search condition for searchQuery
+  let searchCondition = '';
+  if (searchQuery && searchQuery.trim() !== '') {
+    searchCondition = `
+      AND (
+        CONCAT(r.fname, ' ', COALESCE(r.mname, ''), ' ', r.lname) ILIKE $3
+        OR CONCAT(r.fname, ' ', r.lname) ILIKE $3
+        OR r.idNumber ILIKE $3
+      )`;
+    residentsValues.push(`%${searchQuery}%`); // Add the search term to residentsValues
+  }
+
+  // Total items query (no need for limit or offset)
+  const totalItemsQuery = `
+    SELECT COUNT(*) as count
+    FROM residents r
+    WHERE 1=1
+      ${searchQuery ? 'AND (CONCAT(r.fname, \' \', COALESCE(r.mname, \'\'), \' \', r.lname) ILIKE $1 OR CONCAT(r.fname, \' \', r.lname) ILIKE $1 OR r.idNumber ILIKE $1)' : ''}
+  `;
+  const totalItemsValues = searchQuery ? [`%${searchQuery}%`] : []; // Separate array for total items query parameters
 
   try {
-    const totalItemsResult = await mPool.query(`
-      SELECT COUNT(*) as count
-      FROM residents r;
-    `);
-
+    // Debugging totalItems query and values
+    console.log("Total Items Query: ", totalItemsQuery); // Full query
+    console.log("Total Items Values: ", totalItemsValues); // Parameters passed to the query
+    
+    // Pass totalItemsValues to the total items query
+    const totalItemsResult = await mPool.query(totalItemsQuery, totalItemsValues);
     const totalItems = parseInt(totalItemsResult.rows[0].count, 10);
     const totalPages = Math.ceil(totalItems / limit);
 
-    const getResidentsList = await mPool.query(`
-      SELECT 
-          r.globalId, r.residentsId, r.idNumber, r.fName, r.mName, r.lName, 
-          r.street, r.purok, r.barangay, r.city, r.province, r.birthDate, r.age, 
-          r.gender, r.picture, r.signature, r.eAttainment, r.occupation, 
-          rc.rClassificationName AS residentClassification, 
-          hc.hClassificationName AS houseClassification, 
-          wc.wClassificationName AS waterSource,
-          cp.fname AS emergencyContactFName, cp.mname AS emergencyContactMName, 
-          cp.lname AS emergencyContactLName, cp.contactnumber AS emergencyContactNumber,
-          cp.street AS emergencyContactStreet, cp.purok AS emergencyContactPurok, 
-          cp.barangay AS emergencyContactBarangay, cp.city AS emergencyContactCity,
-          cp.province AS emergencyContactProvince,
-          r.isPwd, r.isSoloParent, r.isYouth, r.is4ps, r.isWithCr, r.isWith40mZone, 
-          r.isEnergized, r.isResident, r.civilStatus
+    // Residents query (passing limit, offset, and searchQuery if provided)
+    const residentsQuery = `
+      SELECT
+        r.globalId, r.residentsId, r.idNumber, r.fname, r.mname, r.lname,
+        r.street, r.purok, r.barangay, r.city, r.province, r.birthDate, r.age,
+        r.gender, r.picture, r.signature, r.eAttainment, r.occupation,
+        rc.rClassificationName AS residentClassification,
+        hc.hClassificationName AS houseClassification,
+        wc.wClassificationName AS waterSource,
+        cp.fname AS emergencyContactFName, cp.mname AS emergencyContactMName,
+        cp.lname AS emergencyContactLName, cp.contactNumber AS emergencyContactNumber,
+        r.isPwd, r.isSoloParent, r.isYouth, r.is4ps, r.isWithCr, r.isWith40mZone,
+        r.isEnergized, r.isResident, r.civilStatus
       FROM residents r
       LEFT JOIN rClassification rc ON r.rClassificationId = rc.rClassificationId
       LEFT JOIN hClassification hc ON r.hClassificationId = hc.hClassificationId
       LEFT JOIN wClassification wc ON r.waterSourceId = wc.wClassificationId
       LEFT JOIN contactPerson cp ON r.emergencyContactId = cp.contactPersonId
-      ORDER BY r.fName
+      WHERE 1=1 ${searchCondition}
+      ORDER BY r.fname
       LIMIT $1 OFFSET $2;
-    `, [limit, offset]);
+    `;
 
-    // Return the fetched data along with pagination details
-    return {
-      getResidentsList: getResidentsList.rows,
-      totalPages,
-      totalItems
-    };
+    // Debugging residents query and values
+    console.log("Residents Query: ", residentsQuery); // Full query
+    console.log("Residents Values: ", residentsValues); // Parameters passed to the query
+
+    // Pass the correct parameters for residents query
+    const residentsResult = await mPool.query(residentsQuery, residentsValues);
+
+    return { getResidentsList: residentsResult.rows, totalPages };
   } catch (err) {
-    console.error("Error fetching residents list: ", err.message, err.stack);
+    console.error("Error: ", err.message, err.stack);
     throw new Error("Error fetching residents list");
   }
 }
