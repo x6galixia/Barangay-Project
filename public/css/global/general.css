@@ -400,10 +400,6 @@ input[type="search"]::placeholder {
   color: #FFF;
 }
 
-/*SUCCESS*/
-.alert{
-  display: flex !important;
-}
 #submit_prompt {
   flex-direction: column;
   align-items: center;
@@ -422,25 +418,31 @@ input[type="search"]::placeholder {
   overflow: visible;
   z-index: 2;
 }
-#submit_prompt p{
+
+#submit_prompt p {
   text-align: center;
 }
-.error-message{
+
+.error-message {
   color: red;
 }
-#submit_prompt button{
+
+#submit_prompt button {
   padding-left: 30px !important;
   padding-right: 30px !important;
 }
-#submit_prompt h2{
+
+#submit_prompt h2 {
   color: var(--green-color);
 }
+
 #submit_prompt main {
   display: flex;
   justify-content: center;
   padding: 0;
   margin-top: 20px;
 }
+
 #submit_prompt img {
   width: 70px;
   margin-top: -60px;

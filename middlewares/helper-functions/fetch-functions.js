@@ -34,7 +34,7 @@ async function fetchResidentsLists(page, limit, searchQuery = '') {
     // Debugging totalItems query and values
     console.log("Total Items Query: ", totalItemsQuery); // Full query
     console.log("Total Items Values: ", totalItemsValues); // Parameters passed to the query
-    
+
     // Pass totalItemsValues to the total items query
     const totalItemsResult = await mPool.query(totalItemsQuery, totalItemsValues);
     const totalItems = parseInt(totalItemsResult.rows[0].count, 10);
@@ -68,7 +68,6 @@ async function fetchResidentsLists(page, limit, searchQuery = '') {
 
     // Pass the correct parameters for residents query
     const residentsResult = await mPool.query(residentsQuery, residentsValues);
-    console.log(residentsResult);
 
     return { getResidentsList: residentsResult.rows, totalPages };
   } catch (err) {

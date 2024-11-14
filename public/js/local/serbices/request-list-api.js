@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       requestTableBody.appendChild(row);
     });
-
     updatePaginationLinks(data.currentPage, data.totalPages);
 
   } catch (error) {
