@@ -1,84 +1,95 @@
 document.addEventListener("DOMContentLoaded", async function () {
     const residentsTableBody = document.getElementById('residentsTableBody');
-    
-    // Get URL parameters for page and limit, fallback to page 1, limit 10
     const urlParams = new URLSearchParams(window.location.search);
+    const searchInput = document.getElementById('searchInput');
     const page = parseInt(urlParams.get('page')) || 1;
     const limit = parseInt(urlParams.get('limit')) || 10;
 
-    try {
-        // Fetch the residents list using the fetch API, include page and limit in the URL
-        const response = await fetch(`/residents/dashboard?ajax=true&page=${page}&limit=${limit}`);
-        if (!response.ok) {
-            throw new Error("Failed to fetch residents data");
+
+    async function fetchResidents(searchQuery = '') {
+        console.log("Search Query: ", searchQuery); // Debug search query
+        
+        try {
+            const response = await fetch(`/residents/dashboard?ajax=true&page=${page}&limit=${limit}&search=${encodeURIComponent(searchQuery)}`);
+            if (!response.ok) {
+                throw new Error("Failed to fetch residents data");
+            }
+    
+            const data = await response.json();
+            const residents = data.getResidentsList;
+    
+            // Clear the table body before appending
+            residentsTableBody.innerHTML = '';
+    
+            // Loop through the residents and create table rows
+            residents.forEach(resident => {
+                const row = document.createElement('tr');
+    
+                row.innerHTML = `
+                        <td>${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}</td>
+                        <td>${new Date(resident.birthdate).toLocaleDateString()}</td>
+                        <td>${resident.age}</td>
+                        <td>${resident.gender}</td>
+                        <td>${resident.eattainment || 'N/A'}</td>
+                        <td>${resident.occupation || 'N/A'}</td>
+                        <td>${resident.purok || 'N/A'}</td>
+                        <td>${resident.houseclassification || 'N/A'}</td>
+                        <td>${resident.isWithCr ? 'Yes' : 'No'}</td>
+                        <td>${resident.watersource || 'N/A'}</td>
+                        <td>${resident.isenergized ? 'Yes' : 'No'}</td>
+                        <td>${resident.iswith40mzone ? 'Yes' : 'No'}</td>
+                        <td>${generateRemarks(resident)}</td>
+                        <td class="menu-row">
+                            <img class="dot" src="../icon/triple-dot.svg" alt="">
+                            <div class="triple-dot">
+                                <div class="menu" data-id="${resident.globalid}">
+                                    <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
+                                    <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
+                                    <button id="generate-id" onclick="popUp_three_dot(this)"
+                                    data-fullname="${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}"
+                                    data-idNumber="${resident.idnumber}"
+                                    data-civil_status="${resident.civil_status}"
+                                    data-birthdate="${new Date(resident.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}"
+                                    data-address="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
+                                    >Generate ID</button>
+                                </div>
+                            </div>
+                            </td>
+                    `;
+    
+                residentsTableBody.appendChild(row);
+            });
+    
+            updatePaginationLinks(data.currentPage, data.totalPages);
+        } catch (error) {
+            console.error("Error fetching residents data: ", error);
+            residentsTableBody.innerHTML = '<tr><td colspan="14">Error loading data</td></tr>';
         }
-
-        const data = await response.json();
-        const residents = data.getResidentsList;
-
-        // Clear the table body before appending
-        residentsTableBody.innerHTML = '';
-
-        // Loop through the residents and create table rows
-        residents.forEach(resident => {
-            const row = document.createElement('tr');
-
-            row.innerHTML = `
-                <td>${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}</td>
-                <td>${new Date(resident.birthdate).toLocaleDateString()}</td>
-                <td>${resident.age}</td>
-                <td>${resident.gender}</td>
-                <td>${resident.eattainment || 'N/A'}</td>
-                <td>${resident.occupation || 'N/A'}</td>
-                <td>${resident.purok || 'N/A'}</td>
-                <td>${resident.houseclassification || 'N/A'}</td>
-                <td>${resident.isWithCr ? 'Yes' : 'No'}</td>
-                <td>${resident.watersource || 'N/A'}</td>
-                <td>${resident.isenergized ? 'Yes' : 'No'}</td>
-                <td>${resident.iswith40mzone ? 'Yes' : 'No'}</td>
-                <td>${generateRemarks(resident)}</td>
-                <td class="menu-row">
-                <img class="dot" src="../icon/triple-dot.svg" alt="">
-                <div class="triple-dot">
-                    <div class="menu" data-id="${resident.globalid}">
-                        <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
-                        <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
-                        <button id="generate-id" onclick="popUp_three_dot(this)"
-                        data-fullname="${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}"
-                        data-idNumber="${resident.idnumber}"
-                        data-civil_status="${resident.civil_status}"
-                        data-birthdate="${new Date(resident.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}"
-                        data-address="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
-                        >Generate ID</button>
-                    </div>
-                </div>
-            </td>
-            `;
-
-            residentsTableBody.appendChild(row);
-        });
-
-        // Update the pagination links
-        updatePaginationLinks(data.currentPage, data.totalPages);
-
-    } catch (error) {
-        console.error("Error fetching residents data: ", error);
-        residentsTableBody.innerHTML = '<tr><td colspan="12">Error loading data</td></tr>';
     }
+    
+
+	// Search event listener
+    searchInput.addEventListener('input', (event) => {
+        const searchQuery = event.target.value;
+        fetchResidents(searchQuery); // Fetch residents with search query
+    });
+
+	fetchResidents();
   
     // Function to dynamically update pagination links
     function updatePaginationLinks(currentPage, totalPages) {
         const paginationNav = document.getElementById('paginationNav');
         paginationNav.innerHTML = '';
-    
+        
         if (currentPage > 1) {
-            paginationNav.innerHTML += `<a href="?page=${currentPage - 1}&limit=${limit}" aria-label="Previous Page">Previous</a>`;
+            paginationNav.innerHTML += `<a href="?page=${currentPage - 1}&limit=${limit}&search=${encodeURIComponent(searchInput.value)}" aria-label="Previous Page">Previous</a>`;
         }
     
         if (currentPage < totalPages) {
-            paginationNav.innerHTML += `<a href="?page=${currentPage + 1}&limit=${limit}" aria-label="Next Page">Next</a>`;
+            paginationNav.innerHTML += `<a href="?page=${currentPage + 1}&limit=${limit}&search=${encodeURIComponent(searchInput.value)}" aria-label="Next Page">Next</a>`;
         }
     }
+    
     attachDotEventListeners();
 });
 
