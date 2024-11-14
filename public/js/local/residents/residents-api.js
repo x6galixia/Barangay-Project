@@ -48,13 +48,17 @@ document.addEventListener("DOMContentLoaded", async function () {
                                     <button id="generate-id" onclick="popUp_three_dot(this)"
                                     data-fullname="${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}"
                                     data-idNumber="${resident.idnumber}"
+                                    data-globalId="${resident.globalid}"
                                     data-civil_status="${resident.civil_status}"
                                     data-birthdate="${new Date(resident.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}"
                                     data-address="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
+                                    data-Contactfullname="${resident.emergencycontactfname} ${resident.emergencycontactmname ? resident.emergencycontactmname : ''} ${resident.emergencycontactlname}"
+                                    data-ContactPhone="${resident.emergencycontactnumber}"
+                                    data-Contactaddress="Purok ${resident.emergencycontactpurok}, ${resident.emergencycontactbarangay}, ${resident.emergencycontactcity}"
                                     >Generate ID</button>
                                 </div>
                             </div>
-                            </td>
+                        </td>
                     `;
 
                 residentsTableBody.appendChild(row);
@@ -74,7 +78,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         fetchResidents(searchQuery); // Fetch residents with search query
     });
 
-    fetchResidents();
+    fetchResidents().then(attachDotEventListeners);
 
     // Function to dynamically update pagination links
     function updatePaginationLinks(currentPage, totalPages) {

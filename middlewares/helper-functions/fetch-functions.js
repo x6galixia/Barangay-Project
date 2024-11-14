@@ -51,6 +51,9 @@ async function fetchResidentsLists(page, limit, searchQuery = '') {
         wc.wClassificationName AS waterSource,
         cp.fname AS emergencyContactFName, cp.mname AS emergencyContactMName,
         cp.lname AS emergencyContactLName, cp.contactNumber AS emergencyContactNumber,
+        cp.street AS emergencyContactStreet, cp.purok AS emergencyContactPurok, 
+        cp.barangay AS emergencyContactBarangay, cp.city AS emergencyContactCity,
+        cp.province AS emergencyContactProvince,
         r.isPwd, r.isSoloParent, r.isYouth, r.is4ps, r.isWithCr, r.isWith40mZone,
         r.isEnergized, r.isResident, r.civilStatus
       FROM residents r
@@ -69,6 +72,7 @@ async function fetchResidentsLists(page, limit, searchQuery = '') {
 
     // Pass the correct parameters for residents query
     const residentsResult = await mPool.query(residentsQuery, residentsValues);
+    console.log(residentsResult);
 
     return { getResidentsList: residentsResult.rows, totalPages };
   } catch (err) {
