@@ -4,6 +4,115 @@ document.addEventListener("DOMContentLoaded", async function () {
     const searchInput = document.getElementById('searchInput');
     const page = parseInt(urlParams.get('page')) || 1;
     const limit = parseInt(urlParams.get('limit')) || 10;
+    const sectorsDropdown = document.getElementById('sectors-dropdown');
+    const addressWhileStudying = document.getElementById('addressWhileStudying');
+
+    fetchResidents().then(attachDotEventListeners);
+
+
+    document.querySelector('.residents-dropdown').addEventListener('change', function () {
+        const addressSection = document.getElementById('address-section');
+        const selectedValue = this.value;
+
+        // Select columns to be hidden or shown
+        const columnsToHide = ["HOUSING MATERIALS", "WITH CR", "WATER SOURCE", "ENERGIZED", "WITH 40M BUILDING ZONE", "REMARKS"];
+        const headers = document.querySelectorAll('table thead th');
+        const rows = document.querySelectorAll('table tbody tr');
+
+        function toggleColumns(show) {
+            headers.forEach((header, index) => {
+                if (columnsToHide.includes(header.textContent.trim().toUpperCase())) {
+                    header.style.display = show ? '' : 'none';
+                    rows.forEach(row => {
+                        if (row.cells[index]) {
+                            row.cells[index].style.display = show ? '' : 'none';
+                        }
+                    });
+                }
+            });
+        }
+
+        // toggle the resident classification
+        const residentClassificationSection = document.getElementById('residentClassification');
+
+
+        if (selectedValue === " residents") {
+            console.log("Residents selected");
+            document.getElementById('barangay').value = "Maypangdan";
+            document.getElementById('city').value = "Borongan City";
+            document.getElementById('province').value = "Eastern Samar";
+            document.getElementById('residentPageTitle').innerText = "LIST OF RESIDENT";
+
+
+            // modify dropdown in sectors
+            sectorsDropdown.innerHTML = `
+                <option value="Government Employee">Government Employee</option>
+                <option value="Private employee">Private employee</option>
+                <option value="Carpenters">Carpenters</option>
+                <option value="Farmers">Farmers</option>
+                <option value="Fisherman">Fisherman</option>
+                <option value="Business Entrepreneur">Business Entrepreneur</option>
+                <option value="Drivers">Drivers</option>
+                <option value="OFW">OFW</option>
+                <option value="Kasambahay">Kasambahay</option>
+                <option value="None">None</option>
+            `;
+
+            //insert back the purok and street
+            addressSection.insertAdjacentHTML('afterbegin', `
+                <div class="inputWithLabel" id="purok">
+                    <label for="">Purok</label>
+                    <select name="purok" aria-label="Purok">
+                        <option value="Seguidila">Seguidila</option>
+                        <option value="Sitaw">Sitaw</option>
+                        <option value="Maypangdan">Maypangdan</option>
+                        <option value="Petchay">Petchay</option>
+                        <option value="Ampalaya">Ampalaya</option>
+                        <option value="Mustaza">Mustaza</option>
+                        <option value="Kalabasa">Kalabasa</option>
+                    </select>
+                </div>
+                <div class="inputWithLabel" id="street">
+                    <label>Street</label>
+                    <input type="text" aria-label="Street" name="street" required>
+                </div>
+            `);
+
+            toggleColumns(true);
+            if (addressWhileStudying) addressWhileStudying.style.display = "none";
+            if (residentClassificationSection) {
+                residentClassificationSection.style.display = 'block';
+            }
+
+            //fetch resident
+            fetchResidents().then(attachDotEventListeners);
+
+        } else if (selectedValue === "non-residents") {
+            console.log("Non-Residents selected");
+            document.getElementById('barangay').value = ""
+            document.getElementById('city').value = ""
+            document.getElementById('province').value = ""
+            document.getElementById('residentPageTitle').innerText = "LIST OF NON-RESIDENT";
+
+            //modify dropdown in sectors
+            sectorsDropdown.innerHTML = `
+                <option value="Resident Boarders">Resident Boarders</option>
+            `;
+
+            //modify address
+            const purok = document.getElementById('purok');
+            const street = document.getElementById('street');
+            if (purok) purok.remove();
+            if (street) street.remove();
+
+            toggleColumns(false);
+            addressWhileStudying.style.display = "block";
+            if (residentClassificationSection) {
+                residentClassificationSection.style.display = 'none';
+            }
+
+        }
+    });
 
 
     async function fetchResidents(searchQuery = '') {
@@ -48,13 +157,17 @@ document.addEventListener("DOMContentLoaded", async function () {
                                     <button id="generate-id" onclick="popUp_three_dot(this)"
                                     data-fullname="${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}"
                                     data-idNumber="${resident.idnumber}"
-                                    data-civil_status="${resident.civil_status}"
+                                    data-globalId="${resident.globalid}"
+                                    data-civil_status="${resident.civilstatus}"
                                     data-birthdate="${new Date(resident.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}"
                                     data-address="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
+                                    data-Contactfullname="${resident.emergencycontactfname} ${resident.emergencycontactmname ? resident.emergencycontactmname : ''} ${resident.emergencycontactlname}"
+                                    data-ContactPhone="${resident.emergencycontactnumber}"
+                                    data-Contactaddress="Purok ${resident.emergencycontactpurok}, ${resident.emergencycontactbarangay}, ${resident.emergencycontactcity}"
                                     >Generate ID</button>
                                 </div>
                             </div>
-                            </td>
+                        </td>
                     `;
 
                 residentsTableBody.appendChild(row);
@@ -74,7 +187,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         fetchResidents(searchQuery); // Fetch residents with search query
     });
 
-    fetchResidents();
 
     // Function to dynamically update pagination links
     function updatePaginationLinks(currentPage, totalPages) {
@@ -92,6 +204,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     attachDotEventListeners();
 });
+
 // Helper function to generate remarks based on resident data
 function generateRemarks(resident) {
     const remarks = [];

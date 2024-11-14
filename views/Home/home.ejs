@@ -100,18 +100,38 @@
       </form>
 
       <% if (messages.success) { %>
-        <div class="alert alert-success">
-          <%= messages.success %>
+        <div class="overlay"></div>
+        <div class="alert alert-success" id="submit_prompt">
+          <img src="../images/success-img.png" alt="">
+          <div>
+            <h2>Reuqest Submitted Successfully</h2>
+            <p>
+              <%= messages.success %>
+            </p>
+            <main>
+              <button type="button" class="button-green" onclick="closePopup()">Done</button>
+            </main>
+          </div>
         </div>
         <% } %>
           <% if (messages.error) { %>
-            <div class="alert alert-danger">
-              <%= messages.error %>
+            <div class="alert alert-danger" id="submit_prompt">
+              <img src="../images/error.png" alt="">
+              <div>
+                <h2>Request Submit Failled.</h2>
+                <p class="error-message">
+                  <%= messages.error %>
+                </p>
+                <main>
+                  <button type="button" class="button-green" onclick="closePopup()">Done</button>
+                </main>
+              </div>
             </div>
             <% } %>
     </main>
 </body>
 <script src="../../js/local/request-api.js"></script>
+<script src="../../js/global/pop-up.js"></script>
 <script>
   document.querySelector("header>nav>ul>li:first-child").classList.toggle("selected");
 </script>

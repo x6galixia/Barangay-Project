@@ -54,3 +54,20 @@ document.querySelectorAll(".close_confirm").forEach(function (closeBtn) {
     }
   });
 });
+
+//SUCCESS
+
+const submitPrompt = document.getElementById("submit_prompt");
+document.addEventListener("DOMContentLoaded", function () {
+  if (submitPrompt) {
+    submitPrompt.style.display = "flex";
+    overlay.classList.add("visible"); // Show the pop-up
+  }
+
+});
+
+// Function to close the pop-up when 'Done' button is clicked
+function closePopup() {
+  submitPrompt.style.display = "none";
+  overlay.classList.remove("visible");
+}

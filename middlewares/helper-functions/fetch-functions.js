@@ -1,5 +1,6 @@
 const mPool = require("../../models/mDatabase");
 
+//fetch function for residents list that inlude search
 async function fetchResidentsLists(page, limit, searchQuery = '') {
   let offset = (page - 1) * limit;
 
@@ -34,7 +35,7 @@ async function fetchResidentsLists(page, limit, searchQuery = '') {
     // Debugging totalItems query and values
     console.log("Total Items Query: ", totalItemsQuery); // Full query
     console.log("Total Items Values: ", totalItemsValues); // Parameters passed to the query
-    
+
     // Pass totalItemsValues to the total items query
     const totalItemsResult = await mPool.query(totalItemsQuery, totalItemsValues);
     const totalItems = parseInt(totalItemsResult.rows[0].count, 10);
@@ -51,6 +52,9 @@ async function fetchResidentsLists(page, limit, searchQuery = '') {
         wc.wClassificationName AS waterSource,
         cp.fname AS emergencyContactFName, cp.mname AS emergencyContactMName,
         cp.lname AS emergencyContactLName, cp.contactNumber AS emergencyContactNumber,
+        cp.street AS emergencyContactStreet, cp.purok AS emergencyContactPurok, 
+        cp.barangay AS emergencyContactBarangay, cp.city AS emergencyContactCity,
+        cp.province AS emergencyContactProvince,
         r.isPwd, r.isSoloParent, r.isYouth, r.is4ps, r.isWithCr, r.isWith40mZone,
         r.isEnergized, r.isResident, r.civilStatus
       FROM residents r
@@ -62,10 +66,6 @@ async function fetchResidentsLists(page, limit, searchQuery = '') {
       ORDER BY r.fname
       LIMIT $1 OFFSET $2;
     `;
-
-    // Debugging residents query and values
-    console.log("Residents Query: ", residentsQuery); // Full query
-    console.log("Residents Values: ", residentsValues); // Parameters passed to the query
 
     // Pass the correct parameters for residents query
     const residentsResult = await mPool.query(residentsQuery, residentsValues);
@@ -112,9 +112,6 @@ async function fetchRequestLists(page, limit) {
     throw new Error("Error fetching residents list");
   }
 }
-
-
-
 
 module.exports = {
   fetchResidentsLists,
