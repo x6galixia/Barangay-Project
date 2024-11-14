@@ -40,21 +40,25 @@ document.addEventListener("DOMContentLoaded", async function () {
                         <td>${resident.iswith40mzone ? 'Yes' : 'No'}</td>
                         <td>${generateRemarks(resident)}</td>
                         <td class="menu-row">
-                            <img class="dot" src="../icon/triple-dot.svg" alt="">
-                            <div class="triple-dot">
-                                <div class="menu" data-id="${resident.globalid}">
-                                    <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
-                                    <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
-                                    <button id="generate-id" onclick="popUp_three_dot(this)"
-                                    data-fullname="${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}"
-                                    data-idNumber="${resident.idnumber}"
-                                    data-civil_status="${resident.civil_status}"
-                                    data-birthdate="${new Date(resident.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}"
-                                    data-address="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
-                                    >Generate ID</button>
-                                </div>
+                        <img class="dot" src="../icon/triple-dot.svg" alt="">
+                        <div class="triple-dot">
+                            <div class="menu" data-id="${resident.globalid}">
+                                <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
+                                <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
+                                <button id="generate-id" onclick="popUp_three_dot(this)"
+                                data-fullname="${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}"
+                                data-idNumber="${resident.idnumber}"
+                                data-globalId="${resident.globalid}"
+                                data-civil_status="${resident.civil_status}"
+                                data-birthdate="${new Date(resident.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}"
+                                data-address="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
+                                data-Contactfullname="${resident.emergencycontactfname} ${resident.emergencycontactmname ? resident.emergencycontactmname : ''} ${resident.emergencycontactlname}"
+                                data-ContactPhone="${resident.emergencycontactnumber}"
+                                data-Contactaddress="Purok ${resident.emergencycontactpurok}, ${resident.emergencycontactbarangay}, ${resident.emergencycontactcity}"
+                                >Generate ID</button>
                             </div>
-                            </td>
+                        </div>
+                    </td>
                     `;
     
                 residentsTableBody.appendChild(row);
@@ -74,7 +78,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         fetchResidents(searchQuery); // Fetch residents with search query
     });
 
-	fetchResidents();
+	fetchResidents().then(attachDotEventListeners);
   
     // Function to dynamically update pagination links
     function updatePaginationLinks(currentPage, totalPages) {
@@ -92,6 +96,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     
     attachDotEventListeners();
 });
+
 // Helper function to generate remarks based on resident data
 function generateRemarks(resident) {
     const remarks = [];
