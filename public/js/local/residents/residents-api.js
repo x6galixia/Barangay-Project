@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         const selectedValue = this.value;
 
         // Select columns to be hidden or shown
-        const columnsToHide = ["HOUSING MATERIALS", "WITH CR", "WATER SOURCE", "ENERGIZED", "WITH 40M BUILDING ZONE", "REMARKS"];
+        const columnsToHide = ["REMARKS"];
         const headers = document.querySelectorAll('table thead th');
         const rows = document.querySelectorAll('table tbody tr');
 
@@ -142,11 +142,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                         <td>${resident.gender}</td>
                         <td>${resident.eattainment || 'N/A'}</td>
                         <td>${resident.occupation || 'N/A'}</td>
-                        <td>${resident.houseclassification || 'N/A'}</td>
-                        <td>${resident.isWithCr ? 'Yes' : 'No'}</td>
-                        <td>${resident.watersource || 'N/A'}</td>
-                        <td>${resident.isenergized ? 'Yes' : 'No'}</td>
-                        <td>${resident.iswith40mzone ? 'Yes' : 'No'}</td>
                         <td>${generateRemarks(resident)}</td>
                         <td class="menu-row">
                             <img class="dot" src="../icon/triple-dot.svg" alt="">
@@ -176,7 +171,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             updatePaginationLinks(data.currentPage, data.totalPages);
         } catch (error) {
             console.error("Error fetching residents data: ", error);
-            residentsTableBody.innerHTML = '<tr><td colspan="14">Error loading data</td></tr>';
+            residentsTableBody.innerHTML = '<tr><td colspan="9">Error loading data</td></tr>';
         }
     }
 

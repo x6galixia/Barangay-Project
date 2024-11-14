@@ -48,19 +48,14 @@ async function fetchResidentsLists(page, limit, searchQuery = '') {
         r.street, r.purok, r.barangay, r.city, r.province, r.birthDate, r.age,
         r.gender, r.picture, r.signature, r.eAttainment, r.occupation,
         rc.rClassificationName AS residentClassification,
-        hc.hClassificationName AS houseClassification,
-        wc.wClassificationName AS waterSource,
         cp.fname AS emergencyContactFName, cp.mname AS emergencyContactMName,
         cp.lname AS emergencyContactLName, cp.contactNumber AS emergencyContactNumber,
         cp.street AS emergencyContactStreet, cp.purok AS emergencyContactPurok, 
         cp.barangay AS emergencyContactBarangay, cp.city AS emergencyContactCity,
         cp.province AS emergencyContactProvince,
-        r.isPwd, r.isSoloParent, r.isYouth, r.is4ps, r.isWithCr, r.isWith40mZone,
-        r.isEnergized, r.isResident, r.civilStatus
+        r.isPwd, r.isSoloParent, r.isYouth, r.is4ps, r.isResident, r.civilStatus
       FROM residents r
       LEFT JOIN rClassification rc ON r.rClassificationId = rc.rClassificationId
-      LEFT JOIN hClassification hc ON r.hClassificationId = hc.hClassificationId
-      LEFT JOIN wClassification wc ON r.waterSourceId = wc.wClassificationId
       LEFT JOIN contactPerson cp ON r.emergencyContactId = cp.contactPersonId
       WHERE 1=1 ${searchCondition}
       ORDER BY r.fname
