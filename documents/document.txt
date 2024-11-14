@@ -24,6 +24,13 @@ CREATE TABLE inventory (
     isFunctional BOOLEAN DEFAULT TRUE
 );
 
+CREATE TABLE archive {
+    id SERIAL PRIMARY KEY NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    date DATE NOT NULL,
+    docType VARCHAR(255) NOT NULL
+};
+
 -- residents classification
 CREATE TABLE rClassification (
     rClassificationId SERIAL PRIMARY KEY NOT NULL,
