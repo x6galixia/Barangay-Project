@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                                     data-fullname="${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}"
                                     data-idNumber="${resident.idnumber}"
                                     data-globalId="${resident.globalid}"
-                                    data-civil_status="${resident.civil_status}"
+                                    data-civil_status="${resident.civilstatus}"
                                     data-birthdate="${new Date(resident.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}"
                                     data-address="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
                                     data-Contactfullname="${resident.emergencycontactfname} ${resident.emergencycontactmname ? resident.emergencycontactmname : ''} ${resident.emergencycontactlname}"
