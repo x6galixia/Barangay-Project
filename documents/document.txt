@@ -99,7 +99,6 @@ INSERT INTO hClassification (hClassificationName)VALUES
     ('Concrete'),
     ('Wood'),
     ('Semi-concrete');
--- concrete, wood, semi-concrete, 
 
 INSERT INTO rClassification (rClassificationName)VALUES 
     ('Government employee'),
