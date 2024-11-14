@@ -66,10 +66,6 @@ async function fetchResidentsLists(page, limit, searchQuery = '') {
       LIMIT $1 OFFSET $2;
     `;
 
-    // Debugging residents query and values
-    console.log("Residents Query: ", residentsQuery); // Full query
-    console.log("Residents Values: ", residentsValues); // Parameters passed to the query
-
     // Pass the correct parameters for residents query
     const residentsResult = await mPool.query(residentsQuery, residentsValues);
     console.log(residentsResult);

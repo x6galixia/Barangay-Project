@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     attachDotEventListeners();
 });
+
 // Helper function to generate remarks based on resident data
 function generateRemarks(resident) {
     const remarks = [];
