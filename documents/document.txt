@@ -18,6 +18,7 @@ CREATE TABLE inventory (
     id SERIAL PRIMARY KEY NOT NULL,
     iName VARCHAR(255) NOT NULL,  
     quantity INT DEFAULT 0,
+    iPrice INT NOT NULL,
     dateAdded DATE NOT NULL,
     categoryId INT REFERENCES categories(categoryId) NOT NULL,
     isFunctional BOOLEAN DEFAULT TRUE
@@ -27,18 +28,6 @@ CREATE TABLE inventory (
 CREATE TABLE rClassification (
     rClassificationId SERIAL PRIMARY KEY NOT NULL,
     rClassificationName VARCHAR(255) NOT NULL
-);
-
--- houses classification
-CREATE TABLE hClassification (
-    hClassificationId SERIAL PRIMARY KEY NOT NULL,
-    hClassificationName VARCHAR(255) NOT NULL
-);
-
--- water source classification
-CREATE TABLE wClassification (
-    wClassificationId SERIAL PRIMARY KEY NOT NULL,
-    wClassificationName VARCHAR(255) NOT NULL
 );
 
 -- in case of emergency contact person 
@@ -74,31 +63,15 @@ CREATE TABLE residents (
     signature TEXT DEFAULT '',
     eAttainment VARCHAR(255) NULL,
     occupation VARCHAR(255) NULL,
-    rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,
-    hClassificationId INT REFERENCES hClassification(hClassificationId) NOT NULL,
-    waterSourceId INT REFERENCES wClassification(wClassificationId) NOT NULL,
+    rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL, 
     emergencyContactId INT REFERENCES contactPerson(contactPersonId) NOT NULL,
     isPwd BOOLEAN DEFAULT FALSE,
     isSoloParent BOOLEAN DEFAULT FALSE,
     isYouth BOOLEAN DEFAULT FALSE,
-    is4ps BOOLEAN DEFAULT FALSE,
-    isWithCr BOOLEAN DEFAULT FALSE,
-    isWith40mZone BOOLEAN DEFAULT FALSE,
-    isEnergized BOOLEAN DEFAULT FALSE,
-    isResident BOOLEAN DEFAULT TRUE,
-    civilStatus VARCHAR(50) NULL CHECK (civilStatus IN ('Single', 'Married', 'Divorced'))
+    is4ps BOOLEAN DEFAULT FALSE, 
+    civilStatus VARCHAR(50) NULL CHECK (civilStatus IN ('Single', 'Married', 'Divorced')),
+    isResident BOOLEAN DEFAULT TRUE
 );
-
-INSERT INTO wClassification (wClassificationName)VALUES 
-    ('Water Pump'),
-    ('Spring'),
-    ('Deep well'),
-    ('Public water');
-
-INSERT INTO hClassification (hClassificationName)VALUES 
-    ('Concrete'),
-    ('Wood'),
-    ('Semi-concrete');
 
 INSERT INTO rClassification (rClassificationName)VALUES 
     ('Government employee'),
@@ -118,3 +91,29 @@ CREATE TABLE requests (
     purpose TEXT NULL,
     isReleased BOOLEAN DEFAULT FALSE
 );
+
+// -- not now ----//
+
+
+-- houses classification
+CREATE TABLE hClassification (
+    hClassificationId SERIAL PRIMARY KEY NOT NULL,
+    hClassificationName VARCHAR(255) NOT NULL
+);
+
+-- water source classification
+CREATE TABLE wClassification (
+    wClassificationId SERIAL PRIMARY KEY NOT NULL,
+    wClassificationName VARCHAR(255) NOT NULL
+);
+
+INSERT INTO wClassification (wClassificationName)VALUES 
+    ('Water Pump'),
+    ('Spring'),
+    ('Deep well'),
+    ('Public water');
+
+INSERT INTO hClassification (hClassificationName)VALUES 
+    ('Concrete'),
+    ('Wood'),
+    ('Semi-concrete');
