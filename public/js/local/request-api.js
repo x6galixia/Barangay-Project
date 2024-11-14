@@ -31,49 +31,57 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
   function handleKeyPress(event) {
     if (event.key === 'Enter') {
       const scannedData = event.target.value;
-      const secretKey = "KimGalicia";
+      const secretKey = "MnDev";
 
       console.log(scannedData);
 
-      // // Decrypt function
-      // function decryptData(cipherText, secretKey) {
-      //   const bytes = CryptoJS.AES.decrypt(cipherText, secretKey);
-      //   return bytes.toString(CryptoJS.enc.Utf8);
-      // }
+      // Decrypt function
+      function decryptData(cipherText, secretKey) {
+        const bytes = CryptoJS.AES.decrypt(cipherText, secretKey);
+        return bytes.toString(CryptoJS.enc.Utf8);
+      }
 
-      // const decryptedData = decryptData(scannedData, secretKey);
+      const decryptedData = decryptData(scannedData, secretKey);
 
-      // console.log(document.getElementById("qrOutput").value);
-      // console.log(decryptedData);
+      console.log(document.getElementById("qrOutput").value);
+      console.log(decryptedData);
 
-      // // Set scanned data to the QR output field
-      // document.getElementById("qrOutput").value = decryptedData;
+      // Set scanned data to the QR output field
+      document.getElementById("qrOutput").value = decryptedData;
 
-      // // Send the scanned QR code data to the server
-      // fetch(`/nurse/fetchScannedData?qrCode=${decryptedData}`, {
-      //   method: 'GET',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   }
-      // })
-      //   .then(response => {
-      //     if (!response.ok) {
-      //       throw new Error('Network response was not ok ' + response.statusText);
-      //     }
-      //     return response.json();
-      //   })
-      //   .then(data => {
-      //     console.log('Success:', data);
-      //     populateFormFields(data); // Call function to populate fields
-      //   })
-      //   .catch((error) => {
-      //     console.error('Error:', error);
-      //   });
+      // Send the scanned QR code data to the server
+      fetch(`/home/dashboard/fetchScannedData?qrCode=${decryptedData}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Success:', data);
+          populateFormFields(data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
 
       // Clear the input after scanning
       event.target.value = '';
     }
   }
-
-
 });
+
+function populateFormFields(data) {
+  document.getElementById("lastname").value = data.lname || '';
+  document.getElementById("firstname").value = data.fname || '';
+  document.getElementById("middlename").value = data.mname || '';
+  document.getElementById("age").value = data.age || '';
+  document.getElementById("birthdate").value = new Date(data.birthdate).toISOString().split("T")[0] || '';
+  document.getElementById("civilStatus").value = data.civilstatus || '';
+  document.getElementById("purok").value = data.purok || '';
+}
