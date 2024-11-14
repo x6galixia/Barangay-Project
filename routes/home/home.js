@@ -52,7 +52,7 @@ router.post("/service-request-form", async (req, res) => {
                 INSERT INTO requests (residentsid, dateadded, purpose) VALUES
                 ($1, $2, $3)`, [residentsid, todayDate, value.purpose]);
 
-            req.flash('success', 'Request submitted successfully!');
+            req.flash('success', 'Request is transfered in services!');
         } else {
             req.flash('error', 'QR not registered in the database!');
         }
