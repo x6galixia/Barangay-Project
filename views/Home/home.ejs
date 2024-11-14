@@ -105,7 +105,9 @@
           <img src="../images/success-img.png" alt="">
           <div>
             <h2>Reuqest Submitted Successfully</h2>
-            <p><%= messages.success %></p>
+            <p>
+              <%= messages.success %>
+            </p>
             <main>
               <button type="button" class="button-green" onclick="closePopup()">Done</button>
             </main>
@@ -117,7 +119,12 @@
               <img src="../images/error.png" alt="">
               <div>
                 <h2>Request Submit Failled.</h2>
-                <p class="error-message"><%= messages.error %></p>
+                <p class="error-message">
+                  <%= messages.error %>
+                </p>
+                <main>
+                  <button type="button" class="button-green" onclick="closePopup()">Done</button>
+                </main>
               </div>
             </div>
             <% } %>
