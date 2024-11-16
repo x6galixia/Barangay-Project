@@ -251,6 +251,61 @@
                                 </div>
                             </div>
                             <hr>
+                            <h3>Emergency Contact Person</h3>
+                            <div>
+                                <div class="row">
+                                    <div class="inputWithLabel" id="surubadan">
+                                        <label>Last Name</label>
+                                        <input type="text" aria-label="Last Name" name="emergencyLastName" required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>First Name</label>
+                                        <input type="text" aria-label="First Name" name="emergencyFirstName" required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Middle Name</label>
+                                        <input type="text" aria-label="Middle Name" name="emergencyMiddleName" required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Contact Number</label>
+                                        <input type="number" aria-label="Contact Number" name="emergencyContactNumber"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 12px;">
+                                    <div class="inputWithLabel">
+                                        <label for="">Purok</label>
+                                        <select name="emergencyPurok" aria-label="Purok">
+                                            <option value="Seguidila">Seguidila</option>
+                                            <option value="Sitaw">Sitaw</option>
+                                            <option value="Maypangdan">Maypangdan</option>
+                                            <option value="Petchay">Petchay</option>
+                                            <option value="Ampalaya">Ampalaya</option>
+                                            <option value="Mustaza">Mustaza</option>
+                                            <option value="Kalabasa">Kalabasa</option>
+                                        </select>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Street</label>
+                                        <input type="text" aria-label="Street" name="emergencyStreet" required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Barangay</label>
+                                        <input type="text" aria-label="Barangay" id="barangay" name="emergencyBarangay"
+                                            required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>City</label>
+                                        <input type="text" aria-label="City" id="city" name="emergencyCity" required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Province</label>
+                                        <input type="text" aria-label="Province" id="province" name="emergencyProvince"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
                             <h3>ID Picture</h3>
                             <div class="ID-container">
                                 <div class="image-preview" id="imagePreview">
@@ -360,7 +415,7 @@
                             <div class="qr-imager">
                                 <div>
                                     <p>This card is non-transferrable.</p>
-                                    <p>Valid only until December 31, 2024</p>
+                                    <p>Valid only until <span id="IDvalidation"></span></p>
                                 </div>
                             </div>
 
