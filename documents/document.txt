@@ -51,6 +51,18 @@ CREATE TABLE contactPerson(
      contactNumber VARCHAR(50) NULL
 );
 
+CREATE TABLE boarders (
+    boardID SERIAL PRIMARY KEY NOT NULL,
+    boarderInResidentId INT REFERENCES residents(residentsId) NOT NULL,
+    originalStreet VARCHAR(255) NULL,                                                      -- used as a original address of boarder
+    originalPurok VARCHAR(255) NULL,                                                       -- used as a original address of boarder
+    originalBarangay VARCHAR(255) NULL,                                                    -- used as a original address of boarder
+    originalCity VARCHAR(255) NULL,                                                        -- used as a original address of boarder
+    originalProvince VARCHAR(255) NULL,                                                    -- used as a original address of boarder
+    boardinghouseName VARCHAR(255) NULL,
+    landlord VARCHAR(255) NULL
+);
+
 CREATE TABLE residents (
     residentsId SERIAL PRIMARY KEY NOT NULL,
     globalId VARCHAR(255) NOT NULL UNIQUE,
@@ -58,11 +70,11 @@ CREATE TABLE residents (
     fName VARCHAR(255) NOT NULL,
     mName VARCHAR(255) NULL,
     lName VARCHAR(255) NOT NULL,
-    street VARCHAR(255) NULL,
-    purok VARCHAR(255) NULL,
-    barangay VARCHAR(255) NULL,
-    city VARCHAR(255) NULL,
-    province VARCHAR(255) NULL,
+    street VARCHAR(255) NULL,                                                       -- used as a address of boarder while staying in the barangay
+    purok VARCHAR(255) NULL,                                                        -- used as a address of boarder while staying in the barangay
+    barangay VARCHAR(255) NULL,                                                     -- used as a address of boarder while staying in the barangay
+    city VARCHAR(255) NULL,                                                         -- used as a address of boarder while staying in the barangay
+    province VARCHAR(255) NULL,                                                     -- used as a address of boarder while staying in the barangay
     birthDate DATE NOT NULL,
     age INT NOT NULL,
     gender VARCHAR(10) NULL CHECK (gender IN ('Male', 'Female')),
@@ -70,14 +82,14 @@ CREATE TABLE residents (
     signature TEXT DEFAULT '',
     eAttainment VARCHAR(255) NULL,
     occupation VARCHAR(255) NULL,
-    rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL, 
-    emergencyContactId INT REFERENCES contactPerson(contactPersonId) NOT NULL,
-    isPwd BOOLEAN DEFAULT FALSE,
-    isSoloParent BOOLEAN DEFAULT FALSE,
-    isYouth BOOLEAN DEFAULT FALSE,
-    is4ps BOOLEAN DEFAULT FALSE, 
     civilStatus VARCHAR(50) NULL CHECK (civilStatus IN ('Single', 'Married', 'Divorced')),
-    isResident BOOLEAN DEFAULT TRUE
+    isResident BOOLEAN NULL,
+    emergencyContactId INT REFERENCES contactPerson(contactPersonId) NOT NULL,
+    rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,   -- not available is boarder
+    isPwd BOOLEAN DEFAULT FALSE,                                                    -- not available if boarder
+    isSoloParent BOOLEAN DEFAULT FALSE,                                             -- not available if boarder
+    isYouth BOOLEAN DEFAULT FALSE,                                                  -- not available if boarder
+    is4ps BOOLEAN DEFAULT FALSE                                                     -- not available if boarder
 );
 
 INSERT INTO rClassification (rClassificationName)VALUES 
