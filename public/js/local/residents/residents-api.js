@@ -12,13 +12,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     document.querySelector('.residents-dropdown').addEventListener('change', function () {
         const addressSection = document.getElementById('address-section');
-        const selectedValue = this.value;
-
+        const selectedValue = this.value.trim();
+        
+        const searchQuery = document.getElementById('searchInput').value.trim(); // Assuming you have an input with id 'searchInput'
+    
+        // Set the flag for non-residents
+        const isNonResident = selectedValue === 'non-residents'; // true for non-residents, false for residents
+    
         // Select columns to be hidden or shown
         const columnsToHide = ["REMARKS"];
         const headers = document.querySelectorAll('table thead th');
         const rows = document.querySelectorAll('table tbody tr');
-
+    
         function toggleColumns(show) {
             headers.forEach((header, index) => {
                 if (columnsToHide.includes(header.textContent.trim().toUpperCase())) {
@@ -31,20 +36,18 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
             });
         }
-
-        // toggle the resident classification
+    
+        // Toggle the resident classification
         const residentClassificationSection = document.getElementById('residentClassification');
-
-
-        if (selectedValue === " residents") {
+    
+        if (selectedValue === "residents") {
             console.log("Residents selected");
             document.getElementById('barangay').value = "Maypangdan";
             document.getElementById('city').value = "Borongan City";
             document.getElementById('province').value = "Eastern Samar";
             document.getElementById('residentPageTitle').innerText = "LIST OF RESIDENT";
-
-
-            // modify dropdown in sectors
+    
+            // Modify dropdown in sectors
             sectorsDropdown.innerHTML = `
                 <option value="Government Employee">Government Employee</option>
                 <option value="Private employee">Private employee</option>
@@ -57,8 +60,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <option value="Kasambahay">Kasambahay</option>
                 <option value="None">None</option>
             `;
-
-            //insert back the purok and street
+    
+            // Insert back the purok and street
             addressSection.insertAdjacentHTML('afterbegin', `
                 <div class="inputWithLabel" id="purok">
                     <label for="">Purok</label>
@@ -77,42 +80,45 @@ document.addEventListener("DOMContentLoaded", async function () {
                     <input type="text" aria-label="Street" name="street" required>
                 </div>
             `);
-
+    
             toggleColumns(true);
             if (addressWhileStudying) addressWhileStudying.style.display = "none";
             if (residentClassificationSection) {
                 residentClassificationSection.style.display = 'block';
             }
-
-            //fetch resident
-            fetchResidents().then(attachDotEventListeners);
-
+    
+            // Fetch resident data with `isNonResident` set to false
+            fetchResidents(1, 10, searchQuery, false).then(attachDotEventListeners);
+    
         } else if (selectedValue === "non-residents") {
             console.log("Non-Residents selected");
-            document.getElementById('barangay').value = ""
-            document.getElementById('city').value = ""
-            document.getElementById('province').value = ""
+            document.getElementById('barangay').value = "";
+            document.getElementById('city').value = "";
+            document.getElementById('province').value = "";
             document.getElementById('residentPageTitle').innerText = "LIST OF NON-RESIDENT";
-
-            //modify dropdown in sectors
+    
+            // Modify dropdown in sectors
             sectorsDropdown.innerHTML = `
                 <option value="Resident Boarders">Resident Boarders</option>
             `;
-
-            //modify address
+    
+            // Remove purok and street
             const purok = document.getElementById('purok');
             const street = document.getElementById('street');
             if (purok) purok.remove();
             if (street) street.remove();
-
+    
             toggleColumns(false);
             addressWhileStudying.style.display = "block";
             if (residentClassificationSection) {
                 residentClassificationSection.style.display = 'none';
             }
-
+    
+            // Fetch non-resident data with `isNonResident` set to true
+            fetchResidents(1, 10, searchQuery, true).then(attachDotEventListeners);
         }
-    });
+    });    
+        
 
 
     async function fetchResidents(searchQuery = '') {
