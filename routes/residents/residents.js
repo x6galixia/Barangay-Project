@@ -18,7 +18,7 @@ router.get("/dashboard", async (req, res) => {
     }
 
     try {
-        const { getResidentsList, totalPages } = await fetchResidentsLists(page, limit, isNonResident, searchQuery );
+        const { getResidentsList, totalPages } = await fetchResidentsLists(page, limit, searchQuery, isNonResident);
 
         if (isAjax) {
             // JSON response for AJAX requests

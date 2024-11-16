@@ -1,32 +1,38 @@
-#add-resident .row,
-#add-resident .row1 {
+#add-document .row,
+#add-document .row1 {
   display: flex;
   gap: 12px;
+  flex-direction: column;
 }
 
-#add-resident .row {
+#add-document .row {
   flex-wrap: wrap;
+  flex: 1;
+  margin-top: -40px;
 }
 
-#add-resident form {
+#add-document form {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
-#add-resident {
+#add-document {
   width: 60%;
 }
 
-#add-resident form #submit_add_resident {
+#add-document form #submit_add_document {
   width: fit-content;
-  align-self: end;
+  align-self: center;
   padding: 12px 80px;
 }
 
-.inputWithLabel {
-  flex: 1;
+.add-inventory-input-container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
+
 
 .inputWithLabel>div {
   display: flex;
@@ -37,48 +43,12 @@
   width: 100%;
 }
 
-.residentUploadImage {
-  display: none;
-}
-
-.upload-image {
-  height: 100%;
-}
-
-.upload-image>.upload-section {
-  height: 85%;
-  border: solid 1px gray;
-  border-radius: 10px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  padding: 12px;
-}
-
-.upload-section p {
-  width: auto;
-}
-
-.upload-image img {
-  /* width: 30%; */
-  object-fit: contain;
-  height: 100px;
-}
-
-.add-resident-input-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
 .ID-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 50%;
   max-width: 400px;
-  margin: 0 auto;
   padding: 20px;
 }
 

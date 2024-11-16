@@ -1,0 +1,44 @@
+#add-inventory .row,
+#add-inventory .row1 {
+  display: flex;
+  gap: 12px;
+}
+
+#add-inventory .row {
+  flex-wrap: wrap;
+}
+
+#add-inventory form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+#add-inventory {
+  width: 50%;
+}
+
+#add-inventory form #submit_add_inbentory {
+  width: fit-content;
+  align-self: center;
+  padding: 12px 80px;
+}
+
+.add-inventory-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.inputWithLabel {
+  flex: 1;
+}
+
+.inputWithLabel>div {
+  display: flex;
+  gap: 12px;
+}
+
+.inputWithLabel>div>input {
+  width: 100%;
+}

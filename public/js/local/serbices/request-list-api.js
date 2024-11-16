@@ -16,33 +16,36 @@ document.addEventListener("DOMContentLoaded", async function () {
     const data = await response.json();
     const requests = data.getRequestList;
 
-    // Clear the table body before appending
     requestTableBody.innerHTML = '';
 
-    // Loop through the residents and create table rows
-    console.log(data);
-    requests.forEach(request => {
-      const row = document.createElement('tr');
-      const formattedDate = new Date(request.dateadded).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+    if (requests.length === 0) {
+      requestTableBody.innerHTML = '<tr><td colspan="4">No Requests.</td></tr>';
+    } else {
+      requests.forEach(request => {
+        const row = document.createElement('tr');
+        const formattedDate = new Date(request.dateadded).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        row.innerHTML = `
+                <td>${request.fname} ${request.mname ? request.mname : ''} ${request.lname}</td>
+                <td>${request.purpose}</td>
+                <td>${formattedDate}</td>
+                <td><button id="${request.purpose}" onclick="popUp_three_dot(this)">Print</button></td>
+            `;
+        requestTableBody.appendChild(row);
       });
-      row.innerHTML = `
-              <td>${request.fname} ${request.mname ? request.mname : ''} ${request.lname}</td>
-              <td>${request.purpose}</td>
-              <td>${formattedDate}</td>
-              <td><button>Print</button></td>
-          `;
+    }
 
-      requestTableBody.appendChild(row);
-    });
+    // Update pagination links
     updatePaginationLinks(data.currentPage, data.totalPages);
 
   } catch (error) {
     console.error("Error fetching request data: ", error);
-    requestTableBody.innerHTML = '<tr><td colspan="12">Error loading data</td></tr>';
+    requestTableBody.innerHTML = '<tr><td colspan="4">Error loading data</td></tr>';
   }
+
 
   // Function to dynamically update pagination links
   function updatePaginationLinks(currentPage, totalPages) {

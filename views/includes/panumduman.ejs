@@ -1,0 +1,69 @@
+<div class="A4">
+    <%- include("../includes/print-header.ejs") %>
+    <!-- background logo -->
+    <img class="bg-logo" src="../images/certificate-background-logo.png" alt="">
+    <!-- mahusay na logo footer -->
+    <img class="mahusay-logo" src="../images/mahusay-na.png" alt="">
+    <div class="date">July 24, 2024</div>
+    <div  class="title"><h2>PANUMDUMAN</h2></div>
+    <div class="context">
+        <p class="wala"><strong>TO WHOM IT MAY CONCERN:</strong></p>
+        <p>Hi kami, <strong>NELITA C. ALURA</strong>, hataas iton  pangidaron ngan residente han Brgy. Maypangdan, Borongan City, Eastern Samar ngan <strong>EMELIA PALADA</strong>, hataas iton pangidaron ngan residente liwat han Brgy. Maypangdan, Borongan City in nagka may-ada kasabutan nga:</p>
+        <p>1.     Ako <strong>EMELIA PALADA</strong> in ig-rerelocate/ibabalhin an akun baktinan yana nga masunod nga bulan <strong>August 10, 2024</strong> (exact date) <strong>SABADO</strong> nga adlaw;</p>
+        <p>2.     Ako hi <strong>NELITA C. ALURA</strong> in nag-lalaom nga tutumanon ni <strong>EMELIA PALADA</strong> it iya saad nga pag-relocate/pag-balhin hit iya baboyan sunod nga bulan <strong>August 10, 2024</strong> sabado nga adlaw.</p>
+        <p>Ha pagkamatuod, kami in nagpirmahay ha opisina han Punong Barangay ni <strong><em>Hon. Ian C. Gonzales</em></strong> niyan han <strong><em>July 24, 2024</em></strong> ha Brgy. Maypangdan Multi-purpose Hall, Borongan City, Eastern Samar.</p>
+    </div>
+    <div class="row" style="margin-top: 100px; justify-content: space-evenly;">
+        <div class="colum">
+            <strong><u>NELITA C. ALURA</u></strong>
+            <em>Complainant</em>
+        </div>
+        <div class="colum">
+            <strong><u>EMELIA PALADA</u></strong>
+            <em>Respondent</em>
+        </div>
+    </div>
+    <div class="row">
+        <div class="colum">
+            <p class="m">Witness:</p>
+            <strong><u>NELITA C. ALURA</u></strong>
+            <em>Complainant</em>
+        </div>
+        <div class="colum">
+            <p class="m">Attested by:</p>
+            <strong><u>EMELIA PALADA</u></strong>
+            <em>Respondent</em>
+        </div>
+    </div>
+    <%- include("../includes/print-footer.ejs") %>
+</div>
+
+
+<style>
+    .date {
+        display: flex;
+        justify-content: end;
+        margin-right: 3.5em;
+        margin-top: 1em;
+    }
+
+    .title {
+        color: black;
+    }
+
+    .row {
+        position: relative;
+        z-index: 2;
+        justify-content: space-around;
+    }
+
+    .m {
+        margin-top: 4em;
+        margin-bottom: 2em;
+        text-align: start;
+    }
+
+    .colum {
+        text-align: center;
+    }
+</style>
