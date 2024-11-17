@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/global/general.css">
+    <link rel="stylesheet" href="../css/global/print-general.css">
     <link rel="stylesheet" href="../css/local/serbices.css">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <title>
@@ -45,7 +46,42 @@
                                     <% } %>
             </nav>
         </main>
+        <!-- Pop Up -->
+        <!-- Process Form -->
+        <div class="pop-up" id="process-certificate">
+            <div class="close-container">
+                <img src="../icon/close.svg" alt="" class="close_popUp">
+            </div>
+            <h1 class="heading" id="certificateHeading">ADD DOCUMENT</h1>
+            <main id="certificateMainForm">
+                <div class="butonContainer">
+
+                    <button>Apply Changes</button>
+                    <button id="viewCertificate">View</button>
+                </div>
+            </main>
+        </div>
+
+        <!-- certificate -->
+        <div class="pop-up" id="certificate">
+            <div class="close-container">
+                <img src="../icon/close.svg" alt="" class="closeCertificate">
+            </div>
+            <main id="certificateContainer">
+                <%- include("../includes/cet-of-guardianship.ejs") %>
+                    <%- include("../includes/income.ejs") %>
+                        <%- include("../includes/indigencyy.ejs") %>
+                            <%- include("../includes/land-no-claim.ejs") %>
+                                <%- include("../includes/no-duplication.ejs") %>
+                                    <%- include("../includes/panumduman.ejs") %>
+                                        <%- include("../includes/RA-1261.ejs") %>
+
+            </main>
+            <button style="display: flex; justify-self: end; margin-top: 24px; padding: 12px 48px;">Print</button>
+        </div>
+
 </body>
+<script src="../../js/global/pop-up.js"></script>
 <script src="../../js/local/serbices/request-list-api.js"></script>
 <script>
     document.querySelector("header>nav>ul>li:nth-child(2)").classList.toggle("selected");
