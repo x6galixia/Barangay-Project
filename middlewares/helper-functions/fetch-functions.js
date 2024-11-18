@@ -1,6 +1,6 @@
 const mPool = require("../../models/mDatabase");
 
-//fetch function for residents list that inlude searchz
+//fetch function for residents list that inlude search
 async function fetchResidentsLists(page, limit, searchQuery = '', isNonResident = false) {
   const offset = (page - 1) * limit;
 
