@@ -9,17 +9,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     fetchResidents().then(attachDotEventListeners);
 
+    searchInput.addEventListener('input', () => {
+        const selectedValue = document.querySelector('.residents-dropdown').value.trim();
+        const isNonResident = selectedValue === 'non-residents';
+        const searchQuery = searchInput.value.trim();
+
+        fetchResidents(1, 10, searchQuery, isNonResident).then(attachDotEventListeners);
+    });
 
     document.querySelector('.residents-dropdown').addEventListener('change', function () {
         const addressSection = document.getElementById('address-section');
         const selectedValue = this.value.trim();
+        const searchQuery = document.getElementById('searchInput').value.trim();
 
-        const searchQuery = document.getElementById('searchInput').value.trim(); // Assuming you have an input with id 'searchInput'
-
-        // Set the flag for non-residents
-        const isNonResident = selectedValue === 'non-residents'; // true for non-residents, false for residents
-
-        // Select columns to be hidden or shown
+        const isNonResident = selectedValue === 'non-residents';
         const columnsToHide = ["REMARKS"];
         const headers = document.querySelectorAll('table thead th');
         const rows = document.querySelectorAll('table tbody tr');
@@ -37,7 +40,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             });
         }
 
-        // Toggle the resident classification
         const residentClassificationSection = document.getElementById('residentClassification');
 
         if (selectedValue === "residents") {
@@ -47,39 +49,37 @@ document.addEventListener("DOMContentLoaded", async function () {
             document.getElementById('province').value = "Eastern Samar";
             document.getElementById('residentPageTitle').innerText = "LIST OF RESIDENT";
 
-            // Modify dropdown in sectors
             sectorsDropdown.innerHTML = `
-                <option value="Government Employee">Government Employee</option>
-                <option value="Private employee">Private employee</option>
-                <option value="Carpenters">Carpenters</option>
-                <option value="Farmers">Farmers</option>
-                <option value="Fisherman">Fisherman</option>
-                <option value="Business Entrepreneur">Business Entrepreneur</option>
-                <option value="Drivers">Drivers</option>
-                <option value="OFW">OFW</option>
-                <option value="Kasambahay">Kasambahay</option>
-                <option value="None">None</option>
-            `;
+            <option value="Government Employee">Government Employee</option>
+            <option value="Private employee">Private employee</option>
+            <option value="Carpenters">Carpenters</option>
+            <option value="Farmers">Farmers</option>
+            <option value="Fisherman">Fisherman</option>
+            <option value="Business Entrepreneur">Business Entrepreneur</option>
+            <option value="Drivers">Drivers</option>
+            <option value="OFW">OFW</option>
+            <option value="Kasambahay">Kasambahay</option>
+            <option value="None">None</option>
+        `;
 
-            // Insert back the purok and street
             addressSection.insertAdjacentHTML('afterbegin', `
-                <div class="inputWithLabel" id="purok">
-                    <label for="">Purok</label>
-                    <select name="purok" aria-label="Purok">
-                        <option value="Seguidila">Seguidila</option>
-                        <option value="Sitaw">Sitaw</option>
-                        <option value="Maypangdan">Maypangdan</option>
-                        <option value="Petchay">Petchay</option>
-                        <option value="Ampalaya">Ampalaya</option>
-                        <option value="Mustaza">Mustaza</option>
-                        <option value="Kalabasa">Kalabasa</option>
-                    </select>
-                </div>
-                <div class="inputWithLabel" id="street">
-                    <label>Street</label>
-                    <input type="text" aria-label="Street" name="street" required>
-                </div>
-            `);
+            <div class="inputWithLabel" id="purok">
+                <label for="">Purok</label>
+                <select name="purok" aria-label="Purok">
+                    <option value="Seguidila">Seguidila</option>
+                    <option value="Sitaw">Sitaw</option>
+                    <option value="Maypangdan">Maypangdan</option>
+                    <option value="Petchay">Petchay</option>
+                    <option value="Ampalaya">Ampalaya</option>
+                    <option value="Mustaza">Mustaza</option>
+                    <option value="Kalabasa">Kalabasa</option>
+                </select>
+            </div>
+            <div class="inputWithLabel" id="street">
+                <label>Street</label>
+                <input type="text" aria-label="Street" name="street" required>
+            </div>
+        `);
 
             toggleColumns(true);
             if (addressWhileStudying) addressWhileStudying.style.display = "none";
@@ -87,7 +87,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 residentClassificationSection.style.display = 'block';
             }
 
-            // Fetch resident data with `isNonResident` set to false
             fetchResidents(1, 10, searchQuery, false).then(attachDotEventListeners);
 
         } else if (selectedValue === "non-residents") {
@@ -97,12 +96,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             document.getElementById('province').value = "";
             document.getElementById('residentPageTitle').innerText = "LIST OF NON-RESIDENT";
 
-            // Modify dropdown in sectors
             sectorsDropdown.innerHTML = `
-                <option value="Resident Boarders">Resident Boarders</option>
-            `;
+            <option value="Resident Boarders">Resident Boarders</option>
+        `;
 
-            // Remove purok and street
             const purok = document.getElementById('purok');
             const street = document.getElementById('street');
             if (purok) purok.remove();
@@ -114,18 +111,22 @@ document.addEventListener("DOMContentLoaded", async function () {
                 residentClassificationSection.style.display = 'none';
             }
 
-            // Fetch non-resident data with `isNonResident` set to true
             fetchResidents(1, 10, searchQuery, true).then(attachDotEventListeners);
         }
     });
 
 
 
-    async function fetchResidents(searchQuery = '') {
-        console.log("Search Query: ", searchQuery); // Debug search query
+
+    async function fetchResidents(page = 1, limit = 10, searchQuery = '', isNonResident = false) {
+        console.log("Search Query: ", searchQuery);
+        console.log("Fetching for Non-Residents: ", isNonResident);
 
         try {
-            const response = await fetch(`/residents/dashboard?ajax=true&page=${page}&limit=${limit}&search=${encodeURIComponent(searchQuery)}`);
+            const response = await fetch(
+                `/residents/dashboard?ajax=true&page=${page}&limit=${limit}&search=${encodeURIComponent(searchQuery)}&isNonResident=${isNonResident}`
+            );
+
             if (!response.ok) {
                 throw new Error("Failed to fetch residents data");
             }
@@ -133,43 +134,54 @@ document.addEventListener("DOMContentLoaded", async function () {
             const data = await response.json();
             const residents = data.getResidentsList;
 
-            // Clear the table body before appending
+            // Clear the table body
             residentsTableBody.innerHTML = '';
 
-            // Loop through the residents and create table rows
+            if (residents.length === 0) {
+                // Display a "No residents found" message
+                const noDataRow = document.createElement('tr');
+                noDataRow.innerHTML = `
+                    <td colspan="9" class="text-center">No ${isNonResident ? 'non-residents' : 'residents'} found.</td>
+                `;
+                residentsTableBody.appendChild(noDataRow);
+                return;
+            }
+
             residents.forEach(resident => {
                 const row = document.createElement('tr');
 
+                const remarksColumn = isNonResident ? '' : `<td>${generateRemarks(resident)}</td>`;
+
                 row.innerHTML = `
-                        <td>${resident.purok || 'N/A'}</td>
-                        <td>${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}</td>
-                        <td>${new Date(resident.birthdate).toLocaleDateString()}</td>
-                        <td>${resident.age}</td>
-                        <td>${resident.gender}</td>
-                        <td>${resident.eattainment || 'N/A'}</td>
-                        <td>${resident.occupation || 'N/A'}</td>
-                        <td>${generateRemarks(resident)}</td>
-                        <td class="menu-row">
-                            <img class="dot" src="../icon/triple-dot.svg" alt="">
-                            <div class="triple-dot">
-                                <div class="menu" data-id="${resident.globalid}">
-                                    <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
-                                    <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
-                                    <button id="generate-id" onclick="popUp_three_dot(this)"
-                                    data-fullname="${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}"
-                                    data-idNumber="${resident.idnumber}"
-                                    data-globalId="${resident.globalid}"
-                                    data-civil_status="${resident.civilstatus}"
-                                    data-birthdate="${new Date(resident.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}"
-                                    data-address="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
-                                    data-Contactfullname="${resident.emergencycontactfname} ${resident.emergencycontactmname ? resident.emergencycontactmname : ''} ${resident.emergencycontactlname}"
-                                    data-ContactPhone="${resident.emergencycontactnumber}"
-                                    data-Contactaddress="Purok ${resident.emergencycontactpurok}, ${resident.emergencycontactbarangay}, ${resident.emergencycontactcity}"
-                                    >Generate ID</button>
-                                </div>
+                    <td>${resident.purok || 'N/A'}</td>
+                    <td>${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}</td>
+                    <td>${new Date(resident.birthdate).toLocaleDateString()}</td>
+                    <td>${resident.age}</td>
+                    <td>${resident.gender}</td>
+                    <td>${resident.eattainment || 'N/A'}</td>
+                    <td>${resident.occupation || 'N/A'}</td>
+                    ${remarksColumn}
+                    <td class="menu-row">
+                        <img class="dot" src="../icon/triple-dot.svg" alt="">
+                        <div class="triple-dot">
+                            <div class="menu" data-id="${resident.globalid}">
+                                <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
+                                <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
+                                <button id="generate-id" onclick="popUp_three_dot(this)"
+                                data-fullname="${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}"
+                                data-idNumber="${resident.idnumber}"
+                                data-globalId="${resident.globalid}"
+                                data-civil_status="${resident.civilstatus}"
+                                data-birthdate="${new Date(resident.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}"
+                                data-address="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
+                                data-Contactfullname="${resident.emergencycontactfname} ${resident.emergencycontactmname ? resident.emergencycontactmname : ''} ${resident.emergencycontactlname}"
+                                data-ContactPhone="${resident.emergencycontactnumber}"
+                                data-Contactaddress="Purok ${resident.emergencycontactpurok}, ${resident.emergencycontactbarangay}, ${resident.emergencycontactcity}"
+                                >Generate ID</button>
                             </div>
-                        </td>
-                    `;
+                        </div>
+                    </td>
+                `;
 
                 residentsTableBody.appendChild(row);
             });
@@ -182,11 +194,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
 
-    // Search event listener
-    searchInput.addEventListener('input', (event) => {
-        const searchQuery = event.target.value;
-        fetchResidents(searchQuery); // Fetch residents with search query
-    });
+
+
+    // // Search event listener
+    // searchInput.addEventListener('input', (event) => {
+    //     const searchQuery = event.target.value;
+    //     fetchResidents(searchQuery); // Fetch residents with search query
+    // });
 
 
     // Function to dynamically update pagination links
