@@ -76,12 +76,14 @@ CREATE TABLE residents (
     city VARCHAR(255) NULL,                                                         -- used as a address of boarder while staying in the barangay
     province VARCHAR(255) NULL,                                                     -- used as a address of boarder while staying in the barangay
     birthDate DATE NOT NULL,
+    birthPlace VARCHAR(255) NULL,
     age INT NOT NULL,
     gender VARCHAR(10) NULL CHECK (gender IN ('Male', 'Female')),
     picture TEXT DEFAULT '',
     signature TEXT DEFAULT '',
     eAttainment VARCHAR(255) NULL,
     occupation VARCHAR(255) NULL,
+    income INT NULL,
     civilStatus VARCHAR(50) NULL CHECK (civilStatus IN ('Single', 'Married', 'Divorced')),
     isResident BOOLEAN NULL,
     emergencyContactId INT REFERENCES contactPerson(contactPersonId) NOT NULL,
