@@ -90,7 +90,7 @@ async function fetchRequestLists(page, limit) {
       FROM requests r
       LEFT JOIN residents rd ON r.residentsid = rd.residentsid
       WHERE r.isReleased = false
-      ORDER BY r.dateadded
+      ORDER BY r.id DESC
       LIMIT $1 OFFSET $2;
     `, [limit, offset]);
 
