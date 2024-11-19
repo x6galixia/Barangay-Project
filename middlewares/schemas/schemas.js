@@ -50,7 +50,24 @@ const residentSchema = Joi.object({
     emergencyProvince: Joi.string().optional().allow(null)
 });
 
+const inventorySchema = Joi.object({
+    iName: Joi.string().optional().allow(null),
+    quantity: Joi.number().integer().optional().allow(null),
+    iPrice: Joi.number().integer().optional().allow(null),
+    dateAdded: Joi.date().optional().allow(null),
+    categoryName: Joi.string().optional().allow(null),
+    isFunctional: Joi.boolean().valid(true, false).optional().allow(null)
+});
+
+const archiveSchema = Joi.object({
+    name: Joi.string().optional().allow(null),
+    date: Joi.date().optional().allow(null),
+    docType: Joi.string().optional().allow(null),
+});
+
 module.exports = {
     requestSchema,
-    residentSchema
+    residentSchema,
+    inventorySchema,
+    archiveSchema
 }
