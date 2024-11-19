@@ -68,9 +68,6 @@ router.get("/dashboard", async (req, res) => {
 router.post("/dashboard/add-resident", upload.single('picture'), async (req, res) => {
     const { error, value } = residentSchema.validate(req.body);
     const picture = req.file ? req.file.filename : null;
-
-    console.log(req.body);  // Log the request body
-    console.log(req.file);   // Log the file (if uploaded)
     
     if (error) {
         console.error("Validation error:", error.details.map(e => e.message).join(", "));
@@ -167,7 +164,8 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
 });
 
 router.post("/dashboard/add-non-resident", async (req, res) => {
-    const {error, value } = requestSchema.validate(req.body);
+    const { error, value } = residentSchema.validate(req.body);
+    const picture = req.file ? req.file.filename : null;
 
     if (error) {
         console.error("Validation error:", error.details.map(e => e.message).join(", "));
@@ -175,10 +173,90 @@ router.post("/dashboard/add-non-resident", async (req, res) => {
     }
       
     try {
-        
+        // Log the picture file name if uploaded
+        if (picture) {
+            console.log(`Processed file: ${picture}`);
+        } else {
+            console.log("No file received or file upload failed");
+        }
+
+        // Step 1: Get the last globalId to generate the next one
+        const globalIdresult = await mPool.query(
+            `SELECT globalId FROM residents ORDER BY globalId DESC LIMIT 1`
+        );
+
+        let lastGlobalId = "MPDN0001"; // Default starting value
+        if (globalIdresult.rows.length > 0) {
+            lastGlobalId = globalIdresult.rows[0].globalId;
+        }
+        const newId = generateGlobalNextId(lastGlobalId);
+
+        // Step 2: Get the last idNumber to generate the next one
+        const idNumberresult = await mPool.query(
+            `SELECT idNumber FROM residents ORDER BY idNumber DESC LIMIT 1`
+        );
+
+        let lastNumId = "2024-0001"; // Default starting value
+        if (idNumberresult.rows.length > 0) {
+            lastNumId = idNumberresult.rows[0].idNumber;
+        }
+        const numNewId = generateIdNumberNextId(lastNumId);
+
+        // Step 3: Insert emergency contact into contactPerson table
+        const emergencyContactResult = await mPool.query(
+            `INSERT INTO contactPerson (fName, mName, lName, street, purok, barangay, city, province, contactNumber) 
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING contactPersonId`,
+            [
+                value.emergencyFirstName,
+                value.emergencyMiddleName,
+                value.emergencyLastName,
+                value.emergencyStreet,
+                value.emergencyPurok,
+                value.emergencyBarangay,
+                value.emergencyCity,
+                value.emergencyProvince,
+                value.emergencyContactNumber
+            ]
+        );
+
+        // Step 4: Insert the resident information into residents table
+        await mPool.query(
+            `INSERT INTO residents (globalId, idNumber, fName, mName, lName, purok, street, barangay, city, province, birthDate, birthPlace, age, gender, picture, eAttainment, occupation, income, civilStatus, isResident, emergencyContactId, rClassificationId, isPwd, isSoloParent, isYouth, is4ps)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26)`,
+            [
+                newId,               // globalId
+                numNewId,            // idNumber
+                value.first_name,    // fName
+                value.middle_name,   // mName
+                value.last_name,     // lName
+                value.address.purok, // purok
+                value.address.street,// street
+                value.address.barangay, // barangay
+                value.address.city,  // city
+                value.address.province, // province
+                value.birthdate,     // birthDate
+                value.placeOfBirth,  // birthPlace
+                value.age,           // age
+                value.gender,        // gender
+                picture,             // picture (null if not uploaded)
+                value.educAttainment, // eAttainment
+                value.occupation,    // occupation
+                value.grossIncome,   // income
+                value.civilStatus,   // civilStatus
+                false,                // isResident (since this is a resident)
+                emergencyContactId,  // emergencyContactId
+                null,
+                null,
+                null,
+                null,
+                null
+            ]
+        );
     } catch (err) {
         console.error("Error: ", err.message, err.stack);
         res.status(500).send("Internal server error");
     }
 });
+
+
 module.exports = router;
