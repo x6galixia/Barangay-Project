@@ -1,23 +1,21 @@
 const mPool = require("../../models/mDatabase");
 
-//fetch function for residents list that inlude searchz
+//fetch function for residents list that inlude search
 async function fetchResidentsLists(page, limit, searchQuery = '', isNonResident = false) {
   const offset = (page - 1) * limit;
 
-  // Initialize parameter arrays
-  const residentsValues = [limit, offset, !isNonResident];
-  const totalItemsValues = [!isNonResident];
+  const residentsValues = [limit, offset, !isNonResident]; // Ensure isResident is a boolean
+  const totalItemsValues = [!isNonResident]; // Ensure isResident is a boolean
 
   let searchCondition = '';
-
   if (searchQuery && searchQuery.trim() !== '') {
-    searchCondition = `
+    const searchPattern = `%${searchQuery.trim()}%`;
+    searchCondition = ` 
       AND (
-        CONCAT(r.fname, ' ', COALESCE(r.mname, ''), ' ', r.lname) ILIKE $4
-        OR CONCAT(r.fname, ' ', r.lname) ILIKE $4
-        OR r.idNumber ILIKE $4
+        CONCAT(r.fname, ' ', COALESCE(r.mname, ''), ' ', r.lname) ILIKE $${residentsValues.length + 1}
+        OR CONCAT(r.fname, ' ', r.lname) ILIKE $${residentsValues.length + 1}
+        OR r.idNumber ILIKE $${residentsValues.length + 1}
       )`;
-    const searchPattern = `%${searchQuery}%`;
     residentsValues.push(searchPattern);
     totalItemsValues.push(searchPattern);
   }
@@ -40,22 +38,23 @@ async function fetchResidentsLists(page, limit, searchQuery = '', isNonResident 
     WHERE r.isResident = $3
       ${searchCondition}
     ORDER BY r.fname
-    LIMIT $1 OFFSET $2;
+    LIMIT $1::INTEGER OFFSET $2::INTEGER;
   `;
 
   const totalItemsQuery = `
     SELECT COUNT(*) as count
     FROM residents r
     WHERE r.isResident = $1
-      ${searchCondition};
+      ${searchQuery && searchQuery.trim() !== '' ? `
+        AND (
+          CONCAT(r.fname, ' ', COALESCE(r.mname, ''), ' ', r.lname) ILIKE $2
+          OR CONCAT(r.fname, ' ', r.lname) ILIKE $2
+          OR r.idNumber ILIKE $2
+        )
+      ` : ''}
   `;
 
   try {
-    console.log('Residents Query:', residentsQuery);
-    console.log('Residents Values:', residentsValues, residentsValues.map(v => typeof v));
-    console.log('Total Items Query:', totalItemsQuery);
-    console.log('Total Items Values:', totalItemsValues, totalItemsValues.map(v => typeof v));
-
     const totalItemsResult = await mPool.query(totalItemsQuery, totalItemsValues);
     const totalItems = parseInt(totalItemsResult.rows[0].count, 10);
     const totalPages = Math.ceil(totalItems / limit);
@@ -67,6 +66,8 @@ async function fetchResidentsLists(page, limit, searchQuery = '', isNonResident 
     throw new Error('Error fetching residents list');
   }
 }
+
+
 
 // Fetch function for request where released is false
 async function fetchRequestLists(page, limit) {
