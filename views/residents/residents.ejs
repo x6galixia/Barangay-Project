@@ -64,34 +64,6 @@
             <!-- Add Resident -->
             <div class="pop-up" id="add-resident">
 
-                <!--
-                globalId
-                idNumber 
-                lastName
-                firstName
-                middleName
-                gender
-                birthdate
-                age
-                eAttainment
-                occupation
-                rClassificationId
-                isSenior
-                isSoloParent
-                isPwd
-                isYouth
-                is4ps
-                purok
-                Street
-                barangay
-                city
-                province
-                picture
-                civilStatus
-                isResident
-                emergencyContactId
-                 -->
-
                 <div class="close-container">
                     <img src="../icon/close.svg" alt="" class="close_popUp">
                 </div>
@@ -144,16 +116,16 @@
                                 <div class="inputWithLabel">
                                     <label>Sectors</label>
                                     <select name="sectors" id="sectors-dropdown" aria-label="Sectors">
-                                        <option value="Government Employee">Government Employee</option>
-                                        <option value="Private employee">Private employee</option>
-                                        <option value="Carpenters">Carpenters</option>
-                                        <option value="Farmers">Farmers</option>
-                                        <option value="Fisherman">Fisherman</option>
-                                        <option value="Business Entrepreneur">Business Entrepreneur</option>
-                                        <option value="Drivers">Drivers</option>
-                                        <option value="OFW">OFW</option>
-                                        <option value="Kasambahay">Kasambahay</option>
-                                        <option value="None">None</option>
+                                        <option value="1">Government Employee</option>
+                                        <option value="2">Private employee</option>
+                                        <option value="3">Carpenters</option>
+                                        <option value="4">Farmers</option>
+                                        <option value="5">Fisherman</option>
+                                        <option value="6">Business Entrepreneur</option>
+                                        <option value="7">Drivers</option>
+                                        <option value="8">OFW</option>
+                                        <option value="9">Kasambahay</option>
+                                        <option value="">None</option>
                                     </select>
                                 </div>
                             </div>
@@ -166,6 +138,14 @@
                                     <label>Gross Income</label>
                                     <input type="number" aria-label="Gross Income" name="grossIncome" required>
                                 </div>
+                                <div class="inputWithLabel">
+                                    <label for="">Civil Status</label>
+                                    <select name="civilStatus" id="">
+                                        <option value="Single">Single</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Divorced">Divorced</option>
+                                    </select>
+                                </div>
                             </div>
                             <div id="residentClassification">
                                 <hr>
@@ -174,36 +154,36 @@
                                     <div class="inputWithLabel">
                                         <label>Senior</label>
                                         <select name="senior" id="" aria-label="Senior">
-                                            <option value="False">No</option>
-                                            <option value="True">Yes</option>
+                                            <option value="false">No</option>
+                                            <option value="true">Yes</option>
                                         </select>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Solo Parent</label>
                                         <select name="soloParent" id="" aria-label="Solo Parent">
-                                            <option value="False">No</option>
-                                            <option value="True">Yes</option>
+                                            <option value="false">No</option>
+                                            <option value="true">Yes</option>
                                         </select>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>PWD</label>
                                         <select name="pwd" id="" aria-label="PWD">
-                                            <option value="False">No</option>
-                                            <option value="True">Yes</option>
+                                            <option value="false">No</option>
+                                            <option value="true">Yes</option>
                                         </select>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Youth</label>
                                         <select name="youth" id="" aria-label="Youth">
-                                            <option value="False">No</option>
-                                            <option value="True">Yes</option>
+                                            <option value="false">No</option>
+                                            <option value="true">Yes</option>
                                         </select>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>4ps</label>
-                                        <select name="4ps" id="" aria-label="4ps">
-                                            <option value="False">No</option>
-                                            <option value="True">Yes</option>
+                                        <select name="is4ps" id="" aria-label="4ps">
+                                            <option value="false">No</option>
+                                            <option value="true">Yes</option>
                                         </select>
                                     </div>
                                 </div>
@@ -290,6 +270,7 @@
                                 </div>
                             </div>
                             <hr>
+                            
                             <h3>Emergency Contact Person</h3>
                             <div>
                                 <div class="row">
@@ -355,7 +336,7 @@
                                         onclick="captureImage()">Capture</button>
                                     <button type="button" class="button upload"
                                         onclick="triggerUpload()">Upload</button>
-                                    <input type="file" id="fileInput" accept="image/*" onchange="displayImage(event)">
+                                    <input type="file" id="fileInput" name="picture" accept="image/*" onchange="displayImage(event)">
                                 </div>
                             </div>
                         </div>
