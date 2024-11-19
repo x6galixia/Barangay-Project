@@ -115,9 +115,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     });
 
-
-
-
     async function fetchResidents(page = 1, limit = 10, searchQuery = '', isNonResident = false) {
         console.log("Search Query: ", searchQuery);
         console.log("Fetching for Non-Residents: ", isNonResident);

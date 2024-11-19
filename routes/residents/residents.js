@@ -3,7 +3,7 @@ const router = express.Router();
 const mPool = require("../../models/mDatabase");
 const { fetchResidentsLists } = require("../../middlewares/helper-functions/fetch-functions");
 const { generateGlobalNextId, generateIdNumberNextId } = require("../../middlewares/helper-functions/id-generator");
-const { requestSchema } = require("../../middlewares/schemas/schemas");
+const { residentSchema } = require("../../middlewares/schemas/schemas");
 
 const multer = require("multer");
 const fs = require('fs');
@@ -65,9 +65,12 @@ router.get("/dashboard", async (req, res) => {
     }
 });
 
-router.post("/resident/dashboard/add-resident", upload.single('picture'), async (req, res) => {
-    const { error, value } = requestSchema.validate(req.body);
+router.post("/dashboard/add-resident", upload.single('picture'), async (req, res) => {
+    const { error, value } = residentSchema.validate(req.body);
     const picture = req.file ? req.file.filename : null;
+
+    console.log(req.body);  // Log the request body
+    console.log(req.file);   // Log the file (if uploaded)
     
     if (error) {
         console.error("Validation error:", error.details.map(e => e.message).join(", "));
@@ -163,7 +166,7 @@ router.post("/resident/dashboard/add-resident", upload.single('picture'), async 
     }
 });
 
-router.post("/resident/dashboard/add-non-resident", async (req, res) => {
+router.post("/dashboard/add-non-resident", async (req, res) => {
     const {error, value } = requestSchema.validate(req.body);
 
     if (error) {
