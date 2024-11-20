@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mPool = require("../../models/mDatabase");
+const { fetchArchiveLists } = require("../../middlewares/helper-functions/fetch-functions");
 const { archiveSchema } = require("../../middlewares/schemas/schemas");
 
 const multer = require("multer");
@@ -26,21 +27,34 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 router.use("/uploads/archive-img", express.static("uploads"));
 
-router.get("/dashboard", (req, res) => {
-    res.render("archive/archive", {
-        title: "Archive"
-    });
-});
-
 router.get("/dashboard", async (req, res) => {
     const page = parseInt(req.query.page, 10) || 1;
     const limit = parseInt(req.query.limit, 10) || 10;
     const searchQuery = req.query.search || '';
-    const isFunctional = req.query.isFunctional === "true";
     const isAjax = req.query.ajax === "true" || req.xhr;
+
+    console.log("Search Query on Backend: ", searchQuery);
+
     try {
-        const { getResidentsList, totalPages } = await fetchResidentsLists(page, limit, searchQuery, isNonResident);
-        
+        const { getArchiveList, totalPages } = await fetchArchiveLists(page, limit, searchQuery);
+
+        if (isAjax) {
+            return res.json({
+                title: "Inventory",
+                getArchiveList,
+                currentPage: page,
+                totalPages,
+                limit,
+            });
+        }
+
+        res.render("archive/archive", {
+            title: "Inventory",
+            getArchiveList,
+            currentPage: page,
+            totalPages,
+            limit,
+        });
     } catch (err) {
         console.error("Error: ", err.message, err.stack);
         res.status(500).send("Internal server error");

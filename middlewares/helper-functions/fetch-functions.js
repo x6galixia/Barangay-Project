@@ -165,17 +165,60 @@ async function fetchInventoryLists(page, limit, searchQuery = '', isFunctional =
   }
 }
 
-async function fetchArchiveLists(page, limit, searchQuery) {
+
+async function fetchArchiveLists(page, limit, searchQuery = '') {
+  const offset = (page - 1) * limit;
+
+  const archiveValues = [limit, offset];
+  const totalItemsValues = [];
+
+  let searchCondition = '';
+  if (searchQuery && searchQuery.trim() !== '') {
+    const searchPattern = `%${searchQuery.trim()}%`;
+    searchCondition = ` 
+      AND (
+        CONCAT(name, ' ', COALESCE(docType)) ILIKE $${archiveValues.length + 1}
+        OR name ILIKE $${archiveValues.length + 1}
+        OR docType ILIKE $${archiveValues.length + 1}
+      )`;
+    archiveValues.push(searchPattern);
+    totalItemsValues.push(searchPattern);
+  }
+
+  const archiveQuery = `
+    SELECT * FROM archive
+    WHERE 1=1  ${searchCondition}
+    ORDER BY name
+    LIMIT $1::INTEGER OFFSET $2::INTEGER;
+  `;
+
+  const totalItemsQuery = `
+    SELECT COUNT(*) as count
+    FROM archive
+    WHERE 1=1
+    ${searchQuery && searchQuery.trim() !== '' ? `AND (
+        CONCAT(name, ' ', COALESCE(docType)) ILIKE $1
+        OR name ILIKE $1
+        OR docType ILIKE $1
+    )` : ''}
+  `;
+
   try {
-    
+    const totalItemsResult = await mPool.query(totalItemsQuery, totalItemsValues);
+    const totalItems = parseInt(totalItemsResult.rows[0].count, 10);
+    const totalPages = Math.ceil(totalItems / limit);
+
+    const archiveResult = await mPool.query(archiveQuery, archiveValues);
+    return { getArchiveList: archiveResult.rows, totalPages };
   } catch (err) {
-    console.error('Error fetching archive list:', err.message);
-    throw new Error('Error fetching archive list');
+    console.error('Error fetching ARCHIVE list:', err.message);
+    throw new Error('Error fetching ARCHIVE list');
   }
 }
 
 module.exports = {
   fetchResidentsLists,
   fetchRequestLists,
-  fetchInventoryLists
+  fetchInventoryLists,
+  fetchArchiveLists
 };
