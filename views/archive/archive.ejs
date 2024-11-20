@@ -17,12 +17,7 @@
         <main class="mainContainer">
             <div class="heading">Archives</div>
             <div class="tableActionOne">
-                <input type="search" placeholder="Search">
-                <select class="archives-dropdown" name="archives"">
-            <option value=" All">All</option>
-                    <option value="ambot">ambot</option>
-
-                </select>
+                <input type="search" id="searchInput" placeholder="Search">
             </div>
             <div class="tableContainer">
                 <table>
@@ -30,8 +25,8 @@
                         <tr>
                             <th>NAME</th>
                             <th>DATE</th>
-                            <th>AMBOT</th>
-                            <th>AMBOT</th>
+                            <th>DOCTYPE</th>
+                            <th>IMAGE</th>
                         </tr>
                     </thead>
                     <tbody id="archiveTableBody"></tbody>
@@ -89,6 +84,7 @@
         </div>
 </body>
 <script src="../../js/global/pop-up.js"></script>
+<script src="../../js/local/archive/archive-api.js"></script>
 <script>
     document.querySelector("header>nav>ul>li:nth-child(5)").classList.toggle("selected");
     // Function to trigger file input click
