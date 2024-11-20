@@ -86,7 +86,8 @@ async function fetchRequestLists(page, limit) {
     const getRequestList = await mPool.query(`
       SELECT 
           r.residentsid, r.dateadded, r.purpose, r.isReleased,
-          rd.fname, rd.mname, rd.lname
+          rd.fname, rd.mname, rd.lname, rd.gender, rd.age, rd.civilstatus,
+          rd.purok, rd.barangay, rd.city, rd.province
       FROM requests r
       LEFT JOIN residents rd ON r.residentsid = rd.residentsid
       WHERE r.isReleased = false

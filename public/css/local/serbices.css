@@ -1,3 +1,11 @@
 table {
   margin-top: 12px;
 }
+
+.tableContainer {
+  overflow: visible;
+}
+
+#certificateMainForm {
+  margin: 24px 0;
+}

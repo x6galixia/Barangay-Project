@@ -69,7 +69,8 @@
                 </div>
                 <h1 class="heading">ADD RESIDENT</h1>
                 <main>
-                    <form action="/residents/dashboard/add-resident" method="POST" enctype="multipart/form-data">
+                    <form id="formToAddResident" action="/residents/dashboard/add-resident" method="POST"
+                        enctype="multipart/form-data">
                         <div class="add-resident-input-container">
                             <h3>Resident Personal Information</h3>
                             <div class="row">
@@ -143,7 +144,8 @@
                                     <select name="civilStatus" id="">
                                         <option value="Single">Single</option>
                                         <option value="Married">Married</option>
-                                        <option value="Divorced">Divorced</option>
+                                        <option value="Widow">Widow</option>
+                                        <option value="Widower">Widower</option>
                                     </select>
                                 </div>
                             </div>
@@ -196,7 +198,7 @@
                                     <select name="purok" aria-label="Purok">
                                         <option value="Seguidila">Seguidila</option>
                                         <option value="Sitaw">Sitaw</option>
-                                        <option value="Maypangdan">Maypangdan</option>
+                                        <option value="Talbos">Talbos</option>
                                         <option value="Petchay">Petchay</option>
                                         <option value="Ampalaya">Ampalaya</option>
                                         <option value="Mustaza">Mustaza</option>
@@ -232,7 +234,7 @@
                                         <select name="purok1" aria-label="Purok">
                                             <option value="Seguidila">Seguidila</option>
                                             <option value="Sitaw">Sitaw</option>
-                                            <option value="Maypangdan">Maypangdan</option>
+                                            <option value="Talbos">Talbos</option>
                                             <option value="Petchay">Petchay</option>
                                             <option value="Ampalaya">Ampalaya</option>
                                             <option value="Mustaza">Mustaza</option>
@@ -241,36 +243,32 @@
                                     </div>
                                     <div class="inputWithLabel" id="street">
                                         <label>Street</label>
-                                        <input type="text" aria-label="Street" name="street1" required>
+                                        <input type="text" aria-label="Street" name="street1">
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Barangay</label>
-                                        <input type="text" aria-label="Barangay" name="barangay1" required
-                                            value="Maypangdan">
+                                        <input type="text" aria-label="Barangay" name="barangay1" value="Maypangdan">
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>City</label>
-                                        <input type="text" aria-label="City" name="city1" required
-                                            value="Borongan City">
+                                        <input type="text" aria-label="City" name="city1" value="Borongan City">
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Province</label>
-                                        <input type="text" aria-label="Province" name="province1" required
-                                            value="Eastern Samar">
+                                        <input type="text" aria-label="Province" name="province1" value="Eastern Samar">
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Boarding House Name</label>
-                                        <input type="text" aria-label="Boarding House Name" name="boardingHouse"
-                                            required>
+                                        <input type="text" aria-label="Boarding House Name" name="boardingHouse">
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Landlord</label>
-                                        <input type="text" aria-label="Landlord" name="landlord" required>
+                                        <input type="text" aria-label="Landlord" name="landlord">
                                     </div>
                                 </div>
                             </div>
                             <hr>
-                            
+
                             <h3>Emergency Contact Person</h3>
                             <div>
                                 <div class="row">
@@ -298,7 +296,7 @@
                                         <select name="emergencyPurok" aria-label="Purok">
                                             <option value="Seguidila">Seguidila</option>
                                             <option value="Sitaw">Sitaw</option>
-                                            <option value="Maypangdan">Maypangdan</option>
+                                            <option value="Talbos">Talbos</option>
                                             <option value="Petchay">Petchay</option>
                                             <option value="Ampalaya">Ampalaya</option>
                                             <option value="Mustaza">Mustaza</option>
@@ -336,36 +334,12 @@
                                         onclick="captureImage()">Capture</button>
                                     <button type="button" class="button upload"
                                         onclick="triggerUpload()">Upload</button>
-                                    <input type="file" id="fileInput" name="picture" accept="image/*" onchange="displayImage(event)">
+                                    <input type="file" id="fileInput" name="picture" accept="image/*"
+                                        onchange="displayImage(event)">
                                 </div>
                             </div>
                         </div>
-                        <button type="button" id="submit_add_resident" onclick="popUp_button(this)">SUBMIT</button>
-                        <div class="pop-up-confirm" id="reject_dispense">
-                            <div>
-                                <div class="reject-heading">
-                                    <img src="../icon/warning.svg" alt="">
-                                    <h2>Rejecting a dispense request will <br>
-                                        automatically delete from the list</h2>
-                                </div>
-                                <main>
-                                    <h2>Are sure you want to reject this dispense request?</h2>
-                                    <div>
-                                        <button type="button" class="button-bordered close_confirm">No</button>
-                                        <button type="submit" class="button-bordered">Yes</button>
-                                    </div>
-                                </main>
-                            </div>
-                        </div>
-                        <div class="pop-up-confirm" id="submit_dispense">
-                            <div>
-                                <h2>Do you want to add this beneficiary?</h2>
-                                <main>
-                                    <button type="button" class="button-bordered close_confirm">No</button>
-                                    <button type="submit" class="button-green">Yes</button>
-                                </main>
-                            </div>
-                        </div>
+                        <button type="submit" id="submit_add_resident">SUBMIT</button>
                     </form>
                 </main>
             </div>
@@ -469,6 +443,21 @@
                     </div>
                 </main>
             </div>
+
+            <% if (messages.success) { %>
+                <div class="overlay"></div>
+                <div class="alert alert-success" id="submit_prompt">
+                    <img src="../images/success-img.png" alt="">
+                    <div>
+                        <h2>
+                            <%= messages.success %>
+                        </h2>
+                        <main>
+                            <button type="button" class="button-green" onclick="closePopup()">Done</button>
+                        </main>
+                    </div>
+                </div>
+                <% } %>
         </main>
 </body>
 <script src="../../js/global/pop-up.js"></script>
