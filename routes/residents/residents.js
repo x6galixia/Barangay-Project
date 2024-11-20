@@ -243,7 +243,7 @@ router.post("/dashboard/add-non-resident", async (req, res) => {
                 value.occupation,    // occupation
                 value.grossIncome,   // income
                 value.civilStatus,   // civilStatus
-                false,                // isResident (since this is a resident)
+                false,                // isResident (since this is a non-resident)
                 emergencyContactId,  // emergencyContactId
                 null,
                 null,
