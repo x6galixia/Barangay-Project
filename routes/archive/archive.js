@@ -32,6 +32,21 @@ router.get("/dashboard", (req, res) => {
     });
 });
 
+router.get("/dashboard", async (req, res) => {
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const searchQuery = req.query.search || '';
+    const isFunctional = req.query.isFunctional === "true";
+    const isAjax = req.query.ajax === "true" || req.xhr;
+    try {
+        const { getResidentsList, totalPages } = await fetchResidentsLists(page, limit, searchQuery, isNonResident);
+        
+    } catch (err) {
+        console.error("Error: ", err.message, err.stack);
+        res.status(500).send("Internal server error");
+    }
+});
+
 router.post("/dashboard/add-archive", upload.single('picture'), async (req, res) => {
     const { error, value } = archiveSchema.validate(req.body);
     const picture = req.file ? req.file.filename : null;

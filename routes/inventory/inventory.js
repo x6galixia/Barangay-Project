@@ -1,12 +1,42 @@
 const express = require('express');
 const router = express.Router();
 const mPool = require("../../models/mDatabase");
+const { fetchInventoryLists } = require("../../middlewares/helper-functions/fetch-functions");
 const { inventorySchema } = require("../../middlewares/schemas/schemas");
 
-router.get("/dashboard", (req, res) => {
-    res.render("inventory/inventory", {
-        title: "Inventory"
-    });
+router.get("/dashboard", async (req, res) => {
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const searchQuery = req.query.search || '';
+    const isFunctional = req.query.isFunctional === "true";
+    const isAjax = req.query.ajax === "true" || req.xhr;
+
+    console.log("Search Query on Backend: ", searchQuery);
+
+    try {
+        const { getInventoryList, totalPages } = await fetchInventoryLists(page, limit, searchQuery, isFunctional);
+
+        if (isAjax) {
+            return res.json({
+                title: "Inventory",
+                getInventoryList,
+                currentPage: page,
+                totalPages,
+                limit,
+            });
+        }
+
+        res.render("inventory/inventory", {
+            title: "Inventory",
+            getInventoryList,
+            currentPage: page,
+            totalPages,
+            limit,
+        });
+    } catch (err) {
+        console.error("Error: ", err.message, err.stack);
+        res.status(500).send("Internal server error");
+    }
 });
 
 router.post("/dashboard/add-item", async (req, res) => {
