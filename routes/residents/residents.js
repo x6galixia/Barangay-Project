@@ -11,19 +11,19 @@ const path = require('path');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      const uploadPath = 'uploads/residents-img/';
-  
-      if (!fs.existsSync(uploadPath)) {
-        fs.mkdirSync(uploadPath, { recursive: true });
-      }
-  
-      cb(null, uploadPath);
+        const uploadPath = 'uploads/residents-img/';
+
+        if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
+        }
+
+        cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
     }
-  });
+});
 
 const upload = multer({ storage: storage });
 router.use("/uploads/residents-img", express.static("uploads"));
@@ -68,7 +68,7 @@ router.get("/dashboard", async (req, res) => {
 router.post("/dashboard/add-resident", upload.single('picture'), async (req, res) => {
     const { error, value } = residentSchema.validate(req.body);
     const picture = req.file ? req.file.filename : null;
-    
+
     if (error) {
         console.error("Validation error:", error.details.map(e => e.message).join(", "));
         return res.status(400).json({ error: error.details.map(e => e.message) });
@@ -120,7 +120,7 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
                 value.emergencyContactNumber
             ]
         );
-        
+
         const emergencyContactId = emergencyContactResult.rows[0].contactPersonId;
 
         // Step 4: Insert the resident information into residents table
@@ -156,6 +156,7 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
                 value.is4ps          // is4ps
             ]
         );
+        req.flash('success', 'Resident Added Successfully!');
         res.redirect("/resident/dashboard/");
     } catch (err) {
         console.error("Error: ", err.message, err.stack);
@@ -171,7 +172,7 @@ router.post("/dashboard/add-non-resident", async (req, res) => {
         console.error("Validation error:", error.details.map(e => e.message).join(", "));
         return res.status(400).json({ error: error.details.map(e => e.message) });
     }
-      
+
     try {
         // Log the picture file name if uploaded
         if (picture) {

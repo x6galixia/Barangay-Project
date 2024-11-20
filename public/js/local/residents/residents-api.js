@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const limit = parseInt(urlParams.get('limit')) || 10;
     const sectorsDropdown = document.getElementById('sectors-dropdown');
     const addressWhileStudying = document.getElementById('addressWhileStudying');
+    const formToAddResident = document.getElementById('formToAddResident');
 
     fetchResidents().then(attachDotEventListeners);
 
@@ -48,6 +49,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             document.getElementById('city').value = "Borongan City";
             document.getElementById('province').value = "Eastern Samar";
             document.getElementById('residentPageTitle').innerText = "LIST OF RESIDENT";
+            formToAddResident.setAttribute('action', '/residents/dashboard/add-resident');
+
 
             sectorsDropdown.innerHTML = `
             <option value="Government Employee">Government Employee</option>
@@ -68,7 +71,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <select name="purok" aria-label="Purok">
                     <option value="Seguidila">Seguidila</option>
                     <option value="Sitaw">Sitaw</option>
-                    <option value="Maypangdan">Maypangdan</option>
+                    <option value="Talbos">Talbos</option>
                     <option value="Petchay">Petchay</option>
                     <option value="Ampalaya">Ampalaya</option>
                     <option value="Mustaza">Mustaza</option>
@@ -95,6 +98,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             document.getElementById('city').value = "";
             document.getElementById('province').value = "";
             document.getElementById('residentPageTitle').innerText = "LIST OF NON-RESIDENT";
+            formToAddResident.setAttribute('action', '/residents/dashboard/add-non-resident');
 
             sectorsDropdown.innerHTML = `
             <option value="Resident Boarders">Resident Boarders</option>
