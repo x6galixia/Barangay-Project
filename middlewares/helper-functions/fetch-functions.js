@@ -24,17 +24,21 @@ async function fetchResidentsLists(page, limit, searchQuery = '', isNonResident 
     SELECT
       r.globalId, r.residentsId, r.idNumber, r.fname, r.mname, r.lname,
       r.street, r.purok, r.barangay, r.city, r.province, r.birthDate, r.age,
-      r.gender, r.picture, r.signature, r.eAttainment, r.occupation,
+      r.gender, r.picture, r.signature, r.eAttainment, r.occupation, r.isresident,
       rc.rClassificationName AS residentClassification,
       cp.fname AS emergencyContactFName, cp.mname AS emergencyContactMName,
       cp.lname AS emergencyContactLName, cp.contactNumber AS emergencyContactNumber,
       cp.street AS emergencyContactStreet, cp.purok AS emergencyContactPurok,
       cp.barangay AS emergencyContactBarangay, cp.city AS emergencyContactCity,
       cp.province AS emergencyContactProvince,
+      bd.originalstreet, bd.originalpurok,
+      bd.originalbarangay, bd.originalcity,
+      bd.originalprovince,
       r.isPwd, r.isSoloParent, r.isYouth, r.is4ps, r.isResident, r.civilStatus
     FROM residents r
     LEFT JOIN rClassification rc ON r.rClassificationId = rc.rClassificationId
     LEFT JOIN contactPerson cp ON r.emergencyContactId = cp.contactPersonId
+    LEFT JOIN boarders bd ON r.residentsid = bd.boarderinresidentid
     WHERE r.isResident = $3
       ${searchCondition}
     ORDER BY r.fname

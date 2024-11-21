@@ -167,7 +167,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             const data = await response.json();
             const residents = data.getResidentsList;
-            console.log(data);
             // Clear the table body
             residentsTableBody.innerHTML = '';
 
@@ -210,10 +209,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                                 data-civil_status="${resident.civilstatus}"
                                 data-birthdate="${new Date(resident.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}"
                                 data-address="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
-                                data-addressNotResident="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
+                                data-addressNotResident="Purok ${resident.originalpurok}, ${resident.originalbarangay}, ${resident.originalcity}"
                                 data-Contactfullname="${resident.emergencycontactfname} ${resident.emergencycontactmname ? resident.emergencycontactmname : ''} ${resident.emergencycontactlname}"
                                 data-ContactPhone="${resident.emergencycontactnumber}"
                                 data-Contactaddress="Purok ${resident.emergencycontactpurok}, ${resident.emergencycontactbarangay}, ${resident.emergencycontactcity}"
+                                data-ContactaddressNotResident="${resident.emergencycontactbarangay}, ${resident.emergencycontactcity}, ${resident.emergencycontactprovince}"
                                 >Generate ID</button>
                             </div>
                         </div>
@@ -391,11 +391,17 @@ window.popUp_three_dot = function (button) {
         document.getElementById('fullname').innerText = button.getAttribute('data-fullname');
         document.getElementById('civilStatus').innerText = button.getAttribute('data-civil_status');
         document.getElementById('birthdate').innerText = button.getAttribute('data-birthdate');
-        document.getElementById('address').innerText = button.getAttribute('data-address');
         document.getElementById('idNumber').innerText = button.getAttribute('data-idNumber');
         document.getElementById('emergencyContactName').innerText = button.getAttribute('data-contactFullName');
         document.getElementById('emergencyContactNumber').innerText = button.getAttribute('data-contactPhone');
-        document.getElementById('emergencyContactAddress').innerText = button.getAttribute('data-contactAddress');
+
+        if (isResident === "true") {
+            document.getElementById('address').innerText = button.getAttribute('data-address');
+            document.getElementById('emergencyContactAddress').innerText = button.getAttribute('data-contactAddress');
+        } else {
+            document.getElementById('address').innerText = button.getAttribute('data-addressNotResident');
+            document.getElementById('emergencyContactAddress').innerText = button.getAttribute('data-contactAddressNotResident');
+        }
 
         const pictureElement = document.getElementById('residentPicture');
         const image = button.getAttribute('data-picture');
