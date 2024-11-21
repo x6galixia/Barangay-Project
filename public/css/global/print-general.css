@@ -52,10 +52,12 @@
     align-items: center;
 }
 
-.cert-header img {
+
+
+.linya {
     width: 90%;
     height: 19px;
-    margin-top: 5px;
+    margin-top: 8px;
 }
 
 .certificate-logo {
@@ -171,6 +173,7 @@
 
 
 
+
 @media print {
 
     header, .mainContainer, #process-certificate, .F, button, .close-container, .overlay{
@@ -202,13 +205,13 @@
         top: 0;
         left: 0;
         margin: 0 auto;
-        width: 90%; /* Adjust based on content */
-        max-width: 21cm; /* A4 width */
-        height: auto; /* Maintain aspect ratio */
-        transform: none; /* Avoid transform in print */
+        width: 100%;
+        max-width: 21cm;
+        height: auto;
+        transform: none;
         z-index: auto;
         overflow: visible;
-        page-break-inside: avoid; /* Prevent breaking inside */
+        page-break-inside: avoid;
     }
 
     #certificateContainer {
