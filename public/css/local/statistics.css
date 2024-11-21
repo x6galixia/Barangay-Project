@@ -1,86 +1,108 @@
-
-.tunga{
+.tunga {
     display: flex;
     justify-content: center;
     gap: 100px;
 }
-.container{
+
+.container {
     padding: 40px;
 }
-#tunga{
+
+#tunga {
     margin-bottom: 50px;
 }
-.separate{
+
+.separate {
     display: flex;
     gap: 40px;
 }
-.separate strong, .separate li, .separate p{
+
+.separate strong,
+.separate li,
+.separate p {
     font-weight: 400;
     font-size: 13px;
 }
-.separate h3{
+
+.separate h3 {
     font-size: 15px;
     text-wrap: nowrap;
 }
-#meow{
+
+#meow {
     height: 100%;
     display: flex;
     justify-content: space-between;
     margin-bottom: 40px;
-}
-.container h2{
-    margin-bottom: 20px;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 80px;
+    padding: 0 3%;
 }
 
-canvas {
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+#meow>div {
+    flex: 1;
 }
+
+.container h2 {
+    margin-bottom: 20px;
+    margin-left: 3%;
+}
+
 
 /* Details Sections */
-.separate, 
-#ageDemographicsText, 
-#totalsByPurokDetails, 
-#residentStatusText,
-#overallPopulation {
+.separate {
     background-color: #f9f9f9;
     padding: 15px;
     border-radius: 5px;
     padding: 30px 30px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    align-self: stretch;
+    width: 40% !important;
 }
-#totalsByPurokDetails{
+
+#totalsByPurokDetails {
     margin-bottom: 10px;
 }
-#overallPopulation{
+
+#overallPopulation {
     padding-bottom: 40px;
 }
-.barangayPopulationChart1{
+
+.barangayPopulationChart1 {
     height: 900px;
     width: 900px;
 }
-#classificationByPurokDetails{
+
+#classificationByPurokDetails {
     margin-bottom: 40px;
 }
-#totalsByPurokDetails li{
+
+#totalsByPurokDetails li {
     display: inline;
     margin-right: 10px;
 }
-#totalsByPurokDetails{
+
+#totalsByPurokDetails {
     margin: 0;
 }
-#totalsByPurokDetails ul{
-    
+
+#totalsByPurokDetails ul {
+
     margin: 10px;
 }
 
-.chart{
+.chart {
     width: 500px;
     height: 500px;
+    display: grid;
+    place-items: center;
 }
-.info{
+
+.info {
     flex-grow: 1;
 }
-#residentStatusText p{
+
+#residentStatusText p {
     margin-bottom: 20px;
 }
