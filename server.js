@@ -20,6 +20,7 @@ const inventoryRouter = require("./routes/inventory/inventory");
 const residentsRouter = require("./routes/residents/residents");
 const servicesRouter = require("./routes/services/services");
 const statisticsRouter = require("./routes/statistics/statistics");
+const officialsRouter = require("./routes/officials/officials");
 
 //-------CONNECTING TO DATABASE-------//
 mPool.connect()
@@ -72,6 +73,7 @@ app.use("/inventory", inventoryRouter);
 app.use("/residents", residentsRouter);
 app.use("/services", servicesRouter);
 app.use("/statistics", statisticsRouter);
+app.use("/officials", officialsRouter);
 
 app.get("/", (req, res) => {
     res.redirect("/home/dashboard");
