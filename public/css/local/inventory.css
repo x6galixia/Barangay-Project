@@ -42,3 +42,12 @@
 .inputWithLabel>div>input {
   width: 100%;
 }
+
+.triple-dot {
+  margin-bottom: -170px;
+  margin-left: -170px;
+}
+
+.triple-dot button {
+  padding: 12px 36px;
+}

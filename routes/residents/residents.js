@@ -283,22 +283,23 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
         const emergencyContactId = emergencyContactResult.rows[0].contactpersonid;
         const birthDate = new Date(value.birthdate).toISOString().split("T")[0];
 
-        // Step 4: Insert the resident information into residents table
-        await mPool.query(
+        // Step 4: Insert the resident information into the residents table and retrieve the residentsid
+        const residentInsertResult = await mPool.query(
             `INSERT INTO residents (globalId, idNumber, fName, mName, lName, purok, street, barangay, city, province, birthDate, birthPlace, age, gender, picture, eAttainment, occupation, income, civilStatus, isResident, emergencyContactId, rClassificationId, isPwd, isSoloParent, isYouth, is4ps)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26)`,
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26)
+     RETURNING residentsid`,
             [
                 newId,               // globalId
                 numNewId,            // idNumber
                 value.first_name,    // fName
                 value.middle_name,   // mName
                 value.last_name,     // lName
-                value.purok, // purok
-                value.street,// street
-                value.barangay, // barangay
-                value.city,  // city
-                value.province, // province
-                birthDate,     // birthDate
+                value.purok,         // purok
+                value.street,        // street
+                value.barangay,      // barangay
+                value.city,          // city
+                value.province,      // province
+                birthDate,           // birthDate
                 value.placeOfBirth,  // birthPlace
                 value.age,           // age
                 value.gender,        // gender
@@ -307,7 +308,7 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
                 value.occupation,    // occupation
                 value.grossIncome,   // income
                 value.civilStatus,   // civilStatus
-                false,                // isResident (since this is a non-resident)
+                false,               // isResident (since this is a non-resident)
                 emergencyContactId,  // emergencyContactId
                 value.sectors,
                 null,
@@ -316,6 +317,28 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
                 null
             ]
         );
+
+        // Get the newly generated residentsid
+        const residentsId = residentInsertResult.rows[0].residentsid;
+        console.log("Generated residentsid:", residentsId);
+
+        // Step 5: Insert the resident information into the boarders table
+        await mPool.query(
+            `INSERT INTO boarders (boarderinresidentid, originalstreet, originalpurok, originalbarangay, originalcity, originalprovince, boardinghousename, landlord) 
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+            [
+                residentsId,                           // Referencing the residentsid
+                value.nonResidentAddress.street1,      // originalpurok
+                value.nonResidentAddress.purok1,       // originalstreet
+                value.nonResidentAddress.barangay1,    // originalbarangay
+                value.nonResidentAddress.city1,        // originalcity
+                value.nonResidentAddress.province1,    // originalprovince
+                value.nonResidentAddress.boardingHouse, // boardinghousename
+                value.nonResidentAddress.landlord      // landlord
+            ]
+        );
+
+        console.log("Inserted data into the boarders table successfully.");
 
         req.flash('success', 'Non-Resident Added Successfully!');
         res.redirect("/residents/dashboard");
