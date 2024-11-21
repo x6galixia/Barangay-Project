@@ -74,12 +74,30 @@
                             </div>
                             <div class="buttons">
                                 <button type="button" class="button upload" onclick="triggerUpload()">Upload</button>
-                                <input type="file" name="picture" id="fileInput" accept="image/*" onchange="displayImage(event)">
+                                <input type="file" name="picture" id="fileInput" accept="image/*"
+                                    onchange="displayImage(event)">
                             </div>
                         </div>
                     </div>
                     <button id="submit_add_document">SUBMIT</button>
                 </form>
+            </main>
+        </div>
+
+        <!-- Image -->
+        <div class="pop-up" id="view-document">
+            <div class="close-container">
+                <img src="../icon/close.svg" alt="" class="close_popUp">
+            </div>
+            <h1 class="heading" id="docHeading">DOCUMENT</h1>
+            <main>
+                <div class="buttonContainerInArchibe">
+                    <button>UPDATE</button>
+                    <button>DELETE</button>
+                </div>
+                <div id="imageContainer">
+                    <img src="../images/wow.jpg" id="imageTo" alt="">
+                </div>
             </main>
         </div>
 </body>
