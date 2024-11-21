@@ -67,33 +67,33 @@ CREATE TABLE boarders (
 
 CREATE TABLE residents (
     residentsId SERIAL PRIMARY KEY NOT NULL,
-    globalId VARCHAR(255) NOT NULL UNIQUE,  -1
+    globalId VARCHAR(255) NOT NULL UNIQUE, 
     idNumber VARCHAR(255) NULL, 
-    fName VARCHAR(255) NOT NULL,            -2
-    mName VARCHAR(255) NULL,                -3
-    lName VARCHAR(255) NOT NULL,            -4
-    street VARCHAR(255) NULL,               -5                                      -- used as a address of boarder while staying in the barangay
-    purok VARCHAR(255) NULL,                -6                                      -- used as a address of boarder while staying in the barangay
-    barangay VARCHAR(255) NULL,             -7                                      -- used as a address of boarder while staying in the barangay
-    city VARCHAR(255) NULL,                 -8                                      -- used as a address of boarder while staying in the barangay
-    province VARCHAR(255) NULL,             -9                                      -- used as a address of boarder while staying in the barangay
-    birthDate DATE NOT NULL,                -10
-    birthPlace VARCHAR(255) NULL,           -11
-    age INT NOT NULL,                       -12
-    gender VARCHAR(10) NULL CHECK (gender IN ('Male', 'Female')),  -13
-    picture TEXT DEFAULT '',                                       -14
+    fName VARCHAR(255) NOT NULL,           
+    mName VARCHAR(255) NULL,               
+    lName VARCHAR(255) NOT NULL,           
+    street VARCHAR(255) NULL,                                                    -- used as a address of boarder while staying in the barangay
+    purok VARCHAR(255) NULL,                                                     -- used as a address of boarder while staying in the barangay
+    barangay VARCHAR(255) NULL,                                                  -- used as a address of boarder while staying in the barangay
+    city VARCHAR(255) NULL,                                                      -- used as a address of boarder while staying in the barangay
+    province VARCHAR(255) NULL,                                                  -- used as a address of boarder while staying in the barangay
+    birthDate DATE NOT NULL,                
+    birthPlace VARCHAR(255) NULL,           
+    age INT NOT NULL,                       
+    gender VARCHAR(10) NULL CHECK (gender IN ('Male', 'Female')),  
+    picture TEXT DEFAULT '',                                       
     signature TEXT DEFAULT '',  -- reserve only if needed
-    eAttainment VARCHAR(255) NULL,                                 -15
-    occupation VARCHAR(255) NULL,                                  -16
-    income INT NULL,                                               -17
-    civilStatus VARCHAR(50) NULL CHECK (civilStatus IN ('Single', 'Married', 'Divorced')),   -18
-    isResident BOOLEAN NULL,                                                                 -19
+    eAttainment VARCHAR(255) NULL,                                 
+    occupation VARCHAR(255) NULL,                                  
+    income INT NULL,                                               
+    civilStatus VARCHAR(50) NULL CHECK (civilStatus IN ('Single', 'Married', 'Divorced')),   
+    isResident BOOLEAN NULL,                                                                 
     emergencyContactId INT REFERENCES contactPerson(contactPersonId) NOT NULL,       
     rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,   -- not available is boarder
-    isPwd BOOLEAN DEFAULT FALSE,                    -20                             -- not available if boarder
-    isSoloParent BOOLEAN DEFAULT FALSE,             -21                             -- not available if boarder
-    isYouth BOOLEAN DEFAULT FALSE,                  -22                             -- not available if boarder
-    is4ps BOOLEAN DEFAULT FALSE                     -23                             -- not available if boarder
+    isPwd BOOLEAN DEFAULT FALSE,                                                 -- not available if boarder
+    isSoloParent BOOLEAN DEFAULT FALSE,                                          -- not available if boarder
+    isYouth BOOLEAN DEFAULT FALSE,                                               -- not available if boarder
+    is4ps BOOLEAN DEFAULT FALSE                                                  -- not available if boarder
 );
 
 INSERT INTO rClassification (rClassificationName)VALUES 
