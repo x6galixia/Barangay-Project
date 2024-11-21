@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/global/general.css">
+    <link rel="stylesheet" href="../css/local/statistics.css">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>
@@ -16,26 +17,31 @@
     <%- include("../includes/header.ejs") %>
 
     <div class="container">
-        <div style="width: 300px !important; height: 300px; object-fit: contain;" >
-            <h2>Resident Classification</h2>
-            <canvas id="classificationChart" ></canvas>
+        <div class="tunga">
+            <div class="graphs" style="width: 800px !important; height: 600px; object-fit: contain;" >
+                <h2>Resident Classification</h2>
+                <canvas id="classificationChart" ></canvas>
+            </div>
+            <div class="graphs" style="width: 380px !important; height: 380px; object-fit: contain;" >
+    
+                <h2>Age Demographics</h2>
+                <canvas id="ageDemographicsChart"></canvas>
+            </div>
         </div>
-        <div style="width: 300px !important; height: 300px; object-fit: contain;" >
 
-            <h2>Age Demographics</h2>
-            <canvas id="ageDemographicsChart"></canvas>
+        <div class="tunga">
+            <div style="width: 800px !important; height: 600px; object-fit: contain;" >
+
+                <h2>Residents by Purok</h2>
+                <canvas id="purokChart"></canvas>
+            </div>
+            <div style="width: 380px !important; height: 380px; object-fit: contain;" >
+    
+                <h2>Resident Status</h2>
+                <canvas id="statusChart"></canvas>
+            </div>
         </div>
         
-        <div style="width: 300px !important; height: 300px; object-fit: contain;" >
-
-            <h2>Resident Status</h2>
-            <canvas id="statusChart"></canvas>
-        </div>
-        <div style="width: 300px !important; height: 300px; object-fit: contain;" >
-
-            <h2>Residents by Purok</h2>
-            <canvas id="purokChart"></canvas>
-        </div>
     </div>    
 
 </body>

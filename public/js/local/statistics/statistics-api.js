@@ -1,11 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
+
     // Fetch resident classification data and render chart
 fetch('/statistics/resident-classification')
 .then(response => response.json())
 .then(data => {
     const labels = data.map(item => item.rclassificationname);
     const residentCount = data.map(item => parseInt(item.resident_count)); // Convert to number
-
+    const colors = ['rgba(0, 128, 0, 0.2)',  // Green with some transparency
+        'rgba(0, 0, 255, 0.2)',  // Blue with some transparency
+        'rgba(255, 255, 0, 0.2)', // Yellow with some transparency
+        'rgba(255, 0, 0, 0.2)'];
+    const backgroundColors = labels.map((_, index) => colors[index % colors.length]);
+    const borderColors = backgroundColors.map(color => color.replace('0.2', '1'));
     const ctx = document.getElementById('classificationChart').getContext('2d');
     new Chart(ctx, {
         type: 'bar',
@@ -14,8 +20,8 @@ fetch('/statistics/resident-classification')
             datasets: [{
                 label: 'Resident Classification',
                 data: residentCount,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: backgroundColors, // Apply the colors to the bars
+                borderColor: borderColors,
                 borderWidth: 1
             }]
         },

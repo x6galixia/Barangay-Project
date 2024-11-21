@@ -1,0 +1,8 @@
+.container{
+    padding-top: 50px;
+}
+.tunga{
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+}
