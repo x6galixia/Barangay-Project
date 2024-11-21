@@ -23,22 +23,25 @@ const residentSchema = Joi.object({
     youth: Joi.boolean().valid(true, false).optional().allow(null), // not available for non-residents
     is4ps: Joi.boolean().valid(true, false).optional().allow(null), // not available for non-residents
     civilStatus: Joi.string().optional().allow(null),
-    address: Joi.object({
-        purok: Joi.string().optional().allow(null),
-        street: Joi.string().optional().allow(null),
-        barangay: Joi.string().optional().allow(null),
-        city: Joi.string().optional().allow(null),
-        province: Joi.string().optional().allow(null),
+    purok: Joi.string().optional().allow(null),
+    street: Joi.string().optional().allow(null),
+    barangay: Joi.string().optional().allow(null),
+    city: Joi.string().optional().allow(null),
+    province: Joi.string().optional().allow(null),
+    isResident: Joi.string().required(),
+    nonResidentAddress: Joi.when('isResident', {
+        is: "non-resident",
+        then: Joi.object({
+            purok1: Joi.string().optional().allow(null),
+            street1: Joi.string().optional().allow(null),
+            barangay1: Joi.string().optional().allow(null),
+            city1: Joi.string().optional().allow(null),
+            province1: Joi.string().optional().allow(null),
+            boardingHouse: Joi.string().optional().allow(null),
+            landlord: Joi.string().optional().allow(null),
+        }).optional(),
+        otherwise: Joi.forbidden(),
     }),
-    nonResidentAddress: Joi.object({ // non-residents only
-        purok1: Joi.string().optional().allow(null),
-        street1: Joi.string().optional().allow(null),
-        barangay1: Joi.string().optional().allow(null),
-        city1: Joi.string().optional().allow(null),
-        province1: Joi.string().optional().allow(null),
-    }),
-    boardingHouse: Joi.string().optional().allow(null), // non-residents only not applicable for residents
-    landlord: Joi.string().optional().allow(null), // non-residents only not applicable for residents
     emergencyLastName: Joi.string().optional().allow(null),
     emergencyFirstName: Joi.string().optional().allow(null),
     emergencyMiddleName: Joi.string().optional().allow(null),

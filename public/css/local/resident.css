@@ -124,3 +124,7 @@
 #fileInput {
   display: none;
 }
+
+#emergencyContactAddress {
+  overflow-wrap: break-word;
+}

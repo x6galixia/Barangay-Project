@@ -69,6 +69,7 @@ html {
     height: 110px;
     width: 110px;
     border: 1px solid black;
+    object-fit: cover;
 }
 
 .id-img p {
@@ -153,7 +154,8 @@ html {
     align-items: center;
     margin-top: 11px;
 }
-.qr-img img{
+
+.qr-img img {
     width: 110px;
     height: 110px;
 }
