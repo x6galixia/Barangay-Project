@@ -17,40 +17,44 @@
     <%- include("../includes/header.ejs") %>
 
     <div class="container">
-        <div class="tunga" id="tunga">
-            <div id="meow" style="width: 800px; height: 800px;">
-                <div>
-                    <h2>Resident Classification</h2>
-                    <canvas id="barangayPopulationChart1"></canvas>
+        <h2>Resident Classification</h2>
+            <div id="meow">     
+                <div>             
+                    <canvas id="barangayPopulationChart1" style="height: 450px; height: 450px;"></canvas>
                 </div>
                 <div class="separate">
-                    <div id="classificationByPurokDetails"></div>
+                    <div>
+                        <div id="classificationByPurokDetails"></div>
+                        <div id="overallPopulation1"></div>
+                    </div>
                     <div id="totalClassificationDetails"></div>
-                    <div id="overallPopulation1"></div>
                 </div>
             </div>
-    
-            <div id="age" style="width: 500px; height: 500px;">
-                <h2>Age Demographics</h2>
-                <canvas id="ageDemographicsChart"></canvas>
-                <div id="ageDemographicsText"></div>
-            </div>
-        </div>
-
-        <div class="tunga">
-            <div id="age" style="width: 500px; height: 500px;">
-                <h2>Resident Status</h2>
+            <h2>Resident Status</h2>
+            <div id="meow" >
+                <div class="chart">
                 <canvas id="statusChart"></canvas>
-                <div id="totalsByPurokDetails"></div>
-                <div id="residentStatusText"></div>
-            </div>
-            <div id="meow" style="width: 800px; height: 800px;">
-                <h2>Residents by Purok</h2>
-                <canvas id="barangayPopulationChart"></canvas>
-                <div id="overallPopulation"></div>
+                </div>
+                    <div id="totalsByPurokDetails"></div>
+                    <div id="residentStatusText"></div>  
             </div>
             
-        </div>
+            <div id="meow">
+                    <div>
+                        <h2>Residents by Purok</h2>
+                        <canvas id="barangayPopulationChart" style="height: 450px; height: 450px;"></canvas>
+                         <div id="overallPopulation"></div>
+                    </div>
+                    <div id="age" style="width: 500px; height: 500px;">
+                        <h2>Age Demographics</h2>
+                        <canvas id="ageDemographicsChart"></canvas>
+                        <div id="ageDemographicsText"></div>
+                    </div>
+            </div>
+    
+            
+            
+            
     </div>    
 
 </body>
