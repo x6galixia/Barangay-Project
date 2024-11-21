@@ -52,10 +52,12 @@
     align-items: center;
 }
 
-.cert-header img {
+
+
+.linya {
     width: 90%;
     height: 19px;
-    margin-top: 5px;
+    margin-top: 8px;
 }
 
 .certificate-logo {
@@ -89,7 +91,7 @@
     /* font-size: 20pt; */
     text-align: center;
     margin-top: 20px;
-    margin-bottom: 48px;
+    margin-bottom: 40px;
 }
 
 
@@ -128,20 +130,16 @@
     width: auto;
 }
 
-.certified div {
-    line-height: 4px;
-}
 
 
 .wala {
     text-indent: 0 !important;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .seal {
     position: relative;
     z-index: 2;
-    line-height: 8px;
     margin: 30px 60px;
 }
 
@@ -150,6 +148,12 @@
 
 .row {
     display: flex;
+}
+
+.g-row {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    row-gap: 8px;
 }
 
 .colum {
@@ -171,6 +175,133 @@
     align-items: center;
     padding: 2em;
     border: 1px solid #000;
+}
+
+/* my design design na certficate */
+
+
+.m {
+    margin-top: 2em;
+}
+
+/* .ngarans {
+    line-height: 12px;
+} */
+
+.sanguni {
+    margin-top: 3em;
+    color: red;
+    line-height: 24px;
+}
+
+.title img {
+    margin-top: 16px;
+    width: 68%;
+}
+
+.lalagyan { 
+    display: flex;
+    gap: 20px;
+}
+
+.lefttt {
+    background-image: url("../../images/blue-left.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+    height: 850px;
+    width: 35%;
+    /* border: solid rgb(223, 35, 35) 1px; */
+}
+
+.right {
+    width: 65%;
+    /* border: solid black 1px; */
+}
+
+.right .context {
+    margin: 0;
+}
+
+.tang {
+    font-size: 16px !important;
+}
+
+.g-row p {
+    text-indent: 0 !important;
+    padding: 0;
+    margin-bottom: 0 !important;
+    margin: 0;
+}
+
+.bx {
+    height: 100px;
+    width: 100px;
+    border: solid black 1px;
+}
+
+
+
+
+@media print {
+
+    header, .mainContainer, #process-certificate, .F, button, .close-container, .overlay{
+        display: none !important;
+        position: relative;
+        z-index: 1;
+    }
+
+    body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        margin: 0;
+        padding: 0;
+    }
+
+    
+
+    /* #certificate {
+        position: absolute;
+        top: 0 !important;
+        left: 50% !important;
+        transform: translate(-50%) !important;
+        z-index: 2;
+        overflow: visible;
+    } */
+
+
+
+    #certificate {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 21cm;
+        height: auto;
+        transform: none;
+        z-index: auto;
+        overflow: visible;
+        page-break-inside: avoid;
+    }
+
+    #certificateContainer {
+        border: none;
+    }
+
+
+    .pop-up>.close-container {
+        padding: 0 !important;
+    }
+
+
+    .pop-up {
+        box-shadow: none;
+        padding: 0 !important;
+    }
+
+
 }
 
 
