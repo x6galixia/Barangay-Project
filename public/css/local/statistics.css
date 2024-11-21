@@ -4,8 +4,11 @@
     justify-content: center;
     gap: 100px;
 }
+.container{
+    padding: 40px;
+}
 #tunga{
-    margin-bottom: 20px;
+    margin-bottom: 50px;
 }
 .separate{
     display: flex;
@@ -47,4 +50,7 @@ canvas {
 }
 #totalsByPurokDetails{
     margin-bottom: 10px;
+}
+#overallPopulation{
+    padding-bottom: 40px;
 }
