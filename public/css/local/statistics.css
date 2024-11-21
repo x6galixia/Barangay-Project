@@ -12,19 +12,21 @@
 }
 .separate{
     display: flex;
-    justify-content: space-between;
+    gap: 40px;
 }
-.separate strong, li, p{
+.separate strong, .separate li, .separate p{
     font-weight: 400;
-    
+    font-size: 13px;
+}
+.separate h3{
+    font-size: 15px;
+    text-wrap: nowrap;
 }
 #meow{
+    height: 100%;
     display: flex;
-    flex-direction: column;
-
-}
-#age p{
-    font-size: 15px;
+    justify-content: space-between;
+    margin-bottom: 40px;
 }
 .container h2{
     margin-bottom: 20px;
@@ -33,7 +35,6 @@
 canvas {
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
 }
 
 /* Details Sections */
@@ -53,4 +54,33 @@ canvas {
 }
 #overallPopulation{
     padding-bottom: 40px;
+}
+.barangayPopulationChart1{
+    height: 900px;
+    width: 900px;
+}
+#classificationByPurokDetails{
+    margin-bottom: 40px;
+}
+#totalsByPurokDetails li{
+    display: inline;
+    margin-right: 10px;
+}
+#totalsByPurokDetails{
+    margin: 0;
+}
+#totalsByPurokDetails ul{
+    
+    margin: 10px;
+}
+
+.chart{
+    width: 500px;
+    height: 500px;
+}
+.info{
+    flex-grow: 1;
+}
+#residentStatusText p{
+    margin-bottom: 20px;
 }
