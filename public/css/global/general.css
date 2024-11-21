@@ -206,7 +206,7 @@ button {
 
 .tableContainer {
   width: 100%;
-  overflow: scroll;
+  /* overflow: scroll; */
   max-height: 700px;
   height: fit-content;
   margin-bottom: 24px;

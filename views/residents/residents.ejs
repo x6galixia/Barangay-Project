@@ -26,7 +26,7 @@
                     <option value="non-residents">Non-Residents</option>
                 </select>
             </div>
-            <div class="tableContainer">
+            <div class=" tableContainer">
                 <table>
                     <thead>
                         <tr>
@@ -73,6 +73,7 @@
                         enctype="multipart/form-data">
                         <div class="add-resident-input-container">
                             <h3>Resident Personal Information</h3>
+                            <input type="hidden" name="isResident" id="isResident">
                             <div class="row">
                                 <div class="inputWithLabel" id="surubadan">
                                     <label>Last Name</label>
@@ -215,7 +216,7 @@
                                         value="Maypangdan">
                                 </div>
                                 <div class="inputWithLabel">
-                                    <label>City</label>
+                                    <label>Municipality</label>
                                     <input type="text" aria-label="City" id="city" name="city" required
                                         value="Borongan City">
                                 </div>
@@ -231,7 +232,7 @@
                                 <div class="row">
                                     <div class="inputWithLabel" id="purok">
                                         <label for="">Purok</label>
-                                        <select name="purok1" aria-label="Purok">
+                                        <select name="purok1" aria-label="Purok" disabled>
                                             <option value="Seguidila">Seguidila</option>
                                             <option value="Sitaw">Sitaw</option>
                                             <option value="Talbos">Talbos</option>
@@ -243,32 +244,35 @@
                                     </div>
                                     <div class="inputWithLabel" id="street">
                                         <label>Street</label>
-                                        <input type="text" aria-label="Street" name="street1">
+                                        <input type="text" aria-label="Street" name="street1" disabled>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Barangay</label>
-                                        <input type="text" aria-label="Barangay" name="barangay1" value="Maypangdan">
+                                        <input type="text" aria-label="Barangay" name="barangay1" value="Maypangdan"
+                                            disabled>
                                     </div>
                                     <div class="inputWithLabel">
-                                        <label>City</label>
-                                        <input type="text" aria-label="City" name="city1" value="Borongan City">
+                                        <label>Municipality</label>
+                                        <input type="text" aria-label="City" name="city1" value="Borongan City"
+                                            disabled>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Province</label>
-                                        <input type="text" aria-label="Province" name="province1" value="Eastern Samar">
+                                        <input type="text" aria-label="Province" name="province1" value="Eastern Samar"
+                                            disabled>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Boarding House Name</label>
-                                        <input type="text" aria-label="Boarding House Name" name="boardingHouse">
+                                        <input type="text" aria-label="Boarding House Name" name="boardingHouse"
+                                            disabled>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Landlord</label>
-                                        <input type="text" aria-label="Landlord" name="landlord">
+                                        <input type="text" aria-label="Landlord" name="landlord" disabled>
                                     </div>
                                 </div>
                             </div>
                             <hr>
-
                             <h3>Emergency Contact Person</h3>
                             <div>
                                 <div class="row">
@@ -290,8 +294,8 @@
                                             required>
                                     </div>
                                 </div>
-                                <div class="row" style="margin-top: 12px;">
-                                    <div class="inputWithLabel">
+                                <div class="row" id="emergencyContactInfo" style="margin-top: 12px;">
+                                    <div id="emergencyPurok" class="inputWithLabel">
                                         <label for="">Purok</label>
                                         <select name="emergencyPurok" aria-label="Purok">
                                             <option value="Seguidila">Seguidila</option>
@@ -303,7 +307,7 @@
                                             <option value="Kalabasa">Kalabasa</option>
                                         </select>
                                     </div>
-                                    <div class="inputWithLabel">
+                                    <div id="emergencyStreet" class="inputWithLabel">
                                         <label>Street</label>
                                         <input type="text" aria-label="Street" name="emergencyStreet" required>
                                     </div>
@@ -313,7 +317,7 @@
                                             required>
                                     </div>
                                     <div class="inputWithLabel">
-                                        <label>City</label>
+                                        <label>Municipality</label>
                                         <input type="text" aria-label="City" id="city" name="emergencyCity" required>
                                     </div>
                                     <div class="inputWithLabel">
@@ -367,7 +371,7 @@
                             </div>
 
                             <div class="id-img">
-                                <img src="../images/wow.jpg" alt="">
+                                <img id="residentPicture" src="../images/wow.jpg" alt="">
                                 <p id="idNumber">ID NUMBER</p>
                                 <H2 id="fullname">ADRIANE S. GARCIA</H2>
 
@@ -425,7 +429,7 @@
                                     <span class="Civil-stat">Contact Number:</span>
                                     <span class="value" id="emergencyContactNumber">0997-329-4122</span>
                                 </p>
-                                <p style="display: flex; flex-wrap: wrap; ">
+                                <p>
                                     <span class="Civil-stat" style="margin-right: 2px;">Address:</span>
                                     <span class="value" id="emergencyContactAddress">Brgy. Maypangdan Borongan City,
                                         <br> Eastern Samar</span>
@@ -453,7 +457,7 @@
                             <%= messages.success %>
                         </h2>
                         <main>
-                            <button type="button" class="button-green" onclick="closePopup()">Done</button>
+                            <button type="button" class="button-green" onclick="closePopup()">Ok</button>
                         </main>
                     </div>
                 </div>
@@ -467,7 +471,7 @@
 
     // Function to simulate image capture
     function captureImage() {
-        alert("Capture functionality is not implemented in this demo.");
+        alert("Capture functionality is not yet implemented.");
     }
 
     // Function to trigger file input click
@@ -490,6 +494,7 @@
             preview.innerHTML = `<p>No image uploaded</p>`;
         }
     }
+
 </script>
 
 </html>

@@ -119,8 +119,8 @@ async function fetchInventoryLists(page, limit, searchQuery = '', isFunctional =
         OR i.iName ILIKE $${inventoryValues.length + 1}
         OR c.categoryName ILIKE $${inventoryValues.length + 1}
       )`;
-      inventoryValues.push(searchPattern);
-      totalItemsValues.push(searchPattern);
+    inventoryValues.push(searchPattern);
+    totalItemsValues.push(searchPattern);
   }
 
   const inventoryQuery = `
