@@ -82,12 +82,12 @@ fetch('/statistics/resident-status')
 .catch(err => console.error('Error fetching resident status data:', err));
 
 // Fetch residents by Purok data and render chart
-fetch('/statistcs/residents-by-purok')
+fetch('/statistics/residents-by-purok')
 .then(response => response.json())
 .then(data => {
+    console.log(data);
     const labels = data.map(item => item.purok);
     const residentCount = data.map(item => parseInt(item.resident_count)); // Convert to number
-
     const ctx = document.getElementById('purokChart').getContext('2d');
     new Chart(ctx, {
         type: 'bar',
@@ -100,15 +100,9 @@ fetch('/statistcs/residents-by-purok')
                 borderColor: 'rgba(153, 102, 255, 1)',
                 borderWidth: 1
             }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
         }
     });
 })
 .catch(err => console.error('Error fetching residents by purok data:', err));
+
 });
