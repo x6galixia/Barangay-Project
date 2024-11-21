@@ -57,6 +57,7 @@ header>nav>ul>li {
   letter-spacing: 2px;
   cursor: pointer;
   font-family: sans-serif !important;
+  margin: 0;
 }
 
 .selected {

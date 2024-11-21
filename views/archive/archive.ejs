@@ -17,12 +17,7 @@
         <main class="mainContainer">
             <div class="heading">Archives</div>
             <div class="tableActionOne">
-                <input type="search" placeholder="Search">
-                <select class="archives-dropdown" name="archives"">
-            <option value=" All">All</option>
-                    <option value="ambot">ambot</option>
-
-                </select>
+                <input type="search" id="searchInput" placeholder="Search">
             </div>
             <div class="tableContainer">
                 <table>
@@ -30,18 +25,11 @@
                         <tr>
                             <th>NAME</th>
                             <th>DATE</th>
-                            <th>AMBOT</th>
-                            <th>AMBOT</th>
+                            <th>DOCTYPE</th>
+                            <th>IMAGE</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Computer</td>
-                            <td>August 02, 1999</td>
-                            <td>ambot</td>
-                            <td>ambot</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="archiveTableBody"></tbody>
                 </table>
             </div>
             <nav aria-label="Page navigation" id="paginationNav">
@@ -61,12 +49,12 @@
             </div>
             <h1 class="heading">ADD DOCUMENT</h1>
             <main>
-                <form action="/resident/dashboard/add-resident" method="POST" enctype="multipart/form-data">
+                <form action="/archive/dashboard/add-archive" method="POST" enctype="multipart/form-data">
                     <div class="add-inventory-input-container">
                         <div class="row">
                             <div class="inputWithLabel" id="surubadan">
                                 <label>Name</label>
-                                <input type="text" aria-label="Name" name="dName" required>
+                                <input type="text" aria-label="Name" name="name" required>
                             </div>
                             <div class="inputWithLabel">
                                 <label>Date</label>
@@ -86,7 +74,7 @@
                             </div>
                             <div class="buttons">
                                 <button type="button" class="button upload" onclick="triggerUpload()">Upload</button>
-                                <input type="file" id="fileInput" accept="image/*" onchange="displayImage(event)">
+                                <input type="file" name="picture" id="fileInput" accept="image/*" onchange="displayImage(event)">
                             </div>
                         </div>
                     </div>
@@ -96,6 +84,7 @@
         </div>
 </body>
 <script src="../../js/global/pop-up.js"></script>
+<script src="../../js/local/archive/archive-api.js"></script>
 <script>
     document.querySelector("header>nav>ul>li:nth-child(5)").classList.toggle("selected");
     // Function to trigger file input click

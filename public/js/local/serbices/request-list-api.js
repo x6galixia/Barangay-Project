@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const data = await response.json();
     const requests = data.getRequestList;
+    console.log(data);
 
     requestTableBody.innerHTML = '';
 
@@ -31,7 +32,19 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <td>${request.fname} ${request.mname ? request.mname : ''} ${request.lname}</td>
                 <td>${request.purpose}</td>
                 <td>${formattedDate}</td>
-                <td><button data-purpose="${request.purpose}" onclick="processCertificate(this)">Process</button></td>
+                <td><button 
+                data-purpose="${request.purpose}"
+                data-firstName="${request.fname}"
+                data-lastName="${request.lname}"
+                data-middleName="${request.mname ? request.mname : ''}"
+                data-purok="${request.purok}"
+                data-barangay="${request.barangay}"
+                data-city="${request.city}"
+                data-province="${request.province}"
+                data-civilStatus="${request.civilstatus}"
+                data-gender="${request.gender}"
+                
+                onclick="processCertificate(this)">Process</button></td>
             `;
         requestTableBody.appendChild(row);
       });
@@ -44,7 +57,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     console.error("Error fetching request data: ", error);
     requestTableBody.innerHTML = '<tr><td colspan="4">Error loading data</td></tr>';
   }
-
 
   // Function to dynamically update pagination links
   function updatePaginationLinks(currentPage, totalPages) {
@@ -64,11 +76,28 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 window.processCertificate = function (button) {
   const purpose = button.getAttribute('data-purpose');
+  const firstName = button.getAttribute('data-firstName');
+  const lastName = button.getAttribute('data-lastName');
+  const middleName = button.getAttribute('data-middleName');
+  const purok = button.getAttribute('data-purok');
+  const barangay = button.getAttribute('data-barangay');
+  const city = button.getAttribute('data-city');
+  const province = button.getAttribute('data-province');
+  const civilStatus = button.getAttribute('data-civilStatus');
+  const gender = button.getAttribute('data-gender');
+
+
+
+
   document.querySelector(".overlay").classList.toggle("visible");
   document.querySelector("#process-certificate").classList.toggle("visible");
   document.getElementById("certificateHeading").innerText = purpose;
 
+  const applyChanges = document.getElementById("applyChanges");
   const viewCertificate = document.getElementById("viewCertificate");
+  const certificateMainForm = document.getElementById("certificateMainForm");
+  certificateMainForm.innerHTML = "";
+  setCurrentDate();
 
   if (purpose === 'Brgy. Clearance') {
     viewCertificate.addEventListener('click', function () {
@@ -109,17 +138,82 @@ window.processCertificate = function (button) {
     })
   }
   else if (purpose === 'Indigency') {
-    viewCertificate.addEventListener('click', function () {
+    certificateMainForm.innerHTML = `
+        <div class="inputWithLabel">
+            <label for="certificatePurpose">Purpose</label>
+            <select class="certficate-purpose-dropdown" id="certificatePurpose">
+                <option value="default" disabled selected>Select a Purpose</option>
+                <option value="Scholarship Assistance">Scholarship Assistance</option>
+                <option value="PhilHealth Enrollment">PhilHealth Enrollment</option>
+                <option value="Medical Assistance">Medical Assistance</option>
+            </select>
+        </div>
+    `;
+
+    function viewCertificateDetails() {
       document.getElementById("certificate").classList.toggle("visible");
       document.getElementById("indigency").classList.toggle("visible");
+
+      document.getElementById("indigencyFullName").innerText = `${lastName}, ${firstName} ${middleName}`;
+      document.getElementById("indigencyAddress").innerText = `${purok}, ${barangay}, ${city}, ${province}`;
+
+      // gender
+      if (gender === "Male") {
+        document.getElementById("indigencyGender").innerHTML = "female/<u>male</u>";
+      } else {
+        document.getElementById("indigencyGender").innerHTML = "<u>female</u>/male";
+      }
+
+      //civil status
+      switch (civilStatus) {
+        case "Single":
+          document.getElementById("indigencyCivilStatus").innerHTML = "<u>single</u>/married/widow/widower";
+          break;
+        case "Married":
+          document.getElementById("indigencyCivilStatus").innerHTML = "single/<u>married</u>/widow/widower";
+          break;
+        case "Widow":
+          document.getElementById("indigencyCivilStatus").innerHTML = "single/married/<u>widow</u>/widower";
+          break;
+        case "Widower":
+          document.getElementById("indigencyCivilStatus").innerHTML = "single/married/widow/<u>widower</u>";
+          break;
+      }
 
       document.querySelector(".closeCertificate").addEventListener("click", function () {
         console.log("close click");
         document.getElementById("certificate").classList.remove("visible");
         document.getElementById("indigency").classList.remove("visible");
-      })
-    })
+      });
+    }
+
+    applyChanges.addEventListener('click', function () {
+      const purposeDropdown = document.getElementById("certificatePurpose");
+      const selectedPurpose = purposeDropdown.value;
+
+      if (selectedPurpose !== "default") {
+        const indigencyPurpose = document.getElementById("indigencyPurpose");
+        switch (selectedPurpose) {
+          case "Scholarship Assistance":
+            indigencyPurpose.innerText = "SCHOLARSHIP ASSISTANCE REQUIREMENT ONLY";
+            break;
+          case "PhilHealth Enrollment":
+            indigencyPurpose.innerText = "PHILHEALTH ENROLLMENT REQUIREMENT";
+            break;
+          case "Medical Assistance":
+            indigencyPurpose.innerText = "MEDICAL ASSISTANCE";
+            break;
+        }
+
+        alert("Changes applied: " + selectedPurpose);
+      } else {
+        alert("Please select a purpose before applying changes.");
+      }
+    });
+
+    viewCertificate.addEventListener('click', viewCertificateDetails);
   }
+
   else if (purpose === 'Land no claim') {
     viewCertificate.addEventListener('click', function () {
       document.getElementById("certificate").classList.toggle("visible");
@@ -183,3 +277,26 @@ window.processCertificate = function (button) {
     alert(purpose);
   }
 };
+
+function getOrdinalSuffix(day) {
+  if (day > 3 && day < 21) return day + "th";
+  switch (day % 10) {
+    case 1: return day + "st";
+    case 2: return day + "nd";
+    case 3: return day + "rd";
+    default: return day + "th";
+  }
+}
+
+function setCurrentDate() {
+  const today = new Date();
+
+  const day = getOrdinalSuffix(today.getDate()); // Current day with ordinal suffix
+  const month = today.toLocaleString("default", { month: "long" }).toUpperCase(); // Full month name in uppercase
+  const year = today.getFullYear(); // Current year
+
+  document.getElementById("dateDay").innerText = day;
+  document.getElementById("dateMonth").innerText = month;
+  document.getElementById("dateYear").innerText = year;
+}
+

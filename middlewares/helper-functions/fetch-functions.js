@@ -1,7 +1,7 @@
 const mPool = require("../../models/mDatabase");
 
 //fetch function for residents list that inlude search
-async function fetchResidentsLists(page, limit, searchQuery = '', isNonResident = false) {
+async function fetchResidentsLists(page, limit, searchQuery = '', isNonResident = true) {
   const offset = (page - 1) * limit;
 
   const residentsValues = [limit, offset, !isNonResident]; // Ensure isResident is a boolean
@@ -67,8 +67,6 @@ async function fetchResidentsLists(page, limit, searchQuery = '', isNonResident 
   }
 }
 
-
-
 // Fetch function for request where released is false
 async function fetchRequestLists(page, limit) {
   const offset = (page - 1) * limit;
@@ -86,7 +84,8 @@ async function fetchRequestLists(page, limit) {
     const getRequestList = await mPool.query(`
       SELECT 
           r.residentsid, r.dateadded, r.purpose, r.isReleased,
-          rd.fname, rd.mname, rd.lname
+          rd.fname, rd.mname, rd.lname, rd.gender, rd.age, rd.civilstatus,
+          rd.purok, rd.barangay, rd.city, rd.province
       FROM requests r
       LEFT JOIN residents rd ON r.residentsid = rd.residentsid
       WHERE r.isReleased = false
@@ -105,7 +104,121 @@ async function fetchRequestLists(page, limit) {
   }
 }
 
+async function fetchInventoryLists(page, limit, searchQuery = '', isFunctional = true) {
+  const offset = (page - 1) * limit;
+
+  const inventoryValues = [limit, offset, isFunctional];
+  const totalItemsValues = [!isFunctional];
+
+  let searchCondition = '';
+  if (searchQuery && searchQuery.trim() !== '') {
+    const searchPattern = `%${searchQuery.trim()}%`;
+    searchCondition = ` 
+      AND (
+        CONCAT(i.iName, ' ', COALESCE(c.categoryName)) ILIKE $${inventoryValues.length + 1}
+        OR i.iName ILIKE $${inventoryValues.length + 1}
+        OR c.categoryName ILIKE $${inventoryValues.length + 1}
+      )`;
+      inventoryValues.push(searchPattern);
+      totalItemsValues.push(searchPattern);
+  }
+
+  const inventoryQuery = `
+    SELECT 
+        i.id AS inventory_id,
+        i.iName AS inventory_name,
+        i.quantity,
+        i.iPrice,
+        i.dateAdded,
+        i.isFunctional,
+        c.categoryId,
+        c.categoryName
+    FROM inventory i JOIN categories c ON i.categoryId = c.categoryId
+    WHERE i.isFunctional = $3
+    ${searchCondition}
+    ORDER BY i.iName
+    LIMIT $1::INTEGER OFFSET $2::INTEGER;
+  `;
+
+  const totalItemsQuery = `
+    SELECT COUNT(*) as count
+    FROM inventory i 
+    JOIN categories c ON i.categoryId = c.categoryId
+    WHERE i.isFunctional = $1
+      ${searchQuery && searchQuery.trim() !== '' ? `AND (
+          CONCAT(i.iName, ' ', COALESCE(c.categoryName, '')) ILIKE $2
+          OR i.iName ILIKE $2
+          OR c.categoryName ILIKE $2
+      )` : ''}
+  `;
+
+  try {
+    const totalItemsResult = await mPool.query(totalItemsQuery, totalItemsValues);
+    const totalItems = parseInt(totalItemsResult.rows[0].count, 10);
+    const totalPages = Math.ceil(totalItems / limit);
+
+    const inventoryResult = await mPool.query(inventoryQuery, inventoryValues);
+    return { getInventoryList: inventoryResult.rows, totalPages };
+  } catch (err) {
+    console.error('Error fetching INVENTORY list:', err.message);
+    throw new Error('Error fetching INVENTORY list');
+  }
+}
+
+
+async function fetchArchiveLists(page, limit, searchQuery = '') {
+  const offset = (page - 1) * limit;
+
+  const archiveValues = [limit, offset];
+  const totalItemsValues = [];
+
+  let searchCondition = '';
+  if (searchQuery && searchQuery.trim() !== '') {
+    const searchPattern = `%${searchQuery.trim()}%`;
+    searchCondition = ` 
+      AND (
+        CONCAT(name, ' ', COALESCE(docType)) ILIKE $${archiveValues.length + 1}
+        OR name ILIKE $${archiveValues.length + 1}
+        OR docType ILIKE $${archiveValues.length + 1}
+      )`;
+    archiveValues.push(searchPattern);
+    totalItemsValues.push(searchPattern);
+  }
+
+  const archiveQuery = `
+    SELECT * FROM archive
+    WHERE 1=1  ${searchCondition}
+    ORDER BY name
+    LIMIT $1::INTEGER OFFSET $2::INTEGER;
+  `;
+
+  const totalItemsQuery = `
+    SELECT COUNT(*) as count
+    FROM archive
+    WHERE 1=1
+    ${searchQuery && searchQuery.trim() !== '' ? `AND (
+        CONCAT(name, ' ', COALESCE(docType)) ILIKE $1
+        OR name ILIKE $1
+        OR docType ILIKE $1
+    )` : ''}
+  `;
+
+  try {
+    const totalItemsResult = await mPool.query(totalItemsQuery, totalItemsValues);
+    const totalItems = parseInt(totalItemsResult.rows[0].count, 10);
+    const totalPages = Math.ceil(totalItems / limit);
+
+    const archiveResult = await mPool.query(archiveQuery, archiveValues);
+    return { getArchiveList: archiveResult.rows, totalPages };
+  } catch (err) {
+    console.error('Error fetching ARCHIVE list:', err.message);
+    throw new Error('Error fetching ARCHIVE list');
+  }
+}
+
 module.exports = {
   fetchResidentsLists,
-  fetchRequestLists
+  fetchRequestLists,
+  fetchInventoryLists,
+  fetchArchiveLists
 };

@@ -15,14 +15,13 @@
 <body>
     <%- include("../includes/header.ejs") %>
         <main class="mainContainer">
-            <div class="heading">Inventory</div>
+            <div class="heading" id="inventoryPageTitle">Inventory</div>
             <div class="tableActionOne">
-                <input type="search" placeholder="Search">
-                <select class="inventory-dropdown" name="inventory"">
-                <option value=" functional">Functional</option>
+                <input type="search" id="searchInput" placeholder="Search">
+                <select class="inventory-dropdown" id="inventory-dropdown" name="inventory">
+                    <option value="functional">Functional</option>
                     <option value="non-functional">Non-Functional</option>
-
-                </select>
+                </select>                
             </div>
             <div class="tableContainer">
                 <table>
@@ -31,20 +30,11 @@
                             <th>ITEM NAME</th>
                             <th>QUANTITY</th>
                             <th>DATE ADDED</th>
-                            <th>FUNCTIONAL/NON-FUNCTIONAL</th>
                             <th>PRICE</th>
                             <th>ACTION</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Computer</td>
-                            <td>5</td>
-                            <td>ambot</td>
-                            <td>ambot</td>
-                            <td>10</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="inventoryTableBody"></tbody>
                 </table>
             </div>
             <nav aria-label="Page navigation" id="paginationNav">
@@ -63,7 +53,7 @@
             </div>
             <h1 class="heading">ADD ITEM</h1>
             <main>
-                <form action="/resident/dashboard/add-resident" method="POST" enctype="multipart/form-data">
+                <form action="/inventory/dashboard/add-item" method="POST">
                     <div class="add-inventory-input-container">
                         <div class="row">
                             <div class="inputWithLabel" id="surubadan">
@@ -78,15 +68,15 @@
                         <div class="row">
                             <div class="inputWithLabel" id="masubad">
                                 <label>Functional/Non-FUnctional</label>
-                                <select name="functional/non-functional" aria-label="Functional/Non-FUnctional" id=""
+                                <select name="isFunctional"  aria-label="Functional/Non-FUnctional" id=""
                                     required>
-                                    <option value="Functional">Functional</option>
-                                    <option value="Non-Functional">Non-Functional</option>
+                                    <option value="true">Functional</option>
+                                    <option value="false">Non-Functional</option>
                                 </select>
                             </div>
                             <div class="inputWithLabel">
                                 <label>Date Added</label>
-                                <input type="date" aria-label="Date Added" name="dateadded" required>
+                                <input type="date" aria-label="Date Added" name="dateAdded" required>
                             </div>
                         </div>
                         <div class="row">
@@ -96,16 +86,17 @@
                             </div>
                             <div class="inputWithLabel">
                                 <label>Price</label>
-                                <input type="number" aria-label="Price" name="price" required>
+                                <input type="number" aria-label="Price" name="iPrice" required>
                             </div>
                         </div>
                     </div>
-                    <button id="submit_add_inbentory">SUBMIT</button>
+                    <button type="submit" id="submit_add_inbentory">SUBMIT</button>
                 </form>
             </main>
         </div>
 </body>
 <script src="../../js/global/pop-up.js"></script>
+<script src="../../js/local/inventory/inventory-api.js"></script>
 <script>
     document.querySelector("header>nav>ul>li:nth-child(4)").classList.toggle("selected");
 </script>

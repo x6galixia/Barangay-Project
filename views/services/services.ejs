@@ -32,19 +32,19 @@
                     </thead>
                     <tbody id="requestTableBody"></tbody>
                 </table>
-            </div>
-            <nav aria-label="Page navigation" id="paginationNav">
-                <% if (totalPages> 1) { %>
-                    <% if (currentPage> 1) { %>
-                        <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>"
-                            aria-label="Previous Page">Previous</a>
-                        <% } %>
-                            <% if (currentPage < totalPages) { %>
-                                <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>"
-                                    aria-label="Next Page">Next</a>
-                                <% } %>
+                <nav aria-label="Page navigation" id="paginationNav" style="margin-top: 24px;">
+                    <% if (totalPages> 1) { %>
+                        <% if (currentPage> 1) { %>
+                            <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>"
+                                aria-label="Previous Page">Previous</a>
+                            <% } %>
+                                <% if (currentPage < totalPages) { %>
+                                    <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>"
+                                        aria-label="Next Page">Next</a>
                                     <% } %>
-            </nav>
+                                        <% } %>
+                </nav>
+            </div>
         </main>
         <!-- Pop Up -->
         <!-- Process Form -->
@@ -52,11 +52,13 @@
             <div class="close-container">
                 <img src="../icon/close.svg" alt="" class="close_popUp">
             </div>
-            <h1 class="heading" id="certificateHeading">ADD DOCUMENT</h1>
-            <main id="certificateMainForm">
+            <h1 class="heading" id="certificateHeading">CERTIFCATE</h1>
+            <hr>
+            <main>
+                <div id="certificateMainForm">
+                </div>
                 <div class="butonContainer">
-
-                    <button>Apply Changes</button>
+                    <button id="applyChanges">Apply Changes</button>
                     <button id="viewCertificate">View</button>
                 </div>
             </main>
@@ -75,6 +77,13 @@
                                 <%- include("../includes/no-duplication.ejs") %>
                                     <%- include("../includes/panumduman.ejs") %>
                                         <%- include("../includes/RA-1261.ejs") %>
+                                            <%- include("../includes/brgy-clearance.ejs") %>
+                                                <%- include("../includes/building-clearance.ejs") %>
+                                                    <%- include("../includes/burial-clearance.ejs") %>
+                                                        <%- include("../includes/business-clearance.ejs") %>
+                                                            <%- include("../includes/business-closure.ejs") %>
+                                                                <%- include("../includes/late-registration.ejs") %>
+                                                                    <%- include("../includes/solo-parent.ejs") %>
 
             </main>
             <button style="display: flex; justify-self: end; margin-top: 24px; padding: 12px 48px;">Print</button>
@@ -86,4 +95,5 @@
 <script>
     document.querySelector("header>nav>ul>li:nth-child(2)").classList.toggle("selected");
 </script>
+
 </html>
