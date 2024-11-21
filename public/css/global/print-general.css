@@ -128,9 +128,6 @@
     width: auto;
 }
 
-.certified div {
-    line-height: 4px;
-}
 
 
 .wala {
@@ -141,7 +138,6 @@
 .seal {
     position: relative;
     z-index: 2;
-    line-height: 8px;
     margin: 30px 60px;
 }
 
@@ -171,6 +167,66 @@
     align-items: center;
     padding: 2em;
     border: 1px solid #000;
+}
+
+
+
+@media print {
+
+    header, .mainContainer, #process-certificate, .F, button, .close-container, .overlay{
+        display: none !important;
+        position: relative;
+        z-index: 1;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    
+
+    /* #certificate {
+        position: absolute;
+        top: 0 !important;
+        left: 50% !important;
+        transform: translate(-50%) !important;
+        z-index: 2;
+        overflow: visible;
+    } */
+
+
+
+    #certificate {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin: 0 auto;
+        width: 90%; /* Adjust based on content */
+        max-width: 21cm; /* A4 width */
+        height: auto; /* Maintain aspect ratio */
+        transform: none; /* Avoid transform in print */
+        z-index: auto;
+        overflow: visible;
+        page-break-inside: avoid; /* Prevent breaking inside */
+    }
+
+    #certificateContainer {
+        border: none;
+    }
+
+
+    .pop-up>.close-container {
+        padding: 0 !important;
+    }
+
+
+    .pop-up {
+        box-shadow: none;
+        padding: 0 !important;
+    }
+
+
 }
 
 
