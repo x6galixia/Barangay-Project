@@ -77,6 +77,7 @@ router.get("/age-demographics", async (req, res) => {
     try {
         const ageDemographicResult = await mPool.query(`
             SELECT 
+                r.purok, 
                 CASE
                     WHEN r.age BETWEEN 0 AND 14 THEN '0 - 14'
                     WHEN r.age BETWEEN 15 AND 64 THEN '15 - 64'
@@ -87,12 +88,12 @@ router.get("/age-demographics", async (req, res) => {
             FROM 
                 residents r
             WHERE 
-                r.isResident = TRUE  -- Only consider residents, not boarders
+                r.isResident = TRUE
             GROUP BY 
-                age_range
+                r.purok, age_range
             ORDER BY 
-                age_range;
-            `)
+                r.purok, age_range;
+        `);
         res.json(ageDemographicResult.rows);
         
     } catch (err) {
@@ -105,6 +106,7 @@ router.get("/resident-status", async (req, res) => {
     try {
         const statusResults = await mPool.query(`
             SELECT 
+                r.purok,
                 COUNT(CASE WHEN r.isPwd = TRUE THEN 1 END) AS pwd_count,
                 COUNT(CASE WHEN r.isSoloParent = TRUE THEN 1 END) AS solo_parent_count,
                 COUNT(CASE WHEN r.isYouth = TRUE THEN 1 END) AS youth_count,
@@ -113,6 +115,10 @@ router.get("/resident-status", async (req, res) => {
                 residents r
             WHERE 
                 r.isResident = TRUE
+            GROUP BY 
+                r.purok
+            ORDER BY 
+                r.purok;
         `);
 
         res.json(statusResults.rows);

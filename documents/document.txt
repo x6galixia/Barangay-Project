@@ -1,5 +1,3 @@
-database name BRGY_MAYPANDAN
-
 CREATE TABLE users (
     id SERIAL PRIMARY KEY NOT NULL,
     fName VARCHAR(255) NOT NULL,
@@ -57,10 +55,10 @@ CREATE TABLE boarders (
     boardID SERIAL PRIMARY KEY NOT NULL,
     boarderInResidentId INT REFERENCES residents(residentsId) NOT NULL,
     originalStreet VARCHAR(255) NULL,      -24                                                -- used as a original address of boarder
-    originalPurok VARCHAR(255) NULL,       -25                                              -- used as a original address of boarder
-    originalBarangay VARCHAR(255) NULL,    -26                                               -- used as a original address of boarder
-    originalCity VARCHAR(255) NULL,        -27                                             -- used as a original address of boarder
-    originalProvince VARCHAR(255) NULL,    -28                                             -- used as a original address of boarder
+    originalPurok VARCHAR(255) NULL,       -25                                                -- used as a original address of boarder
+    originalBarangay VARCHAR(255) NULL,    -26                                                -- used as a original address of boarder
+    originalCity VARCHAR(255) NULL,        -27                                                -- used as a original address of boarder
+    originalProvince VARCHAR(255) NULL,    -28                                                -- used as a original address of boarder
     boardinghouseName VARCHAR(255) NULL,   -29
     landlord VARCHAR(255) NULL             -30
 );
@@ -90,11 +88,11 @@ CREATE TABLE residents (
     isResident BOOLEAN NULL,           
     boardID INT REFERENCES boarders(boardID) NULL,                                                 
     emergencyContactId INT REFERENCES contactPerson(contactPersonId) NOT NULL,       
-    rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,   -- not available is boarder
-    isPwd BOOLEAN DEFAULT FALSE,                                                 -- not available if boarder
-    isSoloParent BOOLEAN DEFAULT FALSE,                                          -- not available if boarder
-    isYouth BOOLEAN DEFAULT FALSE,                                               -- not available if boarder
-    is4ps BOOLEAN DEFAULT FALSE                                                  -- not available if boarder
+    rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,
+    isPwd BOOLEAN DEFAULT FALSE,                                                    -- not available if boarder
+    isSoloParent BOOLEAN DEFAULT FALSE,                                             -- not available if boarder
+    isYouth BOOLEAN DEFAULT FALSE,                                                  -- not available if boarder
+    is4ps BOOLEAN DEFAULT FALSE                                                     -- not available if boarder
 );
 
 INSERT INTO rClassification (rClassificationName)VALUES 
@@ -106,7 +104,8 @@ INSERT INTO rClassification (rClassificationName)VALUES
     ('Business entrepreneurs'),
     ('Drivers'),
     ('OFW'),
-    ('Kasambahay');
+    ('Kasambahay'),
+    ('Boarders');
 
 CREATE TABLE requests (
     id SERIAL PRIMARY KEY NOT NULL,
