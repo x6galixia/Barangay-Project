@@ -1,12 +1,36 @@
-<div class="A4 with-logo-bg" id="indigency" style="display: block;">
+<div class="A4 with-logo-bg" id="indigency" style="display: block; border: solid black 1px;">
     <%- include("../includes/print-header.ejs") %>
     <div class="title"><img src="../images/brgy-clearance.png" alt=""></div>
+    <div class="lalagyan">
+        <div class="left">
+
+        </div>
+        <div class="right">
+
+        </div>
+    </div>
 </div>
 
 <style>
     .title img {
         margin-top: 26px;
+        width: 60%;
+    }
+
+    .lalagyan {
+        display: flex;
+    }
+
+    .left {
+        height: 100px;
+        width: 30%;
+        border: solid rgb(223, 35, 35) 1px;
+    }
+
+    .right {
+        height: 100px;
         width: 70%;
+        border: solid black 1px;
     }
 
 </style>
