@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async function() {
+document.addEventListener("DOMContentLoaded", async function () {
     const archiveTableBody = document.getElementById('archiveTableBody');
     const urlParams = new URLSearchParams(window.location.search);
     const searchInput = document.getElementById('searchInput');
@@ -13,25 +13,25 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         fetchArchiveLists(page, limit, searchQuery);
     });
-    
+
     // Fetch inventory based on parameters
     async function fetchArchiveLists(page = 1, limit = 10, searchQuery = '') {
         try {
-            
+
             const response = await fetch(
                 `http://localhost:3000/archive/dashboard?ajax=true&page=${page}&limit=${limit}&search=${encodeURIComponent(searchQuery)}`
             );
-    
-    
+
+
             if (!response.ok) {
                 throw new Error("Failed to fetch archive data");
             }
-    
+
             const data = await response.json();
             const archive = data.getArchiveList;
-    
+            console.log(data);
             archiveTableBody.innerHTML = '';
-    
+
             if (archive.length === 0) {
                 const noDataRow = document.createElement('tr');
                 noDataRow.innerHTML = `
@@ -40,24 +40,27 @@ document.addEventListener("DOMContentLoaded", async function() {
                 archiveTableBody.appendChild(noDataRow);
                 return;
             }
-    
+
             archive.forEach(arch => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${arch.name}</td>
                     <td>${new Date(arch.date).toLocaleDateString()}</td>
                     <td>${arch.doctype}</td>
-                    <td><button>image</button></td>
+                    <td><button
+                    data-image="${arch.img}"
+                    data-docType="${arch.doctype}"
+                    onclick="viewImage(this)">image</button></td>
                 `;
                 archiveTableBody.appendChild(row);
             });
-    
+
             updatePaginationLinks(data.currentPage, data.totalPages);
         } catch (error) {
             console.error("Error fetching inventory data: ", error);
             archiveTableBody.innerHTML = '<tr><td colspan="4">Error loading data</td></tr>';
         }
-    }        
+    }
 
     // Update pagination links based on current and total pages
     function updatePaginationLinks(currentPage, totalPages) {
@@ -73,3 +76,20 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     }
 });
+
+window.viewImage = function (button) {
+    const image = button.getAttribute('data-image');
+    const docType = button.getAttribute('data-docType');
+
+    document.querySelector(".overlay").classList.toggle("visible");
+    document.querySelector("#view-document").classList.toggle("visible");
+    document.getElementById("docHeading").innerText = docType;
+
+    const pictureElement = document.getElementById('imageTo');
+    if (pictureElement) {
+        const picturePath = `/uploads/archive-img/${image}`;
+        pictureElement.src = picturePath;
+    } else {
+        console.error('Image element not found');
+    }
+};

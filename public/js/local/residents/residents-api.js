@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     const sectorsDropdown = document.getElementById('sectors-dropdown');
     const addressWhileStudying = document.getElementById('addressWhileStudying');
     const formToAddResident = document.getElementById('formToAddResident');
+    const addressWhileStudyingInputs = document.querySelectorAll('#addressWhileStudying input, #addressWhileStudying select');
+    const isResidentInput = document.getElementById('isResident');
+    isResidentInput.value = "resident";
 
     fetchResidents().then(attachDotEventListeners);
 
@@ -20,6 +23,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     document.querySelector('.residents-dropdown').addEventListener('change', function () {
         const addressSection = document.getElementById('address-section');
+        const emergencyAddress = document.getElementById('emergencyContactInfo');
         const selectedValue = this.value.trim();
         const searchQuery = document.getElementById('searchInput').value.trim();
 
@@ -50,21 +54,21 @@ document.addEventListener("DOMContentLoaded", async function () {
             document.getElementById('province').value = "Eastern Samar";
             document.getElementById('residentPageTitle').innerText = "LIST OF RESIDENT";
             formToAddResident.setAttribute('action', '/residents/dashboard/add-resident');
-
+            isResidentInput.value = "resident";
 
             sectorsDropdown.innerHTML = `
-            <option value="Government Employee">Government Employee</option>
-            <option value="Private employee">Private employee</option>
-            <option value="Carpenters">Carpenters</option>
-            <option value="Farmers">Farmers</option>
-            <option value="Fisherman">Fisherman</option>
-            <option value="Business Entrepreneur">Business Entrepreneur</option>
-            <option value="Drivers">Drivers</option>
-            <option value="OFW">OFW</option>
-            <option value="Kasambahay">Kasambahay</option>
-            <option value="None">None</option>
+            <option value="1">Government Employee</option>
+            <option value="2">Private employee</option>
+            <option value="3">Carpenters</option>
+            <option value="4">Farmers</option>
+            <option value="5">Fisherman</option>
+            <option value="6">Business Entrepreneur</option>
+            <option value="7">Drivers</option>
+            <option value="8">OFW</option>
+            <option value="9">Kasambahay</option>
+            <option value="">None</option>
         `;
-
+            // address
             addressSection.insertAdjacentHTML('afterbegin', `
             <div class="inputWithLabel" id="purok">
                 <label for="">Purok</label>
@@ -83,6 +87,27 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <input type="text" aria-label="Street" name="street" required>
             </div>
         `);
+            //emergency address
+            emergencyAddress.insertAdjacentHTML('afterbegin', `
+            <div class="inputWithLabel">
+                <label for="">Purok</label>
+                <select name="emergencyPurok" aria-label="Purok">
+                    <option value="Seguidila">Seguidila</option>
+                    <option value="Sitaw">Sitaw</option>
+                    <option value="Talbos">Talbos</option>
+                    <option value="Petchay">Petchay</option>
+                    <option value="Ampalaya">Ampalaya</option>
+                    <option value="Mustaza">Mustaza</option>
+                    <option value="Kalabasa">Kalabasa</option>
+                </select>
+            </div>
+            <div class="inputWithLabel">
+                <label>Street</label>
+                <input type="text" aria-label="Street" name="emergencyStreet" required>
+            </div>
+        `);
+
+            addressWhileStudyingInputs.forEach(input => input.disabled = true);
 
             toggleColumns(true);
             if (addressWhileStudying) addressWhileStudying.style.display = "none";
@@ -99,15 +124,23 @@ document.addEventListener("DOMContentLoaded", async function () {
             document.getElementById('province').value = "";
             document.getElementById('residentPageTitle').innerText = "LIST OF NON-RESIDENT";
             formToAddResident.setAttribute('action', '/residents/dashboard/add-non-resident');
-
             sectorsDropdown.innerHTML = `
-            <option value="Resident Boarders">Resident Boarders</option>
+            <option value="10">Resident Boarders</option>
         `;
 
+            isResidentInput.value = "non-resident";
             const purok = document.getElementById('purok');
             const street = document.getElementById('street');
+            const emergencyPurok = document.getElementById('emergencyPurok');
+            const emergencyStreet = document.getElementById('emergencyStreet');
+
+
             if (purok) purok.remove();
             if (street) street.remove();
+            if (emergencyPurok) emergencyPurok.remove();
+            if (emergencyStreet) emergencyStreet.remove();
+
+            addressWhileStudyingInputs.forEach(input => input.disabled = false);
 
             toggleColumns(false);
             addressWhileStudying.style.display = "block";
@@ -134,7 +167,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             const data = await response.json();
             const residents = data.getResidentsList;
-
+            console.log(data);
             // Clear the table body
             residentsTableBody.innerHTML = '';
 
@@ -172,9 +205,12 @@ document.addEventListener("DOMContentLoaded", async function () {
                                 data-fullname="${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}"
                                 data-idNumber="${resident.idnumber}"
                                 data-globalId="${resident.globalid}"
+                                data-isResident="${resident.isresident}"
+                                data-picture="${resident.picture}"
                                 data-civil_status="${resident.civilstatus}"
                                 data-birthdate="${new Date(resident.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}"
                                 data-address="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
+                                data-addressNotResident="Purok ${resident.purok}, ${resident.barangay}, ${resident.city}"
                                 data-Contactfullname="${resident.emergencycontactfname} ${resident.emergencycontactmname ? resident.emergencycontactmname : ''} ${resident.emergencycontactlname}"
                                 data-ContactPhone="${resident.emergencycontactnumber}"
                                 data-Contactaddress="Purok ${resident.emergencycontactpurok}, ${resident.emergencycontactbarangay}, ${resident.emergencycontactcity}"
@@ -346,9 +382,9 @@ window.popUp_three_dot = function (button) {
         //     });
     }
     if (action === 'Generate ID' && residentID) {
-
         const id_card = document.getElementById("generate-ID");
         const globalIDForQR = button.getAttribute('data-globalId');
+        const isResident = button.getAttribute('data-isResident');
         id_card.classList.add("visible");
         overlay.classList.toggle("visible");
 
@@ -361,28 +397,20 @@ window.popUp_three_dot = function (button) {
         document.getElementById('emergencyContactNumber').innerText = button.getAttribute('data-contactPhone');
         document.getElementById('emergencyContactAddress').innerText = button.getAttribute('data-contactAddress');
 
+        const pictureElement = document.getElementById('residentPicture');
+        const image = button.getAttribute('data-picture');
+        if (pictureElement) {
+            const picturePath = `/uploads/residents-img/${image}`;
+            pictureElement.src = picturePath;
+        } else {
+            console.error('Image element not found');
+        }
 
-        //         var picture;
-        //         if (beneficiaryData.gender === "Male") {
-        //             picture = "/icon/upload-img-default.svg";
-        //         } else {
-        //             picture = "/icon/upload-img-default-woman.svg";
-        //         }
-
-
-        //         const pictureElement = document.getElementById('beneficiary-picture');
-        //         if (pictureElement) {
-        //             const picturePath = (beneficiaryData.picture && beneficiaryData.picture !== '0') ? `/uploads/beneficiary-img/${beneficiaryData.picture}` : picture;
-        //             pictureElement.src = picturePath;
-        //         } else {
-        //             console.error('Image element not found');
-        //         }
-
-        //         const fileInput = document.getElementById('picture');
-        //         if (fileInput) {
-        //             fileInput.value = '';
-        //         }
-
+        const currentYear = new Date().getFullYear();
+        const lastDayOfYear = new Date(currentYear, 11, 31);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = lastDayOfYear.toLocaleDateString(undefined, options);
+        document.getElementById('IDvalidation').textContent = formattedDate + ".";
 
         async function generateQRCode() {
             const json = `${globalIDForQR}`;
@@ -399,7 +427,6 @@ window.popUp_three_dot = function (button) {
             document.getElementById('qrcode').innerHTML = qr.createImgTag(size, size);
             const decryptedData = decryptData(encryptedData, secretKey);
 
-            // Log the decrypted data to the console
         }
 
         generateQRCode();

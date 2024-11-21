@@ -94,3 +94,32 @@
 #fileInput {
   display: none;
 }
+
+#imageContainer #imageTo {
+  width: 150vh;
+  object-fit: contain;
+}
+
+#imageContainer {
+  border: 1px solid #000;
+  margin: 12px 0;
+  display: grid;
+  place-items: center;
+}
+
+.buttonContainerInArchibe {
+  display: flex;
+  gap: 12px;
+}
+
+.buttonContainerInArchibe button {
+  padding: 12px 40px;
+}
+
+.buttonContainerInArchibe button:last-child {
+  background-color: red;
+}
+
+.buttonContainerInArchibe button:first-child {
+  background-color: #008cba;
+}

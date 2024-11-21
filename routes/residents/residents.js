@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mPool = require("../../models/mDatabase");
 const { fetchResidentsLists } = require("../../middlewares/helper-functions/fetch-functions");
-const { generateGlobalNextId, generateIdNumberNextId } = require("../../middlewares/helper-functions/id-generator");
+const { generateGlobalNextId, generateIdNumberNextId, getCurrentYear } = require("../../middlewares/helper-functions/id-generator");
 const { residentSchema } = require("../../middlewares/schemas/schemas");
 
 const multer = require("multer");
@@ -68,43 +68,61 @@ router.get("/dashboard", async (req, res) => {
 router.post("/dashboard/add-resident", upload.single('picture'), async (req, res) => {
     const { error, value } = residentSchema.validate(req.body);
     const picture = req.file ? req.file.filename : null;
-
+    console.log("req.bodyyyy: ", value);
     if (error) {
         console.error("Validation error:", error.details.map(e => e.message).join(", "));
         return res.status(400).json({ error: error.details.map(e => e.message) });
     }
 
     try {
-        // Log the picture file name if uploaded
+        // Log uploaded picture
         if (picture) {
             console.log(`Processed file: ${picture}`);
         } else {
-            console.log("No file received or file upload failed");
+            console.log("No file uploaded or file upload failed.");
         }
 
-        // Step 1: Get the last globalId to generate the next one
-        const globalIdresult = await mPool.query(
-            `SELECT globalId FROM residents ORDER BY globalId DESC LIMIT 1`
+        // Step 1: Get the last globalId and generate the next one
+        let newId;
+
+        // Step 1: Get the last globalId and generate the next one
+        const globalIdQuery = await mPool.query(
+            `SELECT globalid FROM residents ORDER BY globalid DESC LIMIT 1`
         );
 
         let lastGlobalId = "MPDN0001"; // Default starting value
-        if (globalIdresult.rows.length > 0) {
-            lastGlobalId = globalIdresult.rows[0].globalId;
+        if (globalIdQuery.rows.length > 0 && globalIdQuery.rows[0]?.globalid) {
+            lastGlobalId = globalIdQuery.rows[0].globalid;
         }
-        const newId = generateGlobalNextId(lastGlobalId);
 
-        // Step 2: Get the last idNumber to generate the next one
-        const idNumberresult = await mPool.query(
-            `SELECT idNumber FROM residents ORDER BY idNumber DESC LIMIT 1`
+        console.log("Last Global ID fetched:", lastGlobalId);
+
+        try {
+            newId = generateGlobalNextId(lastGlobalId); // Generate the new global ID
+            console.log("Generated New Global ID:", newId);
+        } catch (err) {
+            console.error("Error generating Global ID:", err.message);
+            return res.status(500).json({ error: "Failed to generate Global ID" });
+        }
+
+        // Step 2: Get the last idNumber and generate the next one
+        const idNumberQuery = await mPool.query(
+            `SELECT idnumber FROM residents ORDER BY residentsid DESC LIMIT 1`
         );
 
-        let lastNumId = "2024-0001"; // Default starting value
-        if (idNumberresult.rows.length > 0) {
-            lastNumId = idNumberresult.rows[0].idNumber;
-        }
-        const numNewId = generateIdNumberNextId(lastNumId);
+        console.log("idNumber:", idNumberQuery);
 
-        // Step 3: Insert emergency contact into contactPerson table
+        let lastNumId = `${getCurrentYear()}-0001`; // Default starting value
+        if (idNumberQuery.rows.length > 0 && idNumberQuery.rows[0]?.idnumber) {
+            lastNumId = idNumberQuery.rows[0].idnumber;
+        }
+
+        console.log("Fetched lastNumId from DB:", lastNumId);
+
+        const numNewId = generateIdNumberNextId(lastNumId); // Generate the new idNumber
+        console.log("Generated New ID Number:", numNewId);
+
+        // Step 3: Insert emergency contact into the contactPerson table
         const emergencyContactResult = await mPool.query(
             `INSERT INTO contactPerson (fName, mName, lName, street, purok, barangay, city, province, contactNumber) 
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING contactPersonId`,
@@ -121,9 +139,10 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
             ]
         );
 
-        const emergencyContactId = emergencyContactResult.rows[0].contactPersonId;
+        const emergencyContactId = emergencyContactResult.rows[0].contactpersonid;
+        const birthDate = new Date(value.birthdate).toISOString().split("T")[0];
 
-        // Step 4: Insert the resident information into residents table
+        // Step 4: Insert resident information into residents table
         await mPool.query(
             `INSERT INTO residents (globalId, idNumber, fName, mName, lName, purok, street, barangay, city, province, birthDate, birthPlace, age, gender, picture, eAttainment, occupation, income, civilStatus, isResident, emergencyContactId, rClassificationId, isPwd, isSoloParent, isYouth, is4ps)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26)`,
@@ -133,12 +152,12 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
                 value.first_name,    // fName
                 value.middle_name,   // mName
                 value.last_name,     // lName
-                value.address.purok, // purok
-                value.address.street,// street
-                value.address.barangay, // barangay
-                value.address.city,  // city
-                value.address.province, // province
-                value.birthdate,     // birthDate
+                value.purok,         // purok
+                value.street,        // street
+                value.barangay,      // barangay
+                value.city,          // city
+                value.province,      // province
+                birthDate,           // birthDate
                 value.placeOfBirth,  // birthPlace
                 value.age,           // age
                 value.gender,        // gender
@@ -147,7 +166,7 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
                 value.occupation,    // occupation
                 value.grossIncome,   // income
                 value.civilStatus,   // civilStatus
-                true,                // isResident (since this is a resident)
+                true,                // isResident (default true)
                 emergencyContactId,  // emergencyContactId
                 value.sectors,       // rClassificationId
                 value.pwd,           // isPwd
@@ -156,24 +175,49 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
                 value.is4ps          // is4ps
             ]
         );
+
         req.flash('success', 'Resident Added Successfully!');
-        res.redirect("/resident/dashboard/");
+        res.redirect("/residents/dashboard");
     } catch (err) {
-        console.error("Error: ", err.message, err.stack);
+        console.error("Error:", err.message, err.stack);
         res.status(500).send("Internal server error");
     }
 });
 
-router.post("/dashboard/add-non-resident", async (req, res) => {
-    const { error, value } = residentSchema.validate(req.body);
-    const picture = req.file ? req.file.filename : null;
 
-    if (error) {
-        console.error("Validation error:", error.details.map(e => e.message).join(", "));
-        return res.status(400).json({ error: error.details.map(e => e.message) });
-    }
-
+router.post("/dashboard/add-non-resident", upload.single('picture'), async (req, res) => {
     try {
+        // Step 1: Map non-resident fields into `nonResidentAddress` if `isResident` is false
+        if (req.body.isResident === "non-resident" || req.body.isResident === "non-resident") {
+            req.body.nonResidentAddress = {
+                purok1: req.body.purok1,
+                street1: req.body.street1,
+                barangay1: req.body.barangay1,
+                city1: req.body.city1,
+                province1: req.body.province1,
+                boardingHouse: req.body.boardingHouse,
+                landlord: req.body.landlord,
+            };
+
+            // Optionally remove nonResident fields from the root level to clean up the object
+            delete req.body.purok1;
+            delete req.body.street1;
+            delete req.body.barangay1;
+            delete req.body.city1;
+            delete req.body.province1;
+            delete req.body.boardingHouse;
+            delete req.body.landlord;
+        }
+
+
+        // Step 2: Validate the data
+        const { error, value } = residentSchema.validate(req.body);
+        const picture = req.file ? req.file.filename : null;
+        console.log("req.bodyyyy: ", value);
+        if (error) {
+            console.error("Validation error:", error.details.map(e => e.message).join(", "));
+            return res.status(400).json({ error: error.details.map(e => e.message) });
+        }
         // Log the picture file name if uploaded
         if (picture) {
             console.log(`Processed file: ${picture}`);
@@ -181,27 +225,43 @@ router.post("/dashboard/add-non-resident", async (req, res) => {
             console.log("No file received or file upload failed");
         }
 
-        // Step 1: Get the last globalId to generate the next one
-        const globalIdresult = await mPool.query(
-            `SELECT globalId FROM residents ORDER BY globalId DESC LIMIT 1`
+        let newId;
+        // Step 1: Get the last globalId and generate the next one
+        const globalIdQuery = await mPool.query(
+            `SELECT globalid FROM residents ORDER BY globalid DESC LIMIT 1`
         );
 
         let lastGlobalId = "MPDN0001"; // Default starting value
-        if (globalIdresult.rows.length > 0) {
-            lastGlobalId = globalIdresult.rows[0].globalId;
+        if (globalIdQuery.rows.length > 0 && globalIdQuery.rows[0]?.globalid) {
+            lastGlobalId = globalIdQuery.rows[0].globalid;
         }
-        const newId = generateGlobalNextId(lastGlobalId);
 
-        // Step 2: Get the last idNumber to generate the next one
-        const idNumberresult = await mPool.query(
-            `SELECT idNumber FROM residents ORDER BY idNumber DESC LIMIT 1`
+        console.log("Last Global ID fetched:", lastGlobalId);
+
+        try {
+            newId = generateGlobalNextId(lastGlobalId); // Generate the new global ID
+            console.log("Generated New Global ID:", newId);
+        } catch (err) {
+            console.error("Error generating Global ID:", err.message);
+            return res.status(500).json({ error: "Failed to generate Global ID" });
+        }
+
+        // Step 2: Get the last idNumber and generate the next one
+        const idNumberQuery = await mPool.query(
+            `SELECT idnumber FROM residents ORDER BY residentsid DESC LIMIT 1`
         );
 
-        let lastNumId = "2024-0001"; // Default starting value
-        if (idNumberresult.rows.length > 0) {
-            lastNumId = idNumberresult.rows[0].idNumber;
+        console.log("idNumber:", idNumberQuery);
+
+        let lastNumId = `${getCurrentYear()}-0001`; // Default starting value
+        if (idNumberQuery.rows.length > 0 && idNumberQuery.rows[0]?.idnumber) {
+            lastNumId = idNumberQuery.rows[0].idnumber;
         }
-        const numNewId = generateIdNumberNextId(lastNumId);
+
+        console.log("Fetched lastNumId from DB:", lastNumId);
+
+        const numNewId = generateIdNumberNextId(lastNumId); // Generate the new idNumber
+        console.log("Generated New ID Number:", numNewId);
 
         // Step 3: Insert emergency contact into contactPerson table
         const emergencyContactResult = await mPool.query(
@@ -220,6 +280,9 @@ router.post("/dashboard/add-non-resident", async (req, res) => {
             ]
         );
 
+        const emergencyContactId = emergencyContactResult.rows[0].contactpersonid;
+        const birthDate = new Date(value.birthdate).toISOString().split("T")[0];
+
         // Step 4: Insert the resident information into residents table
         await mPool.query(
             `INSERT INTO residents (globalId, idNumber, fName, mName, lName, purok, street, barangay, city, province, birthDate, birthPlace, age, gender, picture, eAttainment, occupation, income, civilStatus, isResident, emergencyContactId, rClassificationId, isPwd, isSoloParent, isYouth, is4ps)
@@ -230,12 +293,12 @@ router.post("/dashboard/add-non-resident", async (req, res) => {
                 value.first_name,    // fName
                 value.middle_name,   // mName
                 value.last_name,     // lName
-                value.address.purok, // purok
-                value.address.street,// street
-                value.address.barangay, // barangay
-                value.address.city,  // city
-                value.address.province, // province
-                value.birthdate,     // birthDate
+                value.purok, // purok
+                value.street,// street
+                value.barangay, // barangay
+                value.city,  // city
+                value.province, // province
+                birthDate,     // birthDate
                 value.placeOfBirth,  // birthPlace
                 value.age,           // age
                 value.gender,        // gender
@@ -246,13 +309,16 @@ router.post("/dashboard/add-non-resident", async (req, res) => {
                 value.civilStatus,   // civilStatus
                 false,                // isResident (since this is a non-resident)
                 emergencyContactId,  // emergencyContactId
-                null,
+                value.sectors,
                 null,
                 null,
                 null,
                 null
             ]
         );
+
+        req.flash('success', 'Non-Resident Added Successfully!');
+        res.redirect("/residents/dashboard");
     } catch (err) {
         console.error("Error: ", err.message, err.stack);
         res.status(500).send("Internal server error");

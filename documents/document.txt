@@ -87,7 +87,8 @@ CREATE TABLE residents (
     occupation VARCHAR(255) NULL,                                  
     income INT NULL,                                               
     civilStatus VARCHAR(50) NULL CHECK (civilStatus IN ('Single', 'Married', 'Divorced')),   
-    isResident BOOLEAN NULL,                                                                 
+    isResident BOOLEAN NULL,           
+    boardID INT REFERENCES boarders(boardID) NULL,                                                 
     emergencyContactId INT REFERENCES contactPerson(contactPersonId) NOT NULL,       
     rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,   -- not available is boarder
     isPwd BOOLEAN DEFAULT FALSE,                                                 -- not available if boarder
