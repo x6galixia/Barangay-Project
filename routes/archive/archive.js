@@ -10,19 +10,19 @@ const path = require('path');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      const uploadPath = 'uploads/archive-img/';
-  
-      if (!fs.existsSync(uploadPath)) {
-        fs.mkdirSync(uploadPath, { recursive: true });
-      }
-  
-      cb(null, uploadPath);
+        const uploadPath = 'uploads/archive-img/';
+
+        if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
+        }
+
+        cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
     }
-  });
+});
 
 const upload = multer({ storage: storage });
 router.use("/uploads/archive-img", express.static("uploads"));
@@ -82,7 +82,7 @@ router.post("/dashboard/add-archive", upload.single('picture'), async (req, res)
             INSERT INTO archive (name, date, img, docType) VALUES ($1, $2, $3, $4)
             `, [value.name, value.date, picture, value.docType]);
 
-        res.redirect("/archive/dashboard")     
+        res.redirect("/archive/dashboard")
     } catch (err) {
         console.error("Error: ", err.message, err.stack);
         res.status(500).send("Internal server error");
