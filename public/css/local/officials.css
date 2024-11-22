@@ -1,23 +1,27 @@
-main{
+/* Base styles for all devices */
+main {
     margin: 0;
     padding: 50px 50px;
 }
-.exec{
-    height: 1590px;
+
+.exec {
+    height: fit-content;
     width: 100%;
     background-image: url('../../images/brgy.png');
-    background-size: cover; /* Ensures the image covers the entire element */
-    background-position: center; /* Centers the image */
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
     border-radius: 20px;
+    padding-bottom: 50px;
 }
-.heading{
+
+.heading {
     text-align: center;
     color: white;
     padding: 50px;
-
 }
-.officials-container{
+
+.officials-container {
     height: 380px;
     width: 320px;
     background: linear-gradient(to bottom, #E6E6E6, #808080);
@@ -25,29 +29,34 @@ main{
     display: flex;
     position: relative;
 }
+
 .officials {
     display: flex;
-    flex-direction: row; /* Enable Flexbox */
+    flex-direction: row;
     justify-content: center;
-    gap: 150px; /* Center content horizontally */
-   /* Set a height for the container */
-  }
-  .officialer {
+    gap: 150px;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    margin-top: 20px;
+}
+
+.officialer {
     display: flex;
-    flex-direction: row; /* Enable Flexbox */
+    flex-direction: row;
     justify-content: center;
     margin-top: 50px;
-    gap: 80px; /* Center content horizontally */
-   /* Set a height for the container */
-  }
-  .profile{
+    gap: 80px;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+}
+
+.profile {
     position: absolute;
     height: 300px;
     width: auto;
     display: flex;
     bottom: 0;
-  }
-  .rect{
+}
+
+.rect {
     z-index: 1;
     background-color: rgba(255, 255, 255, 0.5);
     width: 100%;
@@ -56,68 +65,171 @@ main{
     position: absolute;
     padding-bottom: 10px;
     bottom: 0;
-  }
-  .logo-of img{
+}
+
+.logo-of img {
     height: 40px;
-  }
-  .logo-of{
+}
+
+.logo-of {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0px 20px 0px 10px;
-  }
-  .info{
+}
+
+.info {
     margin-top: 5px;
-  }
-  .info p{
+}
+
+.info p {
     font-size: 12px;
-  }
-  .back-images{
+}
+
+.back-images {
     display: flex;
     justify-content: space-between;
     width: 100%;
     padding-right: 20px;
     padding-top: 20px;
-  }
-  .make-cent{
+}
+
+.make-cent {
     text-align: center;
-  }
-  #treasurer{
+}
+
+#treasurer {
     margin-top: 100px;
-  }
-  .centor p{
+}
+
+.centor p {
     font-size: 10px !important;
-  }
-  .logo-in{
+}
+
+.logo-in {
     margin-right: 10px !important;
-  }
-  .logo-out{
+}
+
+.logo-out {
     margin-right: 0;
-  }
-  .sk{
+}
+
+.sk {
     background-image: url('../../images/sk.png');
     width: 100%;
     height: 950px;
     background-repeat: no-repeat;
-    background-size: cover; /* Ensures the image covers the entire element */
+    background-size: cover;
     background-position: center;
     border-radius: 20px;
     margin-top: 40px;
     padding-top: 50px;
-  }
-  .text-sk{
+}
+
+.text-sk {
     background-color: #F83B3B;
     width: fit-content;
     height: fit-content;
     padding: 10px 20px 10px 60px;
     color: white;
-  }
-  .heading-sk{
+}
+
+.heading-sk {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  .heading-sk img{
+}
+
+.heading-sk img {
     margin-right: -30px;
     margin-top: 10px;
-  }
+}
+
+/* Responsive styles for devices with width 768px and below */
+@media (max-width: 768px) {
+    .officials {
+        gap: 30px;
+    }
+
+    .officialer {
+        gap: 20px;
+    }
+
+    .officials-container {
+        width: 280px;
+        height: 320px;
+    }
+
+    .profile {
+        height: 250px;
+    }
+
+    .heading {
+        padding: 30px;
+        font-size: 1.2rem;
+    }
+
+    .info p {
+        font-size: 10px;
+    }
+
+    .back-images {
+        padding-right: 10px;
+        padding-top: 10px;
+    }
+
+    .rect {
+        padding-bottom: 5px;
+    }
+
+    .make-cent {
+        font-size: 14px;
+    }
+
+    .text-sk {
+        padding: 10px 15px;
+    }
+}
+
+/* Responsive styles for devices with width 480px and below */
+@media (max-width: 480px) {
+    .officials-container {
+        width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+    }
+    .officialer {
+        gap: 20px; /* Smaller gap between items */ /* Reduce margin-top for smaller screens */
+    }
+
+    .profile {
+        height: 200px;
+    }
+
+    .officials {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .officialer {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .text-sk {
+        padding: 8px 10px;
+    }
+
+    .heading {
+        padding: 20px;
+        font-size: 1rem;
+    }
+
+    .info p {
+        font-size: 9px;
+    }
+
+    .logo-of img {
+        height: 30px;
+    }
+}
