@@ -1,0 +1,123 @@
+main{
+    margin: 0;
+    padding: 50px 50px;
+}
+.exec{
+    height: 1590px;
+    width: 100%;
+    background-image: url('../../images/brgy.png');
+    background-size: cover; /* Ensures the image covers the entire element */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat;
+    border-radius: 20px;
+}
+.heading{
+    text-align: center;
+    color: white;
+    padding: 50px;
+
+}
+.officials-container{
+    height: 380px;
+    width: 320px;
+    background: linear-gradient(to bottom, #E6E6E6, #808080);
+    justify-content: center;
+    display: flex;
+    position: relative;
+}
+.officials {
+    display: flex;
+    flex-direction: row; /* Enable Flexbox */
+    justify-content: center;
+    gap: 150px; /* Center content horizontally */
+   /* Set a height for the container */
+  }
+  .officialer {
+    display: flex;
+    flex-direction: row; /* Enable Flexbox */
+    justify-content: center;
+    margin-top: 50px;
+    gap: 80px; /* Center content horizontally */
+   /* Set a height for the container */
+  }
+  .profile{
+    position: absolute;
+    height: 300px;
+    width: auto;
+    display: flex;
+    bottom: 0;
+  }
+  .rect{
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    position: absolute;
+    padding-bottom: 10px;
+    bottom: 0;
+  }
+  .logo-of img{
+    height: 40px;
+  }
+  .logo-of{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 20px 0px 10px;
+  }
+  .info{
+    margin-top: 5px;
+  }
+  .info p{
+    font-size: 12px;
+  }
+  .back-images{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-right: 20px;
+    padding-top: 20px;
+  }
+  .make-cent{
+    text-align: center;
+  }
+  #treasurer{
+    margin-top: 100px;
+  }
+  .centor p{
+    font-size: 10px !important;
+  }
+  .logo-in{
+    margin-right: 10px !important;
+  }
+  .logo-out{
+    margin-right: 0;
+  }
+  .sk{
+    background-image: url('../../images/sk.png');
+    width: 100%;
+    height: 950px;
+    background-repeat: no-repeat;
+    background-size: cover; /* Ensures the image covers the entire element */
+    background-position: center;
+    border-radius: 20px;
+    margin-top: 40px;
+    padding-top: 50px;
+  }
+  .text-sk{
+    background-color: #F83B3B;
+    width: fit-content;
+    height: fit-content;
+    padding: 10px 20px 10px 60px;
+    color: white;
+  }
+  .heading-sk{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .heading-sk img{
+    margin-right: -30px;
+    margin-top: 10px;
+  }
