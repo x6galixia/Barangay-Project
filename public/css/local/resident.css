@@ -128,3 +128,10 @@
 #emergencyContactAddress {
   overflow-wrap: break-word;
 }
+
+#generate-ID main>button {
+  display: flex;
+  margin-left: auto;
+  margin-top: 24px;
+  padding: 12px 40px;
+}

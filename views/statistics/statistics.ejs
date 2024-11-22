@@ -16,11 +16,11 @@
 <body>
     <%- include("../includes/header.ejs") %>
 
-    <div class="container">
-        <h2>Resident Classification</h2>
-            <div id="meow">     
-                <div>             
-                    <canvas id="barangayPopulationChart1" style="height: 450px; height: 450px;"></canvas>
+        <div class="container">
+            <h2>Resident Classification</h2>
+            <div id="meow">
+                <div class="chart">
+                    <canvas id="barangayPopulationChart1"></canvas>
                 </div>
                 <div class="separate">
                     <div>
@@ -30,36 +30,44 @@
                     <div id="totalClassificationDetails"></div>
                 </div>
             </div>
-            <h2>Resident Status</h2>
-            <div id="meow" >
-                <div class="chart">
-                <canvas id="statusChart"></canvas>
-                </div>
-                    <div id="totalsByPurokDetails"></div>
-                    <div id="residentStatusText"></div>  
-            </div>
-            
+
+            <h2>Residents by Purok</h2>
             <div id="meow">
-                    <div>
-                        <h2>Residents by Purok</h2>
-                        <canvas id="barangayPopulationChart" style="height: 450px; height: 450px;"></canvas>
-                         <div id="overallPopulation"></div>
-                    </div>
-                    <div id="age" style="width: 500px; height: 500px;">
-                        <h2>Age Demographics</h2>
-                        <canvas id="ageDemographicsChart"></canvas>
-                        <div id="ageDemographicsText"></div>
-                    </div>
+                <div class="chart">
+                    <canvas id="barangayPopulationChart"></canvas>
+                </div>
+                <div class="separate">
+                    <div id="totalsByPurokDetails"></div>
+                    <div id="overallPopulation"></div>
+                </div>
             </div>
-    
             
-            
-            
-    </div>    
+            <h2>Resident Status</h2>
+            <div id="meow">
+                <div class="chart">
+                    <canvas id="statusChart"></canvas>
+                </div>
+                <div class="separate">
+                    <div id="residentStatusText"></div>
+                </div>
+            </div>
+
+            <h2>Age Demographics</h2>
+            <div id="meow">
+                <div class="chart">
+                    <canvas id="ageDemographicsChart"></canvas>
+                </div>
+                <div class="separate">
+                    <div id="ageDemographicsText"></div>
+                </div>
+            </div>
+
+        </div>
 
 </body>
 <script src="../../js/local/statistics/statistics-api.js"></script>
 <script>
     document.querySelector("header>nav>ul>li:nth-child(6)").classList.toggle("selected");
 </script>
+
 </html>

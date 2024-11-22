@@ -13,13 +13,33 @@ fetch('/statistics/resident-classification')
         <p>Total Population: ${overallTotal}</p>
     `;
 
-    // Total Classification Data (Display as text)
-    let totalClassificationText = "<h3>Total Classification Data:</h3><ul>";
+    // Total Classification Data (Display in table format)
+    let totalClassificationTable = `
+        <h3>Total Classification Data:</h3>
+        <table border="1" cellspacing="0" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Classification</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
     for (const [classification, count] of Object.entries(data.totalClassificationData)) {
-        totalClassificationText += `<li><strong>${classification}:</strong> ${count}</li>`;
+        totalClassificationTable += `
+            <tr>
+                <td><strong>${classification}</strong></td>
+                <td>${count}</td>
+            </tr>
+        `;
     }
-    totalClassificationText += "</ul>";
-    document.getElementById("totalClassificationDetails").innerHTML = totalClassificationText;
+
+    totalClassificationTable += `
+            </tbody>
+        </table>
+    `;
+    document.getElementById("totalClassificationDetails").innerHTML = totalClassificationTable;
 
     // Classification Labels (specific rClassification names)
     const classificationNames = [
@@ -71,20 +91,40 @@ fetch('/statistics/resident-classification')
         classificationByPurokTotal[purok] = totalByPurok;
     });
 
-    // Create HTML content for the classification totals by Purok
-    let classificationByPurokText = "<h3>Classification Totals by Purok:</h3><ul>";
+    // Create HTML content for the classification totals by Purok in table format
+    let classificationByPurokTable = `
+        <h3>Classification Totals by Purok:</h3>
+        <table border="1" cellspacing="0" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Purok</th>
+                    <th>Classification</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
     Object.keys(classificationByPurokTotal).forEach(purok => {
-        classificationByPurokText += `<li><strong>${purok}:</strong><ul>`;
         const totalByPurok = classificationByPurokTotal[purok];
         for (const [classification, total] of Object.entries(totalByPurok)) {
-            classificationByPurokText += `<li><strong>${classification}:</strong> ${total}</li>`;
+            classificationByPurokTable += `
+                <tr>
+                    <td>${purok}</td>
+                    <td>${classification}</td>
+                    <td>${total}</td>
+                </tr>
+            `;
         }
-        classificationByPurokText += "</ul></li>";
     });
-    classificationByPurokText += "</ul>";
+
+    classificationByPurokTable += `
+            </tbody>
+        </table>
+    `;
 
     // Display the classification totals by Purok
-    document.getElementById("classificationByPurokDetails").innerHTML = classificationByPurokText;
+    document.getElementById("classificationByPurokDetails").innerHTML = classificationByPurokTable;
 
     // Set up the chart
     const ctx = document.getElementById('barangayPopulationChart1').getContext('2d');
@@ -115,6 +155,7 @@ fetch('/statistics/resident-classification')
 })
 .catch(err => console.error('Error fetching resident classification data:', err));
 
+
 // Function to generate random colors for chart
 function getRandomColor() {
     const letters = '0123456789ABCDEF';
@@ -129,87 +170,248 @@ function getRandomColor() {
 fetch('/statistics/age-demographics')
   .then(response => response.json())
   .then(data => {
-    const labels = data.map(item => item.age_range);
-    const residentCount = data.map(item => parseInt(item.resident_count)); // Convert to number
-    
-    // Log the data for debugging
-    console.log("data", labels);
+    // Calculate total counts for each age range (not grouped by purok)
+    const ageRangeTotals = {};
+
+    // Calculate the total residents for each age range across all purok
+    data.forEach(item => {
+      const { age_range, resident_count } = item;
+      if (!ageRangeTotals[age_range]) {
+        ageRangeTotals[age_range] = 0;
+      }
+      ageRangeTotals[age_range] += resident_count;
+    });
+
+    // Prepare data for chart
+    const allLabels = Object.keys(ageRangeTotals);  // Age ranges as labels
+    const allCounts = Object.values(ageRangeTotals);  // Corresponding total counts
 
     // Render chart
     const ctx = document.getElementById('ageDemographicsChart');
     new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Age Demographics',
-                data: residentCount,
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'], // You can add more colors if needed
-                borderColor: '#fff',
-                borderWidth: 1
-            }]
+      type: 'doughnut',
+      data: {
+        labels: allLabels,
+        datasets: [{
+          label: 'Age Demographics',
+          data: allCounts,
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF9F40', '#4BC0C0'], // Adjust colors if needed
+          borderColor: '#fff',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
         }
+      }
     });
 
-    // Render the total counts for each age group below the chart
+    // Render the age demographics details in a table for purok
     const demographicsTextContainer = document.getElementById('ageDemographicsText');
     demographicsTextContainer.innerHTML = '';  // Clear any existing content
 
-    labels.forEach((ageRange, index) => {
-        const count = residentCount[index];
-        const textElement = document.createElement('p');
-        textElement.textContent = `${ageRange}: ${count} residents`;
-        demographicsTextContainer.appendChild(textElement); // Append each new text element
+    // Create the container to hold both tables side by side
+    let demographicsTables = `
+      <div class="table-container">
+        <!-- First Table: Age Demographics by Purok -->
+        <table>
+          <thead>
+            <tr>
+              <th>Purok</th>
+              <th>Age Range</th>
+              <th>Resident Count</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+
+    // Group data by 'purok' and add rows to the first table
+    const groupedByPurok = {};
+    data.forEach(item => {
+      const { purok, age_range, resident_count } = item;
+      if (!groupedByPurok[purok]) {
+        groupedByPurok[purok] = [];
+      }
+      groupedByPurok[purok].push({ age_range, resident_count });
     });
+
+    // Add rows to the first table based on grouped data
+    Object.keys(groupedByPurok).forEach(purok => {
+      groupedByPurok[purok].forEach(item => {
+        demographicsTables += `
+          <tr>
+            <td>${purok}</td>
+            <td>${item.age_range}</td>
+            <td>${item.resident_count}</td>
+          </tr>
+        `;
+      });
+    });
+
+    // Close the first table body and table
+    demographicsTables += `</tbody></table>`;
+
+    // Second Table: Total Residents for Each Age Range
+    demographicsTables += `
+      <table>
+        <thead>
+          <tr>
+            <th>Age Range</th>
+            <th>Total Residents</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    // Add the total residents for each age range in the second table
+    Object.keys(ageRangeTotals).forEach(ageRange => {
+      demographicsTables += `
+        <tr>
+          <td>${ageRange}</td>
+          <td><strong>${ageRangeTotals[ageRange]}</strong></td>
+        </tr>
+      `;
+    });
+
+    // Close the second table body and table
+    demographicsTables += `</tbody></table></div>`;
+
+    // Insert the tables container into the container element
+    demographicsTextContainer.innerHTML = demographicsTables;
+
   })
   .catch(err => console.error('Error fetching age demographics data:', err));
+
 
 // Fetch resident status data and render chart
 fetch('/statistics/resident-status')
   .then(response => response.json())
   .then(data => {
-    // Extract counts for each resident status
-    const labels = ['PWD', 'Solo Parent', 'Youth', '4Ps'];
-    const counts = [
-        parseInt(data[0].pwd_count),           // Convert to number
-        parseInt(data[0].solo_parent_count),   // Convert to number
-        parseInt(data[0].youth_count),         // Convert to number
-        parseInt(data[0].is4ps_count)          // Convert to number
-    ];
+    // Create an array to hold the purok labels and the counts for each resident status
+    const purokLabels = data.map(item => item.purok);
+    const pwdCounts = data.map(item => parseInt(item.pwd_count));
+    const soloParentCounts = data.map(item => parseInt(item.solo_parent_count));
+    const youthCounts = data.map(item => parseInt(item.youth_count));
+    const is4psCounts = data.map(item => parseInt(item.is4ps_count));
 
-    // Calculate the total for all resident statuses combined
-    const totalResidents = counts.reduce((acc, count) => acc + count, 0); // Sum up the counts
+    // Calculate totals for each status across all puroks
+    const totalPwd = pwdCounts.reduce((acc, count) => acc + count, 0);
+    const totalSoloParent = soloParentCounts.reduce((acc, count) => acc + count, 0);
+    const totalYouth = youthCounts.reduce((acc, count) => acc + count, 0);
+    const total4ps = is4psCounts.reduce((acc, count) => acc + count, 0);
 
     // Render the doughnut chart
     const ctx = document.getElementById('statusChart').getContext('2d');
     new Chart(ctx, {
-        type: 'doughnut',
+        type: 'bar',
         data: {
-            labels: labels,
-            datasets: [{
-                data: counts,
-                backgroundColor: ['#FF9F40', '#FFCD56', '#4BC0C0', '#FF6384'], // Customize colors if needed
-                hoverOffset: 4
-            }]
+            labels: purokLabels,  // Use purok labels as the X-axis labels
+            datasets: [
+                {
+                    label: 'PWD',
+                    data: pwdCounts,
+                    backgroundColor: '#FF9F40',
+                    hoverOffset: 4
+                },
+                {
+                    label: 'Solo Parent',
+                    data: soloParentCounts,
+                    backgroundColor: '#FFCD56',
+                    hoverOffset: 4
+                },
+                {
+                    label: 'Youth',
+                    data: youthCounts,
+                    backgroundColor: '#4BC0C0',
+                    hoverOffset: 4
+                },
+                {
+                    label: '4Ps',
+                    data: is4psCounts,
+                    backgroundColor: '#FF6384',
+                    hoverOffset: 4
+                }
+            ]
         }
     });
 
-    // Render the total counts for each resident status below the chart
+    // Render the resident status details in a table for purok
     const statusTextContainer = document.getElementById('residentStatusText');
     statusTextContainer.innerHTML = '';  // Clear any existing content
 
-    // Display the total residents for each status
-    labels.forEach((status, index) => {
-        const count = counts[index];
-        const textElement = document.createElement('p');
-        textElement.textContent = `${status}: ${count} residents`;
-        statusTextContainer.appendChild(textElement); // Append each new text element
+    // Create a container to hold the tables side by side
+    let statusTables = `
+        <div class="table-container">
+            <!-- First Table: Resident Status by Purok -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Purok</th>
+                        <th>PWD</th>
+                        <th>Solo Parent</th>
+                        <th>Youth</th>
+                        <th>4Ps</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+
+    // Iterate through the data and create table rows for each purok
+    data.forEach((item, index) => {
+        const purok = item.purok;
+        statusTables += `
+            <tr>
+                <td>${purok}</td>
+                <td>${pwdCounts[index]}</td>
+                <td>${soloParentCounts[index]}</td>
+                <td>${youthCounts[index]}</td>
+                <td>${is4psCounts[index]}</td>
+            </tr>
+        `;
     });
 
-    // Display the total of all status groups
-    const totalTextElement = document.createElement('p');
-    totalTextElement.textContent = `Total Residents across all statuses: ${totalResidents}`;
-    statusTextContainer.appendChild(totalTextElement); // Append the total count
+    // Close the first table body and the table
+    statusTables += `
+        </tbody>
+    </table>
+
+    <!-- Second Table: Total Status Count -->
+    <table>
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>PWD</td>
+                <td>${totalPwd}</td>
+            </tr>
+            <tr>
+                <td>Solo Parent</td>
+                <td>${totalSoloParent}</td>
+            </tr>
+            <tr>
+                <td>Youth</td>
+                <td>${totalYouth}</td>
+            </tr>
+            <tr>
+                <td>4Ps</td>
+                <td>${total4ps}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    `;
+
+    // Insert the tables container into the container element
+    statusTextContainer.innerHTML = statusTables;
+
   })
   .catch(err => console.error('Error fetching resident status data:', err));
 
@@ -249,14 +451,39 @@ fetch('/statistics/barangay-population')
     const overallSenior = overall.senior_count;
     const overallPwd = overall.pwd_count;
 
-    // Display overall population data
+    // Display overall population data in a table with "Label" and "Count" headers
     document.getElementById('overallPopulation').innerHTML = `
         <h3>Overall Population</h3>
-        <p>Total Population: ${overallTotal}</p>
-        <p>Male: ${overallMale}</p>
-        <p>Female: ${overallFemale}</p>
-        <p>Senior Citizens: ${overallSenior}</p>
-        <p>PWDs: ${overallPwd}</p>
+        <table border="1" cellspacing="0" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Label</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Male</td>
+                    <td>${overallMale}</td>
+                </tr>
+                <tr>
+                    <td>Female</td>
+                    <td>${overallFemale}</td>
+                </tr>
+                <tr>
+                    <td>Senior Citizens</td>
+                    <td>${overallSenior}</td>
+                </tr>
+                <tr>
+                    <td>PWDs</td>
+                    <td>${overallPwd}</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Population</strong></td>
+                    <td><strong>${overallTotal}</strong></td>
+                </tr>
+            </tbody>
+        </table>
     `;
 
     // Extract data for chart
@@ -282,20 +509,42 @@ fetch('/statistics/barangay-population')
         totalsByPurok.pwd.push(item.pwd_count);
     });
 
-    // Create HTML content for the totals by Purok
-    let totalsByPurokText = "<h3>Population Totals by Purok:</h3><ul>";
-    labels.forEach((purok, index) => {
-        totalsByPurokText += `<li><strong>${purok}:</strong><ul>`;
-        totalsByPurokText += `<li><strong>Male:</strong> ${totalsByPurok.male[index]}</li>`;
-        totalsByPurokText += `<li><strong>Female:</strong> ${totalsByPurok.female[index]}</li>`;
-        totalsByPurokText += `<li><strong>Senior Citizens:</strong> ${totalsByPurok.senior[index]}</li>`;
-        totalsByPurokText += `<li><strong>PWDs:</strong> ${totalsByPurok.pwd[index]}</li>`;
-        totalsByPurokText += "</ul></li>";
-    });
-    totalsByPurokText += "</ul>";
+    // Create HTML content for the totals by Purok in a table
+    let totalsByPurokTable = `
+        <h3>Population Totals by Purok</h3>
+        <table border="1" cellspacing="0" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Purok</th>
+                    <th>Male</th>
+                    <th>Female</th>
+                    <th>Senior Citizens</th>
+                    <th>PWDs</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
 
-    // Display the totals by Purok
-    document.getElementById("totalsByPurokDetails").innerHTML = totalsByPurokText;
+    // Add each Purok's population details as table rows
+    labels.forEach((purok, index) => {
+        totalsByPurokTable += `
+            <tr>
+                <td>${purok}</td>
+                <td>${totalsByPurok.male[index]}</td>
+                <td>${totalsByPurok.female[index]}</td>
+                <td>${totalsByPurok.senior[index]}</td>
+                <td>${totalsByPurok.pwd[index]}</td>
+            </tr>
+        `;
+    });
+
+    totalsByPurokTable += `
+            </tbody>
+        </table>
+    `;
+
+    // Display the table for totals by Purok
+    document.getElementById("totalsByPurokDetails").innerHTML = totalsByPurokTable;
 
     // Set up the chart
     const ctx = document.getElementById('barangayPopulationChart').getContext('2d');
@@ -357,5 +606,6 @@ fetch('/statistics/barangay-population')
     });
 })
 .catch(err => console.error('Error fetching barangay population data:', err));
+
 
 });
