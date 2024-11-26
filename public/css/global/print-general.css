@@ -156,6 +156,14 @@
     row-gap: 8px;
 }
 
+
+.g-row-2 {
+    display: grid;
+    grid-template-columns:100px 100px 300px ;
+    row-gap: 8px;
+    text-wrap: wrap;
+}
+
 .colum {
     display: flex;
     flex-direction: column;
@@ -229,6 +237,13 @@
 }
 
 .g-row p {
+    text-indent: 0 !important;
+    padding: 0;
+    margin-bottom: 0 !important;
+    margin: 0;
+}
+
+.g-row-2 p {
     text-indent: 0 !important;
     padding: 0;
     margin-bottom: 0 !important;
