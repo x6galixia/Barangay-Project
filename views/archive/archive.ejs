@@ -18,12 +18,15 @@
             <div class="heading">Archives</div>
             <div class="tableActionOne">
                 <input type="search" id="searchInput" placeholder="Search">
+                <select id="documentType" name="documentType">
+                    <option value="Panumduman">Panumduman</option>
+                </select>
             </div>
             <div class="tableContainer">
                 <table>
                     <thead>
                         <tr>
-                            <th>NAME</th>
+                            <th>Contracting Parties</th>
                             <th>DATE</th>
                             <th>DOCTYPE</th>
                             <th>IMAGE</th>
@@ -52,20 +55,25 @@
                 <form action="/archive/dashboard/add-archive" method="POST" enctype="multipart/form-data">
                     <div class="add-inventory-input-container">
                         <div class="row">
-                            <div class="inputWithLabel" id="surubadan">
-                                <label>Name</label>
-                                <input type="text" aria-label="Name" name="name" required>
-                            </div>
-                            <div class="inputWithLabel">
-                                <label>Date</label>
-                                <input type="date" aria-label="Date" name="date" required>
-                            </div>
                             <div class="inputWithLabel" id="masubad">
                                 <label>Document Type</label>
-                                <select name="docType" aria-label="Document Type" id="" required>
+                                <select name="docType" aria-label="Document Type" id="docType" required>
                                     <option value="Panumduman">Panumduman</option>
-                                    <option value="Ambot">Ambot</option>
                                 </select>
+                            </div>
+                            <div id="archiveInputContainer">
+                                <div class="inputWithLabel" id="surubadan">
+                                    <label>Contracting Parties 1</label>
+                                    <input type="text" aria-label="Contracting Parties 1" name="parties1" required>
+                                </div>
+                                <div class="inputWithLabel" id="surubadan">
+                                    <label>Contracting Parties 2</label>
+                                    <input type="text" aria-label="Contracting Parties 2" name="parties2" required>
+                                </div>
+                                <div class="inputWithLabel">
+                                    <label>Date</label>
+                                    <input type="date" aria-label="Date" name="date" required>
+                                </div>
                             </div>
                         </div>
                         <div class="ID-container">

@@ -166,6 +166,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
             const data = await response.json();
+            console.log(data);
             const residents = data.getResidentsList;
             // Clear the table body
             residentsTableBody.innerHTML = '';
@@ -186,7 +187,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 const remarksColumn = isNonResident ? '' : `<td>${generateRemarks(resident)}</td>`;
 
                 row.innerHTML = `
-                    <td>${resident.purok || 'N/A'}</td>
+                    <td>${resident.purok || resident.originalpurok || 'N/A'}</td>
                     <td>${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}</td>
                     <td>${new Date(resident.birthdate).toLocaleDateString()}</td>
                     <td>${resident.age}</td>
