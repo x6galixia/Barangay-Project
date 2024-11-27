@@ -58,7 +58,7 @@
     padding: 30px 30px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
     align-self: stretch;
-    width: 40% !important;
+    width: fit-content;
 }
 
 #totalsByPurokDetails {
@@ -105,4 +105,16 @@
 
 #residentStatusText p {
     margin-bottom: 20px;
+}
+
+#residentStatusText>div,
+#ageDemographicsText>div {
+    display: flex;
+    gap: 12px;
+    flex-direction: row;
+}
+
+#residentStatusText>div>table,
+#ageDemographicsText>div>table {
+    min-width: 50%;
 }

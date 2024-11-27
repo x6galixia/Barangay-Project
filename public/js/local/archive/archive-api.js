@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", async function () {
     const archiveTableBody = document.getElementById('archiveTableBody');
     const urlParams = new URLSearchParams(window.location.search);
@@ -6,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const limit = parseInt(urlParams.get('limit')) || 10;
 
     fetchArchiveLists(page, limit);
-
+    docChanges();
     // Listen for changes to search input
     searchInput.addEventListener('input', () => {
         const searchQuery = searchInput.value.trim();
@@ -76,6 +77,29 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 });
+
+function docChanges() {
+    document.getElementById("docType").addEventListener('change', function () {
+        const selectedValue = this.value.trim();
+        const formContainer = document.getElementById('archiveInputContainer');
+        if (selectedValue === "Panumduman") {
+            formContainer.innerHTML = `
+            <div class="inputWithLabel" id="surubadan">
+                <label>Contracting Parties 1</label>
+                <input type="text" aria-label="Contracting Parties 1" name="parties1" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Contracting Parties 2</label>
+                <input type="text" aria-label="Contracting Parties 2" name="parties2" required>
+            </div>
+            <div class="inputWithLabel">
+                <label>Date</label>
+                <input type="date" aria-label="Date" name="date" required>
+            </div>
+            `
+        }
+    })
+}
 
 window.viewImage = function (button) {
     const image = button.getAttribute('data-image');

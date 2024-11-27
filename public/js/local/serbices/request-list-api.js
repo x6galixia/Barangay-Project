@@ -141,14 +141,31 @@ window.processCertificate = function (button) {
     certificateMainForm.innerHTML = `
         <div class="inputWithLabel">
             <label for="certificatePurpose">Purpose</label>
-            <select class="certficate-purpose-dropdown" id="certificatePurpose">
+            <select class="certficate-purpose-dropdown" id="selectPurpose">
                 <option value="default" disabled selected>Select a Purpose</option>
                 <option value="Scholarship Assistance">Scholarship Assistance</option>
                 <option value="PhilHealth Enrollment">PhilHealth Enrollment</option>
                 <option value="Medical Assistance">Medical Assistance</option>
+                <option value="Others">Others</option>
             </select>
+            <input type="hidden" id="certificatePurpose" style="margin-top:12px">
         </div>
     `;
+
+    document.getElementById("selectPurpose").addEventListener('change', function () {
+      const selectedValue = this.value.trim();
+      const certificatePurposeInput = document.getElementById("certificatePurpose");
+
+      if (selectedValue === "Others") {
+        certificatePurposeInput.type = "text";
+        certificatePurposeInput.value = "";
+        certificatePurposeInput.placeholder = "Enter your purpose";
+      } else {
+        certificatePurposeInput.type = "hidden";
+        certificatePurposeInput.value = selectedValue;
+      }
+    });
+
 
     function viewCertificateDetails() {
       document.getElementById("certificate").classList.toggle("visible");
@@ -157,28 +174,8 @@ window.processCertificate = function (button) {
       document.getElementById("indigencyFullName").innerText = `${lastName}, ${firstName} ${middleName}`;
       document.getElementById("indigencyAddress").innerText = `${purok}, ${barangay}, ${city}, ${province}`;
 
-      // gender
-      if (gender === "Male") {
-        document.getElementById("indigencyGender").innerHTML = "female/<u>male</u>";
-      } else {
-        document.getElementById("indigencyGender").innerHTML = "<u>female</u>/male";
-      }
-
-      //civil status
-      switch (civilStatus) {
-        case "Single":
-          document.getElementById("indigencyCivilStatus").innerHTML = "<u>single</u>/married/widow/widower";
-          break;
-        case "Married":
-          document.getElementById("indigencyCivilStatus").innerHTML = "single/<u>married</u>/widow/widower";
-          break;
-        case "Widow":
-          document.getElementById("indigencyCivilStatus").innerHTML = "single/married/<u>widow</u>/widower";
-          break;
-        case "Widower":
-          document.getElementById("indigencyCivilStatus").innerHTML = "single/married/widow/<u>widower</u>";
-          break;
-      }
+      document.getElementById("indigencyGender").innerHTML = `<u>${gender}</u>`;
+      document.getElementById("indigencyCivilStatus").innerHTML = `<u>${civilStatus}</u>`;
 
       document.querySelector(".closeCertificate").addEventListener("click", function () {
         console.log("close click");
@@ -188,28 +185,33 @@ window.processCertificate = function (button) {
     }
 
     applyChanges.addEventListener('click', function () {
-      const purposeDropdown = document.getElementById("certificatePurpose");
-      const selectedPurpose = purposeDropdown.value;
+      const certificatePurposeInput = document.getElementById("certificatePurpose");
+      const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
 
-      if (selectedPurpose !== "default") {
+      if (selectedPurpose && selectedPurpose !== "default") {
         const indigencyPurpose = document.getElementById("indigencyPurpose");
-        switch (selectedPurpose) {
-          case "Scholarship Assistance":
-            indigencyPurpose.innerText = "SCHOLARSHIP ASSISTANCE REQUIREMENT ONLY";
-            break;
-          case "PhilHealth Enrollment":
-            indigencyPurpose.innerText = "PHILHEALTH ENROLLMENT REQUIREMENT";
-            break;
-          case "Medical Assistance":
-            indigencyPurpose.innerText = "MEDICAL ASSISTANCE";
-            break;
-        }
 
+        if (certificatePurposeInput.type === "text") {
+          indigencyPurpose.innerText = selectedPurpose.toUpperCase();
+        } else {
+          switch (selectedPurpose) {
+            case "Scholarship Assistance":
+              indigencyPurpose.innerText = "SCHOLARSHIP ASSISTANCE REQUIREMENT ONLY";
+              break;
+            case "PhilHealth Enrollment":
+              indigencyPurpose.innerText = "PHILHEALTH ENROLLMENT REQUIREMENT";
+              break;
+            case "Medical Assistance":
+              indigencyPurpose.innerText = "MEDICAL ASSISTANCE";
+              break;
+          }
+        }
         alert("Changes applied: " + selectedPurpose);
       } else {
-        alert("Please select a purpose before applying changes.");
+        alert("Please select a purpose or provide one if you selected 'Others'.");
       }
     });
+
 
     viewCertificate.addEventListener('click', viewCertificateDetails);
   }
