@@ -22,12 +22,18 @@ CREATE TABLE inventory (
     isFunctional BOOLEAN DEFAULT TRUE
 );
 
+CREATE TABLE archive_cat (
+    id SERIAL PRIMARY KEY NOT NULL,
+    docType VARCHAR(255) REFERENCES archive(docType) NOT NULL,
+    contractingPersons TEXT NOT NULL
+);
+
 CREATE TABLE archive (
     id SERIAL PRIMARY KEY NOT NULL,
     name VARCHAR(255) NOT NULL,
     date DATE NOT NULL,
     img TEXT NOT NULL,
-    docType VARCHAR(255) NOT NULL
+    docType VARCHAR(255) NOT NULL CHECK (docType IN ('Panumduman'))
 );
 
 -- residents classification
@@ -39,28 +45,28 @@ CREATE TABLE rClassification (
 -- in case of emergency contact person 
 CREATE TABLE contactPerson(
      contactPersonId SERIAL PRIMARY KEY NOT NULL,
-     fName VARCHAR(255) NOT NULL,         -31
-     mName VARCHAR(255) NULL,             -32
-     lName VARCHAR(255) NOT NULL,         -33
-     street VARCHAR(255) NULL,            -34
-     purok VARCHAR(255) NULL,             -35
-     barangay VARCHAR(255) NULL,          -36
-     city VARCHAR(255) NULL,              -37
-     province VARCHAR(255) NULL,          -38
-     contactNumber VARCHAR(50) NULL       -39
+     fName VARCHAR(255) NOT NULL,         
+     mName VARCHAR(255) NULL,             
+     lName VARCHAR(255) NOT NULL,         
+     street VARCHAR(255) NULL,            
+     purok VARCHAR(255) NULL,             
+     barangay VARCHAR(255) NULL,          
+     city VARCHAR(255) NULL,              
+     province VARCHAR(255) NULL,          
+     contactNumber VARCHAR(50) NULL       
 );
 
 // non-residents
 CREATE TABLE boarders (
     boardID SERIAL PRIMARY KEY NOT NULL,
     boarderInResidentId INT REFERENCES residents(residentsId) NOT NULL,
-    originalStreet VARCHAR(255) NULL,      -24                                                -- used as a original address of boarder
-    originalPurok VARCHAR(255) NULL,       -25                                                -- used as a original address of boarder
-    originalBarangay VARCHAR(255) NULL,    -26                                                -- used as a original address of boarder
-    originalCity VARCHAR(255) NULL,        -27                                                -- used as a original address of boarder
-    originalProvince VARCHAR(255) NULL,    -28                                                -- used as a original address of boarder
-    boardinghouseName VARCHAR(255) NULL,   -29
-    landlord VARCHAR(255) NULL             -30
+    originalStreet VARCHAR(255) NULL,                                                      -- used as a original address of boarder
+    originalPurok VARCHAR(255) NULL,                                                       -- used as a original address of boarder
+    originalBarangay VARCHAR(255) NULL,                                                    -- used as a original address of boarder
+    originalCity VARCHAR(255) NULL,                                                        -- used as a original address of boarder
+    originalProvince VARCHAR(255) NULL,                                                    -- used as a original address of boarder
+    boardinghouseName VARCHAR(255) NULL,   
+    landlord VARCHAR(255) NULL             
 );
 
 CREATE TABLE residents (
@@ -86,13 +92,16 @@ CREATE TABLE residents (
     income INT NULL,                                               
     civilStatus VARCHAR(50) NULL CHECK (civilStatus IN ('Single', 'Married', 'Divorced')),   
     isResident BOOLEAN NULL,           
-    boardID INT REFERENCES boarders(boardID) NULL,                                                 
+    boarderID INT REFERENCES boarders(boardID) NULL,                                                 
     emergencyContactId INT REFERENCES contactPerson(contactPersonId) NOT NULL,       
     rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,
     isPwd BOOLEAN DEFAULT FALSE,                                                    -- not available if boarder
     isSoloParent BOOLEAN DEFAULT FALSE,                                             -- not available if boarder
     isYouth BOOLEAN DEFAULT FALSE,                                                  -- not available if boarder
-    is4ps BOOLEAN DEFAULT FALSE                                                     -- not available if boarder
+    is4ps BOOLEAN DEFAULT FALSE,                                                    -- not available if boarder
+    isOutOfSchoolYouth BOOLEAN DEFAULT FALSE,                                       -- not available if boarder
+    isSkm BOOLEAN DEFAULT FALSE,                                                    -- not available if boarder
+    isKm BOOLEAN DEFAULT FALSE                                                      -- not available if boarder  
 );
 
 INSERT INTO rClassification (rClassificationName)VALUES 
@@ -105,7 +114,9 @@ INSERT INTO rClassification (rClassificationName)VALUES
     ('Drivers'),
     ('OFW'),
     ('Kasambahay'),
-    ('Boarders');
+    ('Boarders'),
+    ('Entrepreneur'),
+    ('Unemployed');
 
 CREATE TABLE requests (
     id SERIAL PRIMARY KEY NOT NULL,
@@ -116,7 +127,6 @@ CREATE TABLE requests (
 );
 
 // -- not now ----//
-
 
 -- houses classification
 CREATE TABLE hClassification (

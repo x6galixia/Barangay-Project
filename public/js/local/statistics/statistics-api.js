@@ -175,12 +175,14 @@ fetch('/statistics/age-demographics')
 
     // Calculate the total residents for each age range across all purok
     data.forEach(item => {
-      const { age_range, resident_count } = item;
-      if (!ageRangeTotals[age_range]) {
-        ageRangeTotals[age_range] = 0;
-      }
-      ageRangeTotals[age_range] += resident_count;
-    });
+        const { age_range, resident_count } = item;
+        if (!ageRangeTotals[age_range]) {
+          ageRangeTotals[age_range] = 0;
+        }
+        ageRangeTotals[age_range] += resident_count;
+        console.log(`Adding ${resident_count} residents to age range ${age_range}. Total is now ${ageRangeTotals[age_range]}`);
+      });
+  
 
     // Prepare data for chart
     const allLabels = Object.keys(ageRangeTotals);  // Age ranges as labels
