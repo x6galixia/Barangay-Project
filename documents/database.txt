@@ -74,7 +74,7 @@ CREATE TABLE residents (
     eAttainment VARCHAR(255) NULL,                                 
     occupation VARCHAR(255) NULL,                                  
     income INT NULL,                                               
-    civilStatus VARCHAR(50) NULL CHECK (civilStatus IN ('Single', 'Married', 'Divorced')),   
+    civilStatus VARCHAR(50) NULL CHECK (civilStatus IN ('Single', 'Married', 'Divorced', 'Widow', 'Widower')),   
     isResident BOOLEAN NULL,                                              
     emergencyContactId INT REFERENCES contactPerson(contactPersonId) NOT NULL,       
     rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,

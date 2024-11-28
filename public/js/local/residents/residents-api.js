@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             <option value="7">Drivers</option>
             <option value="8">OFW</option>
             <option value="9">Kasambahay</option>
-            <option value="">None</option>
+            <option value="0">None</option>
         `;
             // address
             addressSection.insertAdjacentHTML('afterbegin', `
@@ -307,6 +307,8 @@ window.popUp_three_dot = function (button) {
         overlay.classList.toggle("visible");
 
 
+        deleteResident(residentID);
+
 
         // confirmDeleteButton.addEventListener('click', function () {
         //     deleteBeneficiary(beneficiaryId);
@@ -453,5 +455,26 @@ window.popUp_three_dot = function (button) {
     function decryptData(cipherText, secretKey) {
         const bytes = CryptoJS.AES.decrypt(cipherText, secretKey);
         return bytes.toString(CryptoJS.enc.Utf8);
+    }
+
+    function deleteResident(residentId) {
+        fetch(`/residents/delete-residents/${residentId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => {
+                if (response.ok) {
+                    fetchResidents(1, 10, searchQuery, true).then(attachDotEventListeners);
+                    location.reload();
+                }
+                fetchResidents(1, 10, searchQuery, true).then(attachDotEventListeners);
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Error deleting residents:', error);
+                location.reload();
+            });
     }
 };

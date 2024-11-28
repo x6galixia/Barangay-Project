@@ -187,7 +187,6 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
     }
 });
 
-
 router.post("/dashboard/add-non-resident", upload.single('picture'), async (req, res) => {
     try {
         // Step 1: Map non-resident fields into `nonResidentAddress` if `isResident` is false
@@ -354,5 +353,220 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
     }
 });
 
+router.post("/dashboard/update-resident/:id", upload.single('picture'), async (req, res) => {
+    const residentId = req.params.id;
+    const { error, value } = residentSchema.validate(req.body);
+    const picture = req.file ? req.file.filename : null;
+
+    console.log("req.bodyyyy:", value);
+    if (error) {
+        console.error("Validation error:", error.details.map(e => e.message).join(", "));
+        return res.status(400).json({ error: error.details.map(e => e.message) });
+    }
+
+    try {
+        if (picture) {
+            console.log(`Processed file: ${picture}`);
+        } else {
+            console.log("No file uploaded or file upload failed.");
+        }
+
+        const birthDate = new Date(value.birthdate).toISOString().split("T")[0];
+
+        await mPool.query(
+            `UPDATE contactPerson
+             SET fName = $1, mName = $2, lName = $3, street = $4, purok = $5, barangay = $6, city = $7, province = $8, contactNumber = $9
+             WHERE contactPersonId = (SELECT emergencyContactId FROM residents WHERE residentsId = $10)`,
+            [
+                value.emergencyFirstName,
+                value.emergencyMiddleName,
+                value.emergencyLastName,
+                value.emergencyStreet,
+                value.emergencyPurok,
+                value.emergencyBarangay,
+                value.emergencyCity,
+                value.emergencyProvince,
+                value.emergencyContactNumber,
+                residentId,
+            ]
+        );
+
+        await mPool.query(
+            `UPDATE residents
+             SET fName = $1, mName = $2, lName = $3, purok = $4, street = $5, barangay = $6, city = $7, province = $8,
+                 birthDate = $9, birthPlace = $10, age = $11, gender = $12, picture = COALESCE($13, picture), 
+                 eAttainment = $14, occupation = $15, income = $16, civilStatus = $17, 
+                 rClassificationId = $18, isPwd = $19, isSoloParent = $20, isYouth = $21, 
+                 is4ps = $22, isOutOfSchoolYouth = $23, isSkm = $24, isKm = $25
+             WHERE residentsId = $26`,
+            [
+                value.first_name,    // fName
+                value.middle_name,   // mName
+                value.last_name,     // lName
+                value.purok,         // purok
+                value.street,        // street
+                value.barangay,      // barangay
+                value.city,          // city
+                value.province,      // province
+                birthDate,           // birthDate
+                value.placeOfBirth,  // birthPlace
+                value.age,           // age
+                value.gender,        // gender
+                picture,             // picture (null if not uploaded)
+                value.educAttainment, // eAttainment
+                value.occupation,    // occupation
+                value.grossIncome,   // income
+                value.civilStatus,   // civilStatus
+                value.sectors,       // rClassificationId
+                value.pwd,           // isPwd
+                value.soloParent,    // isSoloParent
+                value.youth,         // isYouth
+                value.is4ps,         // is4ps
+                value.isOutOfSchoolYouth,
+                value.isSkm,
+                value.isKm,
+                residentId,
+            ]
+        );
+
+        req.flash('success', 'Resident Updated Successfully!');
+        res.redirect("/residents/dashboard");
+    } catch (err) {
+        console.error("Error:", err.message, err.stack);
+        res.status(500).send("Internal server error");
+    }
+});
+
+router.post("/dashboard/update-non-resident/:id", upload.single('picture'), async (req, res) => {
+    const residentId = req.params.id;
+
+    try {
+        if (req.body.isResident === "non-resident") {
+            req.body.nonResidentAddress = {
+                purok1: req.body.purok1,
+                street1: req.body.street1,
+                barangay1: req.body.barangay1,
+                city1: req.body.city1,
+                province1: req.body.province1,
+                boardingHouse: req.body.boardingHouse,
+                landlord: req.body.landlord,
+            };
+
+            delete req.body.purok1;
+            delete req.body.street1;
+            delete req.body.barangay1;
+            delete req.body.city1;
+            delete req.body.province1;
+            delete req.body.boardingHouse;
+            delete req.body.landlord;
+        }
+
+        const { error, value } = residentSchema.validate(req.body);
+        const picture = req.file ? req.file.filename : null;
+
+        console.log("req.bodyyyy:", value);
+        if (error) {
+            console.error("Validation error:", error.details.map(e => e.message).join(", "));
+            return res.status(400).json({ error: error.details.map(e => e.message) });
+        }
+
+        await mPool.query(
+            `UPDATE contactPerson
+             SET fName = $1, mName = $2, lName = $3, street = $4, purok = $5, barangay = $6, city = $7, province = $8, contactNumber = $9
+             WHERE contactPersonId = (SELECT emergencyContactId FROM residents WHERE residentsId = $10)`,
+            [
+                value.emergencyFirstName,
+                value.emergencyMiddleName,
+                value.emergencyLastName,
+                value.emergencyStreet,
+                value.emergencyPurok,
+                value.emergencyBarangay,
+                value.emergencyCity,
+                value.emergencyProvince,
+                value.emergencyContactNumber,
+                residentId,
+            ]
+        );
+
+        const birthDate = new Date(value.birthdate).toISOString().split("T")[0];
+
+        await mPool.query(
+            `UPDATE residents
+             SET fName = $1, mName = $2, lName = $3, purok = $4, street = $5, barangay = $6, city = $7, province = $8,
+                 birthDate = $9, birthPlace = $10, age = $11, gender = $12, picture = COALESCE($13, picture), 
+                 eAttainment = $14, occupation = $15, income = $16, civilStatus = $17, isResident = false, 
+                 rClassificationId = $18, isPwd = $19, isSoloParent = $20, isYouth = $21, is4ps = $22, 
+                 isOutOfSchoolYouth = $23, isSkm = $24, isKm = $25
+             WHERE residentsId = $26`,
+            [
+                value.first_name,    // fName
+                value.middle_name,   // mName
+                value.last_name,     // lName
+                value.purok,         // purok
+                value.street,        // street
+                value.barangay,      // barangay
+                value.city,          // city
+                value.province,      // province
+                birthDate,           // birthDate
+                value.placeOfBirth,  // birthPlace
+                value.age,           // age
+                value.gender,        // gender
+                picture,             // picture (null if not uploaded)
+                value.educAttainment, // eAttainment
+                value.occupation,    // occupation
+                value.grossIncome,   // income
+                value.civilStatus,   // civilStatus
+                value.sectors,       // rClassificationId
+                value.pwd,           // isPwd
+                value.soloParent,    // isSoloParent
+                value.youth,         // isYouth
+                value.is4ps,         // is4ps
+                value.isOutOfSchoolYouth,
+                value.isSkm,
+                value.isKm,
+                residentId,          // residentsId
+            ]
+        );
+
+        await mPool.query(
+            `UPDATE boarders
+             SET originalstreet = $1, originalpurok = $2, originalbarangay = $3, originalcity = $4, 
+                 originalprovince = $5, boardinghousename = $6, landlord = $7
+             WHERE boarderinresidentid = $8`,
+            [
+                value.nonResidentAddress.street1,      // originalstreet
+                value.nonResidentAddress.purok1,       // originalpurok
+                value.nonResidentAddress.barangay1,    // originalbarangay
+                value.nonResidentAddress.city1,        // originalcity
+                value.nonResidentAddress.province1,    // originalprovince
+                value.nonResidentAddress.boardingHouse, // boardinghousename
+                value.nonResidentAddress.landlord,      // landlord
+                residentId,                             // Reference residentsid
+            ]
+        );
+
+        console.log("Non-resident information updated successfully.");
+
+        req.flash('success', 'Non-Resident Updated Successfully!');
+        res.redirect("/residents/dashboard");
+    } catch (err) {
+        console.error("Error:", err.message, err.stack);
+        res.status(500).send("Internal server error");
+    }
+});
+
+router.delete("/delete-residents/:id", async (req, res) => {
+    const residentsId = req.params.id;
+
+    try {
+        await mPool.query(`DELETE FROM residents WHERE globalId = $1`, [residentsId]);
+
+        req.flash('success', 'Resident deleted successfully!');
+        res.redirect("/residents/dashboard");
+    } catch (err) {
+        console.error("Error: ", err.message, err.stack);
+        res.status(500).send("An error occurred while trying to delete the resident.");
+    }
+});
 
 module.exports = router;
