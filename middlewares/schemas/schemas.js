@@ -69,6 +69,8 @@ const archiveSchema = Joi.object({
     parties1: Joi.string().optional().allow(null),
     parties2: Joi.string().optional().allow(null),
     date: Joi.date().optional().allow(null),
+    parties1: Joi.string().optional().allow(null),
+    parties2: Joi.string().optional().allow(null),
     docType: Joi.string().optional().allow(null),
 });
 
