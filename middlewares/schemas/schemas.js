@@ -5,6 +5,16 @@ const requestSchema = Joi.object({
     purpose: Joi.string().required().optional().allow(null)
 });
 
+const nonResidentAddressSchema = Joi.object({
+    purok1: Joi.string().optional().allow(null),
+    street1: Joi.string().optional().allow(null),
+    barangay1: Joi.string().optional().allow(null),
+    city1: Joi.string().optional().allow(null),
+    province1: Joi.string().optional().allow(null),
+    boardingHouse: Joi.string().optional().allow(null),
+    landlord: Joi.string().optional().allow(null),
+});
+
 const residentSchema = Joi.object({
     last_name: Joi.string().optional().allow(null),
     first_name: Joi.string().optional().allow(null),
@@ -14,17 +24,17 @@ const residentSchema = Joi.object({
     age: Joi.number().integer().optional().allow(null),
     educAttainment: Joi.string().optional().allow(null),
     occupation: Joi.string().optional().allow(null),
-    sectors: Joi.number().integer().optional().allow(null), // not available for non-residents
+    sectors: Joi.number().integer().optional().allow(null),
     placeOfBirth: Joi.string().optional().allow(null),
     grossIncome: Joi.number().integer().optional().allow(null),
-    senior: Joi.boolean().valid(true, false).optional().allow(null), // not available for non-residents
-    soloParent: Joi.boolean().valid(true, false).optional().allow(null), // not available for non-residents
-    pwd: Joi.boolean().valid(true, false).optional().allow(null), // not available for non-residents
-    youth: Joi.boolean().valid(true, false).optional().allow(null), // not available for non-residents
-    is4ps: Joi.boolean().valid(true, false).optional().allow(null), // not available for non-residents
-    isOutOfSchoolYouth: Joi.boolean().valid(true, false).optional().allow(null), // not available for non-residents
-    isSkm: Joi.boolean().valid(true, false).optional().allow(null), // not available for non-residents
-    isKm: Joi.boolean().valid(true, false).optional().allow(null), // not available for non-residents
+    senior: Joi.boolean().optional().allow(null),
+    soloParent: Joi.boolean().optional().allow(null),
+    pwd: Joi.boolean().optional().allow(null),
+    youth: Joi.boolean().optional().allow(null),
+    is4ps: Joi.boolean().optional().allow(null),
+    isOutOfSchoolYouth: Joi.boolean().optional().allow(null),
+    isSkm: Joi.boolean().optional().allow(null),
+    isKm: Joi.boolean().optional().allow(null),
     civilStatus: Joi.string().optional().allow(null),
     purok: Joi.string().optional().allow(null),
     street: Joi.string().optional().allow(null),
@@ -34,15 +44,7 @@ const residentSchema = Joi.object({
     isResident: Joi.string().required(),
     nonResidentAddress: Joi.when('isResident', {
         is: "non-resident",
-        then: Joi.object({
-            purok1: Joi.string().optional().allow(null),
-            street1: Joi.string().optional().allow(null),
-            barangay1: Joi.string().optional().allow(null),
-            city1: Joi.string().optional().allow(null),
-            province1: Joi.string().optional().allow(null),
-            boardingHouse: Joi.string().optional().allow(null),
-            landlord: Joi.string().optional().allow(null),
-        }).optional(),
+        then: nonResidentAddressSchema.optional(),
         otherwise: Joi.forbidden(),
     }),
     emergencyLastName: Joi.string().optional().allow(null),
@@ -53,8 +55,9 @@ const residentSchema = Joi.object({
     emergencyStreet: Joi.string().optional().allow(null),
     emergencyBarangay: Joi.string().optional().allow(null),
     emergencyCity: Joi.string().optional().allow(null),
-    emergencyProvince: Joi.string().optional().allow(null)
+    emergencyProvince: Joi.string().optional().allow(null),
 });
+
 
 const inventorySchema = Joi.object({
     iName: Joi.string().optional().allow(null),

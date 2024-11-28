@@ -34,6 +34,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <td>${formattedDate}</td>
                 <td><button 
                 data-purpose="${request.purpose}"
+                data-age="${request.age}"
+                data-birthdate="${request.birthdate}"
                 data-firstName="${request.fname}"
                 data-lastName="${request.lname}"
                 data-middleName="${request.mname ? request.mname : ''}"
@@ -85,6 +87,8 @@ window.processCertificate = function (button) {
   const province = button.getAttribute('data-province');
   const civilStatus = button.getAttribute('data-civilStatus');
   const gender = button.getAttribute('data-gender');
+  const age = button.getAttribute('data-age');
+  const birthdate = button.getAttribute('data-birthdate');
 
 
 
@@ -100,9 +104,124 @@ window.processCertificate = function (button) {
   setCurrentDate();
 
   if (purpose === 'Brgy. Clearance') {
-    viewCertificate.addEventListener('click', function () {
+    certificateMainForm.innerHTML = `
+        <div class="inputWithLabel">
+            <label for="certificatePurpose">Purpose</label>
+            <select class="certficate-purpose-dropdown" id="selectPurpose">
+                <option value="default" disabled selected>Select a Purpose</option>
+                <option value="Application Requirement">Application Requirement</option>
+                <option value="Avon Application">Avon Application</option>
+                <option value="Bank Requirement">Bank Requirement</option>
+                <option value="Business Clearance Requirement">Business Clearance Requirement</option>
+                <option value="Cash Assistance Requirement">Cash Assistance Requirement</option>
+                <option value="Driver's License Requirement">Driver's License Requirement</option>
+                <option value="Employment Application Requirement">Employment Application Requirement</option>
+                <option value="Job Application Requirement">Job Application Requirement</option>
+                <option value="Loan Application">Loan Application</option>
+                <option value="Local Employment Requirement">Local Employment Requirement</option>
+                <option value="Local Job Employment Requirement">Local Job Employment Requirement</option>
+                <option value="Motor Load Application Requirement">Motor Load Application Requirement</option>
+                <option value="OWWA">OWWA</option>
+                <option value="Police Application">Police Application</option>
+                <option value="Police Clearance Requirement">Police Clearance Requirement</option>
+                <option value="Police/NBI Clearance">Police/NBI Clearance</option>
+                <option value="Tricycle Franchise Renewal Requirement">Tricycle Franchise Renewal Requirement</option>
+                <option value="Others">Others</option>
+            </select>
+            <input type="hidden" id="certificatePurpose" style="margin-top:12px">
+        </div>
+        <div class="inputWithLabel">
+            <label for="">Remarks</label>
+            <input type="text" id="brgyClearanceRemarksInput">
+        </div>
+        <div class="inputWithLabel">
+            <label for="">Opt ID</label>
+            <input type="text" id="brgyClearanceOptIDInput">
+        </div>
+        <div class="inputWithLabel">
+            <label for="">CTC Nos</label>
+            <input type="text" id="brgyClearanceCTCNosInput">
+        </div>
+        <div class="inputWithLabel">
+            <label for="">Date Issued</label>
+            <input type="date" id="brgyClearanceDateIssuedInput">
+        </div>
+        <div class="inputWithLabel">
+            <label for="">OR Nos</label>
+            <input type="text" id="brgyClearanceORNosInput">
+        </div>
+        <div class="inputWithLabel">
+            <label for="">Date Printed</label>
+            <input type="date" id="brgyClearanceDatePrintedInput">
+        </div>
+    `;
 
-    })
+    document.getElementById("selectPurpose").addEventListener('change', function () {
+      const selectedValue = this.value.trim();
+      const certificatePurposeInput = document.getElementById("certificatePurpose");
+
+      if (selectedValue === "Others") {
+        certificatePurposeInput.type = "text";
+        certificatePurposeInput.value = "";
+        certificatePurposeInput.placeholder = "Enter the purpose";
+      } else {
+        certificatePurposeInput.type = "hidden";
+        certificatePurposeInput.value = selectedValue;
+      }
+    });
+
+
+    function viewCertificateDetails() {
+      document.getElementById("certificate").classList.toggle("visible");
+      document.getElementById("brgyClearance").classList.toggle("visible");
+
+      document.getElementById("brgyClearanceLastName").innerText = `${lastName}`.toUpperCase();
+      document.getElementById("brgyClearanceFirstName").innerText = `${firstName}`.toUpperCase();
+      document.getElementById("brgyClearanceMiddleName").innerText = `${middleName}`.toUpperCase();
+      document.getElementById("brgyClearanceAddress").innerText = `Purok ${purok}, ${barangay}, ${city}, ${province}`;
+      document.getElementById("brgyClearanceAge").innerText = `${age}`;
+      document.getElementById("brgyClearanceBirthDate").innerText = new Date(birthdate).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+
+      document.getElementById("brgyClearanceCivilStatus").innerText = `${civilStatus}`;
+
+
+      document.querySelector(".closeCertificate").addEventListener("click", function () {
+        console.log("close click");
+        document.getElementById("certificate").classList.remove("visible");
+        document.getElementById("indigency").classList.remove("visible");
+      });
+    }
+
+    applyChanges.addEventListener('click', function () {
+      const certificatePurposeInput = document.getElementById("certificatePurpose");
+      const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
+
+      if (selectedPurpose && selectedPurpose !== "default") {
+        const brgyClearancePurpose = document.getElementById("brgyClearancePurpose");
+
+        document.getElementById("brgyClearanceRemarks").innerText = document.getElementById("brgyClearanceRemarksInput").value.toUpperCase();
+        document.getElementById("brgyClearanceOptID").innerText = document.getElementById("brgyClearanceOptIDInput").value;
+        document.getElementById("brgyClearanceCTCNos").innerText = document.getElementById("brgyClearanceCTCNosInput").value;
+        document.getElementById("brgyClearanceDateIssued").innerText = document.getElementById("brgyClearanceDateIssuedInput").value;
+        document.getElementById("brgyClearanceORNos").innerText = document.getElementById("brgyClearanceORNosInput").value;
+        document.getElementById("brgyClearanceDatePrinted").innerText = document.getElementById("brgyClearanceDatePrintedInput").value;
+
+        if (certificatePurposeInput.type === "text") {
+          brgyClearancePurpose.innerText = selectedPurpose.toUpperCase();
+        } else {
+          brgyClearancePurpose.innerText = selectedPurpose.toUpperCase();
+        }
+        alert("Changes applied: " + selectedPurpose);
+      } else {
+        alert("Please select a purpose or provide one if you selected 'Others'.");
+      }
+    });
+
+    viewCertificate.addEventListener('click', viewCertificateDetails);
   }
   else if (purpose === 'Building Clearance') {
   }
@@ -159,7 +278,7 @@ window.processCertificate = function (button) {
       if (selectedValue === "Others") {
         certificatePurposeInput.type = "text";
         certificatePurposeInput.value = "";
-        certificatePurposeInput.placeholder = "Enter your purpose";
+        certificatePurposeInput.placeholder = "Enter the purpose";
       } else {
         certificatePurposeInput.type = "hidden";
         certificatePurposeInput.value = selectedValue;
@@ -171,7 +290,8 @@ window.processCertificate = function (button) {
       document.getElementById("certificate").classList.toggle("visible");
       document.getElementById("indigency").classList.toggle("visible");
 
-      document.getElementById("indigencyFullName").innerText = `${lastName}, ${firstName} ${middleName}`;
+      document.getElementById("indigencyFullName").innerText =
+        `${lastName}, ${firstName} ${middleName}`.toUpperCase();
       document.getElementById("indigencyAddress").innerText = `${purok}, ${barangay}, ${city}, ${province}`;
 
       document.getElementById("indigencyGender").innerHTML = `<u>${gender}</u>`;

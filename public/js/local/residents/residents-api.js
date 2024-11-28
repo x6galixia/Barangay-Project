@@ -4,10 +4,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     const searchInput = document.getElementById('searchInput');
     const page = parseInt(urlParams.get('page')) || 1;
     const limit = parseInt(urlParams.get('limit')) || 10;
-    const sectorsDropdown = document.getElementById('sectors-dropdown');
-    const addressWhileStudying = document.getElementById('addressWhileStudying');
-    const formToAddResident = document.getElementById('formToAddResident');
-    const addressWhileStudyingInputs = document.querySelectorAll('#addressWhileStudying input, #addressWhileStudying select');
     const isResidentInput = document.getElementById('isResident');
     isResidentInput.value = "resident";
 
@@ -22,8 +18,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     document.querySelector('.residents-dropdown').addEventListener('change', function () {
-        const addressSection = document.getElementById('address-section');
-        const emergencyAddress = document.getElementById('emergencyContactInfo');
         const selectedValue = this.value.trim();
         const searchQuery = document.getElementById('searchInput').value.trim();
 
@@ -45,108 +39,18 @@ document.addEventListener("DOMContentLoaded", async function () {
             });
         }
 
-        const residentClassificationSection = document.getElementById('residentClassification');
 
         if (selectedValue === "residents") {
             console.log("Residents selected");
-            document.getElementById('barangay').value = "Maypangdan";
-            document.getElementById('city').value = "Borongan City";
-            document.getElementById('province').value = "Eastern Samar";
-            document.getElementById('residentPageTitle').innerText = "LIST OF RESIDENT";
-            formToAddResident.setAttribute('action', '/residents/dashboard/add-resident');
-            isResidentInput.value = "resident";
-
-            sectorsDropdown.innerHTML = `
-            <option value="1">Government Employee</option>
-            <option value="2">Private employee</option>
-            <option value="3">Carpenters</option>
-            <option value="4">Farmers</option>
-            <option value="5">Fisherman</option>
-            <option value="6">Business Entrepreneur</option>
-            <option value="7">Drivers</option>
-            <option value="8">OFW</option>
-            <option value="9">Kasambahay</option>
-            <option value="0">None</option>
-        `;
-            // address
-            addressSection.insertAdjacentHTML('afterbegin', `
-            <div class="inputWithLabel" id="purok">
-                <label for="">Purok</label>
-                <select name="purok" aria-label="Purok">
-                    <option value="Seguidila">Seguidila</option>
-                    <option value="Sitaw">Sitaw</option>
-                    <option value="Talbos">Talbos</option>
-                    <option value="Petchay">Petchay</option>
-                    <option value="Ampalaya">Ampalaya</option>
-                    <option value="Mustaza">Mustaza</option>
-                    <option value="Kalabasa">Kalabasa</option>
-                </select>
-            </div>
-            <div class="inputWithLabel" id="street">
-                <label>Street</label>
-                <input type="text" aria-label="Street" name="street" required>
-            </div>
-        `);
-            //emergency address
-            emergencyAddress.insertAdjacentHTML('afterbegin', `
-            <div class="inputWithLabel">
-                <label for="">Purok</label>
-                <select name="emergencyPurok" aria-label="Purok">
-                    <option value="Seguidila">Seguidila</option>
-                    <option value="Sitaw">Sitaw</option>
-                    <option value="Talbos">Talbos</option>
-                    <option value="Petchay">Petchay</option>
-                    <option value="Ampalaya">Ampalaya</option>
-                    <option value="Mustaza">Mustaza</option>
-                    <option value="Kalabasa">Kalabasa</option>
-                </select>
-            </div>
-            <div class="inputWithLabel">
-                <label>Street</label>
-                <input type="text" aria-label="Street" name="emergencyStreet" required>
-            </div>
-        `);
-
-            addressWhileStudyingInputs.forEach(input => input.disabled = true);
-
+            // residentFormField();
             toggleColumns(true);
-            if (addressWhileStudying) addressWhileStudying.style.display = "none";
-            if (residentClassificationSection) {
-                residentClassificationSection.style.display = 'block';
-            }
 
             fetchResidents(1, 10, searchQuery, false).then(attachDotEventListeners);
 
         } else if (selectedValue === "non-residents") {
             console.log("Non-Residents selected");
-            document.getElementById('barangay').value = "";
-            document.getElementById('city').value = "";
-            document.getElementById('province').value = "";
-            document.getElementById('residentPageTitle').innerText = "LIST OF NON-RESIDENT";
-            formToAddResident.setAttribute('action', '/residents/dashboard/add-non-resident');
-            sectorsDropdown.innerHTML = `
-            <option value="10">Resident Boarders</option>
-        `;
-
-            isResidentInput.value = "non-resident";
-            const purok = document.getElementById('purok');
-            const street = document.getElementById('street');
-            const emergencyPurok = document.getElementById('emergencyPurok');
-            const emergencyStreet = document.getElementById('emergencyStreet');
-
-
-            if (purok) purok.remove();
-            if (street) street.remove();
-            if (emergencyPurok) emergencyPurok.remove();
-            if (emergencyStreet) emergencyStreet.remove();
-
-            addressWhileStudyingInputs.forEach(input => input.disabled = false);
-
+            // nonResidentFormField();
             toggleColumns(false);
-            addressWhileStudying.style.display = "block";
-            if (residentClassificationSection) {
-                residentClassificationSection.style.display = 'none';
-            }
 
             fetchResidents(1, 10, searchQuery, true).then(attachDotEventListeners);
         }
@@ -306,31 +210,32 @@ window.popUp_three_dot = function (button) {
         deleteContainer.classList.add("visible");
         overlay.classList.toggle("visible");
 
-
-        deleteResident(residentID);
-
-
-        // confirmDeleteButton.addEventListener('click', function () {
-        //     deleteBeneficiary(beneficiaryId);
-        //     pop_up_Delete.classList.remove("visible");
-        //     overlay.classList.remove("visible");
-        // })
-        // cancelDeleteButton.addEventListener('click', function () {
-        //     pop_up_Delete.classList.remove("visible");
-        //     overlay.classList.remove("visible");
-        // })
+        confirmDeleteButton.addEventListener('click', function () {
+            deleteResident(residentID);
+            pop_up_Delete.classList.remove("visible");
+            overlay.classList.remove("visible");
+        })
+        cancelDeleteButton.addEventListener('click', function () {
+            pop_up_Delete.classList.remove("visible");
+            overlay.classList.remove("visible");
+        })
     }
     if (action === 'Update' && residentID) {
+        const isResident = button.getAttribute('data-isResident');
+        // if (isResident === "true") {
+        //     residentFormField();
+        // } else if (isResident === "false") {
+        //     nonResidentFormField();
+        // }
         const updateContainer = document.getElementById("add-resident");
         document.querySelector('#add-resident .heading').innerText = "UPDATE RESIDENT";
         document.querySelector('#add-resident #submit_add_resident').innerText = "UPDATE";
         document.querySelector('#add-resident #formToAddResident').action = "/residents/dashboard/update-resident";
         const globalIDForQR = button.getAttribute('data-globalId');
-        const isResident = button.getAttribute('data-isResident');
-        console.log("globalID:", globalIDForQR);
-        console.log("isResident:", isResident);
+        console.log(isResident);
         updateContainer.classList.add("visible");
         overlay.classList.toggle("visible");
+
         // fetch(`/pharmacy-records/beneficiary/${beneficiaryId}`)
         //     .then(response => {
         //         if (!response.ok) throw new Error('Network response was not ok');
@@ -478,3 +383,165 @@ window.popUp_three_dot = function (button) {
             });
     }
 };
+
+const addResident = document.getElementById("add-resident");
+function popUp_button(button) {
+    var buttonId = button.id;
+    if (buttonId === "add-resident-button") {
+        addResident.classList.toggle("visible");
+        overlay.classList.add("visible");
+        if (document.querySelector('.residents-dropdown').value === " residents") {
+            residentFormField();
+        } else if (document.querySelector('.residents-dropdown').value === "non-residents") {
+            nonResidentFormField();
+        }
+    }
+}
+
+document.querySelectorAll(".close_popUp_for_resident").forEach(function (closeBtn) {
+    closeBtn.addEventListener("click", function () {
+        var pop_up = closeBtn.closest(".pop-up");
+        if (pop_up) {
+            if (document.querySelector('.residents-dropdown').value === " residents") {
+                residentFormField();
+            } else if (document.querySelector('.residents-dropdown').value === "non-residents") {
+                nonResidentFormField();
+            }
+            pop_up.classList.remove("visible");
+            overlay.classList.remove("visible");
+        }
+    });
+});
+
+function clearDynamicFields() {
+    const purok = document.getElementById('purok');
+    const street = document.getElementById('street');
+    if (purok) purok.remove();
+    if (street) street.remove();
+
+    const emergencyPurok = document.getElementById('emergencyPurok');
+    const emergencyStreet = document.getElementById('emergencyStreet');
+    if (emergencyPurok) emergencyPurok.remove();
+    if (emergencyStreet) emergencyStreet.remove();
+}
+
+function residentFormField() {
+    clearDynamicFields();
+    const isResidentInput = document.getElementById('isResident');
+    const residentClassificationSection = document.getElementById('residentClassification');
+    const sectorsDropdown = document.getElementById('sectors-dropdown');
+    const addressWhileStudying = document.getElementById('addressWhileStudying');
+    const addressWhileStudyingInputs = document.querySelectorAll('#addressWhileStudying input, #addressWhileStudying select');
+    const addressSection = document.getElementById('address-section');
+    const emergencyAddress = document.getElementById('emergencyContactInfo');
+
+    document.querySelector('#add-resident .heading').innerText = "ADD RESIDENT";
+    document.querySelector('#add-resident #submit_add_resident').innerText = "SUBMIT";
+    document.querySelector('#add-resident #formToAddResident').action = "/residents/dashboard/add-resident";
+
+    document.getElementById('barangay').value = "Maypangdan";
+    document.getElementById('city').value = "Borongan City";
+    document.getElementById('province').value = "Eastern Samar";
+    document.getElementById('residentPageTitle').innerText = "LIST OF RESIDENT";
+    formToAddResident.setAttribute('action', '/residents/dashboard/add-resident');
+    isResidentInput.value = "resident";
+
+    sectorsDropdown.innerHTML = `
+            <option value="1">Government Employee</option>
+            <option value="2">Private employee</option>
+            <option value="3">Carpenters</option>
+            <option value="4">Farmers</option>
+            <option value="5">Fisherman</option>
+            <option value="6">Business Entrepreneur</option>
+            <option value="7">Drivers</option>
+            <option value="8">OFW</option>
+            <option value="9">Kasambahay</option>
+            <option value="0">None</option>
+        `;
+    // address
+    addressSection.insertAdjacentHTML('afterbegin', `
+            <div class="inputWithLabel" id="purok">
+                <label for="">Purok</label>
+                <select name="purok" aria-label="Purok">
+                    <option value="Seguidila">Seguidila</option>
+                    <option value="Sitaw">Sitaw</option>
+                    <option value="Talbos">Talbos</option>
+                    <option value="Petchay">Petchay</option>
+                    <option value="Ampalaya">Ampalaya</option>
+                    <option value="Mustaza">Mustaza</option>
+                    <option value="Kalabasa">Kalabasa</option>
+                </select>
+            </div>
+            <div class="inputWithLabel" id="street">
+                <label>Street</label>
+                <input type="text" aria-label="Street" name="street" required>
+            </div>
+        `);
+    //emergency address
+    emergencyAddress.insertAdjacentHTML('afterbegin', `
+            <div class="inputWithLabel" id="emergencyPurok">
+                <label for="">Purok</label>
+                <select name="emergencyPurok" aria-label="Purok">
+                    <option value="Seguidila">Seguidila</option>
+                    <option value="Sitaw">Sitaw</option>
+                    <option value="Talbos">Talbos</option>
+                    <option value="Petchay">Petchay</option>
+                    <option value="Ampalaya">Ampalaya</option>
+                    <option value="Mustaza">Mustaza</option>
+                    <option value="Kalabasa">Kalabasa</option>
+                </select>
+            </div>
+            <div class="inputWithLabel" id="emergencyStreet">
+                <label>Street</label>
+                <input type="text" aria-label="Street" name="emergencyStreet" required>
+            </div>
+        `);
+
+    addressWhileStudyingInputs.forEach(input => input.disabled = true);
+
+    if (addressWhileStudying) addressWhileStudying.style.display = "none";
+    if (residentClassificationSection) {
+        residentClassificationSection.style.display = 'block';
+    }
+
+
+}
+function nonResidentFormField() {
+    clearDynamicFields();
+    const isResidentInput = document.getElementById('isResident');
+    const residentClassificationSection = document.getElementById('residentClassification');
+    const sectorsDropdown = document.getElementById('sectors-dropdown');
+    const addressWhileStudying = document.getElementById('addressWhileStudying');
+    const addressWhileStudyingInputs = document.querySelectorAll('#addressWhileStudying input, #addressWhileStudying select');
+
+    document.querySelector('#add-resident .heading').innerText = "ADD NON-RESIDENT";
+    document.querySelector('#add-resident #submit_add_resident').innerText = "SUBMIT";
+    document.querySelector('#add-resident #formToAddResident').action = "/residents/dashboard/add-non-resident";
+
+    document.getElementById('barangay').value = "";
+    document.getElementById('city').value = "";
+    document.getElementById('province').value = "";
+    document.getElementById('residentPageTitle').innerText = "LIST OF NON-RESIDENT";
+    sectorsDropdown.innerHTML = `
+            <option value="10">Resident Boarders</option>
+        `;
+
+    isResidentInput.value = "non-resident";
+    const purok = document.getElementById('purok');
+    const street = document.getElementById('street');
+    const emergencyPurok = document.getElementById('emergencyPurok');
+    const emergencyStreet = document.getElementById('emergencyStreet');
+
+
+    if (purok) purok.remove();
+    if (street) street.remove();
+    if (emergencyPurok) emergencyPurok.remove();
+    if (emergencyStreet) emergencyStreet.remove();
+
+    addressWhileStudyingInputs.forEach(input => input.disabled = false);
+
+    addressWhileStudying.style.display = "block";
+    if (residentClassificationSection) {
+        residentClassificationSection.style.display = 'none';
+    }
+}
