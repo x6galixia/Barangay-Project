@@ -110,7 +110,10 @@ router.get("/resident-status", async (req, res) => {
                 COUNT(CASE WHEN r.isPwd = TRUE THEN 1 END) AS pwd_count,
                 COUNT(CASE WHEN r.isSoloParent = TRUE THEN 1 END) AS solo_parent_count,
                 COUNT(CASE WHEN r.isYouth = TRUE THEN 1 END) AS youth_count,
-                COUNT(CASE WHEN r.is4ps = TRUE THEN 1 END) AS is4ps_count
+                COUNT(CASE WHEN r.is4ps = TRUE THEN 1 END) AS is4ps_count,
+                COUNT(CASE WHEN r.isOutOfSchoolYouth = TRUE THEN 1 END) AS isosy_count,
+                COUNT(CASE WHEN r.isSkm = TRUE THEN 1 END) AS skm_count,
+                COUNT(CASE WHEN r.isKm = TRUE THEN 1 END) AS km_count
             FROM 
                 residents r
             WHERE 
