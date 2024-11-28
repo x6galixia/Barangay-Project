@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             archive.forEach(arch => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${arch.name}</td>
+                    <td>${arch.contractingpersons}</td>
                     <td>${new Date(arch.date).toLocaleDateString()}</td>
                     <td>${arch.doctype}</td>
                     <td><button
