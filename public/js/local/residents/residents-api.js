@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             <option value="7">Drivers</option>
             <option value="8">OFW</option>
             <option value="9">Kasambahay</option>
-            <option value="">None</option>
+            <option value="0">None</option>
         `;
             // address
             addressSection.insertAdjacentHTML('afterbegin', `
