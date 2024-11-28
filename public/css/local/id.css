@@ -103,7 +103,7 @@ html {
 
 .signature-container {
     text-align: center;
-    margin-top: 40px;
+    margin-top: 33px;
     padding: 0 86px;
 }
 
@@ -190,7 +190,7 @@ html {
 }
 
 .signature-containers {
-    margin-top: 17px;
+    margin-top: 30px;
     text-align: center;
     color: white;
 }
@@ -201,6 +201,7 @@ html {
 }
 
 .signature-containers .position {
+    margin-top: -5px;
     font-size: 9px;
     font-style: italic;
 }
