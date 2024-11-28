@@ -63,7 +63,8 @@ const inventorySchema = Joi.object({
 });
 
 const archiveSchema = Joi.object({
-    name: Joi.string().optional().allow(null),
+    parties1: Joi.string().optional().allow(null),
+    parties2: Joi.string().optional().allow(null),
     date: Joi.date().optional().allow(null),
     docType: Joi.string().optional().allow(null),
 });

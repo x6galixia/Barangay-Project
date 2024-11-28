@@ -80,7 +80,7 @@ router.post("/dashboard/add-archive", upload.single('picture'), async (req, res)
 
         await mPool.query(`
             INSERT INTO archive (name, date, img, docType) VALUES ($1, $2, $3, $4)
-            `, [value.name, value.date, picture, value.docType]);
+            `, [value.parties2, value.date, picture, value.docType]);
 
         res.redirect("/archive/dashboard")
     } catch (err) {
