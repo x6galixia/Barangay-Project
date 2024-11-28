@@ -34,7 +34,8 @@ async function fetchResidentsLists(page, limit, searchQuery = '', isNonResident 
       bd.originalstreet, bd.originalpurok,
       bd.originalbarangay, bd.originalcity,
       bd.originalprovince,
-      r.isPwd, r.isSoloParent, r.isYouth, r.is4ps, r.isResident, r.civilStatus
+      r.isPwd, r.isSoloParent, r.isYouth, r.is4ps, r.isResident, r.civilStatus,
+      r.isOutOfSchoolYouth, r.isSkm, r.isKm
     FROM residents r
     LEFT JOIN rClassification rc ON r.rClassificationId = rc.rClassificationId
     LEFT JOIN contactPerson cp ON r.emergencyContactId = cp.contactPersonId

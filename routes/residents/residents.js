@@ -35,8 +35,6 @@ router.get("/dashboard", async (req, res) => {
     const isNonResident = req.query.isNonResident === "true";
     const isAjax = req.query.ajax === "true" || req.xhr;
 
-    console.log("Search Query on Backend: ", searchQuery);
-
     try {
         const { getResidentsList, totalPages } = await fetchResidentsLists(page, limit, searchQuery, isNonResident);
 

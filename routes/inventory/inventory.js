@@ -11,8 +11,6 @@ router.get("/dashboard", async (req, res) => {
     const isFunctional = req.query.isFunctional === "true";
     const isAjax = req.query.ajax === "true" || req.xhr;
 
-    console.log("Search Query on Backend: ", searchQuery);
-
     try {
         const { getInventoryList, totalPages } = await fetchInventoryLists(page, limit, searchQuery, isFunctional);
 
