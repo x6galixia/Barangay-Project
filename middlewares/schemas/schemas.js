@@ -22,6 +22,9 @@ const residentSchema = Joi.object({
     pwd: Joi.boolean().valid(true, false).optional().allow(null), // not available for non-residents
     youth: Joi.boolean().valid(true, false).optional().allow(null), // not available for non-residents
     is4ps: Joi.boolean().valid(true, false).optional().allow(null), // not available for non-residents
+    isOutOfSchoolYouth: Joi.boolean().valid(true, false).optional().allow(null), // not available for non-residents
+    isSkm: Joi.boolean().valid(true, false).optional().allow(null), // not available for non-residents
+    isKm: Joi.boolean().valid(true, false).optional().allow(null), // not available for non-residents
     civilStatus: Joi.string().optional().allow(null),
     purok: Joi.string().optional().allow(null),
     street: Joi.string().optional().allow(null),

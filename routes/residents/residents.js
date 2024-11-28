@@ -144,8 +144,8 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
 
         // Step 4: Insert resident information into residents table
         await mPool.query(
-            `INSERT INTO residents (globalId, idNumber, fName, mName, lName, purok, street, barangay, city, province, birthDate, birthPlace, age, gender, picture, eAttainment, occupation, income, civilStatus, isResident, emergencyContactId, rClassificationId, isPwd, isSoloParent, isYouth, is4ps)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26)`,
+            `INSERT INTO residents (globalId, idNumber, fName, mName, lName, purok, street, barangay, city, province, birthDate, birthPlace, age, gender, picture, eAttainment, occupation, income, civilStatus, isResident, emergencyContactId, rClassificationId, isPwd, isSoloParent, isYouth, is4ps, isOutOfSchoolYouth, isSkm, isKm)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29)`,
             [
                 newId,               // globalId
                 numNewId,            // idNumber
@@ -172,7 +172,10 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
                 value.pwd,           // isPwd
                 value.soloParent,    // isSoloParent
                 value.youth,         // isYouth
-                value.is4ps          // is4ps
+                value.is4ps,          // is4ps
+                value.isOutOfSchoolYouth,
+                value.isSkm,
+                value.isKm
             ]
         );
 
@@ -285,8 +288,8 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
 
         // Step 4: Insert the resident information into the residents table and retrieve the residentsid
         const residentInsertResult = await mPool.query(
-            `INSERT INTO residents (globalId, idNumber, fName, mName, lName, purok, street, barangay, city, province, birthDate, birthPlace, age, gender, picture, eAttainment, occupation, income, civilStatus, isResident, emergencyContactId, rClassificationId, isPwd, isSoloParent, isYouth, is4ps)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26)
+            `INSERT INTO residents (globalId, idNumber, fName, mName, lName, purok, street, barangay, city, province, birthDate, birthPlace, age, gender, picture, eAttainment, occupation, income, civilStatus, isResident, emergencyContactId, rClassificationId, isPwd, isSoloParent, isYouth, is4ps, isOutOfSchoolYouth, isSkm, isKm)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29)
      RETURNING residentsid`,
             [
                 newId,               // globalId
@@ -311,6 +314,9 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
                 false,               // isResident (since this is a non-resident)
                 emergencyContactId,  // emergencyContactId
                 value.sectors,
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,
