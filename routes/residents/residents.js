@@ -190,7 +190,7 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
 router.post("/dashboard/add-non-resident", upload.single('picture'), async (req, res) => {
     try {
         // Step 1: Map non-resident fields into `nonResidentAddress` if `isResident` is false
-        if (req.body.isResident === "non-resident" || req.body.isResident === "non-resident") {
+        if (req.body.isResident === "non-resident") {
             req.body.nonResidentAddress = {
                 purok1: req.body.purok1,
                 street1: req.body.street1,
@@ -201,7 +201,7 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
                 landlord: req.body.landlord,
             };
 
-            // Optionally remove nonResident fields from the root level to clean up the object
+            // Optionally remove redundant fields to avoid conflicts
             delete req.body.purok1;
             delete req.body.street1;
             delete req.body.barangay1;

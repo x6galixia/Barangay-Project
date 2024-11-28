@@ -89,7 +89,7 @@ async function fetchRequestLists(page, limit) {
       SELECT 
           r.residentsid, r.dateadded, r.purpose, r.isReleased,
           rd.fname, rd.mname, rd.lname, rd.gender, rd.age, rd.civilstatus,
-          rd.purok, rd.barangay, rd.city, rd.province
+          rd.purok, rd.barangay, rd.city, rd.province, rd.birthdate
       FROM requests r
       LEFT JOIN residents rd ON r.residentsid = rd.residentsid
       WHERE r.isReleased = false

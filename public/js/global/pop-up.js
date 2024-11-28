@@ -7,7 +7,6 @@ function formatDate(date) {
 }
 
 //resident
-const addResident = document.getElementById("add-resident");
 const addInventory = document.getElementById("add-inventory");
 const addDocument = document.getElementById("add-document");
 
@@ -19,12 +18,6 @@ function popUp_button(button) {
   var select = button.value;
 
   //resident
-  if (buttonId === "add-resident-button") {
-    document.querySelector('#add-resident .heading').innerText = "ADD RESIDENT";
-    document.querySelector('#add-resident #submit_add_resident').innerText = "SUBMIT";
-    document.querySelector('#add-resident #formToAddResident').action = "/residents/dashboard/add-resident";
-    addResident.classList.toggle("visible");
-  }
 
   //inbentory
   if (buttonId === "add-inventory-button") {
