@@ -84,4 +84,6 @@ function populateFormFields(data) {
   document.getElementById("birthdate").value = new Date(data.birthdate).toISOString().split("T")[0] || '';
   document.getElementById("civilStatus").value = data.civilstatus || '';
   document.getElementById("purok").value = data.purok || '';
+  document.getElementById("grossIncome").value = parseInt(data.income) || '';
+  document.getElementById("birthplace").value = data.birthplace || '';
 }

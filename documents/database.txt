@@ -1,0 +1,125 @@
+
+-- users
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY NOT NULL,
+    fName VARCHAR(255) NOT NULL,
+    mName VARCHAR(255) NULL,
+    lName VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+-- inventory
+CREATE TABLE categories (
+    categoryId SERIAL PRIMARY KEY NOT NULL,
+    categoryName VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE inventory (
+    id SERIAL PRIMARY KEY NOT NULL,
+    iName VARCHAR(255) NOT NULL,  
+    quantity INT DEFAULT 0,
+    iPrice INT NOT NULL,
+    dateAdded DATE NOT NULL,
+    categoryId INT REFERENCES categories(categoryId) NOT NULL,
+    isFunctional BOOLEAN DEFAULT TRUE
+);
+
+-- archive
+CREATE TABLE archive (
+    id SERIAL PRIMARY KEY NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    date DATE NOT NULL,
+    img TEXT NOT NULL,
+    docType VARCHAR(255) NOT NULL CHECK (docType IN ('Panumduman')),
+    contractingPersons TEXT NOT NULL
+);
+
+-- residents
+CREATE TABLE rClassification (
+    rClassificationId SERIAL PRIMARY KEY NOT NULL,
+    rClassificationName VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE contactPerson(
+     contactPersonId SERIAL PRIMARY KEY NOT NULL,
+     fName VARCHAR(255) NOT NULL,         
+     mName VARCHAR(255) NULL,             
+     lName VARCHAR(255) NOT NULL,         
+     street VARCHAR(255) NULL,            
+     purok VARCHAR(255) NULL,             
+     barangay VARCHAR(255) NULL,          
+     city VARCHAR(255) NULL,              
+     province VARCHAR(255) NULL,          
+     contactNumber VARCHAR(50) NULL       
+);
+
+CREATE TABLE residents (
+    residentsId SERIAL PRIMARY KEY NOT NULL,
+    globalId VARCHAR(255) NOT NULL UNIQUE, 
+    idNumber VARCHAR(255) NULL, 
+    fName VARCHAR(255) NOT NULL,           
+    mName VARCHAR(255) NULL,               
+    lName VARCHAR(255) NOT NULL,           
+    street VARCHAR(255) NULL,    
+    purok VARCHAR(255) NULL,     
+    barangay VARCHAR(255) NULL,  
+    city VARCHAR(255) NULL,      
+    province VARCHAR(255) NULL,  
+    birthDate DATE NOT NULL,                
+    birthPlace VARCHAR(255) NULL,           
+    age INT NOT NULL,                       
+    gender VARCHAR(10) NULL CHECK (gender IN ('Male', 'Female')),  
+    picture TEXT DEFAULT '',                                       
+    signature TEXT DEFAULT '',
+    eAttainment VARCHAR(255) NULL,                                 
+    occupation VARCHAR(255) NULL,                                  
+    income INT NULL,                                               
+    civilStatus VARCHAR(50) NULL CHECK (civilStatus IN ('Single', 'Married', 'Divorced')),   
+    isResident BOOLEAN NULL,                                              
+    emergencyContactId INT REFERENCES contactPerson(contactPersonId) NOT NULL,       
+    rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,
+    isPwd BOOLEAN DEFAULT FALSE,              
+    isSoloParent BOOLEAN DEFAULT FALSE,       
+    isYouth BOOLEAN DEFAULT FALSE,            
+    is4ps BOOLEAN DEFAULT FALSE,              
+    isOutOfSchoolYouth BOOLEAN DEFAULT FALSE, 
+    isSkm BOOLEAN DEFAULT FALSE,              
+    isKm BOOLEAN DEFAULT FALSE                  
+);
+
+CREATE TABLE boarders (
+    boardID SERIAL PRIMARY KEY NOT NULL,
+    boarderInResidentId INT REFERENCES residents(residentsId) NOT NULL,
+    originalStreet VARCHAR(255) NULL,     
+    originalPurok VARCHAR(255) NULL,      
+    originalBarangay VARCHAR(255) NULL,   
+    originalCity VARCHAR(255) NULL,       
+    originalProvince VARCHAR(255) NULL,   
+    boardinghouseName VARCHAR(255) NULL,   
+    landlord VARCHAR(255) NULL             
+);
+
+-- documents requests
+CREATE TABLE requests (
+    id SERIAL PRIMARY KEY NOT NULL,
+    residentsId INT REFERENCES residents(residentsId) NOT NULL,    
+    dateAdded DATE NULL,
+    purpose TEXT NULL,
+    isReleased BOOLEAN DEFAULT FALSE
+);
+
+--inserts
+INSERT INTO rClassification (rClassificationName)VALUES 
+    ('Government employee'),
+    ('Private employee'),
+    ('Carpenters'),
+    ('Farmers'),
+    ('Fisherman'),
+    ('Business entrepreneurs'),
+    ('Drivers'),
+    ('OFW'),
+    ('Kasambahay'),
+    ('Boarders'),
+    ('Entrepreneur'),
+    ('Unemployed');

@@ -22,12 +22,18 @@ CREATE TABLE inventory (
     isFunctional BOOLEAN DEFAULT TRUE
 );
 
+CREATE TABLE archive_cat (
+    id SERIAL PRIMARY KEY NOT NULL,
+    docType VARCHAR(255) REFERENCES archive(docType) NOT NULL,
+    contractingPersons TEXT NOT NULL
+);
+
 CREATE TABLE archive (
     id SERIAL PRIMARY KEY NOT NULL,
     name VARCHAR(255) NOT NULL,
     date DATE NOT NULL,
     img TEXT NOT NULL,
-    docType VARCHAR(255) NOT NULL
+    docType VARCHAR(255) NOT NULL CHECK (docType IN ('Panumduman'))
 );
 
 -- residents classification
@@ -92,7 +98,10 @@ CREATE TABLE residents (
     isPwd BOOLEAN DEFAULT FALSE,                                                    -- not available if boarder
     isSoloParent BOOLEAN DEFAULT FALSE,                                             -- not available if boarder
     isYouth BOOLEAN DEFAULT FALSE,                                                  -- not available if boarder
-    is4ps BOOLEAN DEFAULT FALSE                                                     -- not available if boarder
+    is4ps BOOLEAN DEFAULT FALSE,                                                    -- not available if boarder
+    isOutOfSchoolYouth BOOLEAN DEFAULT FALSE,                                       -- not available if boarder
+    isSkm BOOLEAN DEFAULT FALSE,                                                    -- not available if boarder
+    isKm BOOLEAN DEFAULT FALSE                                                      -- not available if boarder  
 );
 
 INSERT INTO rClassification (rClassificationName)VALUES 
@@ -105,7 +114,9 @@ INSERT INTO rClassification (rClassificationName)VALUES
     ('Drivers'),
     ('OFW'),
     ('Kasambahay'),
-    ('Boarders');
+    ('Boarders'),
+    ('Entrepreneur'),
+    ('Unemployed');
 
 CREATE TABLE requests (
     id SERIAL PRIMARY KEY NOT NULL,
@@ -116,7 +127,6 @@ CREATE TABLE requests (
 );
 
 // -- not now ----//
-
 
 -- houses classification
 CREATE TABLE hClassification (
