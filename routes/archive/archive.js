@@ -33,8 +33,6 @@ router.get("/dashboard", async (req, res) => {
     const searchQuery = req.query.search || '';
     const isAjax = req.query.ajax === "true" || req.xhr;
 
-    console.log("Search Query on Backend: ", searchQuery);
-
     try {
         const { getArchiveList, totalPages } = await fetchArchiveLists(page, limit, searchQuery);
 

@@ -161,6 +161,9 @@ function generateRemarks(resident) {
     if (resident.issoloparent) remarks.push("Solo Parent");
     if (resident.isyouth) remarks.push("Youth");
     if (resident.is4ps) remarks.push("4Ps Member");
+    if (resident.isoutofschoolyouth) remarks.push("Out of school Youth");
+    if (resident.isskm) remarks.push("Samahan ng kababaihan");
+    if (resident.iskm) remarks.push("Samahan ng kababayin-an");
 
     return remarks.length > 0 ? remarks.join(', ') : 'N/A';
 }
