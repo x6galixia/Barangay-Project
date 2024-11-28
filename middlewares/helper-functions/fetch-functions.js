@@ -170,7 +170,6 @@ async function fetchInventoryLists(page, limit, searchQuery = '', isFunctional =
   }
 }
 
-
 async function fetchArchiveLists(page, limit, searchQuery = '') {
   const offset = (page - 1) * limit;
 

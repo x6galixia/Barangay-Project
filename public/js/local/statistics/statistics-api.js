@@ -299,12 +299,18 @@ fetch('/statistics/resident-status')
     const soloParentCounts = data.map(item => parseInt(item.solo_parent_count));
     const youthCounts = data.map(item => parseInt(item.youth_count));
     const is4psCounts = data.map(item => parseInt(item.is4ps_count));
+    const outOfSchoolYouthCounts = data.map(item => parseInt(item.isosy_count));
+    const samahanNgKababaihanCounts = data.map(item => parseInt(item.skm_count));
+    const samahanNgKababayinanCounts = data.map(item => parseInt(item.km_count));
 
     // Calculate totals for each status across all puroks
     const totalPwd = pwdCounts.reduce((acc, count) => acc + count, 0);
     const totalSoloParent = soloParentCounts.reduce((acc, count) => acc + count, 0);
     const totalYouth = youthCounts.reduce((acc, count) => acc + count, 0);
     const total4ps = is4psCounts.reduce((acc, count) => acc + count, 0);
+    const totaloutOfSchoolYouthCounts = outOfSchoolYouthCounts.reduce((acc, count) => acc + count, 0);
+    const totalsamahanNgKababaihanCounts = samahanNgKababaihanCounts.reduce((acc, count) => acc + count, 0);
+    const totalsamahanNgKababayinanCounts = samahanNgKababayinanCounts.reduce((acc, count) => acc + count, 0);
 
     // Render the doughnut chart
     const ctx = document.getElementById('statusChart').getContext('2d');
@@ -336,6 +342,24 @@ fetch('/statistics/resident-status')
                     data: is4psCounts,
                     backgroundColor: '#FF6384',
                     hoverOffset: 4
+                },
+                {
+                    label: 'Out of school youth',
+                    data: outOfSchoolYouthCounts,
+                    backgroundColor: '#FF8384',
+                    hoverOffset: 4
+                },
+                {
+                    label: 'Samahan ng kababaihan',
+                    data: samahanNgKababaihanCounts,
+                    backgroundColor: '#FF9384',
+                    hoverOffset: 4
+                },
+                {
+                    label: 'Samahan ng kababayin-an',
+                    data: samahanNgKababayinanCounts,
+                    backgroundColor: '#FF1384',
+                    hoverOffset: 4
                 }
             ]
         }
@@ -357,6 +381,9 @@ fetch('/statistics/resident-status')
                         <th>Solo Parent</th>
                         <th>Youth</th>
                         <th>4Ps</th>
+                        <th>Out of school youth</th>
+                        <th>Samahan ng kababaihan</th>
+                        <th>Samahan ng kababayin-an</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -372,6 +399,9 @@ fetch('/statistics/resident-status')
                 <td>${soloParentCounts[index]}</td>
                 <td>${youthCounts[index]}</td>
                 <td>${is4psCounts[index]}</td>
+                <td>${outOfSchoolYouthCounts[index]}</td>
+                <td>${samahanNgKababaihanCounts[index]}</td>
+                <td>${samahanNgKababayinanCounts[index]}</td>
             </tr>
         `;
     });
@@ -405,6 +435,18 @@ fetch('/statistics/resident-status')
             <tr>
                 <td>4Ps</td>
                 <td>${total4ps}</td>
+            </tr>
+            <tr>
+                <td>Out of school youth</td>
+                <td>${totaloutOfSchoolYouthCounts}</td>
+            </tr>
+            <tr>
+                <td>Samahan ng kababaihan</td>
+                <td>${totalsamahanNgKababaihanCounts}</td>
+            </tr>
+            <tr>
+                <td>Samahan ng kababayin-an</td>
+                <td>${totalsamahanNgKababayinanCounts}</td>
             </tr>
         </tbody>
     </table>
