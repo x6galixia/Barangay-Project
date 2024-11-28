@@ -172,8 +172,8 @@ window.processCertificate = function (button) {
 
 
     function viewCertificateDetails() {
-      document.getElementById("certificate").classList.toggle("visible");
-      document.getElementById("brgyClearance").classList.toggle("visible");
+      document.getElementById("certificate").classList.add("visible");
+      document.getElementById("brgyClearance").classList.add("visible");
 
       document.getElementById("brgyClearanceLastName").innerText = `${lastName}`.toUpperCase();
       document.getElementById("brgyClearanceFirstName").innerText = `${firstName}`.toUpperCase();
@@ -287,8 +287,8 @@ window.processCertificate = function (button) {
 
 
     function viewCertificateDetails() {
-      document.getElementById("certificate").classList.toggle("visible");
-      document.getElementById("indigency").classList.toggle("visible");
+      document.getElementById("certificate").classList.add("visible");
+      document.getElementById("indigency").classList.add("visible");
 
       document.getElementById("indigencyFullName").innerText =
         `${lastName}, ${firstName} ${middleName}`.toUpperCase();
@@ -421,4 +421,3 @@ function setCurrentDate() {
   document.getElementById("dateMonth").innerText = month;
   document.getElementById("dateYear").innerText = year;
 }
-
