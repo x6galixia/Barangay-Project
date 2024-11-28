@@ -25,7 +25,7 @@
 }
 
 .separate h3 {
-    font-size: 15px;
+    font-size: 20px;
     text-wrap: nowrap;
 }
 
@@ -67,6 +67,10 @@
 
 #overallPopulation {
     padding-bottom: 40px;
+}
+
+#overallPopulation1 p {
+    font-size: 20px;
 }
 
 .barangayPopulationChart1 {
