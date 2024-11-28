@@ -181,8 +181,8 @@ async function fetchArchiveLists(page, limit, searchQuery = '') {
     const searchPattern = `%${searchQuery.trim()}%`;
     searchCondition = ` 
       AND (
-        CONCAT(name, ' ', COALESCE(docType)) ILIKE $${archiveValues.length + 1}
-        OR name ILIKE $${archiveValues.length + 1}
+        CONCAT(contractingPersons, ' ', COALESCE(docType)) ILIKE $${archiveValues.length + 1}
+        OR contractingPersons ILIKE $${archiveValues.length + 1}
         OR docType ILIKE $${archiveValues.length + 1}
       )`;
     archiveValues.push(searchPattern);
@@ -192,7 +192,7 @@ async function fetchArchiveLists(page, limit, searchQuery = '') {
   const archiveQuery = `
     SELECT * FROM archive
     WHERE 1=1  ${searchCondition}
-    ORDER BY name
+    ORDER BY contractingPersons
     LIMIT $1::INTEGER OFFSET $2::INTEGER;
   `;
 
@@ -201,8 +201,8 @@ async function fetchArchiveLists(page, limit, searchQuery = '') {
     FROM archive
     WHERE 1=1
     ${searchQuery && searchQuery.trim() !== '' ? `AND (
-        CONCAT(name, ' ', COALESCE(docType)) ILIKE $1
-        OR name ILIKE $1
+        CONCAT(contractingPersons, ' ', COALESCE(docType)) ILIKE $1
+        OR contractingPersons ILIKE $1
         OR docType ILIKE $1
     )` : ''}
   `;

@@ -70,6 +70,12 @@ router.post("/dashboard/add-archive", upload.single('picture'), async (req, res)
         return res.status(400).json({ error: error.details.map(e => e.message) });
     }
 
+    const contractingPersons = [value.parties1, value.parties2]
+        .filter(Boolean)
+        .join(',');
+
+    console.log(contractingPersons);
+
     try {
 
         if (picture) {
@@ -79,8 +85,8 @@ router.post("/dashboard/add-archive", upload.single('picture'), async (req, res)
         }
 
         await mPool.query(`
-            INSERT INTO archive (name, date, img, docType) VALUES ($1, $2, $3, $4)
-            `, [value.name, value.date, picture, value.docType]);
+            INSERT INTO archive (date, img, docType, contractingPersons) VALUES ($1, $2, $3, $4)
+            `, [value.date, picture, value.docType, contractingPersons]);
 
         res.redirect("/archive/dashboard")
     } catch (err) {
