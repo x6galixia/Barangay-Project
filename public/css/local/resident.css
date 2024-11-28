@@ -135,3 +135,32 @@
   margin-top: 24px;
   padding: 12px 40px;
 }
+
+#delete-resident main {
+  display: flex;
+  flex-direction: column;
+}
+
+#delete-resident main>div {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+
+#delete-resident main>div button {
+  padding: 12px 100px;
+}
+
+.reject-heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 2px solid black;
+  padding: 12px 0;
+  justify-content: center;
+  gap: 24px;
+}
+
+.reject-heading h2 {
+  text-align: left;
+}

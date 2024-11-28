@@ -20,6 +20,9 @@ function popUp_button(button) {
 
   //resident
   if (buttonId === "add-resident-button") {
+    document.querySelector('#add-resident .heading').innerText = "ADD RESIDENT";
+    document.querySelector('#add-resident #submit_add_resident').innerText = "SUBMIT";
+    document.querySelector('#add-resident #formToAddResident').action = "/residents/dashboard/add-resident";
     addResident.classList.toggle("visible");
   }
 
