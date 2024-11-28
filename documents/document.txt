@@ -39,28 +39,28 @@ CREATE TABLE rClassification (
 -- in case of emergency contact person 
 CREATE TABLE contactPerson(
      contactPersonId SERIAL PRIMARY KEY NOT NULL,
-     fName VARCHAR(255) NOT NULL,         -31
-     mName VARCHAR(255) NULL,             -32
-     lName VARCHAR(255) NOT NULL,         -33
-     street VARCHAR(255) NULL,            -34
-     purok VARCHAR(255) NULL,             -35
-     barangay VARCHAR(255) NULL,          -36
-     city VARCHAR(255) NULL,              -37
-     province VARCHAR(255) NULL,          -38
-     contactNumber VARCHAR(50) NULL       -39
+     fName VARCHAR(255) NOT NULL,         
+     mName VARCHAR(255) NULL,             
+     lName VARCHAR(255) NOT NULL,         
+     street VARCHAR(255) NULL,            
+     purok VARCHAR(255) NULL,             
+     barangay VARCHAR(255) NULL,          
+     city VARCHAR(255) NULL,              
+     province VARCHAR(255) NULL,          
+     contactNumber VARCHAR(50) NULL       
 );
 
 // non-residents
 CREATE TABLE boarders (
     boardID SERIAL PRIMARY KEY NOT NULL,
     boarderInResidentId INT REFERENCES residents(residentsId) NOT NULL,
-    originalStreet VARCHAR(255) NULL,      -24                                                -- used as a original address of boarder
-    originalPurok VARCHAR(255) NULL,       -25                                                -- used as a original address of boarder
-    originalBarangay VARCHAR(255) NULL,    -26                                                -- used as a original address of boarder
-    originalCity VARCHAR(255) NULL,        -27                                                -- used as a original address of boarder
-    originalProvince VARCHAR(255) NULL,    -28                                                -- used as a original address of boarder
-    boardinghouseName VARCHAR(255) NULL,   -29
-    landlord VARCHAR(255) NULL             -30
+    originalStreet VARCHAR(255) NULL,                                                      -- used as a original address of boarder
+    originalPurok VARCHAR(255) NULL,                                                       -- used as a original address of boarder
+    originalBarangay VARCHAR(255) NULL,                                                    -- used as a original address of boarder
+    originalCity VARCHAR(255) NULL,                                                        -- used as a original address of boarder
+    originalProvince VARCHAR(255) NULL,                                                    -- used as a original address of boarder
+    boardinghouseName VARCHAR(255) NULL,   
+    landlord VARCHAR(255) NULL             
 );
 
 CREATE TABLE residents (
@@ -86,7 +86,7 @@ CREATE TABLE residents (
     income INT NULL,                                               
     civilStatus VARCHAR(50) NULL CHECK (civilStatus IN ('Single', 'Married', 'Divorced')),   
     isResident BOOLEAN NULL,           
-    boardID INT REFERENCES boarders(boardID) NULL,                                                 
+    boarderID INT REFERENCES boarders(boardID) NULL,                                                 
     emergencyContactId INT REFERENCES contactPerson(contactPersonId) NOT NULL,       
     rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,
     isPwd BOOLEAN DEFAULT FALSE,                                                    -- not available if boarder
