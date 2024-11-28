@@ -202,8 +202,7 @@
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Samahan ng Kababaihan ng Maypangdan</label>
-                                        <select name="isSkm" id=""
-                                            aria-label="Samahan ng Kababaihan ng Maypangdan">
+                                        <select name="isSkm" id="" aria-label="Samahan ng Kababaihan ng Maypangdan">
                                             <option value="false">No</option>
                                             <option value="true">Yes</option>
                                         </select>
@@ -473,6 +472,24 @@
                     </div>
                     <button>Print</button>
                 </main>
+            </div>
+
+            <!-- Delete Pop-up -->
+            <div class="pop-up-confirm" id="delete-resident">
+                <div>
+                    <div class="reject-heading">
+                        <img src="../icon/warning.svg" alt="">
+                        <h2>Deleting a Resident will <br>
+                            automatically delete from the list</h2>
+                    </div>
+                    <main>
+                        <h2>Are sure you want to delete this Resident?</h2>
+                        <div>
+                            <button type="button" id="cancel-delete" class="button-bordered close_popUp1">No</button>
+                            <button type="button" id="confirm-delete" class="button-bordered">Yes</button>
+                        </div>
+                    </main>
+                </div>
             </div>
 
             <% if (messages.success) { %>

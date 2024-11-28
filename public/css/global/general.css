@@ -336,9 +336,6 @@ input[type="search"]::placeholder {
   margin-bottom: 40px;
 }
 
-.pop-up-confirm {
-  display: none !important;
-}
 
 .pop-up-confirm>div {
   display: flex;

@@ -153,8 +153,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     async function fetchResidents(page = 1, limit = 10, searchQuery = '', isNonResident = false) {
-        console.log("Search Query: ", searchQuery);
-        console.log("Fetching for Non-Residents: ", isNonResident);
 
         try {
             const response = await fetch(
@@ -166,7 +164,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
             const data = await response.json();
-            console.log(data);
             const residents = data.getResidentsList;
             // Clear the table body
             residentsTableBody.innerHTML = '';
@@ -200,7 +197,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                         <div class="triple-dot">
                             <div class="menu" data-id="${resident.globalid}">
                                 <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
-                                <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
+                                <button id="update-id" onclick="popUp_three_dot(this)"
+                                data-globalId="${resident.globalid}"
+                                data-isResident="${resident.isresident}"
+                                >Update</button>
                                 <button id="generate-id" onclick="popUp_three_dot(this)"
                                 data-fullname="${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}"
                                 data-idNumber="${resident.idnumber}"
@@ -231,14 +231,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-
-
-
-    // // Search event listener
-    // searchInput.addEventListener('input', (event) => {
-    //     const searchQuery = event.target.value;
-    //     fetchResidents(searchQuery); // Fetch residents with search query
-    // });
 
 
     // Function to dynamically update pagination links
@@ -308,14 +300,13 @@ window.popUp_three_dot = function (button) {
     const residentID = menu.getAttribute('data-id');
 
     if (action === 'Delete' && residentID) {
-        alert("Delete!");
+        const deleteContainer = document.getElementById("delete-resident");
+        const confirmDeleteButton = document.getElementById('confirm-delete');
+        const cancelDeleteButton = document.getElementById('cancel-delete');
+        deleteContainer.classList.add("visible");
+        overlay.classList.toggle("visible");
 
-        // const confirmDeleteButton = document.getElementById('confirm-delete');
-        // const cancelDeleteButton = document.getElementById('cancel-delete');
-        // const pop_up_Delete = document.getElementById('delete-beneficiary');
 
-        // pop_up_Delete.classList.add("visible");
-        // overlay.classList.add("visible");
 
         // confirmDeleteButton.addEventListener('click', function () {
         //     deleteBeneficiary(beneficiaryId);
@@ -328,7 +319,16 @@ window.popUp_three_dot = function (button) {
         // })
     }
     if (action === 'Update' && residentID) {
-        alert("Update!");
+        const updateContainer = document.getElementById("add-resident");
+        document.querySelector('#add-resident .heading').innerText = "UPDATE RESIDENT";
+        document.querySelector('#add-resident #submit_add_resident').innerText = "UPDATE";
+        document.querySelector('#add-resident #formToAddResident').action = "/residents/dashboard/update-resident";
+        const globalIDForQR = button.getAttribute('data-globalId');
+        const isResident = button.getAttribute('data-isResident');
+        console.log("globalID:", globalIDForQR);
+        console.log("isResident:", isResident);
+        updateContainer.classList.add("visible");
+        overlay.classList.toggle("visible");
         // fetch(`/pharmacy-records/beneficiary/${beneficiaryId}`)
         //     .then(response => {
         //         if (!response.ok) throw new Error('Network response was not ok');
