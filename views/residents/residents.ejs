@@ -373,6 +373,22 @@
                 </main>
             </div>
             <!-- Generate ID -->
+             <style>
+             @media print {
+                * {
+    -webkit-print-color-adjust: exact; /* For Chrome */
+    print-color-adjust: exact; /* For other browsers */
+  }
+
+  #residentPageTitle, .overlay, header, .tableContainer, button, input, select, h1, .close-container {
+    display: none !important;
+  }
+
+  .pop-up {
+    box-shadow: none !important;
+  }
+             }
+             </style>
             <div class="pop-up" id="generate-ID">
                 <div class="close-container">
                     <img src="../icon/close.svg" alt="" class="close_popUp">
@@ -470,7 +486,7 @@
                         </div>
 
                     </div>
-                    <button>Print</button>
+                    <button  onclick="window.print()">Print</button>
                 </main>
             </div>
 
