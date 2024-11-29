@@ -41,7 +41,8 @@
 }
 
 #meow>div {
-    flex: 1;
+    /* flex: 1; */
+    width: 50%;
 }
 
 .container h2 {
@@ -59,6 +60,7 @@
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
     align-self: stretch;
     width: fit-content;
+    overflow: auto;
 }
 
 #totalsByPurokDetails {
@@ -121,4 +123,8 @@
 #residentStatusText>div>table,
 #ageDemographicsText>div>table {
     min-width: 50%;
+}
+
+table>thead>tr>th {
+    text-wrap: wrap;
 }
