@@ -232,7 +232,7 @@ table>thead>tr {
 table>thead>tr>th,
 table>tbody>tr>td {
   padding: 12px;
-  text-wrap: nowrap;
+  text-wrap: wrap;
   font-weight: 400;
 }
 

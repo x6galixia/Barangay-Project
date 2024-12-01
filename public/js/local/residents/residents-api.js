@@ -243,6 +243,7 @@ window.popUp_three_dot = function (button) {
                 console.error('Error fetching residents data:', error);
                 alert('Failed to fetch residents data. Please try again.');
             });
+
     }
     if (action === 'Generate ID' && residentID) {
         const id_card = document.getElementById("generate-ID");
@@ -411,13 +412,15 @@ function residentFormField() {
             <option value="7">Drivers</option>
             <option value="8">OFW</option>
             <option value="9">Kasambahay</option>
+            <option value="10">Entrepreneur</option>
+            <option value="11">Unemployed</option>
             <option value="0">None</option>
         `;
     // address
     addressSection.insertAdjacentHTML('afterbegin', `
             <div class="inputWithLabel" id="purok">
                 <label for="">Purok</label>
-                <select name="purok" aria-label="Purok">
+                <select name="purok" aria-label="Purok" id="purokIn">
                     <option value="Seguidila">Seguidila</option>
                     <option value="Sitaw">Sitaw</option>
                     <option value="Talbos">Talbos</option>
@@ -429,14 +432,14 @@ function residentFormField() {
             </div>
             <div class="inputWithLabel" id="street">
                 <label>Street</label>
-                <input type="text" aria-label="Street" name="street" required>
+                <input type="text" aria-label="Street" name="street" id="streetIn" required>
             </div>
         `);
     //emergency address
     emergencyAddress.insertAdjacentHTML('afterbegin', `
             <div class="inputWithLabel" id="emergencyPurok">
                 <label for="">Purok</label>
-                <select name="emergencyPurok" aria-label="Purok">
+                <select name="emergencyPurok" id="emergencyPurokIn" aria-label="Purok">
                     <option value="Seguidila">Seguidila</option>
                     <option value="Sitaw">Sitaw</option>
                     <option value="Talbos">Talbos</option>
@@ -448,10 +451,10 @@ function residentFormField() {
             </div>
             <div class="inputWithLabel" id="emergencyStreet">
                 <label>Street</label>
-                <input type="text" aria-label="Street" name="emergencyStreet" required>
+                <input type="text" aria-label="Street" name="emergencyStreet" id="emergencyStreetIn" required>
             </div>
         `);
-
+    clearFillInputs();
     addressWhileStudyingInputs.forEach(input => input.disabled = true);
 
     if (addressWhileStudying) addressWhileStudying.style.display = "none";
@@ -504,33 +507,33 @@ function nonResidentFormField() {
 //fill inputs function
 
 function fillSector(data) {
-    switch (data.rClassificationId) {
-        case "Government Employee":
-            return 1;
-        case "Private Employee":
-            return 2;
-        case"Carpenters":
-            return 3;
+    switch (data.rclassificationname) {
+        case "Government employee":
+            return "1";
+        case "Private employee":
+            return "2";
+        case "Carpenters":
+            return "3";
         case "Farmers":
-            return 4;
+            return "4";
         case "Fisherman":
-            return 5;
-        case "Business Entrepreneurs":
-            return 6;
+            return "5";
+        case "Business entrepreneurs":
+            return "6";
         case "Drivers":
-            return 7;
+            return "7";
         case "OFW":
-            return 8;
+            return "8";
         case "Kasambahay":
-            return 9;
+            return "9";
         case "Boarders":
-            return 10;
+            return "10";
         case "Entrepreneur":
-            return 11;
+            return "11";
         case "Unemployed":
-            return 12;
+            return "12";
         default:
-            return 0;
+            return "0";
     }
 }
 
@@ -547,20 +550,20 @@ function fillInputs(data) {
         age: data.age,
         educAttainment: data.eattainment,
         occupation: data.occupation,
-        sectors: fillSector(data),
+        "sectors-dropdown": fillSector(data),
         placeOfBirth: data.birthplace,
         grossIncome: data.income,
         civilStatus: data.civilstatus,
-        senior: data.issenior ? "Yes" : "No",
-        soloParent: data.issoloparent ? "Yes" : "No",
-        pwd: data.ispwd ? "Yes" : "No",
-        youth: data.isyouth ? "Yes" : "No",
-        is4ps: data.is4ps ? "Yes" : "No",
-        isOutOfSchoolYouth: data.isoutofschoolyouth ? "Yes" : "No",
-        isSkm: data.isskm ? "Yes" : "No",
-        isKm: data.iskm ? "Yes" : "No",
-        purok: data.purok,
-        street: data.street,
+        senior: data.issenior ? "true" : "false",
+        soloParent: data.issoloparent ? "true" : "false",
+        pwd: data.ispwd ? "true" : "false",
+        youth: data.isyouth ? "true" : "false",
+        is4ps: data.is4ps ? "true" : "false",
+        isOutOfSchoolYouth: data.isoutofschoolyouth ? "true" : "false",
+        isSkm: data.isskm ? "true" : "false",
+        isKm: data.iskm ? "true" : "false",
+        purokIn: data.purok,
+        streetIn: data.street,
         barangay: data.barangay,
         city: data.city,
         province: data.province,
@@ -575,12 +578,11 @@ function fillInputs(data) {
         emergencyFirstName: data.emergencyfirstname,
         emergencyMiddleName: data.emergencymiddlename,
         emergencyContactNumber: data.emergencycontactnumber,
-        emergencyPurok: data.emergencypurok,
-        emergencyStreet: data.emergencystreet,
+        emergencyPurokIn: data.emergencypurok,
+        emergencyStreetIn: data.emergencystreet,
         emergencyBarangay: data.emergencybarangay,
         emergencyCity: data.emergencycity,
         emergencyProvince: data.emergencyprovince,
-        fileInput: data.picture
     };
 
     Object.keys(elements).forEach(id => {
@@ -593,8 +595,73 @@ function fillInputs(data) {
     });
 
     const pictureElement = document.getElementById('fileInput');
-    if (pictureElement && pictureElement.tagName === 'IMG') {
+    const preview = document.getElementById("imagePreview");
+    if (pictureElement) {
         pictureElement.src = data.picture ? `/uploads/residents-img/${data.picture}` : '';
+        preview.innerHTML = `<img src="/uploads/residents-img/${data.picture}" alt="Uploaded Image">`;
+    } else {
+        console.error('Image element not found or is not an IMG tag');
+    }
+}
+function clearFillInputs() {
+    const elements = {
+        isResident,
+        last_name,
+        first_name,
+        middle_name,
+        gender,
+        birthdate,
+        age,
+        educAttainment,
+        occupation,
+        placeOfBirth,
+        grossIncome,
+        civilStatus,
+        senior,
+        soloParent,
+        pwd,
+        youth,
+        is4ps,
+        isOutOfSchoolYouth,
+        isSkm,
+        isKm,
+        purokIn,
+        streetIn,
+        barangay,
+        city,
+        province,
+        purok1,
+        street1,
+        barangay1,
+        city1,
+        province1,
+        boardingHouse,
+        landlord,
+        emergencyLastName,
+        emergencyFirstName,
+        emergencyMiddleName,
+        emergencyContactNumber,
+        emergencyPurokIn,
+        emergencyStreetIn,
+        emergencyBarangay,
+        emergencyCity,
+        emergencyProvince,
+    };
+
+    Object.keys(elements).forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.value = '';
+        } else {
+            console.warn(`Element with ID ${id} not found`);
+        }
+    });
+
+    const pictureElement = document.getElementById('fileInput');
+    const preview = document.getElementById("imagePreview");
+    if (pictureElement) {
+        pictureElement.src = '';
+        preview.innerHTML = `<p>No Image Uploaded</p>`;
     } else {
         console.error('Image element not found or is not an IMG tag');
     }

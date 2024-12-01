@@ -90,7 +90,6 @@ router.get("/dashboard/resident/:id", async (req, res) => {
                 r.income,
                 r.civilStatus,
                 r.isResident,
-                r.isSenior,
                 r.isPwd,
                 r.isSoloParent,
                 r.isYouth,
@@ -122,13 +121,12 @@ router.get("/dashboard/resident/:id", async (req, res) => {
             WHERE r.globalId = $1
         `;
         const residentData = await mPool.query(query, [residentID]);
-
         if (residentData.rows.length === 0) {
             return res.status(404).json({ message: "Resident not found" });
         }
 
         res.json(residentData.rows[0]);
-        
+
     } catch (err) {
         console.error("Error: ", err.message, err.stack);
         res.status(500).json({ message: "Internal server error" });

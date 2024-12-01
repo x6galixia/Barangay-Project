@@ -292,7 +292,7 @@ window.processCertificate = function (button) {
 
       document.getElementById("indigencyFullName").innerText =
         `${lastName}, ${firstName} ${middleName}`.toUpperCase();
-      document.getElementById("indigencyAddress").innerText = `${purok}, ${barangay}, ${city}, ${province}`;
+      document.getElementById("indigencyAddress").innerText = `Purok ${purok}, ${barangay}, ${city}, ${province}`;
 
       document.getElementById("indigencyGender").innerHTML = `<u>${gender}</u>`;
       document.getElementById("indigencyCivilStatus").innerHTML = `<u>${civilStatus}</u>`;
@@ -375,16 +375,75 @@ window.processCertificate = function (button) {
     })
   }
   else if (purpose === 'RA 11261') {
-    viewCertificate.addEventListener('click', function () {
-      document.getElementById("certificate").classList.toggle("visible");
-      document.getElementById("RA11261").classList.toggle("visible");
+    certificateMainForm.innerHTML = `
+        <div class="inputWithLabel">
+            <label for="certificatePurpose">Purpose</label>
+            <select class="certficate-purpose-dropdown" id="selectPurpose">
+                <option value="default" disabled selected>Select a Purpose</option>
+                <option value="NBI Clearance Application Requirement">NBI Clearance Application Requirement</option>
+                <option value="PhilHealth Application Requirement">PhilHealth Application Requirement</option>
+                <option value="Police/NBI Application Requirement">Police/NBI Application Requirement</option>
+                <option value="PSA Application Requirement">PSA Application Requirement</option>
+                <option value="TIN ID Application Requirement">TIN ID Application Requirement</option>
+                <option value="TOR Application Requirement">TOR Application Requirement</option>
+                <option value="Others">Others</option>
+            </select>
+            <input type="hidden" id="certificatePurpose" style="margin-top:12px">
+        </div>
+    `;
+
+    document.getElementById("selectPurpose").addEventListener('change', function () {
+      const selectedValue = this.value.trim();
+      const certificatePurposeInput = document.getElementById("certificatePurpose");
+
+      if (selectedValue === "Others") {
+        certificatePurposeInput.type = "text";
+        certificatePurposeInput.value = "";
+        certificatePurposeInput.placeholder = "Enter the purpose";
+      } else {
+        certificatePurposeInput.type = "hidden";
+        certificatePurposeInput.value = selectedValue;
+      }
+    });
+
+
+    function viewCertificateDetails() {
+      document.getElementById("certificate").classList.add("visible");
+      document.getElementById("RA11261").classList.add("visible");
+
+      document.getElementById("RAFullName").innerText =
+        `${lastName}, ${firstName} ${middleName}`.toUpperCase();
+      document.getElementById("RAAddress").innerText = `Purok ${purok}, ${barangay}, ${city}, ${province}`;
+
+      document.getElementById("RAGender").innerHTML = `<u>${gender}</u>`;
+      document.getElementById("RACivilStatus").innerHTML = `<u>${civilStatus}</u>`;
 
       document.querySelector(".closeCertificate").addEventListener("click", function () {
         console.log("close click");
         document.getElementById("certificate").classList.remove("visible");
         document.getElementById("RA11261").classList.remove("visible");
-      })
-    })
+      });
+    }
+
+    applyChanges.addEventListener('click', function () {
+      const certificatePurposeInput = document.getElementById("certificatePurpose");
+      const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
+
+      if (selectedPurpose && selectedPurpose !== "default") {
+        const RAPurpose = document.getElementById("RAPurpose");
+
+        if (certificatePurposeInput.type === "text") {
+          RAPurpose.innerText = selectedPurpose.toUpperCase();
+        } else {
+          RAPurpose.innerText = selectedPurpose.toUpperCase();
+        }
+        alert("Changes applied: " + selectedPurpose);
+      } else {
+        alert("Please select a purpose or provide one if you selected 'Others'.");
+      }
+    });
+
+    viewCertificate.addEventListener('click', viewCertificateDetails);
   }
   else if (purpose === 'Residency') {
     alert(purpose);
@@ -413,11 +472,11 @@ function getOrdinalSuffix(day) {
 function setCurrentDate() {
   const today = new Date();
 
-  const day = getOrdinalSuffix(today.getDate()); // Current day with ordinal suffix
-  const month = today.toLocaleString("default", { month: "long" }).toUpperCase(); // Full month name in uppercase
-  const year = today.getFullYear(); // Current year
+  const day = getOrdinalSuffix(today.getDate());
+  const month = today.toLocaleString("default", { month: "long" }).toUpperCase();
+  const year = today.getFullYear();
 
-  document.getElementById("dateDay").innerText = day;
-  document.getElementById("dateMonth").innerText = month;
-  document.getElementById("dateYear").innerText = year;
+  document.querySelectorAll("#dateDay").forEach(el => el.innerText = day);
+  document.querySelectorAll("#dateMonth").forEach(el => el.innerText = month);
+  document.querySelectorAll("#dateYear").forEach(el => el.innerText = year);
 }
