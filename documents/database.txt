@@ -76,8 +76,8 @@ CREATE TABLE residents (
     income INT NULL,                                               
     civilStatus VARCHAR(50) NULL CHECK (civilStatus IN ('Single', 'Married', 'Divorced', 'Widow', 'Widower')),   
     isResident BOOLEAN NULL,                                              
-    emergencyContactId INT REFERENCES contactPerson(contactPersonId) NOT NULL,       
-    rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,\
+    emergencyContactId INT REFERENCES contactPerson(contactPersonId) ON DELETE CASCADE NOT NULL,       
+    rClassificationId INT REFERENCES rClassification(rClassificationId) ON DELETE CASCADE NOT NULL,
     isSenior BOOLEAN DEFAULT FALSE,
     isPwd BOOLEAN DEFAULT FALSE,              
     isSoloParent BOOLEAN DEFAULT FALSE,       
@@ -90,7 +90,7 @@ CREATE TABLE residents (
 
 CREATE TABLE boarders (
     boardID SERIAL PRIMARY KEY NOT NULL,
-    boarderInResidentId INT REFERENCES residents(residentsId) NOT NULL,
+    boarderInResidentId INT REFERENCES residents(residentsId) ON DELETE CASCADE NOT NULL,
     originalStreet VARCHAR(255) NULL,     
     originalPurok VARCHAR(255) NULL,      
     originalBarangay VARCHAR(255) NULL,   
