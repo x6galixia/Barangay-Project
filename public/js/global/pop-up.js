@@ -6,28 +6,12 @@ function formatDate(date) {
   return `${year}-${month}-${day}`;
 }
 
-//resident
-const addInventory = document.getElementById("add-inventory");
-const addDocument = document.getElementById("add-document");
-
 
 const overlay = document.querySelector(".overlay");
 
 function popUp_button(button) {
   var buttonId = button.id;
   var select = button.value;
-
-  //resident
-
-  //inbentory
-  if (buttonId === "add-inventory-button") {
-    addInventory.classList.toggle("visible");
-  }
-
-  //archie
-  if (buttonId === "add-document-button") {
-    addDocument.classList.toggle("visible");
-  }
 
 
   overlay.classList.add("visible");

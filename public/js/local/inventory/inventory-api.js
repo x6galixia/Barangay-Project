@@ -168,7 +168,9 @@ window.popUp_three_dot = function (button) {
     }
 };
 
-const addResident = document.getElementById("add-inventory");
+
+
+const addInventory = document.getElementById("add-inventory");
 function popUp_button(button) {
     var buttonId = button.id;
     if (buttonId === "add-inventory-button") {
