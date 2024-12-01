@@ -221,11 +221,19 @@ window.popUp_three_dot = function (button) {
     }
     if (action === 'Update' && residentID) {
         const isResident = button.getAttribute('data-isResident');
+        if (document.querySelector('.residents-dropdown').value === " residents") {
+            residentFormField();
+            document.querySelector('#add-resident .heading').innerText = "UPDATE RESIDENT";
+            document.querySelector('#add-resident #submit_add_resident').innerText = "UPDATE";
+            document.querySelector('#add-resident #formToAddResident').action = `/residents/dashboard/update-resident/${residentID}`;
+        } else if (document.querySelector('.residents-dropdown').value === "non-residents") {
+            nonResidentFormField();
+            document.querySelector('#add-resident .heading').innerText = "UPDATE NON-RESIDENT";
+            document.querySelector('#add-resident #submit_add_resident').innerText = "UPDATE";
+            document.querySelector('#add-resident #formToAddResident').action = `/residents/dashboard/update-non-resident/${residentID}`;
+        }
 
         const updateContainer = document.getElementById("add-resident");
-        document.querySelector('#add-resident .heading').innerText = "UPDATE RESIDENT";
-        document.querySelector('#add-resident #submit_add_resident').innerText = "UPDATE";
-        document.querySelector('#add-resident #formToAddResident').action = `/residents/dashboard/update-resident/${residentID}`;
         const globalIDForQR = button.getAttribute('data-globalId');
         console.log(isResident);
         updateContainer.classList.add("visible");
@@ -412,8 +420,8 @@ function residentFormField() {
             <option value="7">Drivers</option>
             <option value="8">OFW</option>
             <option value="9">Kasambahay</option>
-            <option value="10">Entrepreneur</option>
-            <option value="11">Unemployed</option>
+            <option value="11">Entrepreneur</option>
+            <option value="12">Unemployed</option>
             <option value="0">None</option>
         `;
     // address
@@ -454,13 +462,13 @@ function residentFormField() {
                 <input type="text" aria-label="Street" name="emergencyStreet" id="emergencyStreetIn" required>
             </div>
         `);
-    clearFillInputs();
     addressWhileStudyingInputs.forEach(input => input.disabled = true);
 
     if (addressWhileStudying) addressWhileStudying.style.display = "none";
     if (residentClassificationSection) {
         residentClassificationSection.style.display = 'block';
     }
+    clearFillInputs();
 
 
 }
@@ -497,11 +505,11 @@ function nonResidentFormField() {
     if (emergencyStreet) emergencyStreet.remove();
 
     addressWhileStudyingInputs.forEach(input => input.disabled = false);
-
     addressWhileStudying.style.display = "block";
     if (residentClassificationSection) {
         residentClassificationSection.style.display = 'none';
     }
+    clearFillInputs();
 }
 
 //fill inputs function
@@ -625,29 +633,19 @@ function clearFillInputs() {
         isOutOfSchoolYouth,
         isSkm,
         isKm,
-        purokIn,
-        streetIn,
         barangay,
         city,
         province,
-        purok1,
-        street1,
-        barangay1,
-        city1,
-        province1,
-        boardingHouse,
-        landlord,
         emergencyLastName,
         emergencyFirstName,
         emergencyMiddleName,
         emergencyContactNumber,
-        emergencyPurokIn,
-        emergencyStreetIn,
         emergencyBarangay,
         emergencyCity,
         emergencyProvince,
     };
 
+    // Clear required elements
     Object.keys(elements).forEach(id => {
         const element = document.getElementById(id);
         if (element) {
@@ -657,6 +655,29 @@ function clearFillInputs() {
         }
     });
 
+    // Optional elements: Clear only if they exist
+    const optionalElements = [
+        'purokIn',
+        'streetIn',
+        'purok1',
+        'street1',
+        'barangay1',
+        'city1',
+        'province1',
+        'boardingHouse',
+        'landlord',
+        'emergencyPurokIn',
+        'emergencyStreetIn'
+    ];
+
+    optionalElements.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.value = '';
+        }
+    });
+
+    // Handle picture clearing
     const pictureElement = document.getElementById('fileInput');
     const preview = document.getElementById("imagePreview");
     if (pictureElement) {
