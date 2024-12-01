@@ -421,8 +421,7 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
     }
 });
 
-router.post("/dashboard/update-resident/:id", upload.single('picture'), async (req, res) => {
-    const residentId = req.params.id;
+router.post("/dashboard/update-resident", upload.single('picture'), async (req, res) => {
     const { error, value } = residentSchema.validate(req.body);
     const picture = req.file ? req.file.filename : null;
 
@@ -444,7 +443,7 @@ router.post("/dashboard/update-resident/:id", upload.single('picture'), async (r
         await mPool.query(
             `UPDATE contactPerson
              SET fName = $1, mName = $2, lName = $3, street = $4, purok = $5, barangay = $6, city = $7, province = $8, contactNumber = $9
-             WHERE contactPersonId = (SELECT emergencyContactId FROM residents WHERE residentsId = $10)`,
+             WHERE contactPersonId = (SELECT emergencyContactId FROM residents WHERE globalId = $10)`,
             [
                 value.emergencyFirstName,
                 value.emergencyMiddleName,
@@ -455,7 +454,7 @@ router.post("/dashboard/update-resident/:id", upload.single('picture'), async (r
                 value.emergencyCity,
                 value.emergencyProvince,
                 value.emergencyContactNumber,
-                residentId,
+                value.globalId
             ]
         );
 
@@ -466,7 +465,7 @@ router.post("/dashboard/update-resident/:id", upload.single('picture'), async (r
                  eAttainment = $14, occupation = $15, income = $16, civilStatus = $17, 
                  rClassificationId = $18, isPwd = $19, isSoloParent = $20, isYouth = $21, 
                  is4ps = $22, isOutOfSchoolYouth = $23, isSkm = $24, isKm = $25
-             WHERE residentsId = $26`,
+             WHERE globalId = $26`,
             [
                 value.first_name,    // fName
                 value.middle_name,   // mName
@@ -493,7 +492,7 @@ router.post("/dashboard/update-resident/:id", upload.single('picture'), async (r
                 value.isOutOfSchoolYouth,
                 value.isSkm,
                 value.isKm,
-                residentId,
+                value.globalId
             ]
         );
 
@@ -505,9 +504,7 @@ router.post("/dashboard/update-resident/:id", upload.single('picture'), async (r
     }
 });
 
-router.post("/dashboard/update-non-resident/:id", upload.single('picture'), async (req, res) => {
-    const residentId = req.params.id;
-
+router.post("/dashboard/update-non-resident", upload.single('picture'), async (req, res) => {
     try {
         if (req.body.isResident === "non-resident") {
             req.body.nonResidentAddress = {
@@ -541,7 +538,7 @@ router.post("/dashboard/update-non-resident/:id", upload.single('picture'), asyn
         await mPool.query(
             `UPDATE contactPerson
              SET fName = $1, mName = $2, lName = $3, street = $4, purok = $5, barangay = $6, city = $7, province = $8, contactNumber = $9
-             WHERE contactPersonId = (SELECT emergencyContactId FROM residents WHERE residentsId = $10)`,
+             WHERE emergencyContactId = (SELECT emergencyContactId FROM residents WHERE globalId = $10)`,
             [
                 value.emergencyFirstName,
                 value.emergencyMiddleName,
@@ -552,7 +549,7 @@ router.post("/dashboard/update-non-resident/:id", upload.single('picture'), asyn
                 value.emergencyCity,
                 value.emergencyProvince,
                 value.emergencyContactNumber,
-                residentId,
+                value.globalId
             ]
         );
 
@@ -565,7 +562,7 @@ router.post("/dashboard/update-non-resident/:id", upload.single('picture'), asyn
                  eAttainment = $14, occupation = $15, income = $16, civilStatus = $17, isResident = false, 
                  rClassificationId = $18, isPwd = $19, isSoloParent = $20, isYouth = $21, is4ps = $22, 
                  isOutOfSchoolYouth = $23, isSkm = $24, isKm = $25
-             WHERE residentsId = $26`,
+             WHERE globalId = $26`,
             [
                 value.first_name,    // fName
                 value.middle_name,   // mName
@@ -592,7 +589,7 @@ router.post("/dashboard/update-non-resident/:id", upload.single('picture'), asyn
                 value.isOutOfSchoolYouth,
                 value.isSkm,
                 value.isKm,
-                residentId,          // residentsId
+                value.globalId
             ]
         );
 
@@ -600,7 +597,7 @@ router.post("/dashboard/update-non-resident/:id", upload.single('picture'), asyn
             `UPDATE boarders
              SET originalstreet = $1, originalpurok = $2, originalbarangay = $3, originalcity = $4, 
                  originalprovince = $5, boardinghousename = $6, landlord = $7
-             WHERE boarderinresidentid = $8`,
+             WHERE boarderInResidentId = (SELECT residentsId FROM residents WHERE globalId = $10)`,
             [
                 value.nonResidentAddress.street1,      // originalstreet
                 value.nonResidentAddress.purok1,       // originalpurok
@@ -609,7 +606,7 @@ router.post("/dashboard/update-non-resident/:id", upload.single('picture'), asyn
                 value.nonResidentAddress.province1,    // originalprovince
                 value.nonResidentAddress.boardingHouse, // boardinghousename
                 value.nonResidentAddress.landlord,      // landlord
-                residentId,                             // Reference residentsid
+                value.globalId
             ]
         );
 
