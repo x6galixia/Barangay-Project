@@ -48,14 +48,23 @@ document.addEventListener("DOMContentLoaded", async function () {
                     <td>${arch.contractingpersons}</td>
                     <td>${new Date(arch.date).toLocaleDateString()}</td>
                     <td>${arch.doctype}</td>
-                    <td><button
-                    data-image="${arch.img}"
-                    data-docType="${arch.doctype}"
-                    onclick="viewImage(this)">image</button></td>
+                    <td class="menu-row">
+                        <img class="dot" src="../icon/triple-dot.svg" alt="">
+                        <div class="triple-dot">
+                            <div class="menu" data-id="${arch.id}">
+                                <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
+                                <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
+                                <button id="view-id" onclick="popUp_three_dot(this)"
+                                 data-image="${arch.img}"
+                                 data-docType="${arch.doctype}"
+                                >View Image</button>
+                            </div>
+                        </div>
+                    </td>
                 `;
                 archiveTableBody.appendChild(row);
             });
-
+            attachDotEventListeners();
             updatePaginationLinks(data.currentPage, data.totalPages);
         } catch (error) {
             console.error("Error fetching inventory data: ", error);
@@ -101,19 +110,97 @@ function docChanges() {
     })
 }
 
-window.viewImage = function (button) {
-    const image = button.getAttribute('data-image');
-    const docType = button.getAttribute('data-docType');
+function attachDotEventListeners() {
+    console.log("ebent attached");
+    document.querySelectorAll(".dot").forEach(function (dot) {
+        console.log(dot);
+        dot.addEventListener("click", function () {
+            console.log("dot clicked");
+            const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
+            if (tripleDotContainer) {
+                tripleDotContainer.classList.toggle("visible");
+                if (tripleDotContainer.classList.contains("visible")) {
+                    // clearInterval(pollIntervalId);
+                    isDotMenuOpen = true;
+                } else {
+                    // pollIntervalId = setInterval(fetchBeneficiaryUpdates, POLL_INTERVAL);
+                    // isDotMenuOpen = false;
+                }
+            }
+        });
 
-    document.querySelector(".overlay").classList.toggle("visible");
-    document.querySelector("#view-document").classList.toggle("visible");
-    document.getElementById("docHeading").innerText = docType;
+        document.addEventListener("click", function (event) {
+            // Check if the click was outside the dot container
+            if (!dot.contains(event.target)) {
+                const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
+                if (tripleDotContainer && tripleDotContainer.classList.contains("visible")) {
+                    tripleDotContainer.classList.remove("visible");
+                    // pollIntervalId = setInterval(fetchBeneficiaryUpdates, POLL_INTERVAL);
+                    // isDotMenuOpen = false;
+                }
+            }
+        });
+    });
 
-    const pictureElement = document.getElementById('imageTo');
-    if (pictureElement) {
-        const picturePath = `/uploads/archive-img/${image}`;
-        pictureElement.src = picturePath;
-    } else {
-        console.error('Image element not found');
+}
+
+window.popUp_three_dot = function (button) {
+    const action = button.textContent.trim();
+    const menu = button.closest('.menu');
+    const archID = menu.getAttribute('data-id');
+
+    if (action === 'Delete' && archID) {
+
+        const confirmDeleteButton = document.getElementById('confirm-delete');
+        const cancelDeleteButton = document.getElementById('cancel-delete');
+        const pop_up_Delete = document.getElementById('delete-arch');
+
+        pop_up_Delete.classList.add("visible");
+        overlay.classList.add("visible");
+
+        confirmDeleteButton.addEventListener('click', function () {
+            pop_up_Delete.classList.remove("visible");
+            overlay.classList.remove("visible");
+        })
+        cancelDeleteButton.addEventListener('click', function () {
+            pop_up_Delete.classList.remove("visible");
+            overlay.classList.remove("visible");
+        })
+    }
+    if (action === 'Update' && archID) {
+        const updateContainer = document.getElementById("add-document");
+        document.querySelector('#add-document .heading').innerText = "UPDATE DOCUMENT";
+        document.querySelector('#add-document #submit_add_document').innerText = "UPDATE";
+        document.querySelector('#add-document form').action = `/archive/dashboard/update-archive`;
+        updateContainer.classList.add("visible");
+        overlay.classList.toggle("visible");
+    }
+    if (action === 'View Image' && archID) {
+        const image = button.getAttribute('data-image');
+        const docType = button.getAttribute('data-docType');
+
+        document.querySelector(".overlay").classList.toggle("visible");
+        document.querySelector("#view-document").classList.toggle("visible");
+        document.getElementById("docHeading").innerText = docType;
+
+        const pictureElement = document.getElementById('imageTo');
+        if (pictureElement) {
+            const picturePath = `/uploads/archive-img/${image}`;
+            pictureElement.src = picturePath;
+        } else {
+            console.error('Image element not found');
+        }
     }
 };
+
+const addDocument = document.getElementById("add-document");
+function popUp_button(button) {
+    var buttonId = button.id;
+    if (buttonId === "add-document-button") {
+        document.querySelector('#add-document .heading').innerText = "ADD DOCUMENT";
+        document.querySelector('#add-document #submit_add_document').innerText = "SUBMIT";
+        document.querySelector('#add-document form').action = `/archive/dashboard/add-archive`;
+        addDocument.classList.toggle("visible");
+        overlay.classList.add("visible");
+    }
+}

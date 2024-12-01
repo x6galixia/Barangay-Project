@@ -123,3 +123,32 @@
 .buttonContainerInArchibe button:first-child {
   background-color: #008cba;
 }
+
+.reject-heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 2px solid black;
+  padding: 12px 0;
+  justify-content: center;
+  gap: 24px;
+}
+
+.reject-heading h2 {
+  text-align: left;
+}
+
+#delete-arch main {
+  display: flex;
+  flex-direction: column;
+}
+
+#delete-arch main>div {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+
+#delete-arch main>div button {
+  padding: 12px 100px;
+}
