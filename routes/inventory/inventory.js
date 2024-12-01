@@ -73,5 +73,15 @@ router.post("/dashboard/add-item", async (req, res) => {
     }
 });
 
+router.delete("/delete-item/:id", async (req, res) => {
+    const itemId = req.params.id;
+    try {
+        await mPool.query(`DELETE FROM inventory WHERE id = $1`, [itemId]);
+        req.flash('success', 'Item Deleted Successfully!');
+    } catch (err) {
+        console.error("Error: ", err.stack, err.message);
+        res.status(500).send("Internal server error");
+    }
+});
 
 module.exports = router;
