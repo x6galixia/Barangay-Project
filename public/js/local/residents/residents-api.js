@@ -454,7 +454,6 @@ function residentFormField() {
                 <input type="text" aria-label="Street" name="emergencyStreet" id="emergencyStreetIn" required>
             </div>
         `);
-    clearFillInputs();
     addressWhileStudyingInputs.forEach(input => input.disabled = true);
 
     if (addressWhileStudying) addressWhileStudying.style.display = "none";
@@ -538,6 +537,7 @@ function fillSector(data) {
 }
 
 function fillInputs(data) {
+    clearFillInputs();
     console.log('Data passed to fillInputs:', data);
 
     const elements = {
