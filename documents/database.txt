@@ -77,7 +77,8 @@ CREATE TABLE residents (
     civilStatus VARCHAR(50) NULL CHECK (civilStatus IN ('Single', 'Married', 'Divorced', 'Widow', 'Widower')),   
     isResident BOOLEAN NULL,                                              
     emergencyContactId INT REFERENCES contactPerson(contactPersonId) NOT NULL,       
-    rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,
+    rClassificationId INT REFERENCES rClassification(rClassificationId) NOT NULL,\
+    isSenior BOOLEAN DEFAULT FALSE,
     isPwd BOOLEAN DEFAULT FALSE,              
     isSoloParent BOOLEAN DEFAULT FALSE,       
     isYouth BOOLEAN DEFAULT FALSE,            
@@ -122,3 +123,48 @@ INSERT INTO rClassification (rClassificationName)VALUES
     ('Boarders'),
     ('Entrepreneur'),
     ('Unemployed');
+
+isResident
+last_name
+first_name
+middle_name
+gender
+birthdate
+age
+educAttainment
+occupation
+sectors
+placeOfBirth
+grossIncome
+civilStatus
+senior
+soloParent
+pwd
+youth
+is4ps
+isOutOfSchoolYouth
+isSkm
+isKm
+purok
+street
+barangay
+city
+province
+
+purok1
+street1
+barangay1
+city1
+province1
+boardinghouse
+landlord
+emergencyLastName
+emergencyFirstName
+emergencyMiddleName
+emergencyContactNumber
+emergencyPurok
+emergencyStreet
+emergencyBarangay
+emergencyCity
+emergencyProvince
+fileInput

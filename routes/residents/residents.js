@@ -63,6 +63,78 @@ router.get("/dashboard", async (req, res) => {
     }
 });
 
+router.get("/dashboard/resident/:id", async (req, res) => {
+    const residentID = req.params.id;
+    try {
+        const query = `
+            SELECT 
+                r.residentsId,
+                r.globalId,
+                r.idNumber,
+                r.fName,
+                r.mName,
+                r.lName,
+                r.street,
+                r.purok,
+                r.barangay,
+                r.city,
+                r.province,
+                r.birthDate,
+                r.birthPlace,
+                r.age,
+                r.gender,
+                r.picture,
+                r.signature,
+                r.eAttainment,
+                r.occupation,
+                r.income,
+                r.civilStatus,
+                r.isResident,
+                r.isSenior,
+                r.isPwd,
+                r.isSoloParent,
+                r.isYouth,
+                r.is4ps,
+                r.isOutOfSchoolYouth,
+                r.isSkm,
+                r.isKm,
+                rc.rClassificationName,  -- From rClassification
+                cp.fName AS emergencyFirstName,  -- From contactPerson
+                cp.mName AS emergencyMiddleName,
+                cp.lName AS emergencyLastName,
+                cp.street AS emergencyStreet,
+                cp.purok AS emergencyPurok,
+                cp.barangay AS emergencyBarangay,
+                cp.city AS emergencyCity,
+                cp.province AS emergencyProvince,
+                cp.contactNumber AS emergencyContactNumber,
+                b.originalStreet,
+                b.originalPurok,
+                b.originalBarangay,
+                b.originalCity,
+                b.originalProvince,
+                b.boardinghouseName,
+                b.landlord
+            FROM residents r
+            JOIN rClassification rc ON r.rClassificationId = rc.rClassificationId
+            JOIN contactPerson cp ON r.emergencyContactId = cp.contactPersonId
+            LEFT JOIN boarders b ON r.residentsId = b.boarderInResidentId
+            WHERE r.globalId = $1
+        `;
+        const residentData = await mPool.query(query, [residentID]);
+
+        if (residentData.rows.length === 0) {
+            return res.status(404).json({ message: "Resident not found" });
+        }
+
+        res.json(residentData.rows[0]);
+        
+    } catch (err) {
+        console.error("Error: ", err.message, err.stack);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+
 router.post("/dashboard/add-resident", upload.single('picture'), async (req, res) => {
     const { error, value } = residentSchema.validate(req.body);
     const picture = req.file ? req.file.filename : null;

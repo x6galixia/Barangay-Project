@@ -39,7 +39,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             });
         }
 
-
         if (selectedValue === "residents") {
             console.log("Residents selected");
             // residentFormField();
@@ -135,8 +134,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-
-
     // Function to dynamically update pagination links
     function updatePaginationLinks(currentPage, totalPages) {
         const paginationNav = document.getElementById('paginationNav');
@@ -196,7 +193,6 @@ function attachDotEventListeners() {
             }
         });
     });
-
 }
 
 // const update_beneficiary = document.getElementById("update-beneficiary");
@@ -225,72 +221,28 @@ window.popUp_three_dot = function (button) {
     }
     if (action === 'Update' && residentID) {
         const isResident = button.getAttribute('data-isResident');
-        // if (isResident === "true") {
-        //     residentFormField();
-        // } else if (isResident === "false") {
-        //     nonResidentFormField();
-        // }
+
         const updateContainer = document.getElementById("add-resident");
         document.querySelector('#add-resident .heading').innerText = "UPDATE RESIDENT";
         document.querySelector('#add-resident #submit_add_resident').innerText = "UPDATE";
-        document.querySelector('#add-resident #formToAddResident').action = "/residents/dashboard/update-resident";
+        document.querySelector('#add-resident #formToAddResident').action = `/residents/dashboard/update-resident/${residentID}`;
         const globalIDForQR = button.getAttribute('data-globalId');
         console.log(isResident);
         updateContainer.classList.add("visible");
         overlay.classList.toggle("visible");
 
-        // fetch(`/pharmacy-records/beneficiary/${beneficiaryId}`)
-        //     .then(response => {
-        //         if (!response.ok) throw new Error('Network response was not ok');
-        //         return response.json();
-        //     })
-        //     .then(beneficiaryData => {
-        //         document.getElementById('beneficiary_id').value = beneficiaryData.beneficiary_id || '';
-        //         document.getElementById('last_name').value = beneficiaryData.last_name || '';
-        //         document.getElementById('first_name').value = beneficiaryData.first_name || '';
-        //         document.getElementById('middle_name').value = beneficiaryData.middle_name || '';
-        //         document.getElementById('gender').value = beneficiaryData.gender || '';
-        //         document.getElementById('birthdate').value = beneficiaryData.birthdate.split('T')[0] || '';
-        //         document.getElementById('phone').value = beneficiaryData.phone || '';
-        //         document.getElementById('processed_date').value = beneficiaryData.processed_date.split('T')[0] || '';
-        //         document.getElementById('occupation').value = beneficiaryData.occupation || '';
-        //         document.getElementById('street').value = beneficiaryData.street || '';
-        //         document.getElementById('barangay').value = beneficiaryData.barangay || '';
-        //         document.getElementById('city').value = beneficiaryData.city || '';
-        //         document.getElementById('province').value = beneficiaryData.province || '';
-        //         document.getElementById('senior_citizen').value = beneficiaryData.senior_citizen || '';
-        //         document.getElementById('pwd').value = beneficiaryData.pwd || '';
-        //         document.getElementById('note').value = beneficiaryData.note || '';
-        //         document.getElementById('existing_picture').value = beneficiaryData.picture || '';
-
-        //         var picture;
-        //         if (beneficiaryData.gender === "Male") {
-        //             picture = "/icon/upload-img-default.svg";
-        //         } else {
-        //             picture = "/icon/upload-img-default-woman.svg";
-        //         }
-
-
-        //         const pictureElement = document.getElementById('pictureDisplay');
-        //         if (pictureElement) {
-        //             const picturePath = (beneficiaryData.picture && beneficiaryData.picture !== '0') ? `/uploads/beneficiary-img/${beneficiaryData.picture}` : picture;
-        //             pictureElement.src = picturePath;
-        //         } else {
-        //             console.error('Image element not found');
-        //         }
-
-        //         const fileInput = document.getElementById('picture');
-        //         if (fileInput) {
-        //             fileInput.value = '';
-        //         }
-
-        //         update_beneficiary.classList.add("visible");
-        //         overlay.classList.add("visible");
-        //     })
-        //     .catch(error => {
-        //         console.error('Error fetching beneficiary data:', error);
-        //         alert('Failed to fetch beneficiary data. Please try again.');
-        //     });
+        fetch(`/residents/dashboard/resident/${residentID}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(residentData => {
+                fillInputs(residentData);
+            })
+            .catch(error => {
+                console.error('Error fetching residents data:', error);
+                alert('Failed to fetch residents data. Please try again.');
+            });
     }
     if (action === 'Generate ID' && residentID) {
         const id_card = document.getElementById("generate-ID");
@@ -546,5 +498,104 @@ function nonResidentFormField() {
     addressWhileStudying.style.display = "block";
     if (residentClassificationSection) {
         residentClassificationSection.style.display = 'none';
+    }
+}
+
+//fill inputs function
+
+function fillSector(data) {
+    switch (data.rClassificationId) {
+        case "Government Employee":
+            return 1;
+        case "Private Employee":
+            return 2;
+        case"Carpenters":
+            return 3;
+        case "Farmers":
+            return 4;
+        case "Fisherman":
+            return 5;
+        case "Business Entrepreneurs":
+            return 6;
+        case "Drivers":
+            return 7;
+        case "OFW":
+            return 8;
+        case "Kasambahay":
+            return 9;
+        case "Boarders":
+            return 10;
+        case "Entrepreneur":
+            return 11;
+        case "Unemployed":
+            return 12;
+        default:
+            return 0;
+    }
+}
+
+function fillInputs(data) {
+    console.log('Data passed to fillInputs:', data);
+
+    const elements = {
+        isResident: data.isresident ? "Yes" : "No",
+        last_name: data.lname,
+        first_name: data.fname,
+        middle_name: data.mname,
+        gender: data.gender,
+        birthdate: data.birthdate ? data.birthdate.split('T')[0] : '',
+        age: data.age,
+        educAttainment: data.eattainment,
+        occupation: data.occupation,
+        sectors: fillSector(data),
+        placeOfBirth: data.birthplace,
+        grossIncome: data.income,
+        civilStatus: data.civilstatus,
+        senior: data.issenior ? "Yes" : "No",
+        soloParent: data.issoloparent ? "Yes" : "No",
+        pwd: data.ispwd ? "Yes" : "No",
+        youth: data.isyouth ? "Yes" : "No",
+        is4ps: data.is4ps ? "Yes" : "No",
+        isOutOfSchoolYouth: data.isoutofschoolyouth ? "Yes" : "No",
+        isSkm: data.isskm ? "Yes" : "No",
+        isKm: data.iskm ? "Yes" : "No",
+        purok: data.purok,
+        street: data.street,
+        barangay: data.barangay,
+        city: data.city,
+        province: data.province,
+        purok1: data.originalpurok,
+        street1: data.originalstreet,
+        barangay1: data.originalbarangay,
+        city1: data.originalcity,
+        province1: data.originalprovince,
+        boardingHouse: data.boardinghousename,
+        landlord: data.landlord,
+        emergencyLastName: data.emergencylastname,
+        emergencyFirstName: data.emergencyfirstname,
+        emergencyMiddleName: data.emergencymiddlename,
+        emergencyContactNumber: data.emergencycontactnumber,
+        emergencyPurok: data.emergencypurok,
+        emergencyStreet: data.emergencystreet,
+        emergencyBarangay: data.emergencybarangay,
+        emergencyCity: data.emergencycity,
+        emergencyProvince: data.emergencyprovince,
+        fileInput: data.picture
+    };
+
+    Object.keys(elements).forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.value = elements[id] || '';
+        } else {
+            console.warn(`Element with ID ${id} not found`);
+        }
+    });
+
+    const pictureElement = document.getElementById('fileInput');
+    if (pictureElement && pictureElement.tagName === 'IMG') {
+        pictureElement.src = data.picture ? `/uploads/residents-img/${data.picture}` : '';
+    } else {
+        console.error('Image element not found or is not an IMG tag');
     }
 }
