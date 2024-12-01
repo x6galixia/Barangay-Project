@@ -1,6 +1,6 @@
 <div class="A4" id="RA11261">
     <%- include("../includes/print-header.ejs") %>
-    <div class="cert-header"><img class="linya" src="../images/header-line.png" alt=""></div>
+        <div class="cert-header"><img class="linya" src="../images/header-line.png" alt=""></div>
 
         <!-- background logo -->
         <img class="bg-logo" src="../images/certificate-background-logo.png" alt="">
@@ -11,16 +11,18 @@
         </div>
         <div class="context">
             <p class="wala"><strong>TO WHOM IT MAY CONCERN:</strong></p>
-            <p><strong>THIS IS TO CERTIFY</strong> that <strong><u>REX R. BALIGASA</u></strong>, female/male,
-                single/married/widow/widower, resident of Purok Ampalaya, Barangay Maypangdan, Borongan City, Province
-                of Eastern Samar is a fresh graduate of Eastern Samar State University and is applying for the RA 11261
+            <p><strong>THIS IS TO CERTIFY</strong> that <strong><u id="RAFullName">FULL NAME</u></strong>, <span
+                    id="RAGender">Gender</span>, <span id="RACivilStatus">Civil Status</span>, resident of <span
+                    id="RAAddress">Address</span> is a fresh graduate of Eastern Samar State University and is applying
+                for the RA 11261
                 – Waiving of government fees and charges in the issuance of documents required in the application for
                 employment of first-time jobseeker.</p>
-            <p>This certification is issued upon request of the herein interested party for <strong
-                    style="color: red;">POLICE/NBI APPLICATION REQUIREMENT</strong> and for any legal intent it may
+            <p>This certification is issued upon request of the herein interested party for <strong style="color: red;"
+                    id="RAPurpose">PLEASE SELECT A PURPOSE</strong> and for any legal intent it may
                 serve it best.</p>
-            <p>Given this <strong><u>19th</u></strong> day of <strong><u>AUGUST</u></strong>
-                20<strong><u>24</u></strong>, at Barangay Maypangdan, Borongan City, Eastern Samar.</p>
+            <p>Given this <strong><u id="dateDay">day</u></strong> day of <strong><u id="dateMonth">MONTH</u></strong>
+                <strong><u id="dateYear">Year</u></strong>, at Barangay Maypangdan, Borongan City, Eastern Samar.
+            </p>
         </div>
         <div class="haha" style="display: flex; justify-content: end; margin-right: 71px;">
             <div class="certified">
