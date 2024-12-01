@@ -60,7 +60,7 @@ const residentSchema = Joi.object({
 });
 
 const inventorySchema = Joi.object({
-    itemId: Joi.number().integer().optional().allow(null),
+    itemId: Joi.number().integer().optional().allow(""),
     iName: Joi.string().optional().allow(null),
     quantity: Joi.number().integer().optional().allow(null),
     iPrice: Joi.number().integer().optional().allow(null),
