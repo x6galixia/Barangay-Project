@@ -86,6 +86,7 @@ router.post("/dashboard/add-archive", upload.single('picture'), async (req, res)
             INSERT INTO archive (date, img, docType, contractingPersons) VALUES ($1, $2, $3, $4)
             `, [value.date, picture, value.docType, contractingPersons]);
 
+        req.flash('success', 'Document Added Successfully!');
         res.redirect("/archive/dashboard")
     } catch (err) {
         console.error("Error: ", err.message, err.stack);

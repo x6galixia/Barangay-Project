@@ -93,6 +93,39 @@
                 </form>
             </main>
         </div>
+
+        <!-- Delete -->
+        <div class="pop-up-confirm" id="delete-inventory">
+            <div>
+                <div class="reject-heading">
+                    <img src="../icon/warning.svg" alt="">
+                    <h2>Deleting an Item will <br>
+                        automatically delete from the list</h2>
+                </div>
+                <main>
+                    <h2>Are sure you want to delete this Item?</h2>
+                    <div>
+                        <button type="button" id="cancel-delete" class="button-bordered close_popUp1">No</button>
+                        <button type="button" id="confirm-delete" class="button-bordered">Yes</button>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <% if (messages.success) { %>
+            <div class="overlay"></div>
+            <div class="alert alert-success" id="submit_prompt">
+                <img src="../images/success-img.png" alt="">
+                <div>
+                    <h2>
+                        <%= messages.success %>
+                    </h2>
+                    <main>
+                        <button type="button" class="button-green" onclick="closePopup()">Ok</button>
+                    </main>
+                </div>
+            </div>
+            <% } %>
 </body>
 <script src="../../js/global/pop-up.js"></script>
 <script src="../../js/local/inventory/inventory-api.js"></script>
