@@ -549,6 +549,7 @@ function fillSector(data) {
 }
 
 function fillInputs(data) {
+    clearFillInputs();
     console.log('Data passed to fillInputs:', data);
 
     const elements = {

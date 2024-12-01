@@ -16,7 +16,7 @@ const nonResidentAddressSchema = Joi.object({
 });
 
 const residentSchema = Joi.object({
-    globalId: Joi.string().optional().allow(null),
+    globalId: Joi.string().optional().allow(""),
     last_name: Joi.string().optional().allow(null),
     first_name: Joi.string().optional().allow(null),
     middle_name: Joi.string().optional().allow(null),
