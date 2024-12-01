@@ -9,7 +9,6 @@ const flash = require("express-flash");
 const compression = require("compression");
 const bodyParser = require('body-parser');
 
-
 //-------DATABASES IMPORTING-------//
 const mPool = require("./models/mDatabase");
 
