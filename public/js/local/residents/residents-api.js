@@ -225,7 +225,7 @@ window.popUp_three_dot = function (button) {
         const updateContainer = document.getElementById("add-resident");
         document.querySelector('#add-resident .heading').innerText = "UPDATE RESIDENT";
         document.querySelector('#add-resident #submit_add_resident').innerText = "UPDATE";
-        document.querySelector('#add-resident #formToAddResident').action = `/residents/dashboard/update-resident/${residentID}`;
+        document.querySelector('#add-resident #formToAddResident').action = `/residents/dashboard/update-resident`;
         const globalIDForQR = button.getAttribute('data-globalId');
         console.log(isResident);
         updateContainer.classList.add("visible");
@@ -541,6 +541,7 @@ function fillInputs(data) {
     console.log('Data passed to fillInputs:', data);
 
     const elements = {
+        globalId: data.globalid,
         isResident: data.isresident ? "Yes" : "No",
         last_name: data.lname,
         first_name: data.fname,
@@ -605,6 +606,7 @@ function fillInputs(data) {
 }
 function clearFillInputs() {
     const elements = {
+        globalId,
         isResident,
         last_name,
         first_name,
