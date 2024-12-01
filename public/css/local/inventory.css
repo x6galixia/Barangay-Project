@@ -20,7 +20,7 @@
 
 #add-inventory form #submit_add_inbentory {
   width: fit-content;
-  align-self: center;
+  align-self: end;
   padding: 12px 80px;
 }
 
@@ -50,4 +50,33 @@
 
 .triple-dot button {
   padding: 12px 36px;
+}
+
+.reject-heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 2px solid black;
+  padding: 12px 0;
+  justify-content: center;
+  gap: 24px;
+}
+
+.reject-heading h2 {
+  text-align: left;
+}
+
+#delete-inventory main {
+  display: flex;
+  flex-direction: column;
+}
+
+#delete-inventory main>div {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+
+#delete-inventory main>div button {
+  padding: 12px 100px;
 }

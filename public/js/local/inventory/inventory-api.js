@@ -67,8 +67,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                      <td class="menu-row">
                         <img class="dot" src="../icon/triple-dot.svg" alt="...">
                         <div class="triple-dot">
-                            <div class="menu">
-                                <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
+                            <div class="menu" data-id="${invent.id}">
+                                <button id="delete-id" onclick="popUp_three_dot(this)"
+                                >Delete</button>
                                 <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
                             </div>
                         </div>
@@ -137,80 +138,44 @@ function attachDotEventListeners() {
 window.popUp_three_dot = function (button) {
     const action = button.textContent.trim();
     const menu = button.closest('.menu');
+    const inventoryID = menu.getAttribute('data-id');
 
-    if (action === 'Delete' && residentID) {
-        alert("Delete!");
+    if (action === 'Delete' && inventoryID) {
 
-        // const confirmDeleteButton = document.getElementById('confirm-delete');
-        // const cancelDeleteButton = document.getElementById('cancel-delete');
-        // const pop_up_Delete = document.getElementById('delete-beneficiary');
+        const confirmDeleteButton = document.getElementById('confirm-delete');
+        const cancelDeleteButton = document.getElementById('cancel-delete');
+        const pop_up_Delete = document.getElementById('delete-inventory');
 
-        // pop_up_Delete.classList.add("visible");
-        // overlay.classList.add("visible");
+        pop_up_Delete.classList.add("visible");
+        overlay.classList.add("visible");
 
-        // confirmDeleteButton.addEventListener('click', function () {
-        //     deleteBeneficiary(beneficiaryId);
-        //     pop_up_Delete.classList.remove("visible");
-        //     overlay.classList.remove("visible");
-        // })
-        // cancelDeleteButton.addEventListener('click', function () {
-        //     pop_up_Delete.classList.remove("visible");
-        //     overlay.classList.remove("visible");
-        // })
+        confirmDeleteButton.addEventListener('click', function () {
+            pop_up_Delete.classList.remove("visible");
+            overlay.classList.remove("visible");
+        })
+        cancelDeleteButton.addEventListener('click', function () {
+            pop_up_Delete.classList.remove("visible");
+            overlay.classList.remove("visible");
+        })
     }
-    if (action === 'Update' && residentID) {
-        alert("Update!");
-        // fetch(`/pharmacy-records/beneficiary/${beneficiaryId}`)
-        //     .then(response => {
-        //         if (!response.ok) throw new Error('Network response was not ok');
-        //         return response.json();
-        //     })
-        //     .then(beneficiaryData => {
-        //         document.getElementById('beneficiary_id').value = beneficiaryData.beneficiary_id || '';
-        //         document.getElementById('last_name').value = beneficiaryData.last_name || '';
-        //         document.getElementById('first_name').value = beneficiaryData.first_name || '';
-        //         document.getElementById('middle_name').value = beneficiaryData.middle_name || '';
-        //         document.getElementById('gender').value = beneficiaryData.gender || '';
-        //         document.getElementById('birthdate').value = beneficiaryData.birthdate.split('T')[0] || '';
-        //         document.getElementById('phone').value = beneficiaryData.phone || '';
-        //         document.getElementById('processed_date').value = beneficiaryData.processed_date.split('T')[0] || '';
-        //         document.getElementById('occupation').value = beneficiaryData.occupation || '';
-        //         document.getElementById('street').value = beneficiaryData.street || '';
-        //         document.getElementById('barangay').value = beneficiaryData.barangay || '';
-        //         document.getElementById('city').value = beneficiaryData.city || '';
-        //         document.getElementById('province').value = beneficiaryData.province || '';
-        //         document.getElementById('senior_citizen').value = beneficiaryData.senior_citizen || '';
-        //         document.getElementById('pwd').value = beneficiaryData.pwd || '';
-        //         document.getElementById('note').value = beneficiaryData.note || '';
-        //         document.getElementById('existing_picture').value = beneficiaryData.picture || '';
-
-        //         var picture;
-        //         if (beneficiaryData.gender === "Male") {
-        //             picture = "/icon/upload-img-default.svg";
-        //         } else {
-        //             picture = "/icon/upload-img-default-woman.svg";
-        //         }
-
-
-        //         const pictureElement = document.getElementById('pictureDisplay');
-        //         if (pictureElement) {
-        //             const picturePath = (beneficiaryData.picture && beneficiaryData.picture !== '0') ? `/uploads/beneficiary-img/${beneficiaryData.picture}` : picture;
-        //             pictureElement.src = picturePath;
-        //         } else {
-        //             console.error('Image element not found');
-        //         }
-
-        //         const fileInput = document.getElementById('picture');
-        //         if (fileInput) {
-        //             fileInput.value = '';
-        //         }
-
-        //         update_beneficiary.classList.add("visible");
-        //         overlay.classList.add("visible");
-        //     })
-        //     .catch(error => {
-        //         console.error('Error fetching beneficiary data:', error);
-        //         alert('Failed to fetch beneficiary data. Please try again.');
-        //     });
+    if (action === 'Update' && inventoryID) {
+        const updateContainer = document.getElementById("add-inventory");
+        document.querySelector('#add-inventory .heading').innerText = "UPDATE ITEM";
+        document.querySelector('#add-inventory #submit_add_inbentory').innerText = "UPDATE";
+        document.querySelector('#add-inventory form').action = `/inventory/dashboard/update-item`;
+        updateContainer.classList.add("visible");
+        overlay.classList.toggle("visible");
     }
 };
+
+const addResident = document.getElementById("add-inventory");
+function popUp_button(button) {
+    var buttonId = button.id;
+    if (buttonId === "add-inventory-button") {
+        document.querySelector('#add-inventory form').action = `/inventory/dashboard/add-item`;
+        document.querySelector('#add-inventory .heading').innerText = "ADD ITEM";
+        document.querySelector('#add-inventory #submit_add_inbentory').innerText = "SUBMIT";
+        addInventory.classList.toggle("visible");
+        overlay.classList.add("visible");
+    }
+}

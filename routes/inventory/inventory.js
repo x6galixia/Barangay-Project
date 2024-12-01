@@ -65,7 +65,7 @@ router.post("/dashboard/add-item", async (req, res) => {
             INSERT INTO inventory (iName, quantity, iPrice, dateAdded, categoryId, isFunctional) 
             VALUES ($1, $2, $3, $4, $5, $6)
         `, [value.iName, value.quantity, value.iPrice, value.dateAdded, categoryId, value.isFunctional]);
-
+        req.flash('success', 'Item Added Successfully!');
         res.redirect("/inventory/dashboard");
     } catch (err) {
         console.error("Error: ", err.message, err.stack);

@@ -195,8 +195,6 @@ function attachDotEventListeners() {
     });
 }
 
-// const update_beneficiary = document.getElementById("update-beneficiary");
-
 window.popUp_three_dot = function (button) {
     const action = button.textContent.trim();
     const menu = button.closest('.menu');
@@ -309,12 +307,6 @@ window.popUp_three_dot = function (button) {
         }
 
         generateQRCode();
-
-        //     })
-        //     .catch(error => {
-        //         console.error('Error fetching beneficiary data:', error);
-        //         alert('Failed to fetch beneficiary data. Please try again.');
-        //     });
     }
 
     function encryptData(data, secretKey) {
