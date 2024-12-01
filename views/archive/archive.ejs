@@ -126,6 +126,21 @@
                 </div>
             </main>
         </div>
+
+        <% if (messages.success) { %>
+            <div class="overlay"></div>
+            <div class="alert alert-success" id="submit_prompt">
+                <img src="../images/success-img.png" alt="">
+                <div>
+                    <h2>
+                        <%= messages.success %>
+                    </h2>
+                    <main>
+                        <button type="button" class="button-green" onclick="closePopup()">Ok</button>
+                    </main>
+                </div>
+            </div>
+            <% } %>
 </body>
 <script src="../../js/global/pop-up.js"></script>
 <script src="../../js/local/archive/archive-api.js"></script>
