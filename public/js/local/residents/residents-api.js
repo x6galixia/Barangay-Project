@@ -607,6 +607,7 @@ function fillInputs(data) {
         console.error('Image element not found or is not an IMG tag');
     }
 }
+
 function clearFillInputs() {
     const elements = {
         last_name,

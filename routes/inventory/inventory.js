@@ -37,6 +37,29 @@ router.get("/dashboard", async (req, res) => {
     }
 });
 
+router.get("/dashboard/item/:id", async (req, res) => {
+    const itemId = req.params.id;
+    try {
+        const query = `
+            SELECT i.id, i.iName, i.quantity, i.iPrice, i.dateAdded, i.isFunctional, 
+                   c.categoryName
+            FROM inventory i
+            JOIN categories c ON i.categoryId = c.categoryId
+            WHERE i.id = $1;
+        `;
+        const itemData = await mPool.query(query, [itemId]);
+        
+        if (itemData.rows.length > 0) {
+            res.json(itemData.rows[0]);
+        } else {
+            res.status(404).send("Item not found");
+        }
+    } catch (err) {
+        console.error("Error: ", err.stack, err.message);
+        res.status(500).send("Internal server error");
+    }
+});
+
 router.post("/dashboard/add-item", async (req, res) => {
     const { error, value } = inventorySchema.validate(req.body);
 
@@ -69,6 +92,59 @@ router.post("/dashboard/add-item", async (req, res) => {
         res.redirect("/inventory/dashboard");
     } catch (err) {
         console.error("Error: ", err.message, err.stack);
+        res.status(500).send("Internal server error");
+    }
+});
+
+router.post("/dashboard/update-item", async (req, res) => {
+    const { error, value } = inventorySchema.validate(req.body);
+    const { itemId } = value;
+
+    if (error) {
+        console.error("Validation error:", error.details.map(e => e.message).join(", "));
+        return res.status(400).json({ error: error.details.map(e => e.message) });
+    }
+
+    try {
+        let categoryId;
+
+        if (value.categoryName) {
+            const categoryIdResult = await mPool.query(`
+                SELECT categoryid FROM categories WHERE categoryName = $1
+            `, [value.categoryName]);
+
+            console.log("Category Find Result:", categoryIdResult);
+
+            if (!categoryIdResult.rows || categoryIdResult.rows.length === 0) {
+                return res.status(404).json({ error: "Category not found" });
+            }
+
+            categoryId = categoryIdResult.rows[0].categoryid;
+        }
+
+
+        const updateResult = await mPool.query(`
+            UPDATE inventory 
+            SET iName = $1, quantity = $2, iPrice = $3, dateAdded = $4, categoryId = $5, isFunctional = $6
+            WHERE id = $7
+        `, [
+            value.iName,
+            value.quantity,
+            value.iPrice,
+            value.dateAdded,
+            categoryId || value.categoryId,
+            value.isFunctional,
+            itemId
+        ]);
+
+        if (updateResult.rowCount === 0) {
+            return res.status(404).json({ error: "Item not found" });
+        }
+
+        req.flash('success', 'Item Updated Successfully!');
+        res.redirect("/inventory/dashboard");
+    } catch (err) {
+        console.error("Error: ", err.stack, err.message);
         res.status(500).send("Internal server error");
     }
 });

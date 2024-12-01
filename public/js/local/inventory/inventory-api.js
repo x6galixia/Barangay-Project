@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                      <td class="menu-row">
                         <img class="dot" src="../icon/triple-dot.svg" alt="...">
                         <div class="triple-dot">
-                            <div class="menu" data-id="${invent.id}">
+                            <div class="menu" data-id="${invent.inventory_id}">
                                 <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
                                 <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
                             </div>
@@ -149,10 +149,10 @@ window.popUp_three_dot = function (button) {
         pop_up_Delete.classList.add("visible");
         overlay.classList.add("visible");
 
-        confirmDeleteButton.addEventListener('click', async function () {
-            await deleteItem(inventoryID);
+        confirmDeleteButton.addEventListener('click', function () {
+            deleteItem(inventoryID);
             pop_up_Delete.classList.remove("visible");
-            overlay.classList.remove("visible");
+            overlay.classList.remove("visible");  
         })
         cancelDeleteButton.addEventListener('click', function () {
             pop_up_Delete.classList.remove("visible");
@@ -166,6 +166,19 @@ window.popUp_three_dot = function (button) {
         document.querySelector('#add-inventory form').action = `/inventory/dashboard/update-item`;
         updateContainer.classList.add("visible");
         overlay.classList.toggle("visible");
+
+        fetch(`/inventory/dashboard/item/${inventoryID}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(itemData => {
+                fillInputs(itemData);
+            })
+            .catch(error => {
+                console.error('Error fetching residents data:', error);
+                alert('Failed to fetch residents data. Please try again.');
+            });
     }
 
     
@@ -183,23 +196,70 @@ function popUp_button(button) {
     }
 }
 
-async function deleteItem(inventoryID) {
+function deleteItem(inventoryID) {
     console.log("delete triggered");
     
     try {
-        const response = await fetch(`/inventory/delete-item/${inventoryID}`, {
+        const response = fetch(`/inventory/delete-item/${inventoryID}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
             },
         });
         if (response.ok) {
-            await fetchInventory(page, limit, searchQuery, isFunctional);
+            fetchInventory(page, limit, searchQuery, isFunctional);
             attachDotEventListeners();
+            location.reload();
         } else {
             console.error("Error: Failed to delete the item.");
+            location.reload();
         }
     } catch (error) {
         console.error('Error deleting item:', error);
     }
+}
+
+function fillInputs(data) {
+    clearFillInputs();
+    console.log('Data passed to fillInputs:', data);
+
+    const elements = {
+        itemId: data.id,
+        iName: data.iname,
+        categoryName: data.categoryname,
+        isFunctional: data.isfunctional ? "true" : "false",
+        dateAdded: data.dateadded ? data.dateadded.split('T')[0] : '',
+        quantity: data.quantity,
+        iPrice: data.iprice
+    };
+
+    Object.keys(elements).forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.value = elements[id] || '';
+        } else {
+            console.warn(`Element with ID ${id} not found`);
+        }
+    });
+}
+
+function clearFillInputs() {
+    const elements = {
+        itemId,
+        iName,
+        categoryName,
+        isFunctional,
+        dateAdded,
+        quantity,
+        iPrice
+    };
+
+    Object.keys(elements).forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.value = '';
+        } else {
+            console.warn(`Element with ID ${id} not found`);
+        }
+    });
 }

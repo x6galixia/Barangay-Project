@@ -59,8 +59,8 @@ const residentSchema = Joi.object({
     emergencyProvince: Joi.string().optional().allow(null),
 });
 
-
 const inventorySchema = Joi.object({
+    itemId: Joi.number().integer().optional().allow(null),
     iName: Joi.string().optional().allow(null),
     quantity: Joi.number().integer().optional().allow(null),
     iPrice: Joi.number().integer().optional().allow(null),
