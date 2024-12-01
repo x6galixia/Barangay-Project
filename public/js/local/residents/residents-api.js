@@ -158,11 +158,11 @@ function generateRemarks(resident) {
     if (resident.issoloparent) remarks.push("Solo Parent");
     if (resident.isyouth) remarks.push("Youth");
     if (resident.is4ps) remarks.push("4Ps Member");
-    if (resident.isoutofschoolyouth) remarks.push("Out of school Youth");
+    if (resident.isoutofschoolyouth) remarks.push("Out of School Youth");
     if (resident.isskm) remarks.push("Samahan ng kababaihan");
-    if (resident.iskm) remarks.push("Samahan ng kababayin-an");
+    if (resident.iskm) remarks.push("Kababayin-an han Maypangdan");
 
-    return remarks.length > 0 ? remarks.join(', ') : 'N/A';
+    return remarks.length > 0 ? remarks.join(', ') : 'None';
 }
 
 function attachDotEventListeners() {
@@ -221,11 +221,20 @@ window.popUp_three_dot = function (button) {
     }
     if (action === 'Update' && residentID) {
         const isResident = button.getAttribute('data-isResident');
-
         const updateContainer = document.getElementById("add-resident");
-        document.querySelector('#add-resident .heading').innerText = "UPDATE RESIDENT";
-        document.querySelector('#add-resident #submit_add_resident').innerText = "UPDATE";
-        document.querySelector('#add-resident #formToAddResident').action = `/residents/dashboard/update-resident`;
+
+        if (document.querySelector('.residents-dropdown').value === " residents") {
+            residentFormField();
+            document.querySelector('#add-resident .heading').innerText = "UPDATE RESIDENT";
+            document.querySelector('#add-resident #submit_add_resident').innerText = "UPDATE";
+            document.querySelector('#add-resident #formToAddResident').action = `/residents/dashboard/update-resident`;
+        } else if (document.querySelector('.residents-dropdown').value === "non-residents") {
+            nonResidentFormField();
+            document.querySelector('#add-resident .heading').innerText = "UPDATE NON-RESIDENT";
+            document.querySelector('#add-resident #submit_add_resident').innerText = "UPDATE";
+            document.querySelector('#add-resident #formToAddResident').action = `/residents/dashboard/update-non-resident`;
+        }
+
         const globalIDForQR = button.getAttribute('data-globalId');
         console.log(isResident);
         updateContainer.classList.add("visible");
@@ -253,7 +262,7 @@ window.popUp_three_dot = function (button) {
         overlay.classList.toggle("visible");
 
         document.getElementById('fullname').innerText = button.getAttribute('data-fullname');
-        document.getElementById('civilStatus').innerText = button.getAttribute('data-civil_status');
+        document.getElementById('civilStatus').value = button.getAttribute('data-civil_status');
         document.getElementById('birthdate').innerText = button.getAttribute('data-birthdate');
         document.getElementById('idNumber').innerText = button.getAttribute('data-idNumber');
         document.getElementById('emergencyContactName').innerText = button.getAttribute('data-contactFullName');
@@ -360,8 +369,10 @@ document.querySelectorAll(".close_popUp_for_resident").forEach(function (closeBt
         if (pop_up) {
             if (document.querySelector('.residents-dropdown').value === " residents") {
                 residentFormField();
+                clearFillInputs();
             } else if (document.querySelector('.residents-dropdown').value === "non-residents") {
                 nonResidentFormField();
+                clearFillInputs();
             }
             pop_up.classList.remove("visible");
             overlay.classList.remove("visible");
@@ -542,7 +553,7 @@ function fillInputs(data) {
 
     const elements = {
         globalId: data.globalid,
-        isResident: data.isresident ? "Yes" : "No",
+        isResident: data.isresident ? " resident" : "non-resident",
         last_name: data.lname,
         first_name: data.fname,
         middle_name: data.mname,
@@ -606,8 +617,6 @@ function fillInputs(data) {
 }
 function clearFillInputs() {
     const elements = {
-        globalId,
-        isResident,
         last_name,
         first_name,
         middle_name,
@@ -627,24 +636,13 @@ function clearFillInputs() {
         isOutOfSchoolYouth,
         isSkm,
         isKm,
-        purokIn,
-        streetIn,
         barangay,
         city,
         province,
-        purok1,
-        street1,
-        barangay1,
-        city1,
-        province1,
-        boardingHouse,
-        landlord,
         emergencyLastName,
         emergencyFirstName,
         emergencyMiddleName,
         emergencyContactNumber,
-        emergencyPurokIn,
-        emergencyStreetIn,
         emergencyBarangay,
         emergencyCity,
         emergencyProvince,
@@ -656,6 +654,27 @@ function clearFillInputs() {
             element.value = '';
         } else {
             console.warn(`Element with ID ${id} not found`);
+        }
+    });
+
+    const optionalElements = [
+        'purokIn',
+        'streetIn',
+        'emergencyPurokIn',
+        'EmergencyStreetIn',
+        'purok1',
+        'street1',
+        'barangay1',
+        'city1',
+        'province1',
+        'boardingHouse',
+        'landlord'
+    ];
+
+    optionalElements.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.value = '';
         }
     });
 

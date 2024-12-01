@@ -538,7 +538,7 @@ router.post("/dashboard/update-non-resident", upload.single('picture'), async (r
         await mPool.query(
             `UPDATE contactPerson
              SET fName = $1, mName = $2, lName = $3, street = $4, purok = $5, barangay = $6, city = $7, province = $8, contactNumber = $9
-             WHERE emergencyContactId = (SELECT emergencyContactId FROM residents WHERE globalId = $10)`,
+             WHERE contactPersonId = (SELECT emergencyContactId FROM residents WHERE globalId = $10)`,
             [
                 value.emergencyFirstName,
                 value.emergencyMiddleName,
@@ -597,7 +597,7 @@ router.post("/dashboard/update-non-resident", upload.single('picture'), async (r
             `UPDATE boarders
              SET originalstreet = $1, originalpurok = $2, originalbarangay = $3, originalcity = $4, 
                  originalprovince = $5, boardinghousename = $6, landlord = $7
-             WHERE boarderInResidentId = (SELECT residentsId FROM residents WHERE globalId = $10)`,
+             WHERE boarderInResidentId = (SELECT residentsId FROM residents WHERE globalId = $8)`,
             [
                 value.nonResidentAddress.street1,      // originalstreet
                 value.nonResidentAddress.purok1,       // originalpurok
