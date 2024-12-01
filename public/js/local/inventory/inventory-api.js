@@ -68,12 +68,12 @@ document.addEventListener("DOMContentLoaded", async function () {
                         <img class="dot" src="../icon/triple-dot.svg" alt="...">
                         <div class="triple-dot">
                             <div class="menu" data-id="${invent.id}">
-                                <button id="delete-id" onclick="popUp_three_dot(this)"
-                                >Delete</button>
+                                <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
                                 <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
                             </div>
                         </div>
                     </td>
+
                 `;
                 inventoryTableBody.appendChild(row);
             });
@@ -149,7 +149,8 @@ window.popUp_three_dot = function (button) {
         pop_up_Delete.classList.add("visible");
         overlay.classList.add("visible");
 
-        confirmDeleteButton.addEventListener('click', function () {
+        confirmDeleteButton.addEventListener('click', async function () {
+            await deleteItem(inventoryID);
             pop_up_Delete.classList.remove("visible");
             overlay.classList.remove("visible");
         })
@@ -166,9 +167,9 @@ window.popUp_three_dot = function (button) {
         updateContainer.classList.add("visible");
         overlay.classList.toggle("visible");
     }
+
+    
 };
-
-
 
 const addInventory = document.getElementById("add-inventory");
 function popUp_button(button) {
@@ -179,5 +180,26 @@ function popUp_button(button) {
         document.querySelector('#add-inventory #submit_add_inbentory').innerText = "SUBMIT";
         addInventory.classList.toggle("visible");
         overlay.classList.add("visible");
+    }
+}
+
+async function deleteItem(inventoryID) {
+    console.log("delete triggered");
+    
+    try {
+        const response = await fetch(`/inventory/delete-item/${inventoryID}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (response.ok) {
+            await fetchInventory(page, limit, searchQuery, isFunctional);
+            attachDotEventListeners();
+        } else {
+            console.error("Error: Failed to delete the item.");
+        }
+    } catch (error) {
+        console.error('Error deleting item:', error);
     }
 }
