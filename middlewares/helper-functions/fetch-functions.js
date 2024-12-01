@@ -1,16 +1,15 @@
 const mPool = require("../../models/mDatabase");
+const calculateAge = require("./calculations");
 
-//fetch function for residents list that inlude search
 async function fetchResidentsLists(page, limit, searchQuery = '', isNonResident = true) {
   const offset = (page - 1) * limit;
-
   const residentsValues = [limit, offset, !isNonResident]; // Ensure isResident is a boolean
   const totalItemsValues = [!isNonResident]; // Ensure isResident is a boolean
 
   let searchCondition = '';
   if (searchQuery && searchQuery.trim() !== '') {
     const searchPattern = `%${searchQuery.trim()}%`;
-    searchCondition = ` 
+    searchCondition = `
       AND (
         CONCAT(r.fname, ' ', COALESCE(r.mname, ''), ' ', r.lname) ILIKE $${residentsValues.length + 1}
         OR CONCAT(r.fname, ' ', r.lname) ILIKE $${residentsValues.length + 1}
@@ -60,12 +59,19 @@ async function fetchResidentsLists(page, limit, searchQuery = '', isNonResident 
   `;
 
   try {
+    // Get the total number of residents
     const totalItemsResult = await mPool.query(totalItemsQuery, totalItemsValues);
     const totalItems = parseInt(totalItemsResult.rows[0].count, 10);
     const totalPages = Math.ceil(totalItems / limit);
 
     const residentsResult = await mPool.query(residentsQuery, residentsValues);
-    return { getResidentsList: residentsResult.rows, totalPages };
+
+    const residentsList = residentsResult.rows.map(row => ({
+      ...row,
+      age: row.birthdate ? calculateAge(row.birthdate) : null
+    }));
+
+    return { getResidentsList: residentsList, totalPages };
   } catch (err) {
     console.error('Error fetching residents list:', err.message);
     throw new Error('Error fetching residents list');

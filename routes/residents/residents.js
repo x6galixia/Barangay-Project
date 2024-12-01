@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mPool = require("../../models/mDatabase");
 const { fetchResidentsLists } = require("../../middlewares/helper-functions/fetch-functions");
+const { calculateAge } = require("../../middlewares/helper-functions/calculations");
 const { generateGlobalNextId, generateIdNumberNextId, getCurrentYear } = require("../../middlewares/helper-functions/id-generator");
 const { residentSchema } = require("../../middlewares/schemas/schemas");
 
@@ -227,7 +228,7 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
                 value.province,      // province
                 birthDate,           // birthDate
                 value.placeOfBirth,  // birthPlace
-                value.age,           // age
+                calculateAge(value.age),           // age
                 value.gender,        // gender
                 picture,             // picture (null if not uploaded)
                 value.educAttainment, // eAttainment
