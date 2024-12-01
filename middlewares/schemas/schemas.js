@@ -6,8 +6,8 @@ const requestSchema = Joi.object({
 });
 
 const nonResidentAddressSchema = Joi.object({
-    purok1: Joi.string().optional().allow(null),
-    street1: Joi.string().optional().allow(null),
+    purok1: Joi.string().optional().allow(""),
+    street1: Joi.string().optional().allow(""),
     barangay1: Joi.string().optional().allow(null),
     city1: Joi.string().optional().allow(null),
     province1: Joi.string().optional().allow(null),
