@@ -22,5 +22,4 @@ function calculateAge(birthDate) {
   }
     
 
-module.exports = 
-    calculateAge;
+module.exports = calculateAge;
