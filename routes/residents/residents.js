@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mPool = require("../../models/mDatabase");
 const { fetchResidentsLists } = require("../../middlewares/helper-functions/fetch-functions");
+const calculateAge = require("../../middlewares/helper-functions/calculations");
 const { generateGlobalNextId, generateIdNumberNextId, getCurrentYear } = require("../../middlewares/helper-functions/id-generator");
 const { residentSchema } = require("../../middlewares/schemas/schemas");
 
@@ -121,11 +122,18 @@ router.get("/dashboard/resident/:id", async (req, res) => {
             WHERE r.globalId = $1
         `;
         const residentData = await mPool.query(query, [residentID]);
+
         if (residentData.rows.length === 0) {
             return res.status(404).json({ message: "Resident not found" });
         }
 
-        res.json(residentData.rows[0]);
+        // Ensure you're accessing `birthDate` correctly
+        const data = residentData.rows.map(row => ({
+            ...row, 
+            age: calculateAge(row.birthdate)
+        }));
+
+        res.json(data[0]);
 
     } catch (err) {
         console.error("Error: ", err.message, err.stack);
@@ -227,7 +235,7 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
                 value.province,      // province
                 birthDate,           // birthDate
                 value.placeOfBirth,  // birthPlace
-                value.age,           // age
+                calculateAge(value.age),           // age
                 value.gender,        // gender
                 picture,             // picture (null if not uploaded)
                 value.educAttainment, // eAttainment

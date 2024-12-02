@@ -47,6 +47,7 @@
         </main>
         <!-- Pop Up -->
         <!-- Add Inbentory -->
+
         <div class="pop-up" id="add-inventory">
             <div class="close-container">
                 <img src="../icon/close.svg" alt="" class="close_popUp">
@@ -54,38 +55,39 @@
             <h1 class="heading">ADD ITEM</h1>
             <main>
                 <form action="/inventory/dashboard/add-item" method="POST">
+                    <input type="number" id="itemId" name="itemId" hidden>
                     <div class="add-inventory-input-container">
                         <div class="row">
                             <div class="inputWithLabel" id="surubadan">
                                 <label>Item Name</label>
-                                <input type="text" aria-label="Item Name" name="iName" required>
+                                <input id="iName" type="text" aria-label="Item Name" name="iName" required>
                             </div>
                             <div class="inputWithLabel">
                                 <label>Category Name</label>
-                                <input type="text" aria-label="Category Name" name="categoryName" required>
+                                <input id="categoryName" type="text" aria-label="Category Name" name="categoryName" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="inputWithLabel" id="masubad">
                                 <label>Functional/Non-FUnctional</label>
-                                <select name="isFunctional" aria-label="Functional/Non-FUnctional" id="" required>
+                                <select name="isFunctional" aria-label="Functional/Non-FUnctional" id="isFunctional" required>
                                     <option value="true">Functional</option>
                                     <option value="false">Non-Functional</option>
                                 </select>
                             </div>
                             <div class="inputWithLabel">
                                 <label>Date Added</label>
-                                <input type="date" aria-label="Date Added" name="dateAdded" required>
+                                <input id="dateAdded" type="date" aria-label="Date Added" name="dateAdded" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="inputWithLabel">
                                 <label>Quantity</label>
-                                <input type="number" aria-label="Quantity" name="quantity" required>
+                                <input id="quantity" type="number" aria-label="Quantity" name="quantity" required>
                             </div>
                             <div class="inputWithLabel">
                                 <label>Price</label>
-                                <input type="number" aria-label="Price" name="iPrice" required>
+                                <input id="iPrice" type="number" aria-label="Price" name="iPrice" required>
                             </div>
                         </div>
                     </div>

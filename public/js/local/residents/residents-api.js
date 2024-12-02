@@ -607,6 +607,7 @@ function fillInputs(data) {
         console.error('Image element not found or is not an IMG tag');
     }
 }
+
 function clearFillInputs() {
     const elements = {
         last_name,
@@ -679,3 +680,18 @@ function clearFillInputs() {
         console.error('Image element not found or is not an IMG tag');
     }
 }
+
+document.getElementById('birthdate').addEventListener('input', function () {
+    const birthdate = new Date(this.value);
+    const today = new Date();
+    let age = today.getFullYear() - birthdate.getFullYear();
+
+
+    const monthDiff = today.getMonth() - birthdate.getMonth();
+    const dayDiff = today.getDate() - birthdate.getDate();
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+        age--;
+    }
+
+    document.getElementById('age').value = age;
+});
