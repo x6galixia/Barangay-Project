@@ -45,13 +45,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             const data = await response.json();
             const inventory = data.getInventoryList;
+            console.log(inventory);
 
             inventoryTableBody.innerHTML = '';
 
             if (inventory.length === 0) {
                 const noDataRow = document.createElement('tr');
                 noDataRow.innerHTML = `
-                    <td colspan="5" class="text-center">No ${isFunctional ? 'non-functional' : 'functional'} items found.</td>
+                    <td colspan="5" class="text-center">No ${isFunctional ? 'functional' : 'non-functional'} items found.</td>
                 `;
                 inventoryTableBody.appendChild(noDataRow);
                 return;
@@ -78,7 +79,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 inventoryTableBody.appendChild(row);
             });
             attachDotEventListeners();
-            updatePaginationLinks(data.currentPage, data.totalPages);
+            updatePaginationLinks(page, limit);
         } catch (error) {
             console.error("Error fetching inventory data: ", error);
             inventoryTableBody.innerHTML = '<tr><td colspan="5">Error loading data</td></tr>';
@@ -152,7 +153,7 @@ window.popUp_three_dot = function (button) {
         confirmDeleteButton.addEventListener('click', function () {
             deleteItem(inventoryID);
             pop_up_Delete.classList.remove("visible");
-            overlay.classList.remove("visible");  
+            overlay.classList.remove("visible");
         })
         cancelDeleteButton.addEventListener('click', function () {
             pop_up_Delete.classList.remove("visible");
@@ -181,7 +182,7 @@ window.popUp_three_dot = function (button) {
             });
     }
 
-    
+
 };
 
 const addInventory = document.getElementById("add-inventory");
@@ -198,7 +199,7 @@ function popUp_button(button) {
 
 function deleteItem(inventoryID) {
     console.log("delete triggered");
-    
+
     try {
         const response = fetch(`/inventory/delete-item/${inventoryID}`, {
             method: 'DELETE',

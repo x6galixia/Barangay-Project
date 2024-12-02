@@ -70,7 +70,7 @@ router.post("/dashboard/add-archive", upload.single('picture'), async (req, res)
 
     const contractingPersons = [value.parties1, value.parties2]
         .filter(Boolean)
-        .join(',');
+        .join(' and ');
 
     console.log(contractingPersons);
 

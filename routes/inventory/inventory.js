@@ -48,7 +48,7 @@ router.get("/dashboard/item/:id", async (req, res) => {
             WHERE i.id = $1;
         `;
         const itemData = await mPool.query(query, [itemId]);
-        
+
         if (itemData.rows.length > 0) {
             res.json(itemData.rows[0]);
         } else {
@@ -154,6 +154,7 @@ router.delete("/delete-item/:id", async (req, res) => {
     try {
         await mPool.query(`DELETE FROM inventory WHERE id = $1`, [itemId]);
         req.flash('success', 'Item Deleted Successfully!');
+        res.redirect("/inventory/dashboard");
     } catch (err) {
         console.error("Error: ", err.stack, err.message);
         res.status(500).send("Internal server error");

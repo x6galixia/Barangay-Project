@@ -260,11 +260,11 @@ window.popUp_three_dot = function (button) {
         overlay.classList.toggle("visible");
 
         document.getElementById('fullname').innerText = button.getAttribute('data-fullname');
-        document.getElementById('civilStatus').value = button.getAttribute('data-civil_status');
-        document.getElementById('birthdate').innerText = button.getAttribute('data-birthdate');
+        document.getElementById('IDcivilStatus').innerText = button.getAttribute('data-civil_status');
+        document.getElementById('IDbirthdate').innerText = button.getAttribute('data-birthdate');
         document.getElementById('idNumber').innerText = button.getAttribute('data-idNumber');
         document.getElementById('emergencyContactName').innerText = button.getAttribute('data-contactFullName');
-        document.getElementById('emergencyContactNumber').innerText = button.getAttribute('data-contactPhone');
+        document.getElementById('IDemergencyContactNumber').innerText = button.getAttribute('data-contactPhone');
 
         if (isResident === "true") {
             document.getElementById('address').innerText = button.getAttribute('data-address');
