@@ -159,6 +159,7 @@ window.popUp_three_dot = function (button) {
         overlay.classList.add("visible");
 
         confirmDeleteButton.addEventListener('click', function () {
+            deleteItem(archID);
             pop_up_Delete.classList.remove("visible");
             overlay.classList.remove("visible");
         })
@@ -171,9 +172,22 @@ window.popUp_three_dot = function (button) {
         const updateContainer = document.getElementById("add-document");
         document.querySelector('#add-document .heading').innerText = "UPDATE DOCUMENT";
         document.querySelector('#add-document #submit_add_document').innerText = "UPDATE";
-        document.querySelector('#add-document form').action = `/archive/dashboard/update-archive`;
+        document.querySelector('#add-document form').action = `/archive/update-archive-item`;
         updateContainer.classList.add("visible");
         overlay.classList.toggle("visible");
+
+        fetch(`/archive/archive-item/${archID}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(itemData => {
+                fillInputs(itemData);
+            })
+            .catch(error => {
+                console.error('Error archive data:', error);
+                alert('Failed to fetch archive data. Please try again.');
+            });
     }
     if (action === 'View Image' && archID) {
         const image = button.getAttribute('data-image');
@@ -202,5 +216,90 @@ function popUp_button(button) {
         document.querySelector('#add-document form').action = `/archive/dashboard/add-archive`;
         addDocument.classList.toggle("visible");
         overlay.classList.add("visible");
+    }
+}
+
+function deleteItem(archiveID) {
+    console.log("delete triggered");
+
+    try {
+        const response = fetch(`/archive/delete-archive-item/${archiveID}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (response.ok) {
+            fetchArchiveLists(page, limit, searchQuery);
+            attachDotEventListeners();
+            location.reload();
+        } else {
+            console.error("Error: Failed to delete the item.");
+            location.reload();
+        }
+    } catch (error) {
+        console.error('Error deleting item:', error);
+    }
+}
+
+function fillInputs(data) {
+    clearFillInputs();
+    console.log('Data passed to fillInputs:', data);
+
+    const contractingParts = (data.contractingpersons && data.contractingpersons.split(' and ')) || [];
+
+    const elements = {
+        itemId: data.id,
+        docType: data.doctype,
+        Contracting1: contractingParts[0] || '',
+        Contracting2: contractingParts[1] || '',
+        date: data.date ? data.date.split('T')[0] : ''
+    };
+
+    Object.keys(elements).forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.value = elements[id] || '';
+        } else {
+            console.warn(`Element with ID ${id} not found`);
+        }
+    });
+
+    const pictureElement = document.getElementById('fileInput');
+    const preview = document.getElementById("imagePreview");
+    if (pictureElement) {
+        pictureElement.src = data.img ? `/uploads/archive-img/${data.img}` : '';
+        preview.innerHTML = `<img src="/uploads/archive-img/${data.img}" alt="Uploaded Image">`;
+    } else {
+        console.error('Image element not found or is not an IMG tag');
+    }
+}
+
+
+function clearFillInputs() {
+    const elements = {
+        itemId,
+        docType,
+        Contracting1,
+        Contracting2,
+        date
+    };
+
+    Object.keys(elements).forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.value = '';
+        } else {
+            console.warn(`Element with ID ${id} not found`);
+        }
+    });
+
+    const pictureElement = document.getElementById('fileInput');
+    const preview = document.getElementById("imagePreview");
+    if (pictureElement) {
+        pictureElement.src = '';
+        preview.innerHTML = `<p>No Image Uploaded</p>`;
+    } else {
+        console.error('Image element not found or is not an IMG tag');
     }
 }

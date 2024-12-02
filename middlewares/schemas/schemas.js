@@ -70,6 +70,7 @@ const inventorySchema = Joi.object({
 });
 
 const archiveSchema = Joi.object({
+    itemId: Joi.number().integer().optional().allow(""),
     parties1: Joi.string().optional().allow(null),
     parties2: Joi.string().optional().allow(null),
     date: Joi.date().optional().allow(null),
