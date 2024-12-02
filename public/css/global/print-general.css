@@ -222,6 +222,17 @@
     width: 35%;
     /* border: solid rgb(223, 35, 35) 1px; */
 }
+.lefttt-g {
+    background-image: url("../../images/dark-blue-side.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    background-size: cover;
+    text-align: center;
+    height: 850px;
+    width: 35%;
+    /* border: solid rgb(223, 35, 35) 1px; */
+}
 
 .right {
     width: 65%;
