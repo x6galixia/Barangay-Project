@@ -253,7 +253,7 @@ function fillInputs(data) {
         docType: data.doctype,
         Contracting1: contractingParts[0] || '',
         Contracting2: contractingParts[1] || '',
-        date: data.date ? data.date.split('T')[0] : ''
+        date: data.date ? data.date.split('T')[0] : '',
     };
 
     Object.keys(elements).forEach(id => {
@@ -282,7 +282,8 @@ function clearFillInputs() {
         docType,
         Contracting1,
         Contracting2,
-        date
+        date,
+        fileInput
     };
 
     Object.keys(elements).forEach(id => {
