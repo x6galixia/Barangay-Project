@@ -54,6 +54,7 @@
             <h1 class="heading">ADD DOCUMENT</h1>
             <main>
                 <form action="/archive/dashboard/add-archive" method="POST" enctype="multipart/form-data">
+                    <input type="number" id="itemId" name="itemId" hidden>
                     <div class="add-inventory-input-container">
                         <div class="row">
                             <div class="inputWithLabel" id="masubad">
@@ -65,15 +66,15 @@
                             <div id="archiveInputContainer">
                                 <div class="inputWithLabel" id="surubadan">
                                     <label>Contracting Parties 1</label>
-                                    <input type="text" aria-label="Contracting Parties 1" name="parties1" required>
+                                    <input id="Contracting1" type="text" aria-label="Contracting Parties 1" name="parties1" required>
                                 </div>
                                 <div class="inputWithLabel" id="surubadan">
                                     <label>Contracting Parties 2</label>
-                                    <input type="text" aria-label="Contracting Parties 2" name="parties2" required>
+                                    <input id="Contracting2" type="text" aria-label="Contracting Parties 2" name="parties2" required>
                                 </div>
                                 <div class="inputWithLabel">
                                     <label>Date</label>
-                                    <input type="date" aria-label="Date" name="date" required>
+                                    <input id="date" type="date" aria-label="Date" name="date" required>
                                 </div>
                             </div>
                         </div>
