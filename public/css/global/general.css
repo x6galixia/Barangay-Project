@@ -259,6 +259,11 @@ table>tbody>tr {
   text-decoration: none;
 }
 
+#paginationNav {
+  display: flex;
+  gap: 12px;
+}
+
 #paginationButton {
   margin-top: 40px;
   display: flex;
