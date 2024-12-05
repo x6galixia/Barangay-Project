@@ -224,15 +224,290 @@ window.processCertificate = function (button) {
       viewCertificate.addEventListener('click',()=> viewCertificateDetails("brgyClearance"));
     }
     else if (purpose === 'Building Clearance') {
+      certificateMainForm.innerHTML = `
+          <div class="inputWithLabel">
+              <label for="certificatePurpose">Purpose</label>
+              <select class="certficate-purpose-dropdown" id="selectPurpose">
+                  <option value="default" disabled selected>Select a Purpose</option>
+                  <option value="Electric Connection">Electric Connection</option>
+                  <option value="Water Connection">Water Connection</option>
+              </select>
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Location (Ex. Barangay Maypangdan Borongan City)</label>
+              <input type="text" id="buildingClearanceLocationInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">OR Nos.</label>
+              <input type="text" id="buildingClearanceORNosInput">
+          </div>
+      `;
+  
+  
+      document.getElementById("buildingClearanceFullName").innerText =
+        `${lastName}, ${firstName} ${middleName}`.toUpperCase();
+      document.getElementById("buildingClearanceAddress").innerText = `Purok ${purok}, Barangay ${barangay}, ${city}, Province of ${province}`;
+      document.getElementById("buildingClearanceStatus").innerHTML = `${civilStatus}`;
+  
+      document.addEventListener('click', function (event) {
+        if(event.target.classList.contains("applyChanges")){
+          const certificatePurposeInput = document.getElementById("selectPurpose");
+          const selectedPurpose = certificatePurposeInput.value.trim();
+
+          
+          if (selectedPurpose && selectedPurpose !== "default") {
+            const buildingCLearancePurpose = document.getElementById("buildingClearancePurpose");
+            const buildingCLearancePurpose1 = document.getElementById("buildingClearancePurpose1");
+            document.getElementById("buildingClearanceLocation").innerText = document.getElementById("buildingClearanceLocationInput").value;
+            document.getElementById("buildingClearanceORNos").innerText = document.getElementById("buildingClearanceORNosInput").value;
+              buildingCLearancePurpose.innerText = selectedPurpose;
+              buildingCLearancePurpose1.innerText = selectedPurpose;
+            alert("Changes applied: " + selectedPurpose);
+          } else {
+            alert("Please select a purpose");
+          }
+        }
+      });
       viewCertificate.addEventListener('click',()=> viewCertificateDetails("buildingClearance"));
     }
     else if (purpose === 'Burial Certificate') {
+      certificateMainForm.innerHTML = `
+          <h3>Deceased Info</h4>
+          <div style="display:flex; flex-wrap:wrap; gap:12px">
+            <div class="inputWithLabel" style="flex:1">
+                <label for="">First Name</label>
+                <input type="text" id="burialFirstNameInput">
+            </div>
+            <div class="inputWithLabel" style="flex:1">
+                <label for="">Last Name</label>
+                <input type="text" id="burialLastNameInput">
+            </div>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:12px">
+            <div class="inputWithLabel" style="flex:1">
+                <label for="">Middle Name</label>
+                <input type="text" id="burialMiddleNameInput">
+            </div>
+            <div class="inputWithLabel" style="flex:1">
+                <label for="certificatePurpose">Gender</label>
+                <select class="certficate-purpose-dropdown" id="burialGenderInput">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+          </div>
+          <div class="inputWithLabel">
+              <label for="certificatePurpose">Civil Status</label>
+              <select class="certficate-purpose-dropdown" id="burialStatusInput">
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
+                  <option value="Widow">Widow</option>
+                  <option value="Widower">Widower</option>
+              </select>
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Address (Ex. Purok Seguidila, Barangay Maypangdan, Borongan City, Eastern Samar)</label>
+              <input type="text" id="burialAddressInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Duration of the Wake</label>
+              <input type="number" id="burialLamayDaysInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Location of the Wake (Ex. his/her Residence)</label>
+              <input type="text" id="burialLamayLocationInput">
+          </div>
+          <div class="inputWithLabel">
+          <label for="">Start of the Wake took place</label>
+          <input type="date" id="burialLamayStartInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Burial Place</label>
+              <input type="text" id="burialPlaceInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Burial Date</label>
+              <input type="date" id="burialDateInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">OR Nos</label>
+              <input type="text" id="burialORNosInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Validation Days (Ex. 90 days)</label>
+              <input type="text" id="burialValidationInput">
+          </div>
+      `;
+
+  
+      document.addEventListener('click', function (event) {
+        if(event.target.classList.contains("applyChanges")){  
+          const startDateInput = document.getElementById("burialLamayStartInput").value;
+          const durationInput = parseInt(document.getElementById("burialLamayDaysInput").value, 10);
+          const burialFirstName = document.getElementById("burialFirstNameInput").value;
+          const burialLastName = document.getElementById("burialLastNameInput").value;
+          const burialMiddleName = document.getElementById("burialMiddleNameInput").value;
+          const wakeDetails = displayWakeMessage(startDateInput, durationInput);
+          const burialFormattedDate = new Date(document.getElementById("burialDateInput").value).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+
+          document.getElementById("burialLamayDays").innerText = wakeDetails.duration;
+          document.getElementById("burialLamayDate").innerText = wakeDetails.wakeDate;
+          document.getElementById("burialFullName").innerText = `${burialLastName || "(LASTNAME)"}, ${burialFirstName || "(FIRSTNAME)"} ${burialMiddleName || "(MIDDLENAME)"}`.toUpperCase();
+          document.getElementById("burialGender").innerText = document.getElementById("burialGenderInput").value || "(GENDER)";
+          document.getElementById("burialStatus").innerText = document.getElementById("burialStatusInput").value || "(STATUS)";
+          document.getElementById("burialAddress").innerText = document.getElementById("burialAddressInput").value || "(ADDRESS)";
+          document.getElementById("burialLamayLocation").innerText = document.getElementById("burialLamayLocationInput").value || "(WAKE LOCATION)";
+          document.getElementById("burialPlace").innerText = document.getElementById("burialPlaceInput").value || "(BURIAL PLACE)";
+          document.getElementById("burialDate").innerText = burialFormattedDate || "(BURIAL DATE)";
+          document.getElementById("burialORNos").innerText = document.getElementById("burialORNosInput").value;
+          document.getElementById("burialValication").innerText = document.getElementById("burialValidationInput").value;
+
+          if (document.getElementById("burialGenderInput").value === "Male"){
+            document.getElementById("burialCourtesyTitle").innerText = `Mr. ${burialLastName}`;
+          } else {
+            document.getElementById("burialCourtesyTitle").innerText = `Ms. ${burialLastName}`;
+          }
+            alert("Changes applied");
+        }
+      });
       viewCertificate.addEventListener('click',()=> viewCertificateDetails("burailClearance"));
     }
     else if (purpose === 'Business Clearance') {
+      certificateMainForm.innerHTML = `
+          <div class="inputWithLabel">
+              <label for="">Business Name or Trade Activity</label>
+              <input type="text" id="businessClearanceBusinessNameInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Location of Business (Ex. Brgy. Maypangdan Borongan City)</label>
+              <input type="text" id="businessClearanceBusinessLocationInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Operator/Manager</label>
+              <input type="text" id="businessClearanceBusinessOwnerInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Owner's Address (Ex. Brgy. Maypangdan, Borongan City, Eastern Samar)</label>
+              <input type="text" id="businessClearanceBusinessOwnerAddressInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="certificatePurpose">New/Renew</label>
+              <select class="certficate-purpose-dropdown" id="businessClearanceStatusInput">
+                  <option value="New">New</option>
+                  <option value="Renew">Renew</option>
+              </select>
+          </div>
+          <div class="inputWithLabel">
+              <label for="">OR Nos</label>
+              <input type="text" id="businessClearanceORNosInput">
+          </div>
+      `;
+
+      document.getElementById("businessClearanceDateIssued").innerText = getCurrentDate();
+  
+      document.addEventListener('click', function (event) {
+        if(event.target.classList.contains("applyChanges")){  
+          const status = document.getElementById("businessClearanceStatusInput");
+          const selectedStatus = status.value.toUpperCase();
+            document.getElementById("businessClearanceBusinessName").innerText = document.getElementById("businessClearanceBusinessNameInput").value.toUpperCase();
+            document.getElementById("businessClearanceBusinessLocation").innerText = document.getElementById("businessClearanceBusinessLocationInput").value.toUpperCase();
+            document.getElementById("busnessClearanceOperator").innerText = document.getElementById("businessClearanceBusinessOwnerInput").value.toUpperCase();
+            document.getElementById("businessClearanceOwnersAddress").innerText = document.getElementById("businessClearanceBusinessOwnerAddressInput").value.toUpperCase();
+            document.getElementById("businessClearanceStatus").innerText = selectedStatus;
+            document.getElementById("businessClearanceORNos").innerText = document.getElementById("businessClearanceORNosInput").value;
+    
+            alert("Changes applied");
+        }
+      });
       viewCertificate.addEventListener('click',()=> viewCertificateDetails("businessClearance"));
     }
     else if (purpose === 'Business Closure') {
+      certificateMainForm.innerHTML = `
+          <div class="inputWithLabel">
+              <label for="certificatePurpose">Purpose</label>
+              <select class="certficate-purpose-dropdown" id="selectPurpose">
+                  <option value="default" disabled selected>Select a Purpose</option>
+                  <option value="Business Closure Requirement">Business Closure Requirement</option>
+                  <option value="Others">Others</option>
+              </select>
+              <input type="hidden" id="certificatePurpose" style="margin-top:12px">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Business Name or Trade Activityi</label>
+              <input type="text" id="businessClosureBusinessNameInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Location of Business (Ex. Purok Talbos, Barangay Maypangdan Borongan City)</label>
+              <input type="text" id="businessClosureBusinessLocationInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Owned or Manged By</label>
+              <input type="text" id="businessClosureBusinessOwnerInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Owner's Address (Ex. Brgy. Maypangdan, Borongan City, Eastern Samar)</label>
+              <input type="text" id="businessClosureBusinessOwnerAddressInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Closed Since</label>
+              <input type="text" id="businessClosureClosedSinceInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Closed Until</label>
+              <input type="text" id="businessClosureClosedUntilInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">OR Nos</label>
+              <input type="text" id="businessClosureORNosInput">
+          </div>
+      `;
+  
+      document.getElementById("selectPurpose").addEventListener('change', function () {
+        const selectedValue = this.value.trim();
+        const certificatePurposeInput = document.getElementById("certificatePurpose");
+  
+        if (selectedValue === "Others") {
+          certificatePurposeInput.type = "text";
+          certificatePurposeInput.value = "";
+          certificatePurposeInput.placeholder = "Enter the purpose";
+        } else {
+          certificatePurposeInput.type = "hidden";
+          certificatePurposeInput.value = selectedValue;
+        }
+      });
+  
+      document.addEventListener('click', function (event) {
+        if(event.target.classList.contains("applyChanges")){
+          const certificatePurposeInput = document.getElementById("certificatePurpose");
+          const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
+    
+          if (selectedPurpose && selectedPurpose !== "default") {
+            const businessClosurePurpose = document.getElementById("businessClosurePurpose");
+    
+            document.getElementById("businessClosureBusinessName").innerText = document.getElementById("businessClosureBusinessNameInput").value.toUpperCase();
+            document.getElementById("businessClosureBusinessLocation").innerText = document.getElementById("businessClosureBusinessLocationInput").value;
+            document.getElementById("businessClosureOwnersName").innerText = document.getElementById("businessClosureBusinessOwnerInput").value.toUpperCase();
+            document.getElementById("businessClosureOwnersAddress").innerText = document.getElementById("businessClosureBusinessOwnerAddressInput").value;
+            document.getElementById("businessClosureClosedSince").innerText = document.getElementById("businessClosureClosedSinceInput").value;
+            document.getElementById("businessClosureClosedUntil").innerText = document.getElementById("businessClosureClosedUntilInput").value;
+            document.getElementById("businessClosureORNos").innerText = document.getElementById("businessClosureORNosInput").value;
+    
+            if (certificatePurposeInput.type === "text") {
+              businessClosurePurpose.innerText = selectedPurpose.toUpperCase();
+            } else {
+              businessClosurePurpose.innerText = selectedPurpose.toUpperCase();
+            }
+            alert("Changes applied: " + selectedPurpose);
+          } else {
+            alert("Please select a purpose or provide one if you selected 'Others'.");
+          }
+        }
+      });
+  
       viewCertificate.addEventListener('click',()=> viewCertificateDetails("businessClosure"));
     }
     else if (purpose === 'Good Moral') {
@@ -241,22 +516,15 @@ window.processCertificate = function (button) {
               <label for="certificatePurpose">Purpose</label>
               <select class="certficate-purpose-dropdown" id="selectPurpose">
                   <option value="default" disabled selected>Select a Purpose</option>
-                  <option value="Motor Load Requirement">Motor Load Requirement</option>
+                  <option value="Board Exam Requirements">Board Exam Requirements</option>
+                  <option value="Whatever legal purpose">Whatever legal purpose</option>
                   <option value="Others">Others</option>
               </select>
               <input type="hidden" id="certificatePurpose" style="margin-top:12px">
           </div>
           <div class="inputWithLabel">
-              <label for="">Trabaho</label>
-              <input type="text" id="incomeTrabahoInput">
-          </div>
-          <div class="inputWithLabel">
-              <label for="">Monthly Income (Ex. Php. 15,000.00)</label>
-              <input type="text" id="incomeMonthlyInput">
-          </div>
-          <div class="inputWithLabel">
               <label for="">OR Nos</label>
-              <input type="text" id="incomeORNosInput">
+              <input type="text" id="goodMoralORNosInput">
           </div>
       `;
   
@@ -275,9 +543,11 @@ window.processCertificate = function (button) {
       });
   
   
-      // document.getElementById("brgyClearanceAddress").innerText = `Purok ${purok}, ${barangay}, ${city}, ${province}`;
-      // document.getElementById("brgyClearanceAge").innerText = `${age}`;
-      // document.getElementById("brgyClearanceCivilStatus").innerText = `${civilStatus}`;
+      document.getElementById("goodMoralFullName").innerText = `${lastName}, ${firstName} ${middleName}`.toUpperCase();
+      document.getElementById("goodMoralAddress").innerText = `Purok ${purok}, ${barangay}, ${city}, ${province}`;
+      document.getElementById("goodMoralAge").innerText = `${age}`;
+      document.getElementById("goodMoralGender").innerText = `${gender}`;
+      document.getElementById("goodMoralStatus").innerText = `${civilStatus}`;
   
       document.addEventListener('click', function (event) {
         if(event.target.classList.contains("applyChanges")){
@@ -285,19 +555,21 @@ window.processCertificate = function (button) {
           const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
     
           if (selectedPurpose && selectedPurpose !== "default") {
-            // const brgyClearancePurpose = document.getElementById("brgyClearancePurpose");
+            const goodMoralPurpose = document.getElementById("goodMoralPurpose");
     
-            // document.getElementById("brgyClearanceRemarks").innerText = document.getElementById("brgyClearanceRemarksInput").value.toUpperCase();
-            // document.getElementById("brgyClearanceOptID").innerText = document.getElementById("brgyClearanceOptIDInput").value;
-            // document.getElementById("brgyClearanceCTCNos").innerText = document.getElementById("brgyClearanceCTCNosInput").value;
-            // document.getElementById("brgyClearanceDateIssued").innerText = document.getElementById("brgyClearanceDateIssuedInput").value;
-            // document.getElementById("brgyClearanceORNos").innerText = document.getElementById("brgyClearanceORNosInput").value;
-            // document.getElementById("brgyClearanceDatePrinted").innerText = document.getElementById("brgyClearanceDatePrintedInput").value;
+            // document.getElementById("goodMoralORNos").innerText = document.getElementById("goodMoralORNosInput").value;
     
             if (certificatePurposeInput.type === "text") {
-              // brgyClearancePurpose.innerText = selectedPurpose.toUpperCase();
+              document.getElementById("goodMoralIfASelectedPurpose").style.display = "block";
+              goodMoralPurpose.innerHTML = `<strong>${selectedPurpose}</strong>`.toUpperCase() + "purposes";
             } else {
-              // brgyClearancePurpose.innerText = selectedPurpose.toUpperCase();
+              if (selectedPurpose === "Whatever legal purpose"){
+                document.getElementById("goodMoralIfASelectedPurpose").style.display = "none";
+                goodMoralPurpose.innerText = selectedPurpose.toLowerCase();
+              } else{
+                document.getElementById("goodMoralIfASelectedPurpose").style.display = "block";
+                goodMoralPurpose.innerHTML = `<strong>${selectedPurpose}</strong>`.toUpperCase() + " purposes";
+              }
             }
             alert("Changes applied: " + selectedPurpose);
           } else {
@@ -314,22 +586,27 @@ window.processCertificate = function (button) {
               <label for="certificatePurpose">Purpose</label>
               <select class="certficate-purpose-dropdown" id="selectPurpose">
                   <option value="default" disabled selected>Select a Purpose</option>
-                  <option value="Motor Load Requirement">Motor Load Requirement</option>
+                  <option value="Medical Assistance Requirement">Medical Assistance Requirement</option>
+                  <option value="PSA Application Requirement">PSA Application Requirement</option>
                   <option value="Others">Others</option>
               </select>
               <input type="hidden" id="certificatePurpose" style="margin-top:12px">
           </div>
           <div class="inputWithLabel">
-              <label for="">Trabaho</label>
-              <input type="text" id="incomeTrabahoInput">
+              <label for="">Name of the Child</label>
+              <input type="text" id="guardianshipChildNameInput">
           </div>
           <div class="inputWithLabel">
-              <label for="">Monthly Income (Ex. Php. 15,000.00)</label>
-              <input type="text" id="incomeMonthlyInput">
+              <label for="">Age of the Child</label>
+              <input type="number" id="guardianshipChildAgeInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Relationship with the Child</label>
+              <input type="text" id="guardianshipChildRelationshipInput">
           </div>
           <div class="inputWithLabel">
               <label for="">OR Nos</label>
-              <input type="text" id="incomeORNosInput">
+              <input type="text" id="guardianshipORNosInput">
           </div>
       `;
   
@@ -347,10 +624,10 @@ window.processCertificate = function (button) {
         }
       });
   
-  
-      // document.getElementById("brgyClearanceAddress").innerText = `Purok ${purok}, ${barangay}, ${city}, ${province}`;
-      // document.getElementById("brgyClearanceAge").innerText = `${age}`;
-      // document.getElementById("brgyClearanceCivilStatus").innerText = `${civilStatus}`;
+      document.getElementById("guardianshipFullName").innerText =`${lastName}, ${firstName} ${middleName}`.toUpperCase();
+      document.getElementById("guardianshipAddress").innerText = `Purok ${purok}, ${barangay}, ${city}, ${province}`;
+      document.getElementById("guardianshipGender").innerText = `${gender}`;
+      document.getElementById("guardianshipStatus").innerText = `${civilStatus}`;
   
       document.addEventListener('click', function (event) {
         if(event.target.classList.contains("applyChanges")){
@@ -358,19 +635,17 @@ window.processCertificate = function (button) {
           const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
     
           if (selectedPurpose && selectedPurpose !== "default") {
-            // const brgyClearancePurpose = document.getElementById("brgyClearancePurpose");
+            const guardianshipPurpose = document.getElementById("guardianshipPurpose");
     
-            // document.getElementById("brgyClearanceRemarks").innerText = document.getElementById("brgyClearanceRemarksInput").value.toUpperCase();
-            // document.getElementById("brgyClearanceOptID").innerText = document.getElementById("brgyClearanceOptIDInput").value;
-            // document.getElementById("brgyClearanceCTCNos").innerText = document.getElementById("brgyClearanceCTCNosInput").value;
-            // document.getElementById("brgyClearanceDateIssued").innerText = document.getElementById("brgyClearanceDateIssuedInput").value;
-            // document.getElementById("brgyClearanceORNos").innerText = document.getElementById("brgyClearanceORNosInput").value;
-            // document.getElementById("brgyClearanceDatePrinted").innerText = document.getElementById("brgyClearanceDatePrintedInput").value;
+            document.getElementById("guardianshipChildName").innerText = document.getElementById("guardianshipChildNameInput").value.toUpperCase();
+            document.getElementById("guardianshipChildAge").innerText = document.getElementById("guardianshipChildAgeInput").value;
+            document.getElementById("guardianshipRelationship").innerText = document.getElementById("guardianshipChildRelationshipInput").value.toUpperCase();
+            document.getElementById("guardianshipORNos").innerText = document.getElementById("guardianshipORNosInput").value;
     
             if (certificatePurposeInput.type === "text") {
-              // brgyClearancePurpose.innerText = selectedPurpose.toUpperCase();
+              guardianshipPurpose.innerText = selectedPurpose.toUpperCase();
             } else {
-              // brgyClearancePurpose.innerText = selectedPurpose.toUpperCase();
+              guardianshipPurpose.innerText = selectedPurpose.toUpperCase();
             }
             alert("Changes applied: " + selectedPurpose);
           } else {
@@ -772,3 +1047,75 @@ function setCurrentDate() {
   document.querySelectorAll("#dateMonth").forEach(el => el.innerText = month);
   document.querySelectorAll("#dateYear").forEach(el => el.innerText = year);
 }
+
+const padZero = (num) => (num < 10 ? `0${num}` : num);
+
+const getCurrentDate = () => {
+    const today = new Date();
+    const month = padZero(today.getMonth() + 1);
+    const day = padZero(today.getDate());
+    const year = today.getFullYear();
+
+    return `${month}/${day}/${year}`;
+};
+
+function calculateEndDate(startDateInput, durationInput) {
+  if (!startDateInput || isNaN(durationInput) || durationInput <= 0) {
+      return null;
+  }
+
+  const [year, month, day] = startDateInput.split('-');
+  
+  const startDate = new Date(year, month - 1, day);
+  startDate.setHours(0, 0, 0, 0); 
+
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + durationInput - 1);
+
+  return {
+      startDate: formatDateWithoutYear(startDate),
+      endDate: formatDate(endDate),
+      duration: numberToText(durationInput) 
+  };
+}
+
+
+function formatDateWithoutYear(date) {
+  const options = { month: 'long', day: 'numeric' };
+  return date.toLocaleDateString('en-US', options);
+}
+
+// Helper function to format date as "Month Day, Year"
+function formatDate(date) {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString('en-US', options);
+}
+
+function numberToText(num) {
+  const words = [
+      "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+      "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen",
+      "twenty", "twenty-one", "twenty-two", "twenty-three", "twenty-four", "twenty-five", "twenty-six", "twenty-seven", "twenty-eight", "twenty-nine",
+      "thirty", "thirty-one", "thirty-two", "thirty-three", "thirty-four", "thirty-five", "thirty-six", "thirty-seven", "thirty-eight", "thirty-nine",
+      "forty", "forty-one", "forty-two", "forty-three", "forty-four", "forty-five", "forty-six", "forty-seven", "forty-eight", "forty-nine", "fifty"
+  ];
+  return words[num] || num;
+}
+
+function displayWakeMessage(startDateInput, durationInput) {
+  const wakeDetails = calculateEndDate(startDateInput, durationInput);
+
+  if (wakeDetails) {
+      return {
+        duration: `${wakeDetails.duration} (${durationInput})`,
+        wakeDate: `${wakeDetails.startDate} to ${wakeDetails.endDate}`,
+      };
+  } else {
+    return {
+      duration: "(WAKE DURATION)",
+      wakeDate: "(WAKE DATE)",
+    };
+  }
+}
+
+

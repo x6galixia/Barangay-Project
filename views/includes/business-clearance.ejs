@@ -14,20 +14,24 @@
             <p><strong>THIS IS TO CERTIFY</strong> that the business or trade activity describe below:</p>
             <div class="namesss">
                 <div>
-                    <h3><u>JACKOWLAN</u></h3>
-                    <p>(Business Name or Trade Actibity)</p>
+                    <h3><u id="businessClearanceBusinessName">(BUSINESS NAME)</u></h3>
+                    <p>(Business Name or Trade Activity)</p>
                 </div>
                 <div>
-                    <h3><u>BRGY. MAYPANGDAN, BORONGAN CITY</u></h3>
+                    <h3><u id="businessClearanceBusinessLocation">(LOCATION OF BUSINESS)</u></h3>
                     <p>(Location of Business)</p>
                 </div>
                 <div>
-                    <h3><u>ADRIANE S. GARCIA</u></h3>
+                    <h3><u id="busnessClearanceOperator">(OPERATOR/MANAGER)</u></h3>
                     <p>(Operator/Manager)</p>
+                </div>
+                <div>
+                    <h3><u id="businessClearanceOwnersAddress">(OWNER'S ADDRESS)</u></h3>
+                    <p>(Owner's Address)</p>
                 </div>
             </div>
             <div class="bullets">
-                <p>Being applied for NEW/RENEW of the corresponding Mayor’s Permit has been found to be:</p>
+                <p>Being applied for <strong style="color: red;" id="businessClearanceStatus">(BUSINESS STATUS)</strong> of the corresponding Mayor’s Permit has been found to be:</p>
                 <ul>
                     <li>Complying with the probision of the existing Barangay Ordinance, rules and regulations being
                     </li>
@@ -51,7 +55,8 @@
             </div>
         </div>
         <div class="seal">
-            <p>O.R Nos.: 2940586</p>
+            <p>Date: <span id="businessClearanceDateIssued"></span></p>
+            <p>O.R Nos.: <span id="businessClearanceORNos"></span></p>
             <p>Not valid without official dry seal</p>
         </div>
         <%- include("../includes/print-footer.ejs") %>
@@ -64,12 +69,15 @@
 
     .namesss div {
         text-align: center;
-        line-height: 0px;
-        margin-bottom: 50px;
+        /* line-height: 0px;
+        margin-bottom: 50px; */
     }
 
     .namesss div p {
         font-size: 11px;
+    }
+    .context p {
+        margin-bottom: 25px;
     }
 
     .bullets {
