@@ -58,7 +58,7 @@
                 <div id="certificateMainForm">
                 </div>
                 <div class="butonContainer">
-                    <button id="applyChanges">Apply Changes</button>
+                    <button id="applyChanges" class="applyChanges">Apply Changes</button>
                     <button id="viewCertificate">View</button>
                 </div>
             </main>
@@ -70,20 +70,25 @@
                 <img src="../icon/close.svg" alt="" class="closeCertificate">
             </div>
             <main id="certificateContainer">
-                <%- include("../includes/cet-of-guardianship.ejs") %>
-                    <%- include("../includes/income.ejs") %>
-                        <%- include("../includes/indigencyy.ejs") %> <!-- DONE -->
-                            <%- include("../includes/land-no-claim.ejs") %>
-                                <%- include("../includes/no-duplication.ejs") %>
-                                    <%- include("../includes/panumduman.ejs") %>
-                                        <%- include("../includes/RA-1261.ejs") %> <!-- DONE -->
-                                            <%- include("../includes/brgy-clearance.ejs") %> <!-- DONE -->
-                                                <%- include("../includes/building-clearance.ejs") %>
-                                                    <%- include("../includes/burial-clearance.ejs") %>
-                                                        <%- include("../includes/business-clearance.ejs") %>
-                                                            <%- include("../includes/business-closure.ejs") %>
-                                                                <%- include("../includes/late-registration.ejs") %>
-                                                                    <%- include("../includes/solo-parent.ejs") %>
+                <%- include("../includes/indigencyy.ejs") %>                <!-- DONE -->
+                <%- include("../includes/RA-1261.ejs") %>                   <!-- DONE -->
+                <%- include("../includes/brgy-clearance.ejs") %>            <!-- DONE -->
+                <%- include("../includes/singleness.ejs") %>                <!-- DONE -->
+                <%- include("../includes/certificate-of-residency.ejs") %>  <!-- DONE(kulang pa an certificate) -->
+                <%- include("../includes/oath-undertaking.ejs") %>          <!-- DONE -->
+                <%- include("../includes/late-registration.ejs") %>         <!-- DONE -->
+                <%- include("../includes/income.ejs") %>                    <!-- MEDYO DONE ARAYUSON IT CERTIFICATE -->
+                <%- include("../includes/cet-of-guardianship.ejs") %>       <!-- BIEWABLE PALA -->
+                <%- include("../includes/good-moral.ejs") %>                <!-- BIEWABLE PALA -->
+                <%- include("../includes/business-closure.ejs") %>          <!-- BIEWABLE PALA -->
+                <%- include("../includes/business-clearance.ejs") %>        <!-- BIEWABLE PALA -->
+                <%- include("../includes/building-clearance.ejs") %>        <!-- BIEWABLE PALA -->
+                <%- include("../includes/burial-clearance.ejs") %>          <!-- BIEWABLE PALA -->
+                <%- include("../includes/land-no-claim.ejs") %>             <!-- BIEWABLE PALA -->
+                <%- include("../includes/no-duplication.ejs") %>            <!-- BIEWABLE PALA -->
+                <%- include("../includes/panumduman.ejs") %>                <!-- BIEWABLE PALA -->
+                <%- include("../includes/solo-parent.ejs") %>               <!-- BIEWABLE PALA -->
+                <%- include("../includes/same-person.ejs") %>               <!-- BIEWABLE PALA -->
 
             </main>
             <button style="display: flex; justify-self: end; margin-top: 24px; padding: 12px 48px;"

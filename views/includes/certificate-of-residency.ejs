@@ -1,5 +1,5 @@
 
-<div class="A4 with-logo-bg" id="certificateOfResidency">
+<div class="A4 with-logo-bg" id="residency">
     <%- include("../includes/print-header.ejs") %>
     <div class="title"><img src="../images/cer-residency.png" alt=""></div>
     <div class="lalagyan">
@@ -37,18 +37,18 @@
         <div class="right">
             <div class="context">
                 <p class="wala"><strong>TO WHOM THIS MAY CONCERN:</strong></p>
-                <p><strong>THIS IS TO CERTIFY THAT <span style="color: #00A6D4;">CARTAGO, MELANIO C.</span></strong> is a resident of :</p>
+                <p><strong>THIS IS TO CERTIFY THAT <span id="residencyFullName" style="color: #00A6D4;">FULL NAME</span></strong> is a resident of :</p>
                 <div class="g-row-2" style="margin-top: 100px;">
-                    <p>Street</p>    <p>:</p>   <p>Asuncion</p>
-                    <p>Purok</p>     <p>:</p>   <p>Seguidila</p>
-                    <p>Barangay</p>  <p>:</p>   <p>Maypangdan</p>
-                    <p>City</p>      <p>:</p>   <p>Borongan</p>
-                    <p>Province</p>  <p>:</p>   <p>Eastern Samar</p>
+                    <p>Street</p>    <p>:</p>   <p id="residencyStreet">STREET</p>
+                    <p>Purok</p>     <p>:</p>   <p id="residencyPurok">PUROK</p>
+                    <p>Barangay</p>  <p>:</p>   <p id="residencyBarangay">BARANGAY</p>
+                    <p>City</p>      <p>:</p>   <p id="residencyMunicipality">MUNICIPALITY</p>
+                    <p>Province</p>  <p>:</p>   <p id="residencyProvince">PROVINCE</p>
                 </div>
                 <div style="margin-top: 64px;">
-                    <p>Since <strong><u>2021</u></strong> until <strong><u>TODAY</u></strong>.</p>
+                    <p>Since <strong><u id="residencySince">RESIDENT SINCE</u></strong> until <strong><u id="residencyUntil">RESIDENT UNTIL</u></strong>.</p>
                     <p>This certification is issued upon the request of the herein interested party for whatever purposes and legal intent it may serve.</p>
-                    <p>Issued this <strong><u>23rd</u></strong>  day of <strong><u>November</u></strong> 20 <strong><u>23</u></strong>.</p>
+                    <p>Issued this <strong><u id="dateDay"></u></strong>  day of <strong><u id="dateMonth"></u></strong> <strong><u id="dateYear"></u></strong>.</p>
                 </div>
                 <div class="row align-item-center" style="margin-top: 3em; justify-content: space-around;">
                     <div style="display: flex; justify-content: end;">
