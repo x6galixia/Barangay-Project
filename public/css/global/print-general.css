@@ -233,6 +233,29 @@
     width: 35%;
     /* border: solid rgb(223, 35, 35) 1px; */
 }
+.lefttt-singleness {
+    background-image: url("../../images/brow-pattern.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    color: black;
+    background-size: cover;
+    text-align: center;
+    height: 700px;
+    width: 35%;
+    /* border: solid rgb(223, 35, 35) 1px; */
+}
+.lefttt-RA-1162 {
+    background-image: url("../../images/gradient-yellow-d.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    color: black;
+    background-size:cover;
+    text-align: center;
+    height: auto;
+    width: 35%;
+    /* padding: 1em; */
+    /* border: solid rgb(223, 35, 35) 1px; */
+}
 
 .right {
     width: 65%;
