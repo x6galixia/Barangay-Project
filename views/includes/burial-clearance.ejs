@@ -11,13 +11,11 @@
         <img class="mahusay-logo" src="../images/mahusay-na.png" alt="">
         <div class="context">
             <p class="wala"><strong>TO WHOM IT MAY CONCERN:</strong></p>
-            <p><strong>THIS IS TO CERTIFY</strong> that <strong><u>RAPADA, ELIAS AGNO.,</u></strong> female/<u>male</u>,
-                <u>single</u>/married/widow/widower, a resident of Purok Ampalaya, Barangay Maypangdan, Borongan City,
-                Province of Eastern Samar, had a wake of nine (9) days at his residence from September 14 to September
-                22, 1994.</p>
-            <p>Mr. Rapada was laid to rest at Maypangda Cemetery on September 22, 1994.</p>
+            <p><strong>THIS IS TO CERTIFY</strong> that <strong><u id="burialFullName">(FULL NAME)</u></strong>, <span id="burialGender">(GENDER)</span>,
+                <span id="burialStatus">(CIVIL STATUS)</span>, a resident of <span id="burialAddress">(ADDRESS)</span>, had a wake of <span id="burialLamayDays">(WAKE DURATION)</span> days at <span id="burialLamayLocation">(WAKE LOCATION)</span> from <span id="burialLamayDate">(WAKE DATE)</span>.</p>
+            <p><span id="burialCourtesyTitle">(COURTESY TITLE)</span> was laid to rest at <span id="burialPlace">(BURIAL PLACE)</span> on <span id="burialDate">(BURIAL DATE)</span>.</p>
             <p>This certification is issued upon the request of the family for whatever legal purpose it may serve.</p>
-            <p>Given this <strong><u>10th</u></strong> day of <strong>OCTOBER</strong>  20<strong><u>24</u></strong>, at
+            <p>Given this <strong><u id="dateDay"></u></strong> day of <strong id="dateMonth"></strong> <strong><u id="dateYear"></u></strong>, at
                 Barangay Maypangdan, Borongan City, Eastern Samar.</p>
         </div>
         <div style="display: flex; justify-content: end; margin-right: 71px; margin-top: 200px;">
@@ -30,8 +28,8 @@
             </div>
         </div>
         <div class="seal">
-            <p>O.R Nos.: 3013808</p>
-            <p>Valid for 90 days from the date of issued</p>
+            <p>O.R Nos.: <span id="burialORNos"></span></p>
+            <p>Valid for <span id="burialValication"></span> from the date of issued</p>
             <p>Not valid without seal</p>
         </div>
         <%- include("../includes/print-footer.ejs") %>

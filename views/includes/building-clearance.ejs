@@ -11,17 +11,16 @@
         <img class="mahusay-logo" src="../images/mahusay-na.png" alt="">
         <div class="context">
             <p class="wala"><strong>TO WHOM IT MAY CONCERN:</strong></p>
-            <p><strong>THIS IS TO CERTIFY THAT</strong> that <strong><u>FULL NAME</u></strong>, single, of legal age is
-                a Filipino citizen, a resident of Purok Name, ESSU Compound, Barangay Maypangdan, Borongan City,
-                Province of Eastern Samar has been satisfactorily completed the requirements for the application of
-                Electric Connection.</p>
+            <p><strong>THIS IS TO CERTIFY THAT</strong> that <strong><u id="buildingClearanceFullName">(FULL NAME)</u></strong>, <span id="buildingClearanceStatus">(STATUS)</span>, of legal age is
+                a Filipino citizen, a resident of <span id="buildingClearanceAddress">(ADDRESS)</span> has been satisfactorily completed the requirements for the application of
+                <span id="buildingClearancePurpose">(PLEASE SELECT A PURPOSE)</span>.</p>
             <p>Further, this certifies that the barangay, interposing, no objection regarding the application for the
-                Electric Connection located at Brangay Maypangdan, Borongan City.</p>
-            <p>However, this certification is subject for rebiew to all existing laws and regulation on the City Zoning
+                <span id="buildingClearancePurpose1">(PLEASE SELECT A PURPOSE)</span> located at <span id="buildingClearanceLocation">(LOCATION)</span>.</p>
+            <p>However, this certification is subject for review to all existing laws and regulation on the City Zoning
                 Complience Application.</p>
-            <p>This certification is issued upon request of the herein interested party for whateber legal purpose it
-                may serbe.</p>
-            <p>Given this <u>30th</u> day of <strong><u>SEPTEMBER, 2024</u></strong> at Brgy. Maypangdan Borongan City,
+            <p>This certification is issued upon request of the herein interested party for whatever legal purpose it
+                may serve.</p>
+            <p>Given this <strong><u id="dateDay"></u></strong> day of <strong><u id="dateMonth"></u></strong>, <strong><u id="dateYear"></u></strong> at Brgy. Maypangdan Borongan City,
                 Eastern Samar</p>
         </div>
         <div style="display: flex; justify-content: end; margin-right: 71px; margin-top: 150px;">
@@ -34,7 +33,7 @@
             </div>
         </div>
         <div class="seal">
-            <p>O.R Nos.: 2940586</p>
+            <p>O.R Nos.: <span id="buildingClearanceORNos"></span></p>
             <p>Not valid without official dry seal</p>
         </div>
         <%- include("../includes/print-footer.ejs") %>

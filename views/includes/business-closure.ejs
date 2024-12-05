@@ -11,14 +11,12 @@
         <img class="mahusay-logo" src="../images/mahusay-na.png" alt="">
         <div class="context">
             <p class="wala"><strong>TO WHOM IT MAY CONCERN:</strong></p>
-            <p><strong>THIS IS TO CERTIFY</strong> that <strong><u>PAPA KEN INTERNET CAFÉ</u></strong>, located at Purok
-                Talbos, Barangay Maypangdan, Borongan City which owned  and managed by <strong>MR. KENNETH C.
-                    TABAY</strong>, a resident of Brgy. Maypangdan, Borongan City, Eastern Samar has been closed and not
-                operational since January 2017 until today.</p>
+            <p><strong>THIS IS TO CERTIFY</strong> that <strong><u id="businessClosureBusinessName">BUSINESS NAME</u></strong>, located at <span id="businessClosureBusinessLocation">BUSINESS LOCATION</span> which owned  and managed by <strong id="businessClosureOwnersName">OWNERS NAME</strong>, a resident of <span id="businessClosureOwnersAddress">OWNERS ADDRESS</span> has been closed and not
+                operational since <span id="businessClosureClosedSince">CLOSED SINCE</span> until <span id="businessClosureClosedUntil">CLOSED UNTIL</span>.</p>
             <p>This certification is issued upon request of the herein interested party for <strong
-                    style="color: red;">BUSINESS CLOSURE REQUIREMENT</strong> and for any legal intent it may serve it
+                    style="color: red;" id="businessClosurePurpose">PLEASE SELECT A PURPOSE</strong> and for any legal intent it may serve it
                 best.</p>
-            <p>Given this <strong><u>7th</u></strong> day of <strong>December</strong> 20<strong><u>23</u></strong>, at
+            <p>Given this <strong><u id="dateDay"></u></strong> day of <strong id="dateMonth"></strong> <strong><u id="dateYear"></u></strong>, at
                 Barangay Maypangdan, Borongan City, Eastern Samar.</p>
         </div>
         <div style="display: flex; justify-content: end; margin-right: 71px; margin-top: 250px;">
@@ -31,7 +29,7 @@
             </div>
         </div>
         <div class="seal">
-            <p>O.R Nos.: 9433019</p>
+            <p>O.R Nos.: <span id="businessClosureORNos"></span></p>
             <p>Not valid without seal</p>
         </div>
         <%- include("../includes/print-footer.ejs") %>

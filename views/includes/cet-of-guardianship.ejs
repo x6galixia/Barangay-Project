@@ -11,14 +11,13 @@
         <img class="mahusay-logo" src="../images/mahusay-na.png" alt="">
         <div class="context">
             <p class="wala"><strong>TO WHOM IT MAY CONCERN:</strong></p>
-            <p><strong>THIS IS TO CERTIFY</strong> that <strong><u>FULL NAME.,</u></strong> female/male,
-                single/married/widow/widower, resident of Purok Name, Barangay Maypangdan, Borongan City, Province of
-                Eastern Samar is the legal guardian of <strong><u>ADRIANE S. GARCIA</u></strong> , 21 years old, and is
-                the <strong>GRANDMOTHER</strong> of the child.</p>
+            <p><strong>THIS IS TO CERTIFY</strong> that <strong><u id="guardianshipFullName">FULL NAME</u></strong>, <span id="guardianshipGender">GENDER</span>,
+                <span id="guardianshipStatus">STATUS</span>, resident of <span id="guardianshipAddress">ADDRESS</span> is the legal guardian of <strong><u id="guardianshipChildName">CHILD NAME</u></strong> , <span id="guardianshipChildAge">CHILD AGE</span> years old, and is
+                the <strong id="guardianshipRelationship">RELATIONSHIP</strong> of the child.</p>
             <p>This certification is issued upon request of the herein interested party for <strong
-                    style="color: red;">MEDICAL ASSISTANCE REQUIREMENT</strong> and for any legal intent it may serve it
+                    style="color: red;" id="guardianshipPurpose">PLEASE SELECT A PURPOSE</strong> and for any legal intent it may serve it
                 best.</p>
-            <p>Given this <strong><u>22nd</u></strong> day of <strong><u>MAY</u></strong> 20<strong><u>24</u></strong>,
+            <p>Given this <strong><u id="dateDay"></u></strong> day of <strong><u id="dateMonth"></u></strong> <strong><u id="dateYear"></u></strong>,
                 at Barangay Maypangdan, Borongan City, Eastern Samar.</p>
         </div>
         <div style="display: flex; justify-content: end; margin-right: 71px; margin-top: 230px;">
@@ -32,7 +31,7 @@
         </div>
         <div class="seal">
 
-            <p>O.R Nos.: 2940586</p>
+            <p>O.R Nos.: <span id="guardianshipORNos"></span></p>
             <p>Not valid without seal.</p>
         </div>
         <%- include("../includes/print-footer.ejs") %>
