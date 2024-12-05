@@ -1,4 +1,4 @@
-<div class="A4 with-logo-bg" id="oathUndertaking" style="display: block; border: solid black;">
+<div class="A4 with-logo-bg" id="oathUndertaking">
     <div><%- include("../includes/print-header.ejs") %></div>
     <div class="cert-header"><img class="linya" src="../images/header-line.png" alt=""></div>
 
@@ -10,7 +10,7 @@
         <!-- mahusay na logo footer -->
         <img class="mahusay-logo" src="../images/mahusay-na.png" alt="">
         <div class="context hahahaha" style="margin-top: 0;">
-            <p class="wala">I, <strong><u>ADESNA, JOSEPH ICHIRO A.</u></strong>, male, 23 years of age, resident of Brgy. Maypangdan, Borongan City, Eastern Samar, availing the benefits of Republic Act 11261, otherwise known as the First Time Jobseekers Act of 2019, do hereby declare, agree and undertake to abide and be bound by the following:</p>
+            <p class="wala">I, <strong><u id="oathFullName">FULL NAME</u></strong>, <span id="oathGender">GENDER</span>, <span id="oathAge">AGE</span> years of age, resident of Brgy. <span id="oathAddress">ADDRESS</span>, availing the benefits of Republic Act 11261, otherwise known as the First Time Jobseekers Act of 2019, do hereby declare, agree and undertake to abide and be bound by the following:</p>
             <div style="display: flex; flex-direction:column; padding: 0 1.5em;">
             <p class="wala"> 1.   That this is the first time that I will actively look for a job, and therefore requesting that a Barangay Certification be issued in my favor to avail the benefits of the law;</p>
             <p class="wala">2.   That I am aware that the benefit and privilege/s under the said law shall be valid only for one (1) year from the date that the Barangay Certification is issued;</p>
@@ -22,11 +22,11 @@
             <p class="wala">8.   That this undertaking is made solely for the purpose of obtaining  a Barangay Certification consist with the objective of R.A 11261 and not for any other purpose.</p>
             <p class="wala"> 9.   That I consent the use of my personal information pursuant to the Data Privacy Act and other applicable laws, rules, and regulations.</p>
             </div>
-            <p class="wala">Signed this <strong><u>14th</u></strong> day of <strong><u>May</u></strong>, 20<strong><u>24</u></strong>, in the City of Borongan, Province of Eastern Samar, Brgy. Maypangdan.</p>
+            <p class="wala">Signed this <strong><u id="dateDay"></u></strong> day of <strong><u id="dateMonth"></u></strong>, <strong><u id="dateYear"></u></strong>, in the City of Borongan, Province of Eastern Samar, Brgy. Maypangdan.</p>
         </div>
         <div style="display: flex; justify-content: end; margin-right: 71px;">
                 <div style="text-align: center; position: relative; z-index: 2;">
-                    <p><strong id="punongBarangay"><u>JOSEPH ICHIRO A. ADESNA</u></strong></p>
+                    <p><strong id="punongBarangay"><u id="oathFullName1">FULL NAME</u></strong></p>
                     <em>First Time Jobseeker</em>
                 </div>
         </div>
