@@ -57,11 +57,15 @@ document.addEventListener("DOMContentLoaded", function () {
     submitPrompt.style.display = "flex";
     overlay.classList.add("visible"); // Show the pop-up
   }
-
 });
 
-// Function to close the pop-up when 'Done' button is clicked
 function closePopup() {
-  submitPrompt.style.display = "none";
+  if (submitPrompt) {
+    submitPrompt.style.display = "none";
+  }
+  if (document.getElementById("submit_prompt1")) {
+    document.getElementById("submit_prompt1").classList.remove("visible1")
+  }
   overlay.classList.remove("visible");
+  window.location.reload();
 }

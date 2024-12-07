@@ -116,6 +116,12 @@ input {
   border: 1px solid black;
   height: 38px;
 }
+textarea {
+  border-radius: 10px;
+  padding: 4px 8px;
+  outline: none;
+  border: 1px solid black;
+}
 
 button {
   background-color: var(--green-color);
@@ -289,7 +295,7 @@ input[type="search"]::placeholder {
 }
 
 /* pop up */
-.overlay {
+.overlay, .overlay1 {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -358,6 +364,9 @@ input[type="search"]::placeholder {
 .visible {
   display: block !important;
 }
+.visible1 {
+  display: flex !important;
+}
 
 
 /* triple dot css */
@@ -403,7 +412,8 @@ input[type="search"]::placeholder {
   color: #FFF;
 }
 
-#submit_prompt {
+#submit_prompt, #submit_prompt1 {
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -422,7 +432,9 @@ input[type="search"]::placeholder {
   z-index: 2;
 }
 
-#submit_prompt p {
+#submit_prompt p,
+#submit_prompt1 p
+ {
   text-align: center;
 }
 
@@ -430,23 +442,32 @@ input[type="search"]::placeholder {
   color: red;
 }
 
-#submit_prompt button {
+#submit_prompt button,
+#submit_prompt1 button
+ {
   padding-left: 30px !important;
   padding-right: 30px !important;
 }
 
-#submit_prompt h2 {
+#submit_prompt h2,
+#submit_prompt1 h2 
+{
   color: var(--green-color);
+  text-align: center;
 }
 
-#submit_prompt main {
+#submit_prompt main,
+#submit_prompt1 main
+ {
   display: flex;
   justify-content: center;
   padding: 0;
   margin-top: 20px;
 }
 
-#submit_prompt img {
+#submit_prompt img,
+#submit_prompt1 img
+ {
   width: 70px;
   margin-top: -60px;
   background-color: #ffff;

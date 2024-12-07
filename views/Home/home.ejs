@@ -69,7 +69,7 @@
             </div>
             <div class="inputWithLabel">
               <label for="">Purpose</label>
-              <select class="services-dropdown" name="purpose">
+              <select class="services-dropdown" name="purpose" id="purpose">
                 <option value=" default" disabled selected>
                   Select a Services
                 </option>
@@ -78,13 +78,15 @@
                 <option value="Burial Certificate">Burial Certificate</option>
                 <option value="Business Clearance">Business Clearance</option>
                 <option value="Business Closure">Business Closure</option>
+                <option value="Common Law">Common Law</option>
+                <option value="Death Certificate">Death Certificate</option>
+                <option value="Employment">Employment</option>
                 <option value="Good Moral">Good Moral</option>
                 <option value="Guardianship">Guardianship</option>
                 <option value="Income">Income</option>
                 <option value="Indigency">Indigency</option>
                 <option value="Land no claim">Land no claim</option>
                 <option value="Late Registration">Late Registration</option>
-                <option value="No Duplication">No Duplication</option>
                 <option value="Panumduman">Panumduman</option>
                 <option value="RA 11261">RA 11261</option>
                 <option value="Oath Of Undertaking">RA 11261 (Oath Of Undertaking)</option>
@@ -92,6 +94,7 @@
                 <option value="Same Person">Same Person</option>
                 <option value="Singleness">Singleness</option>
                 <option value="Solo Parent">Solo Parent</option>
+                <option value="Water District">Water District</option>
               </select>
             </div>
           </div>
@@ -115,20 +118,18 @@
           </div>
         </div>
         <% } %>
-          <% if (messages.error) { %>
-            <div class="alert alert-danger" id="submit_prompt">
+            <div class="alert alert-danger errorMan" id="submit_prompt1">
               <img src="../images/error.png" alt="">
               <div>
-                <h2>Request Submit Failled.</h2>
+                <h2>Scanning QR Failed</h2>
                 <p class="error-message">
-                  <%= messages.error %>
+                  <%= messages.error%>
                 </p>
                 <main>
                   <button type="button" class="button-green" onclick="closePopup()">Done</button>
                 </main>
               </div>
             </div>
-            <% } %>
     </main>
 </body>
 <script src="../../js/local/request-api.js"></script>
