@@ -122,7 +122,8 @@ INSERT INTO rClassification (rClassificationName)VALUES
     ('Kasambahay'),
     ('Boarders'),
     ('Entrepreneur'),
-    ('Unemployed');
+    ('Unemployed'),
+    ('None');
 
 isResident
 last_name

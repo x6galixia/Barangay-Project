@@ -235,7 +235,7 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
                 value.province,      // province
                 birthDate,           // birthDate
                 value.placeOfBirth,  // birthPlace
-                calculateAge(value.age),           // age
+                value.age,           // age
                 value.gender,        // gender
                 picture,             // picture (null if not uploaded)
                 value.educAttainment, // eAttainment
