@@ -20,13 +20,6 @@
       <input type="text" id="qrInput" required style="opacity: 0; position: fixed; transform: translate(-50%, -50%),;">
       <form action="/home/service-request-form" method="POST" class="requestForm">
         <input type="hidden" id="qrOutput" name="id" style="position: absolute;">
-        <!-- <div class="scanSwitch">
-          Scan QR
-          <label class="switch">
-            <input type="checkbox" id="scanSwitch">
-            <span class="slider round"></span>
-          </label>
-        </div> -->
         <div class="formInputContainer">
           <div>
             <div class="inputWithLabel">
@@ -100,7 +93,7 @@
           </div>
         </div>
 
-        <button>SUBMIT</button>
+        <button type="submit" id="submitButton" disabled>SUBMIT</button>
       </form>
 
       <% if (messages.success) { %>
@@ -136,6 +129,19 @@
 <script src="../../js/global/pop-up.js"></script>
 <script>
   document.querySelector("header>nav>ul>li:first-child").classList.toggle("selected");
+  function checkId() {
+        const idInput = document.getElementById('qrOutput');
+        const submitButton = document.getElementById('submitButton');
+        
+        if (idInput.value.trim() !== '') {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
+    }
+
+    window.addEventListener('load', checkId);
+    document.getElementById('qrOutput').addEventListener('input', checkId);
 </script>
 
 </html>

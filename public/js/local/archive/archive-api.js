@@ -138,44 +138,14 @@ function docChanges() {
                 <input type="number" aria-label="Ordinance Number" name="ordinanceNumber" required>
             </div>
             <div class="inputWithLabel" id="surubadan">
-                <label>Author(1)</label>
-                <input type="text" aria-label="Author(1)" name="author1" required>
+                <label>Ordinance Title</label>
+                <input type="text" aria-label="Ordinance Title" name="ordinanceTitle" required>
             </div>
-            <div class="inputWithLabel" id="surubadan">
-                <label>Author(2)</label>
-                <input type="text" aria-label="Author(2)" name="author2" required>
+            <div class="inputWithLabel" id="authorContainer" style="margin-top:4px">
             </div>
-            <div class="inputWithLabel" id="surubadan">
-                <label>Author(2)</label>
-                <input type="text" aria-label="Author(3)" name="author2" required>
+            <div class="inputWithLabel" id="co-AuthorContainer" style="margin-top:4px">
             </div>
-            <div class="inputWithLabel" id="surubadan">
-                <label>Co-Author(1)</label>
-                <input type="text" aria-label="Co-Author(1)" name="coAuthor1" required>
-            </div>
-            <div class="inputWithLabel" id="surubadan">
-                <label>Co-Author(2)</label>
-                <input type="text" aria-label="Co-Author(2)" name="coAuthor2" required>
-            </div>
-            <div class="inputWithLabel" id="surubadan">
-                <label>Co-Author(2)</label>
-                <input type="text" aria-label="Co-Author(3)" name="coAuthor2" required>
-            </div>
-            <div class="inputWithLabel" id="surubadan">
-                <label>Sponsor(1)</label>
-                <input type="text" aria-label="Sponsor(1)" name="sponsor1" required>
-            </div>
-            <div class="inputWithLabel" id="surubadan">
-                <label>Sponsor(2)</label>
-                <input type="text" aria-label="Sponsor(2)" name="sponsor2" required>
-            </div>
-            <div class="inputWithLabel" id="surubadan">
-                <label>Sponsor(2)</label>
-                <input type="text" aria-label="Sponsor(3)" name="sponsor2" required>
-            </div>
-            <div class="inputWithLabel" id="surubadan">
-                <label>Respondent</label>
-                <input type="text" aria-label="Respondent" name="respondent" required>
+            <div class="inputWithLabel" id="sponsorContainer" style="margin-top:4px">
             </div>
             <div class="inputWithLabel">
                 <label>Date Approved</label>
@@ -211,6 +181,9 @@ function docChanges() {
             </div>
             `
         }
+        addTextarea();
+        addTextarea1();
+        addTextarea2();
     })
 }
 
@@ -378,8 +351,6 @@ function fillInputs(data) {
         console.error('Image element not found or is not an IMG tag');
     }
 }
-
-
 function clearFillInputs() {
     const elements = {
         itemId,
@@ -407,3 +378,122 @@ function clearFillInputs() {
         console.error('Image element not found or is not an IMG tag');
     }
 }
+
+// function
+let authorCount = 1;
+let coAuthorCount = 1;
+let sponsorCount = 1;
+function addTextarea() {
+    const container = document.getElementById("authorContainer");
+  
+    const div = document.createElement('div');
+    div.classList.add('inputWithLabel');
+    div.setAttribute('id', `author-${authorCount}`);
+    if (authorCount === 1){
+        div.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label>Author (${authorCount})</label>
+            <button type="button" onclick="addTextarea()">+</button>
+            <button type="button" onclick="removeTextarea()">-</button>
+          </div>
+          <input type="text" aria-label="Author (${authorCount})" name="author${authorCount}" required>
+        `;
+    } else {
+        div.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label>Author (${authorCount})</label>
+          </div>
+          <input type="text" aria-label="Author (${authorCount})" name="author${authorCount}" required>
+        `;
+    }
+    container.appendChild(div);
+    authorCount++;
+  }
+  
+  function removeTextarea() {
+    const container = document.getElementById("authorContainer");
+    
+    if (container.children.length <= 1) return(alert('At least one Author is required!'));
+  
+    const lastChild = container.lastElementChild; 
+    if (lastChild) {
+      container.removeChild(lastChild);
+      authorCount--;
+    }
+  }
+function addTextarea1() {
+    const container = document.getElementById("co-AuthorContainer");
+  
+    const div = document.createElement('div');
+    div.classList.add('inputWithLabel');
+    div.setAttribute('id', `co-Author-${coAuthorCount}`);
+    if (coAuthorCount === 1){
+        div.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label>Co-Author (${coAuthorCount})</label>
+            <button type="button" onclick="addTextarea1()">+</button>
+            <button type="button" onclick="removeTextarea1()">-</button>
+          </div>
+          <input type="text" aria-label="Co-Author (${coAuthorCount})" name="coAuthor${coAuthorCount}" required>
+        `;
+    } else {
+        div.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label>Co-Author (${coAuthorCount})</label>
+          </div>
+          <input type="text" aria-label="Co-Author (${coAuthorCount})" name="coAuthor${coAuthorCount}" required>
+        `;
+    }
+    container.appendChild(div);
+    coAuthorCount++;
+  }
+  
+  function removeTextarea1() {
+    const container = document.getElementById("co-AuthorContainer");
+    
+    if (container.children.length <= 1) return(alert('At least one Co-Author is required!'));
+  
+    const lastChild = container.lastElementChild; 
+    if (lastChild) {
+      container.removeChild(lastChild);
+      coAuthorCount--;
+    }
+  }
+function addTextarea2() {
+    const container = document.getElementById("sponsorContainer");
+  
+    const div = document.createElement('div');
+    div.classList.add('inputWithLabel');
+    div.setAttribute('id', `sponsor-${sponsorCount}`);
+    if (sponsorCount === 1){
+        div.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label>Sponsor (${sponsorCount})</label>
+            <button type="button" onclick="addTextarea2()">+</button>
+            <button type="button" onclick="removeTextarea2()">-</button>
+          </div>
+          <input type="text" aria-label="Sponsor (${sponsorCount})" name="sponsor${sponsorCount}" required>
+        `;
+    } else {
+        div.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label>Author (${sponsorCount})</label>
+          </div>
+          <input type="text" aria-label="Sponsor (${sponsorCount})" name="sponsor${sponsorCount}" required>
+        `;
+    }
+    container.appendChild(div);
+    sponsorCount++;
+  }
+  
+  function removeTextarea2() {
+    const container = document.getElementById("sponsorContainer");
+    
+    if (container.children.length <= 1) return(alert('At least one Sponsor is required!'));
+  
+    const lastChild = container.lastElementChild; 
+    if (lastChild) {
+      container.removeChild(lastChild);
+      sponsorCount--;
+    }
+  }
