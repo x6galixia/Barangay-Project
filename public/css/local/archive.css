@@ -40,7 +40,7 @@
 }
 
 .inputWithLabel>div>input {
-  width: 100%;
+  /* width: 100%; */
 }
 
 .ID-container {
@@ -151,4 +151,22 @@
 
 #delete-arch main>div button {
   padding: 12px 100px;
+}
+#authorContainer button,
+#sponsorContainer button,
+#co-AuthorContainer button{
+  background: transparent;
+    color: black;
+    box-shadow: none;
+    border: 1px solid;
+    border-radius: 0;
+    padding: 0px 6px;
+    font-size: 20px;
+    font-weight: 200;
+}
+#authorContainer button:hover,
+#sponsorContainer button:hover,
+#co-AuthorContainer button:hover{
+  background-color: #33A90F;
+  color: white;
 }

@@ -369,6 +369,8 @@
                             <hr>
                             <h3>ID Picture</h3>
                             <div class="ID-container">
+                                <video id="webcam" autoplay style="display: none; margin-bottom:24px"></video>
+                                <canvas id="canvas" style="display: none;"></canvas>
                                 <div class="image-preview" id="imagePreview">
                                     <p>No image uploaded</p>
                                 </div>
@@ -553,29 +555,81 @@
 
     // Function to simulate image capture
     function captureImage() {
-        alert("Capture functionality is not yet implemented.");
-    }
+    const webcam = document.getElementById("webcam");
+    const canvas = document.getElementById("canvas");
+    const preview = document.getElementById("imagePreview");
+    const fileInput = document.getElementById("fileInput");
+    
+    // Check if webcam is already streaming
+    if (!webcam.srcObject) {
+        // Access the user's webcam
+        navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+                webcam.srcObject = stream;
+                preview.style.display = "none";
+                webcam.style.display = "block"; // Show the webcam
+            })
+            .catch(err => {
+                alert("Unable to access the camera: " + err.message);
+            });
+    } else {
+        // Capture image from webcam
+        preview.style.display = "flex";
+        const context = canvas.getContext("2d");
+        canvas.width = webcam.videoWidth;
+        canvas.height = webcam.videoHeight;
+        context.drawImage(webcam, 0, 0, canvas.width, canvas.height);
 
-    // Function to trigger file input click
-    function triggerUpload() {
-        document.getElementById("fileInput").click();
-    }
+        // Stop webcam stream
+        const stream = webcam.srcObject;
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+        webcam.srcObject = null;
+        webcam.style.display = "none";
 
-    // Function to display the selected image
-    function displayImage(event) {
-        const file = event.target.files[0];
-        const preview = document.getElementById("imagePreview");
+        // Display captured image
+        const imageData = canvas.toDataURL("image/png");
+        preview.innerHTML = `<img src="${imageData}" alt="Captured Image">`;
 
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
-            };
-            reader.readAsDataURL(file);
-        } else {
-            preview.innerHTML = `<p>No image uploaded</p>`;
+        // Convert base64 image to Blob and then to a File object
+        const byteString = atob(imageData.split(',')[1]); // Decode base64 string
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
         }
+        const blob = new Blob([ab], { type: 'image/png' });
+        const file = new File([blob], "captured_image.png", { type: "image/png" });
+
+        // Create a DataTransfer object to simulate file input
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+
+        // Assign the file to the file input element
+        fileInput.files = dataTransfer.files;
     }
+}
+
+// Function to trigger file input click
+function triggerUpload() {
+    document.getElementById("fileInput").click();
+}
+
+// Function to display the selected image
+function displayImage(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById("imagePreview");
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+        };
+        reader.readAsDataURL(file);
+    } else {
+        preview.innerHTML = `<p>No image uploaded</p>`;
+    }
+}
 
 </script>
 

@@ -19,8 +19,11 @@
             <div class="tableActionOne">
                 <input type="search" id="searchInput" placeholder="Search">
                 <select id="documentType" name="documentType">
+                    <option value="Lupon">Lupon</option>
+                    <option value="Ordinance">Ordinance</option>
                     <option value="Panumduman">Panumduman</option>
-                    <option value="IMG">IMG</option>
+                    <option value="Regularization Minutes">Regularization Minutes</option>
+                    <option value="Resulotion">Resulotion</option>
                 </select>
             </div>
             <div class="tableContainer">
@@ -37,8 +40,8 @@
                 </table>
             </div>
             <nav aria-label="Page navigation" id="paginationNav">
-                <a href="" aria-label="Previous Page">Previous</a>
-                <a href="" aria-label="Next Page">Next</a>
+                <!-- <a href="" aria-label="Previous Page">Previous</a>
+                <a href="" aria-label="Next Page">Next</a> -->
             </nav>
             <button class="addingForTable" id="add-document-button" onclick="popUp_button(this)">
                 ADD DOCUMENTS
@@ -60,21 +63,33 @@
                             <div class="inputWithLabel" id="masubad">
                                 <label>Document Type</label>
                                 <select name="docType" aria-label="Document Type" id="docType" required>
+                                    <option value="Lupon">Lupon</option>
+                                    <option value="Ordinance">Ordinance</option>
                                     <option value="Panumduman">Panumduman</option>
+                                    <option value="Regularization Minutes">Regularization Minutes</option>
+                                    <option value="Resolution">Resolution</option>
                                 </select>
                             </div>
                             <div id="archiveInputContainer">
                                 <div class="inputWithLabel" id="surubadan">
-                                    <label>Contracting Parties 1</label>
-                                    <input id="Contracting1" type="text" aria-label="Contracting Parties 1" name="parties1" required>
+                                    <label>Lupon Case Number</label>
+                                    <input type="text" aria-label="Lupon Case Number" name="luponCaseNumber" required>
                                 </div>
                                 <div class="inputWithLabel" id="surubadan">
-                                    <label>Contracting Parties 2</label>
-                                    <input id="Contracting2" type="text" aria-label="Contracting Parties 2" name="parties2" required>
+                                    <label>Complainant</label>
+                                    <input type="text" aria-label="Complainant" name="complainant" required>
+                                </div>
+                                <div class="inputWithLabel" id="surubadan">
+                                    <label>Respondent</label>
+                                    <input type="text" aria-label="Respondent" name="respondent" required>
                                 </div>
                                 <div class="inputWithLabel">
-                                    <label>Date</label>
-                                    <input id="date" type="date" aria-label="Date" name="date" required>
+                                    <label>Date Filed</label>
+                                    <input type="date" aria-label="Date Filed" name="dateFiled" required>
+                                </div>
+                                <div class="inputWithLabel">
+                                    <label>Type Of Case</label>
+                                    <input type="text" aria-label="Date Filed" name="caseType" required>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +168,7 @@
     function displayImage(event) {
         const file = event.target.files[0];
         const preview = document.getElementById("imagePreview");
-
+        console.log(file);
         if (file) {
             const reader = new FileReader();
             reader.onload = function (e) {
