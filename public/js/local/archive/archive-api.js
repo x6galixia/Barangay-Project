@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (archive.length === 0) {
                 const noDataRow = document.createElement('tr');
                 noDataRow.innerHTML = `
-                    <td colspan="4" class="text-center">No items found.</td>
+                    <td colspan="4" class="text-center">No Documents found.</td>
                 `;
                 archiveTableBody.appendChild(noDataRow);
                 return;
@@ -100,6 +100,110 @@ function docChanges() {
             <div class="inputWithLabel" id="surubadan">
                 <label>Contracting Parties 2</label>
                 <input type="text" aria-label="Contracting Parties 2" name="parties2" required>
+            </div>
+            <div class="inputWithLabel">
+                <label>Date</label>
+                <input type="date" aria-label="Date" name="date" required>
+            </div>
+            `
+        }
+        if (selectedValue === "Lupon") {
+            formContainer.innerHTML = `
+            <div class="inputWithLabel" id="surubadan">
+                <label>Lupon Case Number</label>
+                <input type="number" aria-label="Lupon Case Number" name="luponCaseNumber" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Complainant</label>
+                <input type="text" aria-label="Complainant" name="complainant" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Respondent</label>
+                <input type="text" aria-label="Respondent" name="respondent" required>
+            </div>
+            <div class="inputWithLabel">
+                <label>Date Filed</label>
+                <input type="date" aria-label="Date Filed" name="dateFiled" required>
+            </div>
+            <div class="inputWithLabel">
+                <label>Type Of Case</label>
+                <input type="text" aria-label="Date Filed" name="caseType" required>
+            </div>
+            `
+        }
+        if (selectedValue === "Ordinance") {
+            formContainer.innerHTML = `
+            <div class="inputWithLabel" id="surubadan">
+                <label>Ordinance Number</label>
+                <input type="number" aria-label="Ordinance Number" name="ordinanceNumber" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Author(1)</label>
+                <input type="text" aria-label="Author(1)" name="author1" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Author(2)</label>
+                <input type="text" aria-label="Author(2)" name="author2" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Author(2)</label>
+                <input type="text" aria-label="Author(3)" name="author2" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Co-Author(1)</label>
+                <input type="text" aria-label="Co-Author(1)" name="coAuthor1" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Co-Author(2)</label>
+                <input type="text" aria-label="Co-Author(2)" name="coAuthor2" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Co-Author(2)</label>
+                <input type="text" aria-label="Co-Author(3)" name="coAuthor2" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Sponsor(1)</label>
+                <input type="text" aria-label="Sponsor(1)" name="sponsor1" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Sponsor(2)</label>
+                <input type="text" aria-label="Sponsor(2)" name="sponsor2" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Sponsor(2)</label>
+                <input type="text" aria-label="Sponsor(3)" name="sponsor2" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Respondent</label>
+                <input type="text" aria-label="Respondent" name="respondent" required>
+            </div>
+            <div class="inputWithLabel">
+                <label>Date Approved</label>
+                <input type="date" aria-label="Date Approved" name="dateApproved" required>
+            </div>
+            `
+        }
+        if (selectedValue === "Resolution") {
+            formContainer.innerHTML = `
+            <div class="inputWithLabel" id="surubadan">
+                <label>Resolution Number</label>
+                <input type="number" aria-label="Resolution Number" name="resolutionNumber" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Series of Year</label>
+                <input type="text" aria-label="Series of Year" name="yearSeries" required>
+            </div>
+            <div class="inputWithLabel">
+                <label>Date</label>
+                <input type="date" aria-label="Date" name="date" required>
+            </div>
+            `
+        }
+        if (selectedValue === "Regularization Minutes") {
+            formContainer.innerHTML = `
+            <div class="inputWithLabel" id="surubadan">
+                <label>Ika Pira na Regulation</label>
+                <input type="number" aria-label="Ika Pira na Regulation" name="regulationNumber" required>
             </div>
             <div class="inputWithLabel">
                 <label>Date</label>
@@ -282,8 +386,7 @@ function clearFillInputs() {
         docType,
         Contracting1,
         Contracting2,
-        date,
-        fileInput
+        date
     };
 
     Object.keys(elements).forEach(id => {
