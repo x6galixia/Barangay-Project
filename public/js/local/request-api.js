@@ -3,7 +3,6 @@ const qrInputField = document.getElementById('qrInput');
 let scanning = false;
 
 // if (this.checked) {
-console.log("Scanning started");
 
 // Enable scanning and focus the QR input field
 document.addEventListener('keydown', handleKeyDown);
@@ -33,8 +32,6 @@ function handleKeyPress(event) {
     const scannedData = event.target.value;
     const secretKey = "MnDev";
 
-    console.log(scannedData);
-
     // Decrypt function
     function decryptData(cipherText, secretKey) {
       const bytes = CryptoJS.AES.decrypt(cipherText, secretKey);
@@ -43,34 +40,37 @@ function handleKeyPress(event) {
 
     const decryptedData = decryptData(scannedData, secretKey);
 
-    console.log(document.getElementById("qrOutput").value);
-    console.log(decryptedData);
-
-    // Set scanned data to the QR output field
     document.getElementById("qrOutput").value = decryptedData;
 
-    // Send the scanned QR code data to the server
     fetch(`/home/dashboard/fetchScannedData?qrCode=${decryptedData}`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
+          'Content-Type': 'application/json'
       }
-    })
+  })
       .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok ' + response.statusText);
-        }
-        return response.json();
+          return response.json();
       })
       .then(data => {
-        console.log('Success:', data);
-        populateFormFields(data);
+          if (data.success) {
+              populateFormFields(data.data);
+          } else {
+              const submitPrompt1 = document.getElementById("submit_prompt1");
+              if (submitPrompt1) {
+                  submitPrompt1.classList.add("visible1")
+                  document.querySelector('.error-message').textContent = data.error;
+                  const overlay = document.querySelector('.overlay');
+                  if (overlay) {
+                      overlay.classList.add("visible");
+                  }
+              }
+          }
       })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+      .catch(error => {
+          console.error('Error:', error.message);
+          alert('An unexpected error occurred. Please try again later.');
+      });  
 
-    // Clear the input after scanning
     event.target.value = '';
   }
 }
@@ -86,4 +86,45 @@ function populateFormFields(data) {
   document.getElementById("purok").value = data.purok || '';
   document.getElementById("grossIncome").value = data.income || '';
   document.getElementById("birthplace").value = data.birthplace || '';
+
+  if (data.isresident === true){
+    document.getElementById("purpose").innerHTML = `
+    <option value=" default" disabled selected>
+      Select a Services
+    </option>
+    <option value="Brgy. Clearance">Brgy. Clearance</option>
+    <option value="Building Clearance">Building Clearance</option>
+    <option value="Burial Certificate">Burial Certificate</option>
+    <option value="Business Clearance">Business Clearance</option>
+    <option value="Business Closure">Business Closure</option>
+    <option value="Common Law">Common Law</option>
+    <option value="Death Certificate">Death Certificate</option>
+    <option value="Employment">Employment</option>
+    <option value="Good Moral">Good Moral</option>
+    <option value="Guardianship">Guardianship</option>
+    <option value="Income">Income</option>
+    <option value="Indigency">Indigency</option>
+    <option value="Land no claim">Land no claim</option>
+    <option value="Late Registration">Late Registration</option>
+    <option value="Panumduman">Panumduman</option>
+    <option value="RA 11261">RA 11261</option>
+    <option value="Oath Of Undertaking">RA 11261 (Oath Of Undertaking)</option>
+    <option value="Residency">Residency</option>
+    <option value="Same Person">Same Person</option>
+    <option value="Singleness">Singleness</option>
+    <option value="Solo Parent">Solo Parent</option>
+    <option value="Water District">Water District</option>
+    `
+  } else if (data.isresident === false) {
+    document.getElementById("purpose").innerHTML = `
+    <option value=" default" disabled selected>
+      Select a Services
+    </option>
+    <option value="Brgy. Clearance">Brgy. Clearance</option>
+    <option value="Indigency">Indigency</option>
+    <option value="RA 11261">RA 11261</option>
+    <option value="Oath Of Undertaking">RA 11261 (Oath Of Undertaking)</option>
+    `
+  }
+
 }

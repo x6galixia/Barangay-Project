@@ -24,10 +24,11 @@ router.get("/dashboard/fetchScannedData", async (req, res) => {
         ]);
 
         if (residentResult.rows.length > 0) {
-            res.json(residentResult.rows[0]);
+            res.status(200).json({ success: true, data: residentResult.rows[0] });
         } else {
-            console.log(`User not found for this id=${qrCode}`);
+            res.status(200).json({ success: false, error: "QR not registered in the database!" });
         }
+        
     } catch (err) {
         console.error("Error querying database:", err.message);
         res.status(500).send("Server error");
