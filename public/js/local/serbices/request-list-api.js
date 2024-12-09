@@ -222,7 +222,10 @@ window.processCertificate = function (button) {
         }
       });
   
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("brgyClearance"));
+      viewCertificate.addEventListener('click',()=> {
+        viewCertificateDetails("brgyClearance")
+        alert('yawa ka');
+      });
     }
     else if (purpose === 'Building Clearance') {
       certificateMainForm.innerHTML = `
@@ -1168,8 +1171,33 @@ window.processCertificate = function (button) {
   
     const hiddenContainers = document.querySelectorAll("#residency, #indigency, #RA11261, #brgyClearance, #singleness, #guardianship, #income, #landNoClaim, #noDuplication, #panumduman, #buildingClearance, #burailClearance, #businessClearance, #businessClosure, #lateRegistration, #soloParent, #oathUndertaking, #goodMoral, #samePerson");
     hiddenContainers.forEach(container => container.classList.remove("visible"));
-  
-    document.getElementById(selectedCertificate).classList.add("visible");
+    
+    var convertToImage = document.getElementById(selectedCertificate);
+    var imageContainer = document.getElementById("certificateContainer");
+
+    
+    convertToImage.classList.add("visible");
+    html2canvas(convertToImage).then((canvas) => {
+      const img = canvas.toDataURL("image/png"); // Convert canvas to image data
+      const imgElement = document.createElement("img");
+      imgElement.src = img;
+      imgElement.style.width="100%"
+      imgElement.style.height="auto"
+
+      // Append the generated image to the container
+      imageContainer.innerHTML = ""; // Clear previous images
+      imageContainer.appendChild(imgElement);
+
+      console.log(selectedCertificate);
+    });
+    imageContainer.classList.add("visible");
+    convertToImage.classList.remove("visible");
+  // document.getElementById("certificate").classList.add("visible");
+
+
+
+
+    
   
     document.querySelector(".closeCertificate").addEventListener("click", function () {
       if(selectedCertificate === "oathUndertaking"){

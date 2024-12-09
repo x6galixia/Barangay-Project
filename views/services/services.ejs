@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/global/print-general.css">
     <link rel="stylesheet" href="../css/local/serbices.css">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/html2canvas"></script> -->
     <title>
         <%= title %>
     </title>
@@ -70,32 +71,37 @@
                 <img src="../icon/close.svg" alt="" class="closeCertificate">
             </div>
             <main id="certificateContainer">
-                <%- include("../includes/indigencyy.ejs") %>                <!-- DONE -->
-                <%- include("../includes/RA-1261.ejs") %>                   <!-- DONE -->
-                <%- include("../includes/brgy-clearance.ejs") %>            <!-- DONE -->
-                <%- include("../includes/singleness.ejs") %>                <!-- DONE -->
-                <%- include("../includes/certificate-of-residency.ejs") %>  <!-- DONE(kulang pa an certificate) -->
-                <%- include("../includes/oath-undertaking.ejs") %>          <!-- DONE -->
-                <%- include("../includes/late-registration.ejs") %>         <!-- DONE -->
-                <%- include("../includes/cet-of-guardianship.ejs") %>       <!-- DONE -->
-                <%- include("../includes/good-moral.ejs") %>                <!-- DONE / may d nasali sa baba-->
-                <%- include("../includes/business-closure.ejs") %>          <!-- DONE -->
-                <%- include("../includes/business-clearance.ejs") %>        <!-- DONE -->
-                <%- include("../includes/building-clearance.ejs") %>        <!-- DONE -->
-                <%- include("../includes/burial-clearance.ejs") %>          <!-- DONE -->
-                <%- include("../includes/panumduman.ejs") %>                <!-- DONE / may d nasali sa baba-->
-                <%- include("../includes/same-person.ejs") %>               <!-- DONE -->
-                <%- include("../includes/income.ejs") %>                    <!-- MEDYO DONE ARAYUSON IT CERTIFICATE -->
-                <%- include("../includes/solo-parent.ejs") %>               <!-- BIEWABLE PALA / need ig pa consult ulit-->
-                <%- include("../includes/land-no-claim.ejs") %>             <!-- BIEWABLE PALA / need ig pa consult ulit-->
-
+                
             </main>
+            <%- include("../includes/indigencyy.ejs") %>                <!-- DONE -->
+            <%- include("../includes/RA-1261.ejs") %>                   <!-- DONE -->
+            <%- include("../includes/brgy-clearance.ejs") %>            <!-- DONE -->
+            <%- include("../includes/singleness.ejs") %>                <!-- DONE -->
+            <%- include("../includes/certificate-of-residency.ejs") %>  <!-- DONE(kulang pa an certificate) -->
+            <%- include("../includes/oath-undertaking.ejs") %>          <!-- DONE -->
+            <%- include("../includes/late-registration.ejs") %>         <!-- DONE -->
+            <%- include("../includes/cet-of-guardianship.ejs") %>       <!-- DONE -->
+            <%- include("../includes/good-moral.ejs") %>                <!-- DONE / may d nasali sa baba-->
+            <%- include("../includes/business-closure.ejs") %>          <!-- DONE -->
+            <%- include("../includes/business-clearance.ejs") %>        <!-- DONE -->
+            <%- include("../includes/building-clearance.ejs") %>        <!-- DONE -->
+            <%- include("../includes/burial-clearance.ejs") %>          <!-- DONE -->
+            <%- include("../includes/panumduman.ejs") %>                <!-- DONE / may d nasali sa baba-->
+            <%- include("../includes/same-person.ejs") %>               <!-- DONE -->
+            <%- include("../includes/income.ejs") %>                    <!-- MEDYO DONE ARAYUSON IT CERTIFICATE -->
+            <%- include("../includes/solo-parent.ejs") %>               <!-- BIEWABLE PALA / need ig pa consult ulit-->
+            <%- include("../includes/land-no-claim.ejs") %>             <!-- BIEWABLE PALA / need ig pa consult ulit-->
             <button style="display: flex; justify-self: end; margin-top: 24px; padding: 12px 48px;"
                 onclick="window.print()">Print</button>
         </div>
 
 </body>
+    <script>
+        
+    </script>
+
 <script src="../../js/global/pop-up.js"></script>
+<script src="../../js/local/serbices/html2canvas.js"></script>
 <script src="../../js/local/serbices/request-list-api.js"></script>
 <script>
     document.querySelector("header>nav>ul>li:nth-child(2)").classList.toggle("selected");
