@@ -5,55 +5,75 @@ document.addEventListener("DOMContentLoaded", async function () {
     const page = parseInt(urlParams.get('page')) || 1;
     const limit = parseInt(urlParams.get('limit')) || 10;
     const isResidentInput = document.getElementById('isResident');
-    isResidentInput.value = "resident";
+    isResidentInput.value = "Resident";
+    const type = urlParams.get('type');
+    const dropdown = document.querySelector('.residents-dropdown');
 
+    if (type && dropdown) {
+        dropdown.value = type; 
+    }
     fetchResidents().then(attachDotEventListeners);
 
+
+    // Function to update the URL parameters
+    function updateURLParameter(key, value) {
+        const url = new URL(window.location);
+        url.searchParams.set(key, value);
+        window.history.replaceState({}, '', url);
+        window.location.href = url;
+    }
+
+    function getURLParameter(key) {
+        const url = new URL(window.location);
+        return url.searchParams.get(key);
+    }
+
+    const selectedValue1 = getURLParameter('type') || 'Residents';
+    const columnsToHide = ["REMARKS"];
+    const headers = document.querySelectorAll('table thead th');
+    const rows = document.querySelectorAll('table tbody tr');
+    const searchQuery = document.getElementById('searchInput').value.trim();
+    // updateURLParameter('type', selectedValue1);
+
+    function toggleColumns(show) {
+        headers.forEach((header, index) => {
+            if (columnsToHide.includes(header.textContent.trim().toUpperCase())) {
+                header.style.display = show ? '' : 'none';
+                rows.forEach(row => {
+                    if (row.cells[index]) {
+                        row.cells[index].style.display = show ? '' : 'none';
+                    }
+                });
+            }
+        });
+    }
+
+    if (selectedValue1 === "Residents") {
+        console.log("Residents selected");
+        toggleColumns(true);
+        fetchResidents(1, 10, searchQuery, false).then(attachDotEventListeners);
+    } else if (selectedValue1 === "Non-residents") {
+        console.log("Non-Residents selected");
+        toggleColumns(false);
+        fetchResidents(1, 10, searchQuery, true).then(attachDotEventListeners);
+    }
+
+    // Event listener for the dropdown change
+    document.querySelector('.residents-dropdown').addEventListener('change', function () {
+        const selectedValue = this.value.trim();
+        updateURLParameter('type', selectedValue);
+    });
+
+    // Event listener for the search input
     searchInput.addEventListener('input', () => {
-        const selectedValue = document.querySelector('.residents-dropdown').value.trim();
-        const isNonResident = selectedValue === 'non-residents';
+        const urlParams = new URL(window.location).searchParams;
+        const selectedValue = urlParams.get('type') || 'Residents'; // Default to 'residents'
+        const isNonResident = selectedValue === 'Non-residents';
         const searchQuery = searchInput.value.trim();
 
         fetchResidents(1, 10, searchQuery, isNonResident).then(attachDotEventListeners);
     });
 
-    document.querySelector('.residents-dropdown').addEventListener('change', function () {
-        const selectedValue = this.value.trim();
-        const searchQuery = document.getElementById('searchInput').value.trim();
-
-        const isNonResident = selectedValue === 'non-residents';
-        const columnsToHide = ["REMARKS"];
-        const headers = document.querySelectorAll('table thead th');
-        const rows = document.querySelectorAll('table tbody tr');
-
-        function toggleColumns(show) {
-            headers.forEach((header, index) => {
-                if (columnsToHide.includes(header.textContent.trim().toUpperCase())) {
-                    header.style.display = show ? '' : 'none';
-                    rows.forEach(row => {
-                        if (row.cells[index]) {
-                            row.cells[index].style.display = show ? '' : 'none';
-                        }
-                    });
-                }
-            });
-        }
-
-        if (selectedValue === "residents") {
-            console.log("Residents selected");
-            // residentFormField();
-            toggleColumns(true);
-
-            fetchResidents(1, 10, searchQuery, false).then(attachDotEventListeners);
-
-        } else if (selectedValue === "non-residents") {
-            console.log("Non-Residents selected");
-            // nonResidentFormField();
-            toggleColumns(false);
-
-            fetchResidents(1, 10, searchQuery, true).then(attachDotEventListeners);
-        }
-    });
 
     async function fetchResidents(page = 1, limit = 10, searchQuery = '', isNonResident = false) {
 
@@ -75,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 // Display a "No residents found" message
                 const noDataRow = document.createElement('tr');
                 noDataRow.innerHTML = `
-                    <td colspan="9" class="text-center">No ${isNonResident ? 'non-residents' : 'residents'} found.</td>
+                    <td colspan="9" class="text-center">No ${isNonResident ? 'Non-residents' : 'Residents'} found.</td>
                 `;
                 residentsTableBody.appendChild(noDataRow);
                 return;
@@ -99,7 +119,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                         <img class="dot" src="../icon/triple-dot.svg" alt="">
                         <div class="triple-dot">
                             <div class="menu" data-id="${resident.globalid}">
-                                <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
+                                <button id="delete-id" data-type="${selectedValue1}" onclick="popUp_three_dot(this)">Delete</button>
                                 <button id="update-id" onclick="popUp_three_dot(this)"
                                 data-globalId="${resident.globalid}"
                                 data-isResident="${resident.isresident}"
@@ -204,11 +224,12 @@ window.popUp_three_dot = function (button) {
         const deleteContainer = document.getElementById("delete-resident");
         const confirmDeleteButton = document.getElementById('confirm-delete');
         const cancelDeleteButton = document.getElementById('cancel-delete');
+        const selectedType = button.getAttribute('data-type');
         deleteContainer.classList.add("visible");
         overlay.classList.toggle("visible");
 
         confirmDeleteButton.addEventListener('click', function () {
-            deleteResident(residentID);
+            deleteResident(residentID, selectedType);
             pop_up_Delete.classList.remove("visible");
             overlay.classList.remove("visible");
         })
@@ -221,12 +242,12 @@ window.popUp_three_dot = function (button) {
         const isResident = button.getAttribute('data-isResident');
         const updateContainer = document.getElementById("add-resident");
 
-        if (document.querySelector('.residents-dropdown').value === " residents") {
+        if (document.querySelector('.residents-dropdown').value === "Residents") {
             residentFormField();
             document.querySelector('#add-resident .heading').innerText = "UPDATE RESIDENT";
             document.querySelector('#add-resident #submit_add_resident').innerText = "UPDATE";
             document.querySelector('#add-resident #formToAddResident').action = `/residents/dashboard/update-resident`;
-        } else if (document.querySelector('.residents-dropdown').value === "non-residents") {
+        } else if (document.querySelector('.residents-dropdown').value === "Non-residents") {
             nonResidentFormField();
             document.querySelector('#add-resident .heading').innerText = "UPDATE NON-RESIDENT";
             document.querySelector('#add-resident #submit_add_resident').innerText = "UPDATE";
@@ -319,8 +340,8 @@ window.popUp_three_dot = function (button) {
         return bytes.toString(CryptoJS.enc.Utf8);
     }
 
-    function deleteResident(residentId) {
-        fetch(`/residents/delete-residents/${residentId}`, {
+    function deleteResident(residentId, dataType) {
+        fetch(`/residents/delete-residents/${residentId}/${dataType}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -347,9 +368,9 @@ function popUp_button(button) {
     if (buttonId === "add-resident-button") {
         addResident.classList.toggle("visible");
         overlay.classList.add("visible");
-        if (document.querySelector('.residents-dropdown').value === " residents") {
+        if (document.querySelector('.residents-dropdown').value === "Residents") {
             residentFormField();
-        } else if (document.querySelector('.residents-dropdown').value === "non-residents") {
+        } else if (document.querySelector('.residents-dropdown').value === "Non-residents") {
             nonResidentFormField();
         }
     }
@@ -359,10 +380,10 @@ document.querySelectorAll(".close_popUp_for_resident").forEach(function (closeBt
     closeBtn.addEventListener("click", function () {
         var pop_up = closeBtn.closest(".pop-up");
         if (pop_up) {
-            if (document.querySelector('.residents-dropdown').value === " residents") {
+            if (document.querySelector('.residents-dropdown').value === "Residents") {
                 residentFormField();
                 clearFillInputs();
-            } else if (document.querySelector('.residents-dropdown').value === "non-residents") {
+            } else if (document.querySelector('.residents-dropdown').value === "Non-residents") {
                 nonResidentFormField();
                 clearFillInputs();
             }

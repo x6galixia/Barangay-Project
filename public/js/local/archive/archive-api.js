@@ -172,8 +172,8 @@ function docChanges() {
         if (selectedValue === "Regularization Minutes") {
             formContainer.innerHTML = `
             <div class="inputWithLabel" id="surubadan">
-                <label>Ika Pira na Regulation</label>
-                <input type="number" aria-label="Ika Pira na Regulation" name="regulationNumber" required>
+                <label>Regulation Number (Ex. 1st)</label>
+                <input type="text" aria-label="Ika Pira na Regulation" name="regulationNumber" required>
             </div>
             <div class="inputWithLabel">
                 <label>Date</label>

@@ -2,20 +2,26 @@
 const qrInputField = document.getElementById('qrInput');
 let scanning = false;
 
-// if (this.checked) {
+function checkId() {
+  const idInput = document.getElementById('qrOutput');
+  const submitButton = document.getElementById('submitButton');
+  
+  if (idInput.value.trim() !== '') {
+      submitButton.disabled = false;
+      console.log("false");
+    } else {
+    console.log("true");
+      submitButton.disabled = true;
+  }
+}
+
+window.addEventListener('load', checkId);
+document.getElementById('qrOutput').addEventListener('input', checkId);
 
 // Enable scanning and focus the QR input field
 document.addEventListener('keydown', handleKeyDown);
 qrInputField.addEventListener('keypress', handleKeyPress);
 qrInputField.focus(); // Focus on the QR input field when scanning is enabled
-// } else {
-//   console.log("Scanning stopped");
-
-//   // Disable scanning and remove focus from the QR input field
-//   document.removeEventListener('keydown', handleKeyDown);
-//   qrInputField.removeEventListener('keypress', handleKeyPress);
-//   qrInputField.blur(); // Remove focus from the QR input field
-// }
 
 // Function to handle keydown event
 function handleKeyDown(event) {
@@ -72,6 +78,7 @@ function handleKeyPress(event) {
       });  
 
     event.target.value = '';
+    checkId();
   }
 }
 // });

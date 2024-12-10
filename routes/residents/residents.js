@@ -256,7 +256,7 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
         );
 
         req.flash('success', 'Resident Added Successfully!');
-        res.redirect("/residents/dashboard");
+        res.redirect("/residents/dashboard?type=Residents");
     } catch (err) {
         console.error("Error:", err.message, err.stack);
         res.status(500).send("Internal server error");
@@ -422,7 +422,7 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
         console.log("Inserted data into the boarders table successfully.");
 
         req.flash('success', 'Non-Resident Added Successfully!');
-        res.redirect("/residents/dashboard");
+        res.redirect("/residents/dashboard?type=Non-residents");
     } catch (err) {
         console.error("Error: ", err.message, err.stack);
         res.status(500).send("Internal server error");
@@ -505,7 +505,7 @@ router.post("/dashboard/update-resident", upload.single('picture'), async (req, 
         );
 
         req.flash('success', 'Resident Updated Successfully!');
-        res.redirect("/residents/dashboard");
+        res.redirect("/residents/dashboard?type=Residents");
     } catch (err) {
         console.error("Error:", err.message, err.stack);
         res.status(500).send("Internal server error");
@@ -621,21 +621,22 @@ router.post("/dashboard/update-non-resident", upload.single('picture'), async (r
         console.log("Non-resident information updated successfully.");
 
         req.flash('success', 'Non-Resident Updated Successfully!');
-        res.redirect("/residents/dashboard");
+        res.redirect("/residents/dashboard?type=Non-residents");
     } catch (err) {
         console.error("Error:", err.message, err.stack);
         res.status(500).send("Internal server error");
     }
 });
 
-router.delete("/delete-residents/:id", async (req, res) => {
+router.delete("/delete-residents/:id/:type", async (req, res) => {
     const residentsId = req.params.id;
+    const type = req.params.type; 
 
     try {
         await mPool.query(`DELETE FROM residents WHERE globalId = $1`, [residentsId]);
 
-        req.flash('success', 'Resident deleted successfully!');
-        res.redirect("/residents/dashboard");
+        req.flash('success', `${encodeURIComponent(type)} deleted successfully!`);
+        res.redirect(`/residents/dashboard?type=${encodeURIComponent(type)}`);
     } catch (err) {
         console.error("Error: ", err.message, err.stack);
         res.status(500).send("An error occurred while trying to delete the resident.");
