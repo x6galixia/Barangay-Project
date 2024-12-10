@@ -25,13 +25,69 @@ CREATE TABLE inventory (
     isFunctional BOOLEAN DEFAULT TRUE
 );
 
--- archive
+----- ARCHIVE ------
 CREATE TABLE archive (
-    id SERIAL PRIMARY KEY NOT NULL,
+    archiveId SERIAL PRIMARY KEY,
+    doctypeId INT NOT NULL, -- Refers to the document type (e.g., Panumduman, Lupon, etc.)
+    FOREIGN KEY (doctypeId) REFERENCES document_type(doctypeId)
+);
+
+CREATE TABLE document_type (
+    doctypeId SERIAL PRIMARY KEY,
+    typeName VARCHAR(50) NOT NULL -- Examples: Panumduman, Lupon, Ordinance, etc.
+);
+
+CREATE TABLE panumduman (
+    panumdumanId SERIAL PRIMARY KEY,
+    archiveId INT NOT NULL,
     date DATE NOT NULL,
-    img TEXT NOT NULL,
-    docType VARCHAR(255) NOT NULL CHECK (docType IN ('Panumduman')),
-    contractingPersons TEXT NOT NULL
+    image VARCHAR(255), -- Path to the image
+    contractingPersons TEXT NOT NULL, -- JSON or long text for flexibility
+    FOREIGN KEY (archiveId) REFERENCES archive(archiveId)
+);
+
+CREATE TABLE lupon (
+    luponId SERIAL PRIMARY KEY,
+    archiveId INT NOT NULL,
+    caseNumber VARCHAR(50) NOT NULL, -- Unique identifier for the case
+    complainant TEXT NOT NULL,
+    respondent TEXT NOT NULL,
+    dateFiled DATE NOT NULL,
+    image VARCHAR(255), -- Path to the image
+    caseType VARCHAR(100), -- Example: Civil, Criminal, etc.
+    FOREIGN KEY (archiveId) REFERENCES archive(archiveId)
+);
+
+CREATE TABLE ordinance (
+    ordinanceId SERIAL PRIMARY KEY,
+    archiveId INT NOT NULL,
+    ordinanceNumber VARCHAR(50) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    authors TEXT NOT NULL, -- JSON or text to store 2-3 authors
+    coAuthors TEXT, -- Optional JSON or text for co-authors
+    sponsors TEXT, -- Optional JSON or text for sponsors
+    image VARCHAR(255), -- Path to the image
+    dateApproved DATE NOT NULL,
+    FOREIGN KEY (archiveId) REFERENCES archive(archiveId)
+);
+
+CREATE TABLE resolution (
+    resolutionId SERIAL PRIMARY KEY,
+    archiveId INT NOT NULL,
+    resolutionNumber VARCHAR(50) NOT NULL,
+    seriesYear INT NOT NULL,
+    image VARCHAR(255), -- Path to the image
+    date DATE NOT NULL,
+    FOREIGN KEY (archiveId) REFERENCES archive(archiveId)
+);
+
+CREATE TABLE regularization_minutes (
+    regularizationId SERIAL PRIMARY KEY,
+    archiveId INT NOT NULL,
+    regulationNumber INT NOT NULL,
+    image VARCHAR(255), -- Path to the image
+    date DATE NOT NULL,
+    FOREIGN KEY (archiveId) REFERENCES archive(archiveId)
 );
 
 -- residents

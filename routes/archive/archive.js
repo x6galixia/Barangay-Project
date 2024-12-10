@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mPool = require("../../models/mDatabase");
-const { fetchArchiveLists } = require("../../middlewares/helper-functions/fetch-functions");
+const { fetchArchiveLists, fetchArchiveData } = require("../../middlewares/helper-functions/fetch-functions");
 const { archiveSchema } = require("../../middlewares/schemas/schemas");
 
 const multer = require("multer");
@@ -31,30 +31,35 @@ router.get("/dashboard", async (req, res) => {
     const page = parseInt(req.query.page, 10) || 1;
     const limit = parseInt(req.query.limit, 10) || 10;
     const searchQuery = req.query.search || '';
+    const doctype = req.query.doctype || null; // Fetch the document type filter if provided
     const isAjax = req.query.ajax === "true" || req.xhr;
 
     try {
-        const { getArchiveList, totalPages } = await fetchArchiveLists(page, limit, searchQuery);
+        // Call the fetchArchiveData function
+        const { archiveList, totalPages } = await fetchArchiveData(page, limit, searchQuery, doctype);
 
         if (isAjax) {
+            // If Ajax request, send JSON response
             return res.json({
                 title: "Archive",
-                getArchiveList,
+                archiveList,
                 currentPage: page,
                 totalPages,
                 limit,
             });
         }
 
+        // If standard request, render the archive page
         res.render("archive/archive", {
             title: "Archive",
-            getArchiveList,
+            archiveList,
             currentPage: page,
             totalPages,
             limit,
         });
+
     } catch (err) {
-        console.error("Error: ", err.message, err.stack);
+        console.error("Error fetching archive data: ", err.message, err.stack);
         res.status(500).send("Internal server error");
     }
 });
