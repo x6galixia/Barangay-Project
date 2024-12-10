@@ -36,7 +36,7 @@ function generateGlobalNextId(lastId) {
   }
 
   console.warn("Falling back to default ID: MPDN0001");
-  return "MPDN0001";
+  return "MPDN0000";
 }
 
 function generateIdNumberNextId(lastId) {
@@ -48,7 +48,7 @@ function generateIdNumberNextId(lastId) {
     return `${prefix}-${String(newNumber).padStart(4, "0")}`; // Format with hyphen
   }
 
-  return `${getCurrentYear()}-0001`; // Default format if no last ID is found
+  return `${getCurrentYear()}-0000`; // Default format if no last ID is found
 }
 
 function getCurrentYear() {

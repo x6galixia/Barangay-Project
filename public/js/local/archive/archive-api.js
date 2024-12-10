@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (archive.length === 0) {
                 const noDataRow = document.createElement('tr');
                 noDataRow.innerHTML = `
-                    <td colspan="4" class="text-center">No items found.</td>
+                    <td colspan="4" class="text-center">No Documents found.</td>
                 `;
                 archiveTableBody.appendChild(noDataRow);
                 return;
@@ -107,6 +107,83 @@ function docChanges() {
             </div>
             `
         }
+        if (selectedValue === "Lupon") {
+            formContainer.innerHTML = `
+            <div class="inputWithLabel" id="surubadan">
+                <label>Lupon Case Number</label>
+                <input type="number" aria-label="Lupon Case Number" name="luponCaseNumber" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Complainant</label>
+                <input type="text" aria-label="Complainant" name="complainant" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Respondent</label>
+                <input type="text" aria-label="Respondent" name="respondent" required>
+            </div>
+            <div class="inputWithLabel">
+                <label>Date Filed</label>
+                <input type="date" aria-label="Date Filed" name="dateFiled" required>
+            </div>
+            <div class="inputWithLabel">
+                <label>Type Of Case</label>
+                <input type="text" aria-label="Date Filed" name="caseType" required>
+            </div>
+            `
+        }
+        if (selectedValue === "Ordinance") {
+            formContainer.innerHTML = `
+            <div class="inputWithLabel" id="surubadan">
+                <label>Ordinance Number</label>
+                <input type="number" aria-label="Ordinance Number" name="ordinanceNumber" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Ordinance Title</label>
+                <input type="text" aria-label="Ordinance Title" name="ordinanceTitle" required>
+            </div>
+            <div class="inputWithLabel" id="authorContainer" style="margin-top:4px">
+            </div>
+            <div class="inputWithLabel" id="co-AuthorContainer" style="margin-top:4px">
+            </div>
+            <div class="inputWithLabel" id="sponsorContainer" style="margin-top:4px">
+            </div>
+            <div class="inputWithLabel">
+                <label>Date Approved</label>
+                <input type="date" aria-label="Date Approved" name="dateApproved" required>
+            </div>
+            `
+        }
+        if (selectedValue === "Resolution") {
+            formContainer.innerHTML = `
+            <div class="inputWithLabel" id="surubadan">
+                <label>Resolution Number</label>
+                <input type="number" aria-label="Resolution Number" name="resolutionNumber" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Series of Year</label>
+                <input type="text" aria-label="Series of Year" name="yearSeries" required>
+            </div>
+            <div class="inputWithLabel">
+                <label>Date</label>
+                <input type="date" aria-label="Date" name="date" required>
+            </div>
+            `
+        }
+        if (selectedValue === "Regularization Minutes") {
+            formContainer.innerHTML = `
+            <div class="inputWithLabel" id="surubadan">
+                <label>Ika Pira na Regulation</label>
+                <input type="number" aria-label="Ika Pira na Regulation" name="regulationNumber" required>
+            </div>
+            <div class="inputWithLabel">
+                <label>Date</label>
+                <input type="date" aria-label="Date" name="date" required>
+            </div>
+            `
+        }
+        addTextarea();
+        addTextarea1();
+        addTextarea2();
     })
 }
 
@@ -274,16 +351,13 @@ function fillInputs(data) {
         console.error('Image element not found or is not an IMG tag');
     }
 }
-
-
 function clearFillInputs() {
     const elements = {
         itemId,
         docType,
         Contracting1,
         Contracting2,
-        date,
-        fileInput
+        date
     };
 
     Object.keys(elements).forEach(id => {
@@ -304,3 +378,122 @@ function clearFillInputs() {
         console.error('Image element not found or is not an IMG tag');
     }
 }
+
+// function
+let authorCount = 1;
+let coAuthorCount = 1;
+let sponsorCount = 1;
+function addTextarea() {
+    const container = document.getElementById("authorContainer");
+  
+    const div = document.createElement('div');
+    div.classList.add('inputWithLabel');
+    div.setAttribute('id', `author-${authorCount}`);
+    if (authorCount === 1){
+        div.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label>Author (${authorCount})</label>
+            <button type="button" onclick="addTextarea()">+</button>
+            <button type="button" onclick="removeTextarea()">-</button>
+          </div>
+          <input type="text" aria-label="Author (${authorCount})" name="author${authorCount}" required>
+        `;
+    } else {
+        div.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label>Author (${authorCount})</label>
+          </div>
+          <input type="text" aria-label="Author (${authorCount})" name="author${authorCount}" required>
+        `;
+    }
+    container.appendChild(div);
+    authorCount++;
+  }
+  
+  function removeTextarea() {
+    const container = document.getElementById("authorContainer");
+    
+    if (container.children.length <= 1) return(alert('At least one Author is required!'));
+  
+    const lastChild = container.lastElementChild; 
+    if (lastChild) {
+      container.removeChild(lastChild);
+      authorCount--;
+    }
+  }
+function addTextarea1() {
+    const container = document.getElementById("co-AuthorContainer");
+  
+    const div = document.createElement('div');
+    div.classList.add('inputWithLabel');
+    div.setAttribute('id', `co-Author-${coAuthorCount}`);
+    if (coAuthorCount === 1){
+        div.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label>Co-Author (${coAuthorCount})</label>
+            <button type="button" onclick="addTextarea1()">+</button>
+            <button type="button" onclick="removeTextarea1()">-</button>
+          </div>
+          <input type="text" aria-label="Co-Author (${coAuthorCount})" name="coAuthor${coAuthorCount}" required>
+        `;
+    } else {
+        div.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label>Co-Author (${coAuthorCount})</label>
+          </div>
+          <input type="text" aria-label="Co-Author (${coAuthorCount})" name="coAuthor${coAuthorCount}" required>
+        `;
+    }
+    container.appendChild(div);
+    coAuthorCount++;
+  }
+  
+  function removeTextarea1() {
+    const container = document.getElementById("co-AuthorContainer");
+    
+    if (container.children.length <= 1) return(alert('At least one Co-Author is required!'));
+  
+    const lastChild = container.lastElementChild; 
+    if (lastChild) {
+      container.removeChild(lastChild);
+      coAuthorCount--;
+    }
+  }
+function addTextarea2() {
+    const container = document.getElementById("sponsorContainer");
+  
+    const div = document.createElement('div');
+    div.classList.add('inputWithLabel');
+    div.setAttribute('id', `sponsor-${sponsorCount}`);
+    if (sponsorCount === 1){
+        div.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label>Sponsor (${sponsorCount})</label>
+            <button type="button" onclick="addTextarea2()">+</button>
+            <button type="button" onclick="removeTextarea2()">-</button>
+          </div>
+          <input type="text" aria-label="Sponsor (${sponsorCount})" name="sponsor${sponsorCount}" required>
+        `;
+    } else {
+        div.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label>Author (${sponsorCount})</label>
+          </div>
+          <input type="text" aria-label="Sponsor (${sponsorCount})" name="sponsor${sponsorCount}" required>
+        `;
+    }
+    container.appendChild(div);
+    sponsorCount++;
+  }
+  
+  function removeTextarea2() {
+    const container = document.getElementById("sponsorContainer");
+    
+    if (container.children.length <= 1) return(alert('At least one Sponsor is required!'));
+  
+    const lastChild = container.lastElementChild; 
+    if (lastChild) {
+      container.removeChild(lastChild);
+      sponsorCount--;
+    }
+  }

@@ -132,7 +132,6 @@ router.post("/update-archive-item", upload.single('picture'), async (req, res) =
         .filter(Boolean)
         .join(' and ');
 
-    console.log(contractingPersons);
     try {
 
         if (picture) {

@@ -222,7 +222,10 @@ window.processCertificate = function (button) {
         }
       });
   
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("brgyClearance"));
+      viewCertificate.addEventListener('click',()=> {
+        viewCertificateDetails("brgyClearance")
+        alert('yawa ka');
+      });
     }
     else if (purpose === 'Building Clearance') {
       certificateMainForm.innerHTML = `
@@ -1168,8 +1171,33 @@ window.processCertificate = function (button) {
   
     const hiddenContainers = document.querySelectorAll("#residency, #indigency, #RA11261, #brgyClearance, #singleness, #guardianship, #income, #landNoClaim, #noDuplication, #panumduman, #buildingClearance, #burailClearance, #businessClearance, #businessClosure, #lateRegistration, #soloParent, #oathUndertaking, #goodMoral, #samePerson");
     hiddenContainers.forEach(container => container.classList.remove("visible"));
-  
-    document.getElementById(selectedCertificate).classList.add("visible");
+    
+    var convertToImage = document.getElementById(selectedCertificate);
+    var imageContainer = document.getElementById("certificateContainer");
+
+    
+    convertToImage.classList.add("visible");
+    html2canvas(convertToImage).then((canvas) => {
+      const img = canvas.toDataURL("image/png"); // Convert canvas to image data
+      const imgElement = document.createElement("img");
+      imgElement.src = img;
+      imgElement.style.width="100%"
+      imgElement.style.height="auto"
+
+      // Append the generated image to the container
+      imageContainer.innerHTML = ""; // Clear previous images
+      imageContainer.appendChild(imgElement);
+
+      console.log(selectedCertificate);
+    });
+    imageContainer.classList.add("visible");
+    convertToImage.classList.remove("visible");
+  // document.getElementById("certificate").classList.add("visible");
+
+
+
+
+    
   
     document.querySelector(".closeCertificate").addEventListener("click", function () {
       if(selectedCertificate === "oathUndertaking"){
@@ -1278,37 +1306,60 @@ function addTextarea() {
 
   const div = document.createElement('div');
   div.classList.add('inputWithLabel');
-  div.innerHTML = `
-    <div style="display: flex; align-items: center; gap: 8px;">
-      <label style="margin-right: auto">Agreement: <strong>${agreementCount}</strong> <i>(Press ctrl+b for bold, ctrl+i for italic, and ctrl+u for underline)</i></label>
-      <button onclick="addTextarea()">+</button>
-      <button onclick="removeTextarea(this)">-</button>
-    </div>
-    <div 
-      contenteditable="true"
-      style="
-        border: 1px solid #000;
-        padding: 8px;
-        min-height: 80px;
-        margin: 5px 0;
-        font-family: Arial, sans-serif;
-        border-radius: 10px;
-        outline: none;
-      "
-      onkeydown="handleFormatting(event, this)"
-    ></div>
-  `;
+  div.setAttribute('id', `agreement-${agreementCount}`);
+  if (agreementCount === 1){
+      div.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <label style="margin-right: auto">Agreement: <strong>${agreementCount}</strong> <i>(Press ctrl+b for bold, ctrl+i for italic, and ctrl+u for underline)</i></label>
+        <button onclick="addTextarea()">+</button>
+        <button onclick="removeTextarea(this)">-</button>
+      </div>
+      <div 
+        contenteditable="true"
+        style="
+          border: 1px solid #000;
+          padding: 8px;
+          min-height: 80px;
+          margin: 5px 0;
+          font-family: Arial, sans-serif;
+          border-radius: 10px;
+          outline: none;
+        "
+        onkeydown="handleFormatting(event, this)"
+      ></div>
+    `;
+  } else {
+      div.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <label style="margin-right: auto">Agreement: <strong>${agreementCount}</strong> <i>(Press ctrl+b for bold, ctrl+i for italic, and ctrl+u for underline)</i></label>
+      </div>
+      <div 
+        contenteditable="true"
+        style="
+          border: 1px solid #000;
+          padding: 8px;
+          min-height: 80px;
+          margin: 5px 0;
+          font-family: Arial, sans-serif;
+          border-radius: 10px;
+          outline: none;
+        "
+        onkeydown="handleFormatting(event, this)"
+      ></div>
+    `;
+  }
   container.appendChild(div);
   agreementCount++;
 }
-function removeTextarea(button) {
+function removeTextarea() {
   const container = document.getElementById("textAreaContainer");
-  const parentDiv = button.closest('.inputWithLabel');
-  if (container.children.length > 1) {
-    container.removeChild(parentDiv);
+  
+  if (container.children.length <= 1) return(alert('At least one Agreement is required!'));
+
+  const lastChild = container.lastElementChild; 
+  if (lastChild) {
+    container.removeChild(lastChild);
     agreementCount--;
-  } else {
-    alert('At least one agreement is required!');
   }
 }
 

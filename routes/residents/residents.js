@@ -166,7 +166,7 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
             `SELECT globalid FROM residents ORDER BY globalid DESC LIMIT 1`
         );
 
-        let lastGlobalId = "MPDN0001"; // Default starting value
+        let lastGlobalId = "MPDN0000"; // Default starting value
         if (globalIdQuery.rows.length > 0 && globalIdQuery.rows[0]?.globalid) {
             lastGlobalId = globalIdQuery.rows[0].globalid;
         }
@@ -188,7 +188,7 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
 
         console.log("idNumber:", idNumberQuery);
 
-        let lastNumId = `${getCurrentYear()}-0001`; // Default starting value
+        let lastNumId = `${getCurrentYear()}-0000`; // Default starting value
         if (idNumberQuery.rows.length > 0 && idNumberQuery.rows[0]?.idnumber) {
             lastNumId = idNumberQuery.rows[0].idnumber;
         }

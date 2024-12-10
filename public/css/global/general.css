@@ -67,7 +67,7 @@ header>nav>ul>li {
 .mainContainer {
   padding: 40px;
   width: -webkit-fill-available;
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 .mainContainer>.heading {
