@@ -226,9 +226,137 @@ async function fetchArchiveLists(page, limit, searchQuery = '') {
   }
 }
 
+async function fetchArchiveData(page, limit, searchQuery = '', doctype = null) {
+  const offset = (page - 1) * limit;
+  const archiveValues = [limit, offset]; // Pagination parameters
+  const totalItemsValues = []; // Values for the total items query
+
+  let searchCondition = '';
+  let searchConditionForTotal = '';
+  let doctypeCondition = '';
+  let doctypeConditionForTotal = '';
+
+  if (searchQuery && searchQuery.trim() !== '') {
+    const searchPattern = `%${searchQuery.trim()}%`;
+    searchCondition = `
+      AND (
+        dt.typeName ILIKE $${archiveValues.length + 1}
+        OR CAST(a.archiveId AS TEXT) ILIKE $${archiveValues.length + 1}
+      )`;
+    searchConditionForTotal = `
+      AND (
+        dt.typeName ILIKE $${totalItemsValues.length + 1}
+        OR CAST(a.archiveId AS TEXT) ILIKE $${totalItemsValues.length + 1}
+      )`;
+    archiveValues.push(searchPattern);
+    totalItemsValues.push(searchPattern);
+  }
+
+  if (doctype) {
+    doctypeCondition = `AND dt.typeName = $${archiveValues.length + 1}`;
+    doctypeConditionForTotal = `AND dt.typeName = $${totalItemsValues.length + 1}`;
+    archiveValues.push(doctype);
+    totalItemsValues.push(doctype);
+  }
+
+  const archiveQuery = `
+    SELECT
+      a.archiveId, dt.typeName,
+      CASE dt.typeName
+        WHEN 'Panumduman' THEN (
+          SELECT json_build_object(
+            'date', p.date,
+            'image', p.image,
+            'contractingPersons', p.contractingPersons
+          )
+          FROM panumduman p
+          WHERE p.archiveId = a.archiveId
+        )
+        WHEN 'Lupon' THEN (
+          SELECT json_build_object(
+            'caseNumber', l.caseNumber,
+            'complainant', l.complainant,
+            'respondent', l.respondent,
+            'dateFiled', l.dateFiled,
+            'image', l.image,
+            'caseType', l.caseType
+          )
+          FROM lupon l
+          WHERE l.archiveId = a.archiveId
+        )
+        WHEN 'Ordinance' THEN (
+          SELECT json_build_object(
+            'ordinanceNumber', o.ordinanceNumber,
+            'title', o.title,
+            'authors', o.authors,
+            'coAuthors', o.coAuthors,
+            'sponsors', o.sponsors,
+            'image', o.image,
+            'dateApproved', o.dateApproved
+          )
+          FROM ordinance o
+          WHERE o.archiveId = a.archiveId
+        )
+        WHEN 'Resolution' THEN (
+          SELECT json_build_object(
+            'resolutionNumber', r.resolutionNumber,
+            'seriesYear', r.seriesYear,
+            'image', r.image,
+            'date', r.date
+          )
+          FROM resolution r
+          WHERE r.archiveId = a.archiveId
+        )
+        WHEN 'Regularization Minutes' THEN (
+          SELECT json_build_object(
+            'regulationNumber', rm.regulationNumber,
+            'image', rm.image,
+            'date', rm.date
+          )
+          FROM regularization_minutes rm
+          WHERE rm.archiveId = a.archiveId
+        )
+        ELSE NULL
+      END AS documentDetails
+    FROM archive a
+    JOIN document_type dt ON a.doctypeId = dt.doctypeId
+    WHERE 1=1
+      ${doctypeCondition}
+      ${searchCondition}
+    ORDER BY a.archiveId
+    LIMIT $1 OFFSET $2;
+  `;
+
+  const totalItemsQuery = `
+    SELECT COUNT(*) as count
+    FROM archive a
+    JOIN document_type dt ON a.doctypeId = dt.doctypeId
+    WHERE 1=1
+      ${doctypeConditionForTotal}
+      ${searchConditionForTotal};
+  `;
+
+  try {
+    // Fetch total items
+    const totalItemsResult = await mPool.query(totalItemsQuery, totalItemsValues);
+    const totalItems = parseInt(totalItemsResult.rows[0].count, 10);
+    const totalPages = Math.ceil(totalItems / limit);
+
+    // Fetch paginated archive data
+    const archiveResult = await mPool.query(archiveQuery, archiveValues);
+    const archiveList = archiveResult.rows;
+
+    return { archiveList, totalPages, totalItems };
+  } catch (err) {
+    console.error('Error fetching archive data:', err.message);
+    throw new Error('Error fetching archive data');
+  }
+}
+
 module.exports = {
   fetchResidentsLists,
   fetchRequestLists,
   fetchInventoryLists,
-  fetchArchiveLists
+  fetchArchiveLists,
+  fetchArchiveData
 };
