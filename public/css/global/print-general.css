@@ -298,7 +298,7 @@
 @media print {
 
     @page {
-        margin: 1cm;
+        margin: 0;
     }
 
     /* * {
@@ -307,25 +307,41 @@
         page-break-inside: auto;
     } */
 
-    div:empty, p:empty {
-        display: none;
-    }
-
-    header, .mainContainer, #process-certificate, .F, button, .close-container, .overlay, .A4{
+    #certificate, header, .mainContainer, #process-certificate, .F, button, .close-container, .overlay, .A4{
         display: none !important;
         position: relative;
         z-index: 1;
     }
 
+
+
     body {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
         margin: 0;
         padding: 0;
+        display: grid;
+        place-items: center;
+        /* display: none !important; */
     }
+/* 
+    * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        padding: unset;
+        margin: unset;
+    } */
 
-    #certificateContainer > img {
+    /* #certificateContainer > img {
         display: block !important;
+    } */
+
+
+    #printCert {
+        display: block !important;
+        max-width: 100%;
+        max-height: 100vh;
+        object-fit: contain;
+        margin: auto;
+        page-break-inside: avoid;
     }
 
     
@@ -341,35 +357,58 @@
 
 
 
-    #certificate {
+    /* #certificate {
         position: relative;
         top: 0;
         left: 0;
         margin: 0 auto;
         width: 100%;
-        max-width: 21cm;
-        height: auto;
+        height: 100%;
         transform: none;
         z-index: auto;
         overflow: visible;
         page-break-inside: avoid;
-    }
+    } */
     
 
-    #certificateContainer {
-        border: none;
-    }
+
+    /* #certificate {
+        border: solid black;
+        background-color: aqua;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        max-width: unset;
+        max-height: unset;
+        width: 100%;
+        height: auto;
+    } */
+
+    /* #certificateContainer {
+        padding: 0;
+        margin: 0;
+    }  */
+
+    /* #certificateContainer img {
+        border: solid black;
+        padding: 0;
+        margin: 0;
+        width: inherit !important;
+        height: inherit !important;
+    } */
+
+    
 
 
-    .pop-up>.close-container {
+    /* .pop-up>.close-container {
         padding: 0 !important;
-    }
+    } */
 
-
+/* 
     .pop-up {
         box-shadow: none;
         padding: 0 !important;
-    }
+    } */
 
 
 }
