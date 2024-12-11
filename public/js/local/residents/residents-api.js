@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (type && dropdown) {
         dropdown.value = type; 
     }
-    fetchResidents().then(attachDotEventListeners);
+    // fetchResidents().then(attachDotEventListeners);
 
 
     // Function to update the URL parameters

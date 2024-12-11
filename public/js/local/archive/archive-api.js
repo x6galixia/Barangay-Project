@@ -5,9 +5,115 @@ document.addEventListener("DOMContentLoaded", async function () {
     const searchInput = document.getElementById('searchInput');
     const page = parseInt(urlParams.get('page')) || 1;
     const limit = parseInt(urlParams.get('limit')) || 10;
-
-    fetchArchiveLists(page, limit);
+    const type = urlParams.get('type');
+    const dropdown = document.querySelector('#documentType');
+    if (type && dropdown) {
+        dropdown.value = type; 
+    }
+    // fetchArchiveLists().then(attachDotEventListeners);
     docChanges();
+
+    // Function to update the URL parameters
+    function updateURLParameter(key, value) {
+        const url = new URL(window.location);
+        url.searchParams.set(key, value);
+        window.history.replaceState({}, '', url);
+        window.location.href = url;
+    }
+
+    function getURLParameter(key) {
+        const url = new URL(window.location);
+        return url.searchParams.get(key);
+    }
+
+    const selectedValue1 = getURLParameter('type') || 'Lupon';
+    const searchQuery = document.getElementById('searchInput').value.trim();
+
+    if (selectedValue1 === "Lupon") {
+        console.log("1 selected");
+        // toggleColumns(true);
+        fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
+    } else if (selectedValue1 === "Ordinance") {
+        console.log("2 selected");
+        // toggleColumns(false);
+        fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
+    } else if (selectedValue1 === "Panumduman") {
+        console.log("3 selected");
+        // toggleColumns(false);
+        fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
+    } else if (selectedValue1 === "Regularization Minutes") {
+        console.log("4 selected");
+        // toggleColumns(false);
+        fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
+    } else if (selectedValue1 === "Resolution") {
+        console.log("5 selected");
+        // toggleColumns(false);
+        fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
+    }
+
+    // Event listener for the dropdown change
+    document.querySelector('#documentType').addEventListener('change', function () {
+        const selectedValue = this.value.trim();
+        updateURLParameter('type', selectedValue);
+    });
+
+    function showColumnsForDoctype(doctype) {
+        // Hide all columns except "Doctype" and "Action" by default
+        document.querySelectorAll('th').forEach(th => {
+            if (!['Doctype', 'Action'].includes(th.textContent.trim())) {
+                th.style.display = 'none';
+            }
+        });
+    
+        document.querySelectorAll('td').forEach((td, index) => {
+            const header = td.closest('table').querySelectorAll('th')[index];
+            if (!['Doctype', 'Action'].includes(header?.textContent.trim())) {
+                td.style.display = 'none';
+            }
+        });
+    
+        // Show columns based on the doctype
+        let className = '';
+        switch (doctype) {
+            case 'Lupon':
+                className = 'luponTableHead';
+                break;
+            case 'Ordinance':
+                className = 'ordinanceTableHead';
+                break;
+            case 'Panumduman':
+                className = 'panumdumanTableHead';
+                break;
+            case 'Regularization Minutes':
+                className = 'regularizationTableHead';
+                break;
+            case 'Resolution':
+                className = 'resolutionTableHead';
+                break;
+            default:
+                console.error('Unknown doctype:', doctype);
+                return;
+        }
+    
+        // Show the selected columns
+        document.querySelectorAll(`.${className}`).forEach(el => el.style.display = 'table-cell');
+    
+        // Ensure "Doctype" and "Action" columns remain visible
+        document.querySelectorAll('th').forEach(th => {
+            if (['Doctype', 'Action'].includes(th.textContent.trim())) {
+                th.style.display = 'table-cell';
+            }
+        });
+        document.querySelectorAll('td').forEach((td, index) => {
+            const header = td.closest('table').querySelectorAll('th')[index];
+            if (['Doctype', 'Action'].includes(header?.textContent.trim())) {
+                td.style.display = 'table-cell';
+            }
+        });
+    }
+    
+
+
     // Listen for changes to search input
     searchInput.addEventListener('input', () => {
         const searchQuery = searchInput.value.trim();
@@ -16,11 +122,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     // Fetch inventory based on parameters
-    async function fetchArchiveLists(page = 1, limit = 10, searchQuery = '') {
+    async function fetchArchiveLists(page = 1, limit = 10, searchQuery = '', doctype = 'Lupon') {
+        // alert("www");
         try {
 
             const response = await fetch(
-                `http://localhost:3000/archive/dashboard?ajax=true&page=${page}&limit=${limit}&search=${encodeURIComponent(searchQuery)}`
+                `http://localhost:3000/archive/dashboard?ajax=true&page=${page}&limit=${limit}&search=${encodeURIComponent(searchQuery)}&doctype=${doctype}`
             );
 
 
@@ -29,41 +136,219 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
             const data = await response.json();
-            const archive = data.getArchiveList;
-            console.log(data);
+            const archive = data.archiveList;
+            console.log(archive);
             archiveTableBody.innerHTML = '';
 
-            if (archive.length === 0) {
-                const noDataRow = document.createElement('tr');
-                noDataRow.innerHTML = `
-                    <td colspan="4" class="text-center">No Documents found.</td>
-                `;
-                archiveTableBody.appendChild(noDataRow);
-                return;
+            showColumnsForDoctype(doctype);
+
+            if (doctype === 'Lupon'){
+                archive.forEach(arch1 => {
+                    if (arch1.documentdetails.length=== 0) {
+                        const noDataRow = document.createElement('tr');
+                        noDataRow.innerHTML = `
+                            <td colspan="7" class="text-center">No ${doctype} Documents Found.</td>
+                        `;
+                        archiveTableBody.appendChild(noDataRow);
+                        return;
+                    }
+                    arch1.documentdetails.forEach(detail => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${detail.caseNumber}</td>
+                            <td>${detail.complainant}</td>
+                            <td>${detail.respondent}</td>
+                            <td>${new Date(detail.dateFiled).toLocaleDateString()}</td>
+                            <td>${detail.caseType}</td>
+                            <td>${arch1.typename}</td>
+                            <td class="menu-row">
+                                <img class="dot" src="../icon/triple-dot.svg" alt="">
+                                <div class="triple-dot">
+                                    <div class="menu" data-id="${detail.luponId}">
+                                        <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
+                                        <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
+                                        <button id="view-id" onclick="popUp_three_dot(this)"
+                                         data-image="${detail.image}"
+                                         data-docType="${arch1.typename}"
+                                        >View Image</button>
+                                    </div>
+                                </div>
+                            </td>
+                        `;
+                        archiveTableBody.appendChild(row);
+                    })
+                });
+            }
+            if (doctype === 'Ordinance'){
+                archive.forEach(arch1 => {
+                    if (arch1.documentdetails.length=== 0) {
+                        const noDataRow = document.createElement('tr');
+                        noDataRow.innerHTML = `
+                            <td colspan="8" class="text-center">No ${doctype} Documents Found.</td>
+                        `;
+                        archiveTableBody.appendChild(noDataRow);
+                        return;
+                    }
+
+                    arch1.documentdetails.forEach(detail => {
+                        const row = document.createElement('tr');
+                        const authorsArray = JSON.parse(detail.authors);
+                        const coAuthorsArray = JSON.parse(detail.coAuthors);
+                        const sponsorsArray = JSON.parse(detail.sponsors);
+                        const authors = Array.isArray(authorsArray)
+                            ? authorsArray
+                                .map(person => person.name)
+                                .join(', ')
+                                .replace(/, ([^,]*)$/, ' and $1')
+                            : 'No authors available';
+
+                        const coAuthors = Array.isArray(coAuthorsArray)
+                            ? coAuthorsArray
+                                .map(person => person.name)
+                                .join(', ')
+                                .replace(/, ([^,]*)$/, ' and $1')
+                            : 'No co-authors available';
+                        const sponsors = Array.isArray(sponsorsArray)
+                            ? sponsorsArray
+                                .map(person => person.name)
+                                .join(', ')
+                                .replace(/, ([^,]*)$/, ' and $1')
+                            : 'No sponsors available';
+                        row.innerHTML = `
+                            <td>${detail.ordinanceNumber}</td>
+                            <td>${detail.title}</td>
+                            <td>${authors}</td>
+                            <td>${coAuthors}</td>
+                            <td>${sponsors}</td>
+                            <td>${new Date(detail.dateApproved).toLocaleDateString()}</td>
+                            <td>${arch1.typename}</td>
+                            <td class="menu-row">
+                                <img class="dot" src="../icon/triple-dot.svg" alt="">
+                                <div class="triple-dot">
+                                    <div class="menu" data-id="${detail.ordinanceId}">
+                                        <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
+                                        <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
+                                        <button id="view-id" onclick="popUp_three_dot(this)"
+                                         data-image="${detail.image}"
+                                         data-docType="${arch1.typename}"
+                                        >View Image</button>
+                                    </div>
+                                </div>
+                            </td>
+                        `;
+                        archiveTableBody.appendChild(row);
+                    })
+                });
+            }
+            if (doctype === 'Panumduman'){
+                archive.forEach(arch => {
+                    if (arch.documentdetails.length=== 0) {
+                        const noDataRow = document.createElement('tr');
+                        noDataRow.innerHTML = `
+                            <td colspan="4" class="text-center">No ${doctype} Documents Found.</td>
+                        `;
+                        archiveTableBody.appendChild(noDataRow);
+                        return;
+                    }
+                    arch.documentdetails.forEach(detail => {
+                        const row = document.createElement('tr');
+                        const contractingPersons = JSON.parse(detail.contractingPersons)
+                        .map(person => person.name) // Extract names from the array
+                        .join(' and '); // Join names into a comma-separated string
+                        row.innerHTML = `
+                            <td>${contractingPersons}</td>
+                            <td>${new Date(detail.date).toLocaleDateString()}</td>
+                            <td>${arch.typename}</td>
+                            <td class="menu-row">
+                                <img class="dot" src="../icon/triple-dot.svg" alt="">
+                                <div class="triple-dot">
+                                    <div class="menu" data-id="${detail.panumdumanId}">
+                                        <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
+                                        <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
+                                        <button id="view-id" onclick="popUp_three_dot(this)"
+                                         data-image="${detail.image}"
+                                         data-docType="${arch.typename}"
+                                        >View Image</button>
+                                    </div>
+                                </div>
+                            </td>
+                        `;
+                        archiveTableBody.appendChild(row);
+                    })
+                });
+            }
+            if (doctype === 'Regularization Minutes'){
+                archive.forEach(arch1 => {
+                    if (arch1.documentdetails.length=== 0) {
+                        const noDataRow = document.createElement('tr');
+                        noDataRow.innerHTML = `
+                            <td colspan="4" class="text-center">No ${doctype} Documents Found.</td>
+                        `;
+                        archiveTableBody.appendChild(noDataRow);
+                        return;
+                    }
+                    
+                    arch1.documentdetails.forEach(detail => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${detail.regulationNumber}</td>
+                            <td>${new Date(detail.date).toLocaleDateString()}</td>
+                            <td>${arch1.typename}</td>
+                            <td class="menu-row">
+                                <img class="dot" src="../icon/triple-dot.svg" alt="">
+                                <div class="triple-dot">
+                                    <div class="menu" data-id="${detail.regularizationId}">
+                                        <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
+                                        <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
+                                        <button id="view-id" onclick="popUp_three_dot(this)"
+                                         data-image="${detail.image}"
+                                         data-docType="${arch1.typename}"
+                                        >View Image</button>
+                                    </div>
+                                </div>
+                            </td>
+                        `;
+                        archiveTableBody.appendChild(row);
+                    })
+                });
+            }
+            if (doctype === 'Resolution'){
+                archive.forEach(arch1 => {
+                    if (arch1.documentdetails.length=== 0) {
+                        const noDataRow = document.createElement('tr');
+                        noDataRow.innerHTML = `
+                            <td colspan="5" class="text-center">No ${doctype} Documents Found.</td>
+                        `;
+                        archiveTableBody.appendChild(noDataRow);
+                        return;
+                    }
+                    
+                    arch1.documentdetails.forEach(detail => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${detail.resolutionNumber}</td>
+                            <td>${detail.seriesYear}</td>
+                            <td>${new Date(detail.date).toLocaleDateString()}</td>
+                            <td>${arch1.typename}</td>
+                            <td class="menu-row">
+                                <img class="dot" src="../icon/triple-dot.svg" alt="">
+                                <div class="triple-dot">
+                                    <div class="menu" data-id="${detail.resolutionId}">
+                                        <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
+                                        <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
+                                        <button id="view-id" onclick="popUp_three_dot(this)"
+                                         data-image="${detail.image}"
+                                         data-docType="${arch1.typename}"
+                                        >View Image</button>
+                                    </div>
+                                </div>
+                            </td>
+                        `;
+                        archiveTableBody.appendChild(row);
+                    })
+                });
             }
 
-            archive.forEach(arch => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${arch.contractingpersons}</td>
-                    <td>${new Date(arch.date).toLocaleDateString()}</td>
-                    <td>${arch.doctype}</td>
-                    <td class="menu-row">
-                        <img class="dot" src="../icon/triple-dot.svg" alt="">
-                        <div class="triple-dot">
-                            <div class="menu" data-id="${arch.id}">
-                                <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
-                                <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
-                                <button id="view-id" onclick="popUp_three_dot(this)"
-                                 data-image="${arch.img}"
-                                 data-docType="${arch.doctype}"
-                                >View Image</button>
-                            </div>
-                        </div>
-                    </td>
-                `;
-                archiveTableBody.appendChild(row);
-            });
             attachDotEventListeners();
             updatePaginationLinks(data.currentPage, data.totalPages);
         } catch (error) {
@@ -188,32 +473,18 @@ function docChanges() {
 }
 
 function attachDotEventListeners() {
-    console.log("ebent attached");
     document.querySelectorAll(".dot").forEach(function (dot) {
-        console.log(dot);
         dot.addEventListener("click", function () {
             console.log("dot clicked");
             const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
-            if (tripleDotContainer) {
-                tripleDotContainer.classList.toggle("visible");
-                if (tripleDotContainer.classList.contains("visible")) {
-                    // clearInterval(pollIntervalId);
-                    isDotMenuOpen = true;
-                } else {
-                    // pollIntervalId = setInterval(fetchBeneficiaryUpdates, POLL_INTERVAL);
-                    // isDotMenuOpen = false;
-                }
-            }
+                tripleDotContainer.classList.add("visible");
         });
 
         document.addEventListener("click", function (event) {
-            // Check if the click was outside the dot container
             if (!dot.contains(event.target)) {
                 const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
                 if (tripleDotContainer && tripleDotContainer.classList.contains("visible")) {
                     tripleDotContainer.classList.remove("visible");
-                    // pollIntervalId = setInterval(fetchBeneficiaryUpdates, POLL_INTERVAL);
-                    // isDotMenuOpen = false;
                 }
             }
         });
