@@ -129,19 +129,16 @@
 <script src="../../js/global/pop-up.js"></script>
 <script>
   document.querySelector("header>nav>ul>li:first-child").classList.toggle("selected");
-  function checkId() {
-        const idInput = document.getElementById('qrOutput');
-        const submitButton = document.getElementById('submitButton');
-        
-        if (idInput.value.trim() !== '') {
-            submitButton.disabled = false;
-        } else {
-            submitButton.disabled = true;
-        }
-    }
-
-    window.addEventListener('load', checkId);
-    document.getElementById('qrOutput').addEventListener('input', checkId);
+  function closePopup() {
+  if (submitPrompt) {
+    submitPrompt.style.display = "none";
+  }
+  if (document.getElementById("submit_prompt1")) {
+    document.getElementById("submit_prompt1").classList.remove("visible1")
+  }
+  overlay.classList.remove("visible");
+  window.location.reload();
+}
 </script>
 
 </html>

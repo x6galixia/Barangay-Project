@@ -228,8 +228,8 @@ async function fetchArchiveLists(page, limit, searchQuery = '') {
 
 async function fetchArchiveData(page, limit, searchQuery = '', doctype = null) {
   const offset = (page - 1) * limit;
-  const archiveValues = [limit, offset]; // Pagination parameters
-  const totalItemsValues = []; // Values for the total items query
+  const archiveValues = [limit, offset];
+  const totalItemsValues = [];
 
   let searchCondition = '';
   let searchConditionForTotal = '';
@@ -261,70 +261,85 @@ async function fetchArchiveData(page, limit, searchQuery = '', doctype = null) {
 
   const archiveQuery = `
     SELECT
-      a.archiveId, dt.typeName,
-      CASE dt.typeName
-        WHEN 'Panumduman' THEN (
-          SELECT json_build_object(
-            'date', p.date,
-            'image', p.image,
-            'contractingPersons', p.contractingPersons
-          )
-          FROM panumduman p
-          WHERE p.archiveId = a.archiveId
+  a.archiveId, dt.typeName,
+  CASE dt.typeName
+    WHEN 'Panumduman' THEN (
+      SELECT json_agg(
+        json_build_object(
+          'date', p.date,
+          'image', p.image,
+          'contractingPersons', p.contractingPersons,
+          'panumdumanId', p.panumdumanid
         )
-        WHEN 'Lupon' THEN (
-          SELECT json_build_object(
-            'caseNumber', l.caseNumber,
-            'complainant', l.complainant,
-            'respondent', l.respondent,
-            'dateFiled', l.dateFiled,
-            'image', l.image,
-            'caseType', l.caseType
-          )
-          FROM lupon l
-          WHERE l.archiveId = a.archiveId
+      )
+      FROM panumduman p
+      WHERE p.archiveId = a.archiveId
+    )
+    WHEN 'Lupon' THEN (
+      SELECT json_agg(
+        json_build_object(
+          'caseNumber', l.caseNumber,
+          'complainant', l.complainant,
+          'respondent', l.respondent,
+          'dateFiled', l.dateFiled,
+          'image', l.image,
+          'caseType', l.caseType,
+          'luponId', l.luponid
         )
-        WHEN 'Ordinance' THEN (
-          SELECT json_build_object(
-            'ordinanceNumber', o.ordinanceNumber,
-            'title', o.title,
-            'authors', o.authors,
-            'coAuthors', o.coAuthors,
-            'sponsors', o.sponsors,
-            'image', o.image,
-            'dateApproved', o.dateApproved
-          )
-          FROM ordinance o
-          WHERE o.archiveId = a.archiveId
+      )
+      FROM lupon l
+      WHERE l.archiveId = a.archiveId
+    )
+    WHEN 'Ordinance' THEN (
+      SELECT json_agg(
+        json_build_object(
+          'ordinanceNumber', o.ordinanceNumber,
+          'title', o.title,
+          'authors', o.authors,
+          'coAuthors', o.coAuthors,
+          'sponsors', o.sponsors,
+          'image', o.image,
+          'dateApproved', o.dateApproved,
+          'ordinanceId', o.ordinanceid
         )
-        WHEN 'Resolution' THEN (
-          SELECT json_build_object(
-            'resolutionNumber', r.resolutionNumber,
-            'seriesYear', r.seriesYear,
-            'image', r.image,
-            'date', r.date
-          )
-          FROM resolution r
-          WHERE r.archiveId = a.archiveId
+      )
+      FROM ordinance o
+      WHERE o.archiveId = a.archiveId
+    )
+    WHEN 'Resolution' THEN (
+      SELECT json_agg(
+        json_build_object(
+          'resolutionNumber', r.resolutionNumber,
+          'seriesYear', r.seriesYear,
+          'image', r.image,
+          'date', r.date,
+          'resolutionId', r.resolutionid
         )
-        WHEN 'Regularization Minutes' THEN (
-          SELECT json_build_object(
-            'regulationNumber', rm.regulationNumber,
-            'image', rm.image,
-            'date', rm.date
-          )
-          FROM regularization_minutes rm
-          WHERE rm.archiveId = a.archiveId
+      )
+      FROM resolution r
+      WHERE r.archiveId = a.archiveId
+    )
+    WHEN 'Regularization Minutes' THEN (
+      SELECT json_agg(
+        json_build_object(
+          'regulationNumber', rm.regulationNumber,
+          'image', rm.image,
+          'date', rm.date,
+          'regularizationId', rm.regularizationid
         )
-        ELSE NULL
-      END AS documentDetails
-    FROM archive a
-    JOIN document_type dt ON a.doctypeId = dt.doctypeId
-    WHERE 1=1
-      ${doctypeCondition}
-      ${searchCondition}
-    ORDER BY a.archiveId
-    LIMIT $1 OFFSET $2;
+      )
+      FROM regularization_minutes rm
+      WHERE rm.archiveId = a.archiveId
+    )
+    ELSE NULL
+  END AS documentDetails
+FROM archive a
+JOIN document_type dt ON a.doctypeId = dt.doctypeId
+WHERE 1=1
+  ${doctypeCondition}
+  ${searchCondition}
+ORDER BY a.archiveId
+LIMIT $1 OFFSET $2;
   `;
 
   const totalItemsQuery = `

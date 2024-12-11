@@ -23,17 +23,43 @@
                     <option value="Ordinance">Ordinance</option>
                     <option value="Panumduman">Panumduman</option>
                     <option value="Regularization Minutes">Regularization Minutes</option>
-                    <option value="Resulotion">Resulotion</option>
+                    <option value="Resolution">Resolution</option>
                 </select>
             </div>
             <div class="tableContainer">
                 <table>
                     <thead>
                         <tr>
-                            <th>Contracting Parties</th>
-                            <th>DATE</th>
-                            <th>DOCTYPE</th>
-                            <th>ACTION</th>
+                            <!-- Lupon -->
+                            <th class="luponTableHead" style="display: none;">Lupon Case Number</th>
+                            <th class="luponTableHead" style="display: none;">Complainant</th>
+                            <th class="luponTableHead" style="display: none;">Respondent</th>
+                            <th class="luponTableHead" style="display: none;">Date Filed</th>
+                            <th class="luponTableHead" style="display: none;">Type Of Case</th>
+
+                            <!-- Ordinance -->
+                            <th class="ordinanceTableHead" style="display: none;">Ordinance Number</th>
+                            <th class="ordinanceTableHead" style="display: none;">Ordinance Title</th>
+                            <th class="ordinanceTableHead" style="display: none;">Author</th>
+                            <th class="ordinanceTableHead" style="display: none;">Co-Author</th>
+                            <th class="ordinanceTableHead" style="display: none;">Sponsor</th>
+                            <th class="ordinanceTableHead" style="display: none;">Date Approved</th>
+                            
+                            <!-- Contracting Parties -->
+                            <th class="panumdumanTableHead" style="display: none;">ContractingParties</th>
+                            <th class="panumdumanTableHead" style="display: none;">Date</th>
+                            
+                            <!-- Regularization Minutes -->
+                            <th class="regularizationTableHead" style="display: none;">Regularization Number</th>
+                            <th class="regularizationTableHead" style="display: none;">Date</th>
+                            
+                            <!-- Resolution -->
+                            <th class="resolutionTableHead" style="display: none;">Resolution Number</th>
+                            <th class="resolutionTableHead" style="display: none;">Series Of Year</th>
+                            <th class="resolutionTableHead" style="display: none;">Date</th>
+
+                            <th style="display: none;">Doctype</th>
+                            <th style="display: none;">Action</th>
                         </tr>
                     </thead>
                     <tbody id="archiveTableBody"></tbody>

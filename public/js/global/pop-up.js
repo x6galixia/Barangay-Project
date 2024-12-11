@@ -67,5 +67,4 @@ function closePopup() {
     document.getElementById("submit_prompt1").classList.remove("visible1")
   }
   overlay.classList.remove("visible");
-  window.location.reload();
 }
