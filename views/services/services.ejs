@@ -92,12 +92,46 @@
             <%- include("../includes/solo-parent.ejs") %>               <!-- BIEWABLE PALA / need ig pa consult ulit-->
             <%- include("../includes/land-no-claim.ejs") %>             <!-- BIEWABLE PALA / need ig pa consult ulit-->
             <button style="display: flex; justify-self: end; margin-top: 24px; padding: 12px 48px;"
-                onclick="window.print()">Print</button>
+                onclick="printMeh()">Print</button>
         </div>
+        
 
 </body>
+<img id="printCert" src="" alt="">
     <script>
-        
+
+        function printMeh () {
+            var certImg =  document.getElementById('certImg');
+            var printCert = document.getElementById('printCert');
+
+            printCert.src = certImg.src;
+            window.print();
+            // alert('puta');
+        }
+
+
+
+//         function scaleToFit() {
+//     const container = document.getElementById('certificateContainer');
+//     const pageWidth = window.innerWidth; // or fixed page size
+//     const pageHeight = window.innerHeight; // or fixed page size
+//     const containerWidth = container.offsetWidth;
+//     const containerHeight = container.offsetHeight;
+
+//     // Calculate the scale factor
+//     const scaleX = pageWidth / containerWidth;
+//     const scaleY = pageHeight / containerHeight;
+//     const scale = Math.min(scaleX, scaleY);
+
+//     // Apply the scale
+//     container.style.transform = `scale(${scale})`;
+//     container.style.transformOrigin = 'top left';
+// }
+
+// function printttt() {
+//     scaleToFit();
+//     window.print();
+// }
     </script>
 
 <script src="../../js/global/pop-up.js"></script>

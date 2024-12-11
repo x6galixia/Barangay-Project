@@ -1181,8 +1181,9 @@ window.processCertificate = function (button) {
       const img = canvas.toDataURL("image/png"); // Convert canvas to image data
       const imgElement = document.createElement("img");
       imgElement.src = img;
+      imgElement.id = "certImg"
       imgElement.style.width="100%"
-      imgElement.style.height="auto"
+      // imgElement.style.height="auto"
 
       // Append the generated image to the container
       imageContainer.innerHTML = ""; // Clear previous images
