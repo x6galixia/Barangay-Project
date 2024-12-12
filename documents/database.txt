@@ -189,6 +189,19 @@ INSERT INTO rClassification (rClassificationName)VALUES
     ('Unemployed'),
     ('None');
 
+CREATE TABLE house_classification (
+    id SERIAL PRIMARY KEY NOT NULL,
+    houseNumber INT NULL,
+    houseRepresentative VARCHAR(255) NOT NULL,
+    numberOfFamilies INT NOT NULL,
+    isWithCr BOOLEAN DEFAULT FALSE,
+    isWith40mZone BOOLEAN DEFAULT FALSE,
+    isEnergized BOOLEAN DEFAULT FALSE,
+    housingMaterials VARCHAR(50) NULL CHECK (housingMaterials IN ('Concrete', 'Semi-Concrete', 'Wood')),
+    waterSource VARCHAR(255) NOT NULL
+);
+
+
 isResident
 last_name
 first_name
