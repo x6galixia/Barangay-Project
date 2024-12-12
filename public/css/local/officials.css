@@ -236,4 +236,26 @@
 
 .row{
     display: flex;
+    align-items: center;
+}
+.row> div:first-child{
+    margin-top: -24px;
+    flex: 1;
+}
+.image-preview{
+    height: 200px !important;
+}
+
+#fileInput1,
+#fileInput2,
+#fileInput3,
+#fileInput4,
+#fileInput5,
+#fileInput6,
+#fileInput7,
+#fileInput8,
+#fileInput9,
+#fileInput10
+{
+    display: none;
 }
