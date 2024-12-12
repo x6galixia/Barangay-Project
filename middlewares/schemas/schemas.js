@@ -171,10 +171,25 @@ const archiveSchema = Joi.object({
     }).required()
 });
 
+const houseClassification = Joi.object({
+    houseNumber: Joi.number().integer().positive().allow(null),
+    houseRepresentative: Joi.string().max(255).required(),
+    numberOfFamilies: Joi.number().integer().positive().required(),
+    isWithCr: Joi.boolean().default(false),
+    isWith40mZone: Joi.boolean().default(false),
+    isEnergized: Joi.boolean().default(false),
+    housingMaterials: Joi.string()
+        .valid('Concrete', 'Semi-Concrete', 'Wood')
+        .allow(null),
+    deepWell: Joi.string().max(255).optional().allow(""),
+    waterPump: Joi.string().max(255).optional().allow(""),
+    mineral: Joi.string().max(255).optional().allow("")
+});
 
 module.exports = {
     requestSchema,
     residentSchema,
     inventorySchema,
-    archiveSchema
+    archiveSchema,
+    houseClassification
 }

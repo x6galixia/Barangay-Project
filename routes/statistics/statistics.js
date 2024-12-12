@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mPool = require("../../models/mDatabase");
+const { houseClassification } = require("../../middlewares/schemas/schemas");
 
 router.get("/dashboard", (req, res) => {
     res.render("statistics/statistics", {
@@ -193,6 +194,50 @@ router.get("/barangay-population", async (req, res) => {
         });
     } catch (err) {
         console.error("Error: ", err.message, err.stack);
+        res.status(500).send("Internal server error");
+    }
+});
+
+router.post("/house-classification-survey", async (req, res) => {
+
+    // Convert boolean-like values
+    req.body.isWithCr = req.body.withCR === "true";
+    req.body.isWith40mZone = req.body.with40mZone === "true";
+    req.body.isEnergized = req.body.energized === "true";
+
+    // Parse number fields
+    req.body.houseNumber = req.body.houseNumber ? parseInt(req.body.houseNumber, 10) : null;
+    req.body.numberOfFamilies = parseInt(req.body.numberOfFamilies, 10);
+
+    // Joi validation
+    const { error, value } = houseClassification.validate(req.body);
+    if (error) {
+        return res.status(400).json({ error: error.details.map(e => e.message) });
+    }
+
+    // Water source aggregation
+    const waterSource = [value.deepWell, value.waterPump, value.mineral].filter(Boolean).join(',');
+
+    try {
+        await mPool.query(`
+            INSERT INTO house_classification 
+            (houseNumber, houseRepresentative, numberOfFamilies, isWithCr, isWith40mZone, isEnergized, housingMaterials, waterSource)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        `, [
+            value.houseNumber,
+            value.houseRepresentative,
+            value.numberOfFamilies,
+            value.isWithCr,
+            value.isWith40mZone,
+            value.isEnergized,
+            value.housingMaterials,
+            waterSource
+        ]);
+
+        req.flash('success', 'Survey added successfully!');
+        res.redirect('/statistics/dashboard');
+    } catch (err) {
+        console.error("Database Error:", err.message);
         res.status(500).send("Internal server error");
     }
 });
