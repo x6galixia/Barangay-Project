@@ -333,6 +333,9 @@ input[type="search"]::placeholder {
   display: grid;
   place-items: end;
   padding: 12px;
+  position: sticky;
+  top: -30px;
+  background-color: white;
 }
 
 .pop-up>.close-container>img {
