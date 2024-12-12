@@ -107,7 +107,7 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
         doctypeId: doctypeId,
         documentData: {
             ...req.body,
-            image: req.file?.path || null
+            image: req.file?.filename || null
         }
     };
 
@@ -162,7 +162,7 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
                     req.body.complainant,
                     req.body.respondent,
                     req.body.dateFiled,
-                    req.file?.path,
+                    requestData.documentData.image,
                     req.body.caseType
                 ]
             );
@@ -177,7 +177,7 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
                     authors,
                     coAuthors,
                     sponsors,
-                    req.file?.path,
+                    requestData.documentData.image,
                     req.body.dateApproved
                 ]
             );
@@ -189,7 +189,7 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
                     archiveId,
                     req.body.resolutionNumber,
                     req.body.yearSeries,
-                    req.file?.path,
+                    requestData.documentData.image,
                     req.body.date
                 ]
             );
@@ -200,7 +200,7 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
                 [
                     archiveId,
                     req.body.regulationNumber,
-                    req.file?.path,
+                    requestData.documentData.image,
                     req.body.date
                 ]
             );
@@ -210,7 +210,7 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
 
         await mPool.query('COMMIT'); // Commit transaction
         req.flash('success', 'Document ADDED Successfully!');
-        res.redirect("/archive/dashboard")
+        res.redirect(`/archive/dashboard?type=${docType}`)
     } catch (error) {
         await mPool.query('ROLLBACK'); // Rollback transaction on error
         res.status(500).json({ error: error.message });
