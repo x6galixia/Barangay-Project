@@ -130,6 +130,18 @@ const archiveSchema = Joi.object({
             then: Joi.string().required(),
             otherwise: Joi.optional().allow(null)
         }),
+        author1: Joi.string().optional().allow(null),
+        author2: Joi.string().optional().allow(null),
+        author3: Joi.string().optional().allow(null),
+
+        coAuthor1: Joi.string().optional().allow(null),
+        coAuthor2: Joi.string().optional().allow(null),
+        coAuthor3: Joi.string().optional().allow(null),
+
+        sponsor1: Joi.string().optional().allow(null),
+        sponsor2: Joi.string().optional().allow(null),
+        sponsor3: Joi.string().optional().allow(null),
+
         coAuthors: Joi.string().optional().allow(null),
         sponsors: Joi.string().optional().allow(null),
         dateApproved: Joi.when('doctypeId', {

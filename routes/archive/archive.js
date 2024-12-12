@@ -131,6 +131,18 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
         .filter(Boolean)
         .join(',');
 
+        const authors = [req.body.author1, req.body.author2, req.body.author3]
+        .filter(Boolean)
+        .join(',');
+
+        const coAuthors = [req.body.coAuthor1, req.body.coAuthor2, req.body.coAuthor3]
+        .filter(Boolean)
+        .join(',');
+
+        const sponsors = [req.body.sponsor1, req.body.sponsor2, req.body.sponsor3]
+        .filter(Boolean)
+        .join(',');
+
         console.log(contractingPersons);
 
         // Insert into the specific document table based on docType
@@ -161,10 +173,10 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
                 [
                     archiveId,
                     req.body.ordinanceNumber,
-                    req.body.title,
-                    req.body.authors,
-                    req.body.coAuthors,
-                    req.body.sponsors,
+                    req.body.ordinanceTitle,
+                    authors,
+                    coAuthors,
+                    sponsors,
                     req.file?.path,
                     req.body.dateApproved
                 ]
