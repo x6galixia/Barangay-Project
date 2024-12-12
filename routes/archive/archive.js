@@ -276,8 +276,146 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
     }
 });
 
-router.post("/update-archive-item", upload.single('image'), async (req, res) => {
+router.post('/dashboard/update-archive', upload.single('image'), async (req, res) => {
+    console.log("Request Body:", req.body);
+    console.log("File:", req.file);
 
+    const docType = req.body.docType;
+    const doctypeId = docTypeMap[docType]; // Mapping docType to doctypeId
+
+    if (!doctypeId) {
+        return res.status(400).json({ error: `Invalid document type: ${docType}` });
+    }
+
+    const requestData = {
+        doctypeId: doctypeId,
+        documentData: {
+            ...req.body,
+            image: req.file?.filename || null
+        }
+    };
+
+    // Validate the data against the schema
+    const { error } = archiveSchema.validate(requestData);
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+    }
+
+    try {
+        const archiveId = requestData.documentData.itemId;
+        console.log("Archive ID: ", archiveId);
+
+        // Start a transaction
+        await mPool.query('BEGIN');
+
+        // Check if archive exists
+        const archiveResult = await mPool.query(
+            `SELECT archiveId FROM archive WHERE archiveId = $1`, 
+            [archiveId]
+        );
+        if (archiveResult.rows.length === 0) {
+            return res.status(404).json({ error: `Archive with ID ${archiveId} not found.` });
+        }
+
+        const contractingPersons = [req.body.parties1, req.body.parties2]
+            .filter(Boolean)
+            .join(',');
+
+        const authors = [req.body.author1, req.body.author2, req.body.author3]
+            .filter(Boolean)
+            .join(',');
+
+        const coAuthors = [req.body.coAuthor1, req.body.coAuthor2, req.body.coAuthor3]
+            .filter(Boolean)
+            .join(',');
+
+        const sponsors = [req.body.sponsor1, req.body.sponsor2, req.body.sponsor3]
+            .filter(Boolean)
+            .join(',');
+
+        // Update the archive document
+        await mPool.query(
+            `UPDATE archive 
+             SET doctypeId = $1
+             WHERE archiveId = $2`,
+            [doctypeId, archiveId]
+        );
+
+        // Update the specific document table based on docType
+        if (doctypeId === 1) { // Panumduman
+            await mPool.query(
+                `UPDATE panumduman
+                 SET date = $1, image = $2, contractingPersons = $3
+                 WHERE archiveId = $4`,
+                [req.body.date, requestData.documentData.image, contractingPersons, archiveId]
+            );
+        } else if (doctypeId === 2) { // Lupon
+            await mPool.query(
+                `UPDATE lupon
+                 SET caseNumber = $1, complainant = $2, respondent = $3, dateFiled = $4, image = $5, caseType = $6
+                 WHERE archiveId = $7`,
+                [
+                    req.body.luponCaseNumber,
+                    req.body.complainant,
+                    req.body.respondent,
+                    req.body.dateFiled,
+                    requestData.documentData.image,
+                    req.body.caseType,
+                    archiveId
+                ]
+            );
+        } else if (doctypeId === 3) { // Ordinance
+            await mPool.query(
+                `UPDATE ordinance
+                 SET ordinanceNumber = $1, title = $2, authors = $3, coAuthors = $4, sponsors = $5, image = $6, dateApproved = $7
+                 WHERE archiveId = $8`,
+                [
+                    req.body.ordinanceNumber,
+                    req.body.ordinanceTitle,
+                    authors,
+                    coAuthors,
+                    sponsors,
+                    requestData.documentData.image,
+                    req.body.dateApproved,
+                    archiveId
+                ]
+            );
+        } else if (doctypeId === 4) { // Resolution
+            await mPool.query(
+                `UPDATE resolution
+                 SET resolutionNumber = $1, seriesYear = $2, image = $3, date = $4
+                 WHERE archiveId = $5`,
+                [
+                    req.body.resolutionNumber,
+                    req.body.yearSeries,
+                    requestData.documentData.image,
+                    req.body.date,
+                    archiveId
+                ]
+            );
+        } else if (doctypeId === 5) { // Regularization Minutes
+            await mPool.query(
+                `UPDATE regularization_minutes
+                 SET regulationNumber = $1, image = $2, date = $3
+                 WHERE archiveId = $4`,
+                [
+                    req.body.regulationNumber,
+                    requestData.documentData.image,
+                    req.body.date,
+                    archiveId
+                ]
+            );
+        } else {
+            throw new Error('Unhandled document type');
+        }
+
+        await mPool.query('COMMIT'); // Commit transaction
+        req.flash('success', 'Document UPDATED Successfully!');
+        res.redirect(`/archive/dashboard?type=${docType}`);
+    } catch (error) {
+        await mPool.query('ROLLBACK'); // Rollback transaction on error
+        res.status(500).json({ error: error.message });
+    }
 });
 
 router.delete("/delete-archive-item/:id", async (req, res) => {

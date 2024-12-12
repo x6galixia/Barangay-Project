@@ -544,7 +544,7 @@ window.popUp_three_dot = function (button) {
         const updateContainer = document.getElementById("add-document");
         document.querySelector('#add-document .heading').innerHTML = `UPDATE ${type.toUpperCase()} <br> DOCUMENT`;
         document.querySelector('#add-document #submit_add_document').innerText = "UPDATE";
-        document.querySelector('#add-document form').action = `/archive/update-archive-item`;
+        document.querySelector('#add-document form').action = `/archive/dashboard/update-archive`;
         updateContainer.classList.add("visible");
         overlay.classList.toggle("visible");
 
@@ -555,6 +555,7 @@ window.popUp_three_dot = function (button) {
             })
             .then(itemData => {
                 fillInputs(itemData);
+                document.getElementById("itemId").value = archID || null;
             })
             .catch(error => {
                 console.error('Error archive data:', error);

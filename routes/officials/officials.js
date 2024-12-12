@@ -66,7 +66,7 @@ router.post('/update-barangay-officials', upload.fields([
 ]), async (req, res) => {
     // Validate form data using Joi
     const { error, value } = barangayOfficialsSchema.validate(req.body);
-        if (error) throw new Error(error.details.map(e => e.message).join(', '));
+    if (error) throw new Error(error.details.map(e => e.message).join(', '));
 
     // Process uploaded images
     const uploadedImages = {};
@@ -77,48 +77,84 @@ router.post('/update-barangay-officials', upload.fields([
     }
 
     try {
-
+        // Check if any officials already exist
         const officialId = await mPool.query(`SELECT id FROM barangay_officials LIMIT 1`);
         if (officialId.rows.length === 0) {
-            return res.status(404).json({ error: 'No official found to update.' });
+            // No official found, perform an insert instead of update
+            const insertQuery = `
+                INSERT INTO barangay_officials (
+                    punongBarangayLastName, punongBarangayFirstName, punongBarangayMiddleName, punongBarangayImage,
+                    kagawad1LastName, kagawad1FirstName, kagawad1MiddleName, kagawad1Image,
+                    kagawad2LastName, kagawad2FirstName, kagawad2MiddleName, kagawad2Image,
+                    kagawad3LastName, kagawad3FirstName, kagawad3MiddleName, kagawad3Image,
+                    kagawad4LastName, kagawad4FirstName, kagawad4MiddleName, kagawad4Image,
+                    kagawad5LastName, kagawad5FirstName, kagawad5MiddleName, kagawad5Image,
+                    kagawad6LastName, kagawad6FirstName, kagawad6MiddleName, kagawad6Image,
+                    kagawad7LastName, kagawad7FirstName, kagawad7MiddleName, kagawad7Image,
+                    SKChairpersonLastName, SKChairpersonFirstName, SKChairpersonMiddleName, SKChairpersonImage,
+                    barangaySecretaryLastName, barangaySecretaryFirstName, barangaySecretaryMiddleName, barangaySecretaryImage,
+                    barangayTreasurerLastName, barangayTreasurerFirstName, barangayTreasurerMiddleName, barangayTreasurerImage
+                ) VALUES (
+                    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, 
+                    $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36, $37, $38, $39, $40,
+                    $41, $42, $43, $44
+                )
+            `;
+
+            await mPool.query(insertQuery, [
+                value.punongBarangayLastName, value.punongBarangayFirstName, value.punongBarangayMiddleName, uploadedImages.punongBarangayImage || null,
+                value.kagawad1LastName, value.kagawad1FirstName, value.kagawad1MiddleName, uploadedImages.kagawad1Image || null,
+                value.kagawad2LastName, value.kagawad2FirstName, value.kagawad2MiddleName, uploadedImages.kagawad2Image || null,
+                value.kagawad3LastName, value.kagawad3FirstName, value.kagawad3MiddleName, uploadedImages.kagawad3Image || null,
+                value.kagawad4LastName, value.kagawad4FirstName, value.kagawad4MiddleName, uploadedImages.kagawad4Image || null,
+                value.kagawad5LastName, value.kagawad5FirstName, value.kagawad5MiddleName, uploadedImages.kagawad5Image || null,
+                value.kagawad6LastName, value.kagawad6FirstName, value.kagawad6MiddleName, uploadedImages.kagawad6Image || null,
+                value.kagawad7LastName, value.kagawad7FirstName, value.kagawad7MiddleName, uploadedImages.kagawad7Image || null,
+                value.SKChairpersonLastName, value.SKChairpersonFirstName, value.SKChairpersonMiddleName, uploadedImages.SKChairpersonImage || null,
+                value.barangaySecretaryLastName, value.barangaySecretaryFirstName, value.barangaySecretaryMiddleName, uploadedImages.barangaySecretaryImage || null,
+                value.barangayTreasurerLastName, value.barangayTreasurerFirstName, value.barangayTreasurerMiddleName, uploadedImages.barangayTreasurerImage || null
+            ]);
+
+            req.flash('success', 'Officials List ADDED Successfully!');
+            res.redirect(`/officials/dashboard`);
+        } else {
+            // Official exists, perform update
+            const id = officialId.rows[0].id;
+            const updateQuery = `
+                UPDATE barangay_officials
+                SET
+                    punongBarangayLastName = $1, punongBarangayFirstName = $2, punongBarangayMiddleName = $3, punongBarangayImage = $4,
+                    kagawad1LastName = $5, kagawad1FirstName = $6, kagawad1MiddleName = $7, kagawad1Image = $8,
+                    kagawad2LastName = $9, kagawad2FirstName = $10, kagawad2MiddleName = $11, kagawad2Image = $12,
+                    kagawad3LastName = $13, kagawad3FirstName = $14, kagawad3MiddleName = $15, kagawad3Image = $16,
+                    kagawad4LastName = $17, kagawad4FirstName = $18, kagawad4MiddleName = $19, kagawad4Image = $20,
+                    kagawad5LastName = $21, kagawad5FirstName = $22, kagawad5MiddleName = $23, kagawad5Image = $24,
+                    kagawad6LastName = $25, kagawad6FirstName = $26, kagawad6MiddleName = $27, kagawad6Image = $28,
+                    kagawad7LastName = $29, kagawad7FirstName = $30, kagawad7MiddleName = $31, kagawad7Image = $32,
+                    SKChairpersonLastName = $33, SKChairpersonFirstName = $34, SKChairpersonMiddleName = $35, SKChairpersonImage = $36,
+                    barangaySecretaryLastName = $37, barangaySecretaryFirstName = $38, barangaySecretaryMiddleName = $39, barangaySecretaryImage = $40,
+                    barangayTreasurerLastName = $41, barangayTreasurerFirstName = $42, barangayTreasurerMiddleName = $43, barangayTreasurerImage = $44
+                WHERE id = $45
+            `;
+
+            await mPool.query(updateQuery, [
+                value.punongBarangayLastName, value.punongBarangayFirstName, value.punongBarangayMiddleName, uploadedImages.punongBarangayImage || null,
+                value.kagawad1LastName, value.kagawad1FirstName, value.kagawad1MiddleName, uploadedImages.kagawad1Image || null,
+                value.kagawad2LastName, value.kagawad2FirstName, value.kagawad2MiddleName, uploadedImages.kagawad2Image || null,
+                value.kagawad3LastName, value.kagawad3FirstName, value.kagawad3MiddleName, uploadedImages.kagawad3Image || null,
+                value.kagawad4LastName, value.kagawad4FirstName, value.kagawad4MiddleName, uploadedImages.kagawad4Image || null,
+                value.kagawad5LastName, value.kagawad5FirstName, value.kagawad5MiddleName, uploadedImages.kagawad5Image || null,
+                value.kagawad6LastName, value.kagawad6FirstName, value.kagawad6MiddleName, uploadedImages.kagawad6Image || null,
+                value.kagawad7LastName, value.kagawad7FirstName, value.kagawad7MiddleName, uploadedImages.kagawad7Image || null,
+                value.SKChairpersonLastName, value.SKChairpersonFirstName, value.SKChairpersonMiddleName, uploadedImages.SKChairpersonImage || null,
+                value.barangaySecretaryLastName, value.barangaySecretaryFirstName, value.barangaySecretaryMiddleName, uploadedImages.barangaySecretaryImage || null,
+                value.barangayTreasurerLastName, value.barangayTreasurerFirstName, value.barangayTreasurerMiddleName, uploadedImages.barangayTreasurerImage || null,
+                id
+            ]);
+
+            req.flash('success', 'Officials List UPDATED Successfully!');
+            res.redirect(`/officials/dashboard`);
         }
-        const id = officialId.rows[0].id;
-
-        // Update query to save both text and image data
-        const updateQuery = `
-            UPDATE barangay_officials
-            SET
-                punongBarangayLastName = $1, punongBarangayFirstName = $2, punongBarangayMiddleName = $3, punongBarangayImage = $4,
-                kagawad1LastName = $5, kagawad1FirstName = $6, kagawad1MiddleName = $7, kagawad1Image = $8,
-                kagawad2LastName = $9, kagawad2FirstName = $10, kagawad2MiddleName = $11, kagawad2Image = $12,
-                kagawad3LastName = $13, kagawad3FirstName = $14, kagawad3MiddleName = $15, kagawad3Image = $16,
-                kagawad4LastName = $17, kagawad4FirstName = $18, kagawad4MiddleName = $19, kagawad4Image = $20,
-                kagawad5LastName = $21, kagawad5FirstName = $22, kagawad5MiddleName = $23, kagawad5Image = $24,
-                kagawad6LastName = $25, kagawad6FirstName = $26, kagawad6MiddleName = $27, kagawad6Image = $28,
-                kagawad7LastName = $29, kagawad7FirstName = $30, kagawad7MiddleName = $31, kagawad7Image = $32,
-                SKChairpersonLastName = $33, SKChairpersonFirstName = $34, SKChairpersonMiddleName = $35, SKChairpersonImage = $36,
-                barangaySecretaryLastName = $37, barangaySecretaryFirstName = $38, barangaySecretaryMiddleName = $39, barangaySecretaryImage = $40,
-                barangayTreasurerLastName = $41, barangayTreasurerFirstName = $42, barangayTreasurerMiddleName = $43, barangayTreasurerImage = $44
-            WHERE id = $45
-        `;
-
-        await mPool.query(updateQuery, [
-            value.punongBarangayLastName, value.punongBarangayFirstName, value.punongBarangayMiddleName, uploadedImages.punongBarangayImage || null,
-            value.kagawad1LastName, value.kagawad1FirstName, value.kagawad1MiddleName, uploadedImages.kagawad1Image || null,
-            value.kagawad2LastName, value.kagawad2FirstName, value.kagawad2MiddleName, uploadedImages.kagawad2Image || null,
-            value.kagawad3LastName, value.kagawad3FirstName, value.kagawad3MiddleName, uploadedImages.kagawad3Image || null,
-            value.kagawad4LastName, value.kagawad4FirstName, value.kagawad4MiddleName, uploadedImages.kagawad4Image || null,
-            value.kagawad5LastName, value.kagawad5FirstName, value.kagawad5MiddleName, uploadedImages.kagawad5Image || null,
-            value.kagawad6LastName, value.kagawad6FirstName, value.kagawad6MiddleName, uploadedImages.kagawad6Image || null,
-            value.kagawad7LastName, value.kagawad7FirstName, value.kagawad7MiddleName, uploadedImages.kagawad7Image || null,
-            value.SKChairpersonLastName, value.SKChairpersonFirstName, value.SKChairpersonMiddleName, uploadedImages.SKChairpersonImage || null,
-            value.barangaySecretaryLastName, value.barangaySecretaryFirstName, value.barangaySecretaryMiddleName, uploadedImages.barangaySecretaryImage || null,
-            value.barangayTreasurerLastName, value.barangayTreasurerFirstName, value.barangayTreasurerMiddleName, uploadedImages.barangayTreasurerImage || null,
-            id
-        ]);
-
-        req.flash('success', 'Officials List UPDATED Successfully!');
-        res.redirect(`/officials/dashboard`);
     } catch (err) {
         deleteUploadedFiles(req.files);
         console.error('Database error:', err.message);
