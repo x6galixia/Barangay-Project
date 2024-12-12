@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                             <td class="menu-row">
                                 <img class="dot" src="../icon/triple-dot.svg" alt="">
                                 <div class="triple-dot">
-                                    <div class="menu" data-id="${detail.luponId}">
+                                    <div class="menu" data-id="${detail.archID}">
                                         <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
                                         <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
                                         <button id="view-id" onclick="popUp_three_dot(this)"
@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                             <td class="menu-row">
                                 <img class="dot" src="../icon/triple-dot.svg" alt="">
                                 <div class="triple-dot">
-                                    <div class="menu" data-id="${detail.ordinanceId}">
+                                    <div class="menu" data-id="${detail.archID}">
                                         <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
                                         <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
                                         <button id="view-id" onclick="popUp_three_dot(this)"
@@ -262,7 +262,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                             <td class="menu-row">
                                 <img class="dot" src="../icon/triple-dot.svg" alt="">
                                 <div class="triple-dot">
-                                    <div class="menu" data-id="${detail.panumdumanId}">
+                                    <div class="menu" data-id="${detail.archID}">
                                         <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
                                         <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
                                         <button id="view-id" onclick="popUp_three_dot(this)"
@@ -297,7 +297,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                             <td class="menu-row">
                                 <img class="dot" src="../icon/triple-dot.svg" alt="">
                                 <div class="triple-dot">
-                                    <div class="menu" data-id="${detail.regularizationId}">
+                                    <div class="menu" data-id="${detail.archID}">
                                         <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
                                         <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
                                         <button id="view-id" onclick="popUp_three_dot(this)"
@@ -333,7 +333,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                             <td class="menu-row">
                                 <img class="dot" src="../icon/triple-dot.svg" alt="">
                                 <div class="triple-dot">
-                                    <div class="menu" data-id="${detail.resolutionId}">
+                                    <div class="menu" data-id="${detail.archID}">
                                         <button id="delete-id" onclick="popUp_three_dot(this)">Delete</button>
                                         <button id="update-id" onclick="popUp_three_dot(this)">Update</button>
                                         <button id="view-id" onclick="popUp_three_dot(this)"
