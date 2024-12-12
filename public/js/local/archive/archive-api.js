@@ -3,15 +3,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     const archiveTableBody = document.getElementById('archiveTableBody');
     const urlParams = new URLSearchParams(window.location.search);
     const searchInput = document.getElementById('searchInput');
+    const type = urlParams.get('type');
     const page = parseInt(urlParams.get('page')) || 1;
     const limit = parseInt(urlParams.get('limit')) || 10;
-    const type = urlParams.get('type');
     const dropdown = document.querySelector('#documentType');
     if (type && dropdown) {
-        dropdown.value = type; 
+        dropdown.value = type;
     }
     // fetchArchiveLists().then(attachDotEventListeners);
-    docChanges();
+    // docChanges();
 
     // Function to update the URL parameters
     function updateURLParameter(key, value) {
@@ -64,14 +64,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                 th.style.display = 'none';
             }
         });
-    
+
         document.querySelectorAll('td').forEach((td, index) => {
             const header = td.closest('table').querySelectorAll('th')[index];
             if (!['Doctype', 'Action'].includes(header?.textContent.trim())) {
                 td.style.display = 'none';
             }
         });
-    
+
         // Show columns based on the doctype
         let className = '';
         switch (doctype) {
@@ -94,10 +94,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                 console.error('Unknown doctype:', doctype);
                 return;
         }
-    
+
         // Show the selected columns
         document.querySelectorAll(`.${className}`).forEach(el => el.style.display = 'table-cell');
-    
+
         // Ensure "Doctype" and "Action" columns remain visible
         document.querySelectorAll('th').forEach(th => {
             if (['Doctype', 'Action'].includes(th.textContent.trim())) {
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         });
     }
-    
+
 
 
     // Listen for changes to search input
@@ -142,9 +142,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             showColumnsForDoctype(doctype);
 
-            if (doctype === 'Lupon'){
+            if (doctype === 'Lupon') {
                 archive.forEach(arch1 => {
-                    if (arch1.length=== 0) {
+                    if (arch1.length === 0) {
                         const noDataRow = document.createElement('tr');
                         noDataRow.innerHTML = `
                             <td colspan="7" class="text-center">No ${doctype} Documents Found.</td>
@@ -179,9 +179,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                     })
                 });
             }
-            if (doctype === 'Ordinance'){
+            if (doctype === 'Ordinance') {
                 archive.forEach(arch1 => {
-                    if (arch1.length=== 0) {
+                    if (arch1.length === 0) {
                         const noDataRow = document.createElement('tr');
                         noDataRow.innerHTML = `
                             <td colspan="8" class="text-center">No ${doctype} Documents Found.</td>
@@ -231,9 +231,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                     })
                 });
             }
-            if (doctype === 'Panumduman'){
+            if (doctype === 'Panumduman') {
                 archive.forEach(arch => {
-                    if (arch.length=== 0) {
+                    if (arch.length === 0) {
                         const noDataRow = document.createElement('tr');
                         noDataRow.innerHTML = `
                             <td colspan="4" class="text-center">No ${doctype} Documents Found.</td>
@@ -276,9 +276,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                     })
                 });
             }
-            if (doctype === 'Regularization Minutes'){
+            if (doctype === 'Regularization Minutes') {
                 archive.forEach(arch1 => {
-                    if (arch1.length=== 0) {
+                    if (arch1.length === 0) {
                         const noDataRow = document.createElement('tr');
                         noDataRow.innerHTML = `
                             <td colspan="4" class="text-center">No ${doctype} Documents Found.</td>
@@ -286,7 +286,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                         archiveTableBody.appendChild(noDataRow);
                         return;
                     }
-                    
+
                     arch1.documentdetails.forEach(detail => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
@@ -311,9 +311,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                     })
                 });
             }
-            if (doctype === 'Resolution'){
+            if (doctype === 'Resolution') {
                 archive.forEach(arch1 => {
-                    if (arch1.length=== 0) {
+                    if (arch1.length === 0) {
                         const noDataRow = document.createElement('tr');
                         noDataRow.innerHTML = `
                             <td colspan="5" class="text-center">No ${doctype} Documents Found.</td>
@@ -321,7 +321,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                         archiveTableBody.appendChild(noDataRow);
                         return;
                     }
-                    
+
                     arch1.documentdetails.forEach(detail => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
@@ -371,12 +371,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 });
 
-function docChanges() {
-    document.getElementById("docType").addEventListener('change', function () {
-        const selectedValue = this.value.trim();
-        const formContainer = document.getElementById('archiveInputContainer');
-        if (selectedValue === "Panumduman") {
-            formContainer.innerHTML = `
+function docChangesSelected(doctype, authorsLength, coAuthorsLength, sponsorsLength) {
+    const formContainer = document.getElementById('archiveInputContainer');
+    if (doctype === "Panumduman") {
+        formContainer.innerHTML = `
             <div class="inputWithLabel" id="surubadan">
                 <label>Contracting Parties 1</label>
                 <input type="text" aria-label="Contracting Parties 1" id="parties1" name="parties1" required>
@@ -390,58 +388,89 @@ function docChanges() {
                 <input type="date" aria-label="Date" id="date" name="date" required>
             </div>
             `
-        }
-        if (selectedValue === "Lupon") {
-            formContainer.innerHTML = `
+    }
+    if (doctype === "Lupon") {
+        formContainer.innerHTML = `
             <div class="inputWithLabel" id="surubadan">
                 <label>Lupon Case Number</label>
-                <input type="number" aria-label="Lupon Case Number" name="luponCaseNumber" required>
+                <input type="text" aria-label="Lupon Case Number" name="luponCaseNumber" id="luponCaseNumber" required>
             </div>
             <div class="inputWithLabel" id="surubadan">
                 <label>Complainant</label>
-                <input type="text" aria-label="Complainant" name="complainant" required>
+                <input type="text" aria-label="Complainant" name="complainant" id="complainant" required>
             </div>
             <div class="inputWithLabel" id="surubadan">
                 <label>Respondent</label>
-                <input type="text" aria-label="Respondent" name="respondent" required>
+                <input type="text" aria-label="Respondent" name="respondent" id="respondent" required>
             </div>
             <div class="inputWithLabel">
                 <label>Date Filed</label>
-                <input type="date" aria-label="Date Filed" name="dateFiled" required>
+                <input type="date" aria-label="Date Filed" name="dateFiled" id="dateFiled" required>
             </div>
             <div class="inputWithLabel">
                 <label>Type Of Case</label>
-                <input type="text" aria-label="Date Filed" name="caseType" required>
+                <input type="text" aria-label="Date Filed" name="caseType" id="caseType" required>
             </div>
             `
+    }
+    if (doctype === "Ordinance") {
+        let formHTML = `
+                <div class="inputWithLabel" id="surubadan">
+                    <label>Ordinance Number</label>
+                    <input type="number" aria-label="Ordinance Number" id="ordinanceNumber" name="ordinanceNumber" required>
+                </div>
+                <div class="inputWithLabel" id="surubadan">
+                    <label>Ordinance Title</label>
+                    <input type="text" aria-label="Ordinance Title" id="ordinanceTitle" name="ordinanceTitle" required>
+                </div>`;
+
+        // Add author fields
+        for (let i = 1; i <= authorsLength; i++) {
+            formHTML += `
+                <div class="inputWithLabel" id="authorContainer${i}" style="margin-top:4px">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label>Author ${i}</label>
+                    </div>
+                    <input type="text" aria-label="Author ${i}" name="author${i}" id="author${i}" required>
+                </div>`;
         }
-        if (selectedValue === "Ordinance") {
-            formContainer.innerHTML = `
-            <div class="inputWithLabel" id="surubadan">
-                <label>Ordinance Number</label>
-                <input type="number" aria-label="Ordinance Number" id="ordinanceNumber" name="ordinanceNumber" required>
-            </div>
-            <div class="inputWithLabel" id="surubadan">
-                <label>Ordinance Title</label>
-                <input type="text" aria-label="Ordinance Title" id="ordinanceTitle" name="ordinanceTitle" required>
-            </div>
-            <div class="inputWithLabel" id="authorContainer" style="margin-top:4px">
-            </div>
-            <div class="inputWithLabel" id="co-AuthorContainer" style="margin-top:4px">
-            </div>
-            <div class="inputWithLabel" id="sponsorContainer" style="margin-top:4px">
-            </div>
-            <div class="inputWithLabel">
-                <label>Date Approved</label>
-                <input type="date" aria-label="Date Approved" id="date" name="dateApproved" required>
-            </div>
-            `
+
+        // Add co-author fields
+        for (let i = 1; i <= coAuthorsLength; i++) {
+            formHTML += `
+                <div class="inputWithLabel" id="coAuthorContainer${i}" style="margin-top:4px">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label>Co-Author ${i}</label>
+                    </div>
+                    <input type="text" aria-label="Co-Author ${i}" name="coAuthor${i}" id="coAuthor${i}" required>
+                </div>`;
         }
-        if (selectedValue === "Resolution") {
-            formContainer.innerHTML = `
+
+        // Add sponsor fields
+        for (let i = 1; i <= sponsorsLength; i++) {
+            formHTML += `
+                <div class="inputWithLabel" id="sponsorContainer${i}" style="margin-top:4px">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label>Sponsor ${i}</label>
+                    </div>
+                    <input type="text" aria-label="Sponsor ${i}" name="sponsor${i}" id="sponsor${i}" required>
+                </div>`;
+        }
+
+        // Add date approved field
+        formHTML += `
+                <div class="inputWithLabel">
+                    <label>Date Approved</label>
+                    <input type="date" aria-label="Date Approved" id="date" name="dateApproved" required>
+                </div>`;
+
+        formContainer.innerHTML = formHTML;
+    }
+    if (doctype === "Resolution") {
+        formContainer.innerHTML = `
             <div class="inputWithLabel" id="surubadan">
                 <label>Resolution Number</label>
-                <input type="number" aria-label="Resolution Number" id="resolutionNumber" name="resolutionNumber" required>
+                <input type="text" aria-label="Resolution Number" id="resolutionNumber" name="resolutionNumber" required>
             </div>
             <div class="inputWithLabel" id="surubadan">
                 <label>Series of Year</label>
@@ -452,9 +481,9 @@ function docChanges() {
                 <input type="date" aria-label="Date" id="date" name="date" required>
             </div>
             `
-        }
-        if (selectedValue === "Regularization Minutes") {
-            formContainer.innerHTML = `
+    }
+    if (doctype === "Regularization Minutes") {
+        formContainer.innerHTML = `
             <div class="inputWithLabel" id="surubadan">
                 <label>Regulation Number (Ex. 1st)</label>
                 <input type="text" aria-label="Ika Pira na Regulation" id="regulationNumber" name="regulationNumber" required>
@@ -464,11 +493,7 @@ function docChanges() {
                 <input type="date" aria-label="Date" id="date" name="date" required>
             </div>
             `
-        }
-        addTextarea();
-        addTextarea1();
-        addTextarea2();
-    })
+    }
 }
 
 function attachDotEventListeners() {
@@ -476,7 +501,7 @@ function attachDotEventListeners() {
         dot.addEventListener("click", function () {
             console.log("dot clicked");
             const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
-                tripleDotContainer.classList.add("visible");
+            tripleDotContainer.classList.add("visible");
         });
 
         document.addEventListener("click", function (event) {
@@ -517,13 +542,11 @@ window.popUp_three_dot = function (button) {
     }
     if (action === 'Update' && archID) {
         const updateContainer = document.getElementById("add-document");
-        document.querySelector('#add-document .heading').innerText = "UPDATE DOCUMENT";
+        document.querySelector('#add-document .heading').innerHTML = `UPDATE ${type.toUpperCase()} <br> DOCUMENT`;
         document.querySelector('#add-document #submit_add_document').innerText = "UPDATE";
         document.querySelector('#add-document form').action = `/archive/update-archive-item`;
         updateContainer.classList.add("visible");
         overlay.classList.toggle("visible");
-
-        console.log(archID);
 
         fetch(`/archive/archive-item/${archID}`)
             .then(response => {
@@ -556,13 +579,118 @@ window.popUp_three_dot = function (button) {
     }
 };
 
+const urlParams = new URLSearchParams(window.location.search);
+const searchInput = document.getElementById('searchInput');
+const type = urlParams.get('type');
 const addDocument = document.getElementById("add-document");
+let authorCount = 1;
+let coAuthorCount = 1;
+let sponsorCount = 1;
 function popUp_button(button) {
     var buttonId = button.id;
     if (buttonId === "add-document-button") {
-        document.querySelector('#add-document .heading').innerText = "ADD DOCUMENT";
+        setImage("");
         document.querySelector('#add-document #submit_add_document').innerText = "SUBMIT";
         document.querySelector('#add-document form').action = `/archive/dashboard/add-archive`;
+        document.querySelector('#add-document .heading').innerHTML = `ADD ${type.toUpperCase()} <br> DOCUMENT`;
+        const formContainer = document.getElementById('archiveInputContainer');
+        if (type === "Panumduman") {
+            formContainer.innerHTML = `
+            <div class="inputWithLabel" id="surubadan">
+                <label>Contracting Parties 1</label>
+                <input type="text" aria-label="Contracting Parties 1" id="parties1" name="parties1" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Contracting Parties 2</label>
+                <input type="text" aria-label="Contracting Parties 2" id="parties2" name="parties2" required>
+            </div>
+            <div class="inputWithLabel">
+                <label>Date</label>
+                <input type="date" aria-label="Date" id="date" name="date" required>
+            </div>
+            `
+        }
+        if (type === "Lupon") {
+            formContainer.innerHTML = `
+            <div class="inputWithLabel" id="surubadan">
+                <label>Lupon Case Number</label>
+                <input type="text" aria-label="Lupon Case Number" name="luponCaseNumber" id=luponCaseNumber required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Complainant</label>
+                <input type="text" aria-label="Complainant" name="complainant" id="complainant" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Respondent</label>
+                <input type="text" aria-label="Respondent" name="respondent" id="respondent" required>
+            </div>
+            <div class="inputWithLabel">
+                <label>Date Filed</label>
+                <input type="date" aria-label="Date Filed" name="dateFiled" id="dateFiled" required>
+            </div>
+            <div class="inputWithLabel">
+                <label>Type Of Case</label>
+                <input type="text" aria-label="Date Filed" name="caseType" id=caseType required>
+            </div>
+            `
+        }
+        if (type === "Ordinance") {
+            authorCount = 1;
+            coAuthorCount = 1;
+            sponsorCount = 1;
+            formContainer.innerHTML = `
+            <div class="inputWithLabel" id="surubadan">
+                <label>Ordinance Number</label>
+                <input type="number" aria-label="Ordinance Number" id="ordinanceNumber" name="ordinanceNumber" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Ordinance Title</label>
+                <input type="text" aria-label="Ordinance Title" id="ordinanceTitle" name="ordinanceTitle" required>
+            </div>
+            <div class="inputWithLabel" id="authorContainer" style="margin-top:4px">
+            </div>
+            <div class="inputWithLabel" id="co-AuthorContainer" style="margin-top:4px">
+            </div>
+            <div class="inputWithLabel" id="sponsorContainer" style="margin-top:4px">
+            </div>
+            <div class="inputWithLabel">
+                <label>Date Approved</label>
+                <input type="date" aria-label="Date Approved" id="date" name="dateApproved" required>
+            </div>
+            `
+            addTextarea();
+            addTextarea1();
+            addTextarea2();
+        }
+        if (type === "Resolution") {
+            formContainer.innerHTML = `
+            <div class="inputWithLabel" id="surubadan">
+                <label>Resolution Number</label>
+                <input type="text" aria-label="Resolution Number" id="resolutionNumber" name="resolutionNumber" required>
+            </div>
+            <div class="inputWithLabel" id="surubadan">
+                <label>Series of Year</label>
+                <input type="text" aria-label="Series of Year" id="yearSeries" name="yearSeries" required>
+            </div>
+            <div class="inputWithLabel">
+                <label>Date</label>
+                <input type="date" aria-label="Date" id="date" name="date" required>
+            </div>
+            `
+        }
+        if (type === "Regularization Minutes") {
+            formContainer.innerHTML = `
+            <div class="inputWithLabel" id="surubadan">
+                <label>Regulation Number (Ex. 1st)</label>
+                <input type="text" aria-label="Ika Pira na Regulation" id="regulationNumber" name="regulationNumber" required>
+            </div>
+            <div class="inputWithLabel">
+                <label>Date</label>
+                <input type="date" aria-label="Date" id="date" name="date" required>
+            </div>
+            `
+        }
+
         addDocument.classList.toggle("visible");
         overlay.classList.add("visible");
     }
@@ -593,15 +721,15 @@ function deleteItem(archiveID) {
 
 // Fills inputs dynamically based on data fetched from the server
 function fillInputs(data) {
-    clearFillInputs();
+    // clearFillInputs();
     console.log('Data passed to fillInputs:', data);
 
     // Ensure typename exists and is in lowercase
-    const docType = (data.typename || '').toLowerCase();
+    const docType = (data.data.typename || '').toLowerCase();
 
     // Common fields
     const commonElements = {
-        docType: data.typename || '',
+        docType: data.data.typename || '',
     };
 
     Object.keys(commonElements).forEach(id => {
@@ -613,11 +741,13 @@ function fillInputs(data) {
         }
     });
 
-    // Handle specific document types
+    docChangesSelected(data.data.typename, 1, 1, 1);
+
+
     switch (docType) {
         case 'lupon':
-            if (data.luponDetails && data.luponDetails.length > 0) {
-                const details = data.luponDetails[0];
+            if (data.data.luponDetails && data.data.luponDetails.length > 0) {
+                const details = data.data.luponDetails[0];
                 populateFields({
                     luponCaseNumber: details.casenumber,
                     complainant: details.complainant,
@@ -630,8 +760,8 @@ function fillInputs(data) {
             break;
 
         case 'panumduman':
-            if (data.panumdumanDetails && data.panumdumanDetails.length > 0) {
-                const details = data.panumdumanDetails[0];
+            if (data.data.panumdumanDetails && data.data.panumdumanDetails.length > 0) {
+                const details = data.data.panumdumanDetails[0];
                 const contractingParts = (details.contractingpersons || '').split(',');
                 populateFields({
                     parties1: contractingParts[0] || '',
@@ -643,19 +773,20 @@ function fillInputs(data) {
             break;
 
         case 'regularization minutes':
-            if (data.regularizationDetails && data.regularizationDetails.length > 0) {
-                const details = data.regularizationDetails[0];
+            if (data.data.regularizationDetails && data.data.regularizationDetails.length > 0) {
+                const details = data.data.regularizationDetails[0];
                 populateFields({
                     regulationNumber: details.regulationnumber,
-                    dates: details.date ? details.date.split('T')[0] : '',
+                    date: details.date ? details.date.split('T')[0] : '',
                 });
                 setImage(details.image);
             }
             break;
 
         case 'resolution':
-            if (data.resolutionDetails && data.resolutionDetails.length > 0) {
-                const details = data.resolutionDetails[0];
+            if (data.data.resolutionDetails && data.data.resolutionDetails.length > 0) {
+                const details = data.data.resolutionDetails[0];
+                console.log("resolution:", details)
                 populateFields({
                     resolutionNumber: details.resolutionnumber,
                     yearSeries: details.seriesyear,
@@ -666,18 +797,28 @@ function fillInputs(data) {
             break;
 
         case 'ordinance':
-            if (data.ordinanceDetails && data.ordinanceDetails.length > 0) {
-                const details = data.ordinanceDetails[0];
+            if (data.data.ordinanceDetails && data.data.ordinanceDetails.length > 0) {
+                const details = data.data.ordinanceDetails[0];
                 const authors = (details.authors || '').split(',');
                 const coAuthors = (details.coauthors || '').split(',');
                 const sponsors = (details.sponsors || '').split(',');
+                docChangesSelected(data.data.typename, authors.length, coAuthors.length, sponsors.length);
                 populateFields({
                     ordinanceNumber: details.ordinancenumber,
                     ordinanceTitle: details.title,
                     date: details.dateapproved ? details.dateapproved.split('T')[0] : '',
-                    author1: authors[0] || '',
-                    coAuthor1: coAuthors[0] || '',
-                    sponsor1: sponsors[0] || '',
+                });
+
+                authors.forEach((author, index) => {
+                    populateFields({ [`author${index + 1}`]: author });
+                });
+
+                coAuthors.forEach((coAuthor, index) => {
+                    populateFields({ [`coAuthor${index + 1}`]: coAuthor });
+                });
+
+                sponsors.forEach((sponsor, index) => {
+                    populateFields({ [`sponsor${index + 1}`]: sponsor });
                 });
                 setImage(details.image);
             }
@@ -690,6 +831,7 @@ function fillInputs(data) {
 
 // Populate specific input fields
 function populateFields(fields) {
+    console.log("populating fields:", fields)
     Object.keys(fields).forEach(id => {
         const element = document.getElementById(id);
         if (element) {
@@ -716,84 +858,51 @@ function setImage(imagePath) {
     }
 }
 
-// Clear all inputs
-function clearFillInputs() {
-    const inputIds = [
-        'docType', 'luponCaseNumber', 'complainant', 'respondent', 'dateFiled', 'caseType',
-        'parties1', 'parties2', 'date',
-        'regulationNumber', 'dates',
-        'resolutionNumber', 'yearSeries',
-        'ordinanceNumber', 'ordinanceTitle', 'author1', 'coAuthor1', 'sponsor1',
-    ];
-
-    inputIds.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.value = '';
-        } else {
-            console.warn(`Element with ID ${id} not found`);
-        }
-    });
-
-    const pictureElement = document.getElementById('fileInput');
-    const preview = document.getElementById('imagePreview');
-    if (pictureElement) {
-        pictureElement.src = '';
-    }
-    if (preview) {
-        preview.innerHTML = '<p>No Image Uploaded</p>';
-    }
-}
-
 // function
-let authorCount = 1;
-let coAuthorCount = 1;
-let sponsorCount = 1;
 function addTextarea() {
     const container = document.getElementById("authorContainer");
-  
     const div = document.createElement('div');
     div.classList.add('inputWithLabel');
     div.setAttribute('id', `author-${authorCount}`);
-    if (authorCount === 1){
+    if (authorCount === 1) {
         div.innerHTML = `
           <div style="display: flex; align-items: center; gap: 8px;">
             <label>Author (${authorCount})</label>
             <button type="button" onclick="addTextarea()">+</button>
             <button type="button" onclick="removeTextarea()">-</button>
           </div>
-          <input type="text" aria-label="Author (${authorCount})" name="author${authorCount}" required>
+          <input type="text" aria-label="Author (${authorCount})" name="author${authorCount}" id="author${authorCount}" required>
         `;
     } else {
         div.innerHTML = `
           <div style="display: flex; align-items: center; gap: 8px;">
             <label>Author (${authorCount})</label>
           </div>
-          <input type="text" aria-label="Author (${authorCount})" name="author${authorCount}" required>
+          <input type="text" aria-label="Author (${authorCount})" name="author${authorCount}" id="author${authorCount}" required>
         `;
     }
     container.appendChild(div);
     authorCount++;
-  }
-  
-  function removeTextarea() {
+}
+
+function removeTextarea() {
     const container = document.getElementById("authorContainer");
-    
-    if (container.children.length <= 1) return(alert('At least one Author is required!'));
-  
-    const lastChild = container.lastElementChild; 
+
+    if (container.children.length <= 1) return (alert('At least one Author is required!'));
+
+    const lastChild = container.lastElementChild;
     if (lastChild) {
-      container.removeChild(lastChild);
-      authorCount--;
+        container.removeChild(lastChild);
+        authorCount--;
     }
-  }
+}
 function addTextarea1() {
     const container = document.getElementById("co-AuthorContainer");
-  
+
     const div = document.createElement('div');
     div.classList.add('inputWithLabel');
     div.setAttribute('id', `co-Author-${coAuthorCount}`);
-    if (coAuthorCount === 1){
+    if (coAuthorCount === 1) {
         div.innerHTML = `
           <div style="display: flex; align-items: center; gap: 8px;">
             <label>Co-Author (${coAuthorCount})</label>
@@ -812,26 +921,25 @@ function addTextarea1() {
     }
     container.appendChild(div);
     coAuthorCount++;
-  }
-  
-  function removeTextarea1() {
+}
+function removeTextarea1() {
     const container = document.getElementById("co-AuthorContainer");
-    
-    if (container.children.length <= 1) return(alert('At least one Co-Author is required!'));
-  
-    const lastChild = container.lastElementChild; 
+
+    if (container.children.length <= 1) return (alert('At least one Co-Author is required!'));
+
+    const lastChild = container.lastElementChild;
     if (lastChild) {
-      container.removeChild(lastChild);
-      coAuthorCount--;
+        container.removeChild(lastChild);
+        coAuthorCount--;
     }
-  }
+}
 function addTextarea2() {
     const container = document.getElementById("sponsorContainer");
-  
+
     const div = document.createElement('div');
     div.classList.add('inputWithLabel');
     div.setAttribute('id', `sponsor-${sponsorCount}`);
-    if (sponsorCount === 1){
+    if (sponsorCount === 1) {
         div.innerHTML = `
           <div style="display: flex; align-items: center; gap: 8px;">
             <label>Sponsor (${sponsorCount})</label>
@@ -850,16 +958,16 @@ function addTextarea2() {
     }
     container.appendChild(div);
     sponsorCount++;
-  }
-  
-  function removeTextarea2() {
+}
+
+function removeTextarea2() {
     const container = document.getElementById("sponsorContainer");
-    
-    if (container.children.length <= 1) return(alert('At least one Sponsor is required!'));
-  
-    const lastChild = container.lastElementChild; 
+
+    if (container.children.length <= 1) return (alert('At least one Sponsor is required!'));
+
+    const lastChild = container.lastElementChild;
     if (lastChild) {
-      container.removeChild(lastChild);
-      sponsorCount--;
+        container.removeChild(lastChild);
+        sponsorCount--;
     }
-  }
+}
