@@ -233,3 +233,40 @@ emergencyBarangay
 emergencyCity
 emergencyProvince
 fileInput
+
+inputs in archive:
+
+-- for Lupon
+doctype
+luponCaseNumber
+complainant
+respondent
+dateFiled
+caseType
+fileInput
+
+-- for panumduman
+
+parties1
+parties2
+date
+
+-- for regularization Minutes
+
+regulationNumber
+dates
+
+-- for resolution
+
+resolutionNumber
+yearSeries
+date
+
+-- for ordinance
+
+ordinanceNumber
+ordinanceTitle
+date
+author1
+coAuthor1
+sponsor1
