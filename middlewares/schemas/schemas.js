@@ -186,10 +186,48 @@ const houseClassification = Joi.object({
     mineral: Joi.string().max(255).optional().allow("")
 });
 
+const barangayOfficialsSchema = Joi.object({
+    punongBarangayLastName: Joi.string().max(255).required(),
+    punongBarangayFirstName: Joi.string().max(255).required(),
+    punongBarangayMiddleName: Joi.string().max(255).allow(null, ''),
+    kagawad1LastName: Joi.string().max(255).required(),
+    kagawad1FirstName: Joi.string().max(255).required(),
+    kagawad1MiddleName: Joi.string().max(255).allow(null, ''),
+    kagawad2LastName: Joi.string().max(255).required(),
+    kagawad2FirstName: Joi.string().max(255).required(),
+    kagawad2MiddleName: Joi.string().max(255).allow(null, ''),
+    kagawad3LastName: Joi.string().max(255).required(),
+    kagawad3FirstName: Joi.string().max(255).required(),
+    kagawad3MiddleName: Joi.string().max(255).allow(null, ''),
+    kagawad4LastName: Joi.string().max(255).required(),
+    kagawad4FirstName: Joi.string().max(255).required(),
+    kagawad4MiddleName: Joi.string().max(255).allow(null, ''),
+    kagawad5LastName: Joi.string().max(255).required(),
+    kagawad5FirstName: Joi.string().max(255).required(),
+    kagawad5MiddleName: Joi.string().max(255).allow(null, ''),
+    kagawad6LastName: Joi.string().max(255).required(),
+    kagawad6FirstName: Joi.string().max(255).required(),
+    kagawad6MiddleName: Joi.string().max(255).allow(null, ''),
+    kagawad7LastName: Joi.string().max(255).required(),
+    kagawad7FirstName: Joi.string().max(255).required(),
+    kagawad7MiddleName: Joi.string().max(255).allow(null, ''),
+    SKChairpersonLastName: Joi.string().max(255).required(),
+    SKChairpersonFirstName: Joi.string().max(255).required(),
+    SKChairpersonMiddleName: Joi.string().max(255).allow(null, ''),
+    barangaySecretaryLastName: Joi.string().max(255).required(),
+    barangaySecretaryFirstName: Joi.string().max(255).required(),
+    barangaySecretaryMiddleName: Joi.string().max(255).allow(null, ''),
+    barangayTreasurerLastName: Joi.string().max(255).required(),
+    barangayTreasurerFirstName: Joi.string().max(255).required(),
+    barangayTreasurerMiddleName: Joi.string().max(255).allow(null, '')
+});
+
 module.exports = {
     requestSchema,
     residentSchema,
     inventorySchema,
     archiveSchema,
+    houseClassification,
+    barangayOfficialsSchema,
     houseClassification
 }
