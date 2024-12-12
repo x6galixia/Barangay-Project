@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             if (doctype === 'Lupon'){
                 archive.forEach(arch1 => {
-                    if (arch1.documentdetails.length=== 0) {
+                    if (arch1.length=== 0) {
                         const noDataRow = document.createElement('tr');
                         noDataRow.innerHTML = `
                             <td colspan="7" class="text-center">No ${doctype} Documents Found.</td>
@@ -181,7 +181,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
             if (doctype === 'Ordinance'){
                 archive.forEach(arch1 => {
-                    if (arch1.documentdetails.length=== 0) {
+                    if (arch1.length=== 0) {
                         const noDataRow = document.createElement('tr');
                         noDataRow.innerHTML = `
                             <td colspan="8" class="text-center">No ${doctype} Documents Found.</td>
@@ -192,34 +192,25 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                     arch1.documentdetails.forEach(detail => {
                         const row = document.createElement('tr');
-                        const authorsArray = JSON.parse(detail.authors);
-                        const coAuthorsArray = JSON.parse(detail.coAuthors);
-                        const sponsorsArray = JSON.parse(detail.sponsors);
-                        const authors = Array.isArray(authorsArray)
-                            ? authorsArray
-                                .map(person => person.name)
-                                .join(', ')
-                                .replace(/, ([^,]*)$/, ' and $1')
-                            : 'No authors available';
-
-                        const coAuthors = Array.isArray(coAuthorsArray)
-                            ? coAuthorsArray
-                                .map(person => person.name)
-                                .join(', ')
-                                .replace(/, ([^,]*)$/, ' and $1')
-                            : 'No co-authors available';
-                        const sponsors = Array.isArray(sponsorsArray)
-                            ? sponsorsArray
-                                .map(person => person.name)
-                                .join(', ')
-                                .replace(/, ([^,]*)$/, ' and $1')
-                            : 'No sponsors available';
+                        function formatStringNames(data, fallbackMessage) {
+                            if (typeof data === 'string' && data.trim() !== '') {
+                                return data
+                                    .split(',') // Split the string into an array
+                                    .map(name => name.trim()) // Remove extra spaces
+                                    .join(', ')
+                                    .replace(/, ([^,]*)$/, ' and $1'); // Replace last comma with "and"
+                            }
+                            return fallbackMessage;
+                        }
+                        const formattedCoAuthors = formatStringNames(detail.coAuthors, 'No co-authors available');
+                        const formattedAuthors = formatStringNames(detail.authors, 'No Authors available');
+                        const formattedSponsors = formatStringNames(detail.sponsors, 'No Sponsors available');
                         row.innerHTML = `
                             <td>${detail.ordinanceNumber}</td>
                             <td>${detail.title}</td>
-                            <td>${authors}</td>
-                            <td>${coAuthors}</td>
-                            <td>${sponsors}</td>
+                            <td>${formattedAuthors}</td>
+                            <td>${formattedCoAuthors}</td>
+                            <td>${formattedSponsors}</td>
                             <td>${new Date(detail.dateApproved).toLocaleDateString()}</td>
                             <td>${arch1.typename}</td>
                             <td class="menu-row">
@@ -242,7 +233,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
             if (doctype === 'Panumduman'){
                 archive.forEach(arch => {
-                    if (arch.documentdetails.length=== 0) {
+                    if (arch.length=== 0) {
                         const noDataRow = document.createElement('tr');
                         noDataRow.innerHTML = `
                             <td colspan="4" class="text-center">No ${doctype} Documents Found.</td>
@@ -252,11 +243,19 @@ document.addEventListener("DOMContentLoaded", async function () {
                     }
                     arch.documentdetails.forEach(detail => {
                         const row = document.createElement('tr');
-                        const contractingPersons = JSON.parse(detail.contractingPersons)
-                        .map(person => person.name) // Extract names from the array
-                        .join(' and '); // Join names into a comma-separated string
+                        function formatStringNames(data, fallbackMessage) {
+                            if (typeof data === 'string' && data.trim() !== '') {
+                                return data
+                                    .split(',') // Split the string into an array
+                                    .map(name => name.trim()) // Remove extra spaces
+                                    .join(', ')
+                                    .replace(/, ([^,]*)$/, ' and $1'); // Replace last comma with "and"
+                            }
+                            return fallbackMessage;
+                        }
+                        const formattedContractingPerson = formatStringNames(detail.contractingPersons, 'No Contracting Persons available');
                         row.innerHTML = `
-                            <td>${contractingPersons}</td>
+                            <td>${formattedContractingPerson}</td>
                             <td>${new Date(detail.date).toLocaleDateString()}</td>
                             <td>${arch.typename}</td>
                             <td class="menu-row">
@@ -279,7 +278,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
             if (doctype === 'Regularization Minutes'){
                 archive.forEach(arch1 => {
-                    if (arch1.documentdetails.length=== 0) {
+                    if (arch1.length=== 0) {
                         const noDataRow = document.createElement('tr');
                         noDataRow.innerHTML = `
                             <td colspan="4" class="text-center">No ${doctype} Documents Found.</td>
@@ -314,7 +313,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
             if (doctype === 'Resolution'){
                 archive.forEach(arch1 => {
-                    if (arch1.documentdetails.length=== 0) {
+                    if (arch1.length=== 0) {
                         const noDataRow = document.createElement('tr');
                         noDataRow.innerHTML = `
                             <td colspan="5" class="text-center">No ${doctype} Documents Found.</td>
