@@ -1,5 +1,5 @@
 /* Base styles for all devices */
-main {
+.officialsMain {
     margin: 0;
     padding: 50px 50px;
 }
@@ -15,7 +15,7 @@ main {
     padding-bottom: 50px;
 }
 
-.heading {
+.headingOfficials {
     text-align: center;
     color: white;
     padding: 50px;
@@ -232,4 +232,8 @@ main {
     .logo-of img {
         height: 30px;
     }
+}
+
+.row{
+    display: flex;
 }

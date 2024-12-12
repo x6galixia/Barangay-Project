@@ -422,7 +422,7 @@
                 <h1 class="heading">BARANGAY ID</h1>
                 <main>
                     <div class="center">
-                        <div class="id-container">
+                        <div class="id-container" id="idContainer">
                             <div class="first-layout">
                                 <div><img src="../images/logo3.png" alt=""></div>
                                 <div>
@@ -436,8 +436,9 @@
                             <div class="sub-head">
                                 <h2>BARANGAY ID</h2>
                             </div>
-
+                            
                             <div class="id-img">
+                                <p id="boardersHighlighter" style="margin-bottom: 4px; font-size: 12px;"></p>
                                 <img id="residentPicture" src="../images/wow.jpg" alt="">
                                 <p id="idNumber">ID NUMBER</p>
                                 <H2 id="fullname">FULL NAME</H2>
@@ -465,12 +466,12 @@
                                 <span class="signature-text">Signature</span>
                             </div>
                         </div>
-                        <div class="id-back">
+                        <div class="id-back" id="idBack">
                             <div class="lgu">
                                 <h2>LGU-MAYPANGDAN</h2>
                                 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is to certify that the bearer of this card
                                     whose
-                                    picture and signature appear herein is a resident of Barangay Maypangdan Borongan
+                                    picture and signature appear herein is a <span id="identification">resident</span> of Barangay Maypangdan Borongan
                                     City.
                                 </p>
                             </div>
@@ -500,106 +501,7 @@
                                     <span class="value" id="emergencyContactAddress">Contact Person Address</span>
                                 </p>
                                 <div class="signature-containers">
-                                    <p class="name">IAN C. GONZALES</p>
-                                    <p class="position">Punong Baranggay</p>
-                                </div>
-                            </div>
-                            <div class="bottom">
-
-                            </div>
-                        </div>
-
-                    </div>
-                    <button onclick="window.print()">Print</button>
-                </main>
-            </div>
-            <div class="pop-up" id="boarder-ID">
-                <div class="close-container">
-                    <img src="../icon/close.svg" alt="" class="close_popUp">
-                </div>
-                <h1 class="heading">BARANGAY ID</h1>
-                <main>
-                    <div class="center">
-                        <div class="id-containers">
-                            <div class="first-layout">
-                                <div><img src="../images/logo3.png" alt=""></div>
-                                <div>
-                                    <p>Republic of the Philippines <br>
-                                        Province of Eastern Samar <br>
-                                        City of Borongan <br>
-                                        BARANGAY MAYPANGDAN</p>
-                                </div>
-                                <div><img src="../images/logo4.png" alt=""></div>
-                            </div>
-                            <div class="sub-head">
-                                <h2>BARANGAY ID</h2>
-                            </div>
-
-                            <div class="id-img">
-                                <p>Resident Boarder</p>
-                                <img id="residentPicture" src="../images/wow.jpg" alt="">
-                                <p id="idNumber">ID NUMBER</p>
-                                <H2 id="fullname">FULL NAME</H2>
-
-                            </div>
-
-                            <div class="personal-info">
-                                <h2 class="perso-info">PERSONAL INFORMATION</h2>
-                                <p>
-                                    <span class="Civil-stat">Civil Status:</span>
-                                    <span class="value" id="IDcivilStatus">Status</span>
-                                </p>
-                                <p>
-                                    <span class="Civil-stat">Birthdate:</span>
-                                    <span class="value" id="IDbirthdate">Birthdate</span>
-                                </p>
-                                <p>
-                                    <span class="Civil-stat" style="margin-right: 2px;">Address:</span>
-                                    <span class="value" id="address">Address</span>
-                                </p>
-                            </div>
-
-                            <div class="signature-container">
-                                <hr class="signature-line">
-                                <span class="signature-text">Signature</span>
-                            </div>
-                        </div>
-                        <div class="id-backs">
-                            <div class="lgu">
-                                <h2>LGU-MAYPANGDAN</h2>
-                                <p>This is to certify that the bearer of this card
-                                    whose
-                                    picture and signature appear herein is a Resident Boarders of Barangay Maypangdan Borongan
-                                    City.
-                                </p>
-                            </div>
-                            <div class="qr-img" id="qrcode">
-                            </div>
-                            <div class="qr-imager">
-                                <div>
-                                    <p>This card is non-transferrable.</p>
-                                    <p>Valid only until <span id="IDvalidation"></span></p>
-                                </div>
-                            </div>
-
-                            <div class="personal-info">
-                                <div class="notify">
-                                    <h2>INCASE OF EMERGENCY, NOTIFY:</h2>
-                                </div>
-                                <p>
-                                    <span class="Civil-stat">Contact Person:</span>
-                                    <span class="values" id="emergencyContactName">Contact Person</span>
-                                </p>
-                                <p>
-                                    <span class="Civil-stat">Contact Number:</span>
-                                    <span class="value" id="IDemergencyContactNumber">Contact Number</span>
-                                </p>
-                                <p>
-                                    <span class="Civil-stat" style="margin-right: 2px;">Address:</span>
-                                    <span class="value" id="emergencyContactAddress">Contact Person Address</span>
-                                </p>
-                                <div class="signature-containers">
-                                    <p class="name">IAN C. GONZALES</p>
+                                    <p class="name" id="punongBarangay">IAN C. GONZALES</p>
                                     <p class="position">Punong Baranggay</p>
                                 </div>
                             </div>
