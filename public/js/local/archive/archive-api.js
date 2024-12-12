@@ -748,7 +748,7 @@ function addTextarea2() {
     } else {
         div.innerHTML = `
           <div style="display: flex; align-items: center; gap: 8px;">
-            <label>Author (${sponsorCount})</label>
+            <label>Sponsor (${sponsorCount})</label>
           </div>
           <input type="text" aria-label="Sponsor (${sponsorCount})" name="sponsor${sponsorCount}" required>
         `;
