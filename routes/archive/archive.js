@@ -269,7 +269,7 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
 
         await mPool.query('COMMIT'); // Commit transaction
         req.flash('success', 'Document ADDED Successfully!');
-        res.redirect(`/archive/dashboard?type=${docType}`)
+        res.redirect(`/archive/dashboard?type=${docType}`);
     } catch (error) {
         await mPool.query('ROLLBACK'); // Rollback transaction on error
         res.status(500).json({ error: error.message });
