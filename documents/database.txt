@@ -271,7 +271,6 @@ CREATE TABLE barangay_officials (
     barangayTreasurerImage TEXT
 );
 
-
 isResident
 last_name
 first_name

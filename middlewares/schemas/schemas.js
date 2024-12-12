@@ -228,5 +228,6 @@ module.exports = {
     inventorySchema,
     archiveSchema,
     houseClassification,
-    barangayOfficialsSchema
+    barangayOfficialsSchema,
+    houseClassification
 }
