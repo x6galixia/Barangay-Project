@@ -26,15 +26,23 @@ CREATE TABLE inventory (
 );
 
 ----- ARCHIVE ------
-CREATE TABLE archive (
-    archiveId SERIAL PRIMARY KEY,
-    doctypeId INT NOT NULL, -- Refers to the document type (e.g., Panumduman, Lupon, etc.)
-    FOREIGN KEY (doctypeId) REFERENCES document_type(doctypeId)
-);
 
 CREATE TABLE document_type (
     doctypeId SERIAL PRIMARY KEY,
     typeName VARCHAR(50) NOT NULL -- Examples: Panumduman, Lupon, Ordinance, etc.
+);
+
+INSERT INTO document_type (typeName) VALUES 
+('Panumduman'),
+('Lupon'),
+('Ordinance'),
+('Resolution'),
+('Regularization Minutes');
+
+CREATE TABLE archive (
+    archiveId SERIAL PRIMARY KEY,
+    doctypeId INT NOT NULL, -- Refers to the document type (e.g., Panumduman, Lupon, etc.)
+    FOREIGN KEY (doctypeId) REFERENCES document_type(doctypeId)
 );
 
 CREATE TABLE panumduman (
@@ -43,7 +51,7 @@ CREATE TABLE panumduman (
     date DATE NOT NULL,
     image VARCHAR(255), -- Path to the image
     contractingPersons TEXT NOT NULL, -- JSON or long text for flexibility
-    FOREIGN KEY (archiveId) REFERENCES archive(archiveId)
+    FOREIGN KEY (archiveId) REFERENCES archive(archiveId)  ON DELETE CASCADE
 );
 
 CREATE TABLE lupon (
@@ -55,7 +63,7 @@ CREATE TABLE lupon (
     dateFiled DATE NOT NULL,
     image VARCHAR(255), -- Path to the image
     caseType VARCHAR(100), -- Example: Civil, Criminal, etc.
-    FOREIGN KEY (archiveId) REFERENCES archive(archiveId)
+    FOREIGN KEY (archiveId) REFERENCES archive(archiveId)  ON DELETE CASCADE
 );
 
 CREATE TABLE ordinance (
@@ -68,7 +76,7 @@ CREATE TABLE ordinance (
     sponsors TEXT, -- Optional JSON or text for sponsors
     image VARCHAR(255), -- Path to the image
     dateApproved DATE NOT NULL,
-    FOREIGN KEY (archiveId) REFERENCES archive(archiveId)
+    FOREIGN KEY (archiveId) REFERENCES archive(archiveId)  ON DELETE CASCADE
 );
 
 CREATE TABLE resolution (
@@ -78,7 +86,7 @@ CREATE TABLE resolution (
     seriesYear INT NOT NULL,
     image VARCHAR(255), -- Path to the image
     date DATE NOT NULL,
-    FOREIGN KEY (archiveId) REFERENCES archive(archiveId)
+    FOREIGN KEY (archiveId) REFERENCES archive(archiveId)  ON DELETE CASCADE
 );
 
 CREATE TABLE regularization_minutes (
@@ -87,7 +95,7 @@ CREATE TABLE regularization_minutes (
     regulationNumber INT NOT NULL,
     image VARCHAR(255), -- Path to the image
     date DATE NOT NULL,
-    FOREIGN KEY (archiveId) REFERENCES archive(archiveId)
+    FOREIGN KEY (archiveId) REFERENCES archive(archiveId) ON DELETE CASCADE
 );
 
 -- residents

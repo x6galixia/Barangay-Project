@@ -70,14 +70,95 @@ const inventorySchema = Joi.object({
 });
 
 const archiveSchema = Joi.object({
-    itemId: Joi.number().integer().optional().allow(""),
-    parties1: Joi.string().optional().allow(null),
-    parties2: Joi.string().optional().allow(null),
-    date: Joi.date().optional().allow(null),
-    parties1: Joi.string().optional().allow(null),
-    parties2: Joi.string().optional().allow(null),
-    docType: Joi.string().optional().allow(null),
+    doctypeId: Joi.number().integer().required(),  // Doctype ID remains as is
+    documentData: Joi.object({
+        itemId: Joi.number().integer().optional().allow(""),
+        docType: Joi.string().valid('Lupon', 'Ordinance', 'Panumduman', 'Regularization Minutes', 'Resolution').required(),
+        // Common fields
+        date: Joi.date().optional().allow(null),
+        image: Joi.string().optional().allow(null),
+
+        // Panumduman
+        contractingPersons: Joi.when('doctypeId', {
+            is: 1,
+            then: Joi.string().required(),
+            otherwise: Joi.optional().allow(null)
+        }),
+        parties1: Joi.string().optional().allow(null),
+        parties2: Joi.string().optional().allow(null),
+
+        // Lupon
+        luponCaseNumber: Joi.when('doctypeId', {
+            is: 2,
+            then: Joi.string().required(),
+            otherwise: Joi.optional().allow(null)
+        }),
+        complainant: Joi.when('doctypeId', {
+            is: 2,
+            then: Joi.string().required(),
+            otherwise: Joi.optional().allow(null)
+        }),
+        respondent: Joi.when('doctypeId', {
+            is: 2,
+            then: Joi.string().required(),
+            otherwise: Joi.optional().allow(null)
+        }),
+        dateFiled: Joi.when('doctypeId', {
+            is: 2,
+            then: Joi.date().required(),
+            otherwise: Joi.optional().allow(null)
+        }),
+        caseType: Joi.when('doctypeId', {
+            is: 2,
+            then: Joi.string().required(),
+            otherwise: Joi.optional().allow(null)
+        }),
+
+        // Ordinance
+        ordinanceNumber: Joi.when('doctypeId', {
+            is: 3,
+            then: Joi.string().required(),
+            otherwise: Joi.optional().allow(null)
+        }),
+        ordinanceTitle: Joi.when('doctypeId', {
+            is: 3,
+            then: Joi.string().required(),
+            otherwise: Joi.optional().allow(null)
+        }),
+        authors: Joi.when('doctypeId', {
+            is: 3,
+            then: Joi.string().required(),
+            otherwise: Joi.optional().allow(null)
+        }),
+        coAuthors: Joi.string().optional().allow(null),
+        sponsors: Joi.string().optional().allow(null),
+        dateApproved: Joi.when('doctypeId', {
+            is: 3,
+            then: Joi.date().required(),
+            otherwise: Joi.optional().allow(null)
+        }),
+
+        // Resolution
+        resolutionNumber: Joi.when('doctypeId', {
+            is: 4,
+            then: Joi.string().required(),
+            otherwise: Joi.optional().allow(null)
+        }),
+        yearSeries: Joi.when('doctypeId', {
+            is: 4,
+            then: Joi.number().integer().required(),
+            otherwise: Joi.optional().allow(null)
+        }),
+
+        // Regularization Minutes
+        regulationNumber: Joi.when('doctypeId', {
+            is: 5,
+            then: Joi.number().integer().required(),
+            otherwise: Joi.optional().allow(null)
+        })
+    }).required()
 });
+
 
 module.exports = {
     requestSchema,
