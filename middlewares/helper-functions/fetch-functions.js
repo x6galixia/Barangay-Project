@@ -266,6 +266,7 @@ async function fetchArchiveData(page, limit, searchQuery = '', doctype = null) {
     WHEN 'Panumduman' THEN (
       SELECT json_agg(
         json_build_object(
+          'archID', p.archiveId,
           'date', p.date,
           'image', p.image,
           'contractingPersons', p.contractingPersons,
@@ -278,6 +279,7 @@ async function fetchArchiveData(page, limit, searchQuery = '', doctype = null) {
     WHEN 'Lupon' THEN (
       SELECT json_agg(
         json_build_object(
+          'archID', l.archiveId,
           'caseNumber', l.caseNumber,
           'complainant', l.complainant,
           'respondent', l.respondent,
@@ -293,6 +295,7 @@ async function fetchArchiveData(page, limit, searchQuery = '', doctype = null) {
     WHEN 'Ordinance' THEN (
       SELECT json_agg(
         json_build_object(
+          'archID', o.archiveId,
           'ordinanceNumber', o.ordinanceNumber,
           'title', o.title,
           'authors', o.authors,
@@ -309,6 +312,7 @@ async function fetchArchiveData(page, limit, searchQuery = '', doctype = null) {
     WHEN 'Resolution' THEN (
       SELECT json_agg(
         json_build_object(
+          'archID', r.archiveId,
           'resolutionNumber', r.resolutionNumber,
           'seriesYear', r.seriesYear,
           'image', r.image,
@@ -322,6 +326,7 @@ async function fetchArchiveData(page, limit, searchQuery = '', doctype = null) {
     WHEN 'Regularization Minutes' THEN (
       SELECT json_agg(
         json_build_object(
+          'archID', rm.archiveId,
           'regulationNumber', rm.regulationNumber,
           'image', rm.image,
           'date', rm.date,
