@@ -71,6 +71,7 @@ const inventorySchema = Joi.object({
 
 const archiveSchema = Joi.object({
     doctypeId: Joi.number().integer().required(),  // Doctype ID remains as is
+    
     documentData: Joi.object({
         itemId: Joi.number().integer().optional().allow(""),
         docType: Joi.string().valid('Lupon', 'Ordinance', 'Panumduman', 'Regularization Minutes', 'Resolution').required(),
