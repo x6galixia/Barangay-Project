@@ -62,9 +62,96 @@
                 </div>
             </div>
 
+            <div style="display: flex; align-items: center; justify-content: space-between; margin: 20px 3%;">
+                <h2>Household Classification</h2>
+                <button id="add-survey-button" onclick="popUp_button(this)">ADD SURVEY</button>
+            </div>
+            <div id="meow">
+                <div class="chart">
+                    <canvas id="householdClassificationChart"></canvas>
+                </div>
+                <div class="separate">
+                    <div id="householdClassificationText"></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="pop-up" id="add-survey">
+
+            <div class="close-container">
+                <img src="../icon/close.svg" alt="" class="close_popUp">
+            </div>
+            <h1 class="heading">HOUSE CLASSIFICATION</h1>
+            <main>
+                <form id="formToAddResident" action="" method="POST"
+                    enctype="multipart/form-data">
+                    <div class="add-survey-input-container">
+                        <div class="row">
+                            <div class="inputWithLabel" id="surubadan">
+                                <label>House Representative</label>
+                                <input id="" type="text" aria-label="House Representative" name="houseRepresentative" required>
+                            </div>
+                            <div class="inputWithLabel">
+                                <label>House Number(Optional)</label>
+                                <input id="" type="text" aria-label="House Number(Optional)" name="houseNumber">
+                            </div>
+                            <div class="inputWithLabel" id="masubad">
+                                <label>With CR</label>
+                                <select id="" name="withCR" aria-label="With CR" required>
+                                    <option value="True">Yes</option>
+                                    <option value="False">No</option>
+                                </select>
+                            </div>
+                            <div class="inputWithLabel" id="masubad">
+                                <label>With 40m Zone</label>
+                                <select id="" name="with40mZone" aria-label="With 40m Zone" required>
+                                    <option value="True">Yes</option>
+                                    <option value="False">No</option>
+                                </select>
+                            </div>
+                            <div class="inputWithLabel" id="masubad">
+                                <label>Energized</label>
+                                <select id="" name="energized" aria-label="Energized" required>
+                                    <option value="True">Yes</option>
+                                    <option value="False">No</option>
+                                </select>
+                            </div>
+                            <div class="inputWithLabel" id="masubad">
+                                <label>Housing Materials</label>
+                                <select id="" name="housingMaterials" aria-label="Housing Materials" required>
+                                    <option value="Concrete">Concrete</option>
+                                    <option value="Semi-Concrete">Semi-Concrete</option>
+                                    <option value="Wood">Wood</option>
+                                </select>
+                            </div>
+                            <div class="inputWithLabel" id="masubad">
+                                <label>Water Sources</label>
+                                <div style="display: flex; gap: 12px;">
+                                    <label style="display: flex; align-items: center; gap: 6px;">
+                                        <input type="checkbox" name="deepWell" value="Deep Well">
+                                        Deep Well
+                                    </label><br>
+                            
+                                    <label style="display: flex; align-items: center; gap: 6px;">
+                                        <input type="checkbox" name="waterPump" value="Water Pump">
+                                        Water Pump
+                                    </label><br>
+                            
+                                    <label style="display: flex; align-items: center; gap: 6px;">
+                                        <input type="checkbox" name="mineral" value="Mineral">
+                                        Mineral
+                                    </label><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" id="submit_add_survey" style="display: flex; margin-left: auto;">SUBMIT</button>
+                </form>
+            </main>
         </div>
 
 </body>
+<script src="../../js/global/pop-up.js"></script>
 <script src="../../js/local/statistics/statistics-api.js"></script>
 <script>
     document.querySelector("header>nav>ul>li:nth-child(6)").classList.toggle("selected");

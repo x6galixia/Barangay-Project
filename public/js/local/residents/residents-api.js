@@ -277,6 +277,10 @@ window.popUp_three_dot = function (button) {
         const id_card = document.getElementById("generate-ID");
         const globalIDForQR = button.getAttribute('data-globalId');
         const isResident = button.getAttribute('data-isResident');
+        const container = document.getElementById('idContainer');
+        const containerBack = document.getElementById('idBack');
+        const highlighter = document.getElementById('boardersHighlighter');
+        const identification = document.getElementById('identification');
         id_card.classList.add("visible");
         overlay.classList.toggle("visible");
 
@@ -288,9 +292,19 @@ window.popUp_three_dot = function (button) {
         document.getElementById('IDemergencyContactNumber').innerText = button.getAttribute('data-contactPhone');
 
         if (isResident === "true") {
+            highlighter.innerHTML = "";
+            identification.innerText = "resident";
+            container.className = 'id-container';
+            containerBack.className = 'id-back';
+            document.querySelector(".id-img").style.marginTop = "22px";
             document.getElementById('address').innerText = button.getAttribute('data-address');
             document.getElementById('emergencyContactAddress').innerText = button.getAttribute('data-contactAddress');
         } else {
+            highlighter.innerHTML = "Resident Boarders";
+            identification.innerText = "resident boarders";
+            container.className = 'id-containers';
+            containerBack.className = 'id-backs';
+            document.querySelector(".id-img").style.marginTop = "0px";
             document.getElementById('address').innerText = button.getAttribute('data-addressNotResident');
             document.getElementById('emergencyContactAddress').innerText = button.getAttribute('data-contactAddressNotResident');
         }

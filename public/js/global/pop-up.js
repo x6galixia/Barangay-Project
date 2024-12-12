@@ -6,12 +6,20 @@ function formatDate(date) {
   return `${year}-${month}-${day}`;
 }
 
-
+const addSurvey = document.getElementById("add-survey");
+const addOfficials = document.getElementById("add-officials");
 const overlay = document.querySelector(".overlay");
 
 function popUp_button(button) {
   var buttonId = button.id;
   var select = button.value;
+
+  if (buttonId === "add-survey-button") {
+    addSurvey.classList.toggle("visible");
+  }
+  if (buttonId === "add-official-button") {
+    addOfficials.classList.toggle("visible");
+  }
 
 
   overlay.classList.add("visible");
