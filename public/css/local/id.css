@@ -211,3 +211,29 @@ html {
 .value {
     font-weight: 550;
 }
+
+/*FOR BOARDERS*/
+
+.id-containers {
+    background: url('../../images/boarder.png');
+    background-size: cover;
+    height: 451px;
+    width: 298px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #FDFCD5;
+    border: 1px solid #000;
+}
+
+.id-backs {
+    /* Set the height to the image height */
+    position: relative;
+    height: 451px;
+    width: 298px;
+    background-image: url('../../images/bottoms.png');
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-color: #FDFCD5;
+    border: 1px solid #000;
+}
+
