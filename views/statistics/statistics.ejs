@@ -83,42 +83,45 @@
             </div>
             <h1 class="heading">HOUSE CLASSIFICATION</h1>
             <main>
-                <form id="formToAddResident" action="" method="POST"
-                    enctype="multipart/form-data">
+                <form id="formToAddResident" action="/statistics/house-classification-survey" method="POST">
                     <div class="add-survey-input-container">
                         <div class="row">
+                            <div class="inputWithLabel">
+                                <label>House Number (Optional)</label>
+                                <input type="number" aria-label="House Number (Optional)" name="houseNumber" min="1">
+                            </div>
                             <div class="inputWithLabel" id="surubadan">
                                 <label>House Representative</label>
-                                <input id="" type="text" aria-label="House Representative" name="houseRepresentative" required>
+                                <input type="text" aria-label="House Representative" name="houseRepresentative" required>
                             </div>
                             <div class="inputWithLabel">
-                                <label>House Number(Optional)</label>
-                                <input id="" type="text" aria-label="House Number(Optional)" name="houseNumber">
+                                <label>Number of Families</label>
+                                <input type="number" aria-label="Number of Families" name="numberOfFamilies" min="1" required>
                             </div>
                             <div class="inputWithLabel" id="masubad">
                                 <label>With CR</label>
-                                <select id="" name="withCR" aria-label="With CR" required>
-                                    <option value="True">Yes</option>
-                                    <option value="False">No</option>
+                                <select name="isWithCr" aria-label="With CR" required>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
                                 </select>
                             </div>
                             <div class="inputWithLabel" id="masubad">
                                 <label>With 40m Zone</label>
-                                <select id="" name="with40mZone" aria-label="With 40m Zone" required>
-                                    <option value="True">Yes</option>
-                                    <option value="False">No</option>
+                                <select name="isWith40mZone" aria-label="With 40m Zone" required>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
                                 </select>
                             </div>
                             <div class="inputWithLabel" id="masubad">
                                 <label>Energized</label>
-                                <select id="" name="energized" aria-label="Energized" required>
-                                    <option value="True">Yes</option>
-                                    <option value="False">No</option>
+                                <select name="isEnergized" aria-label="Energized" required>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
                                 </select>
                             </div>
                             <div class="inputWithLabel" id="masubad">
                                 <label>Housing Materials</label>
-                                <select id="" name="housingMaterials" aria-label="Housing Materials" required>
+                                <select name="housingMaterials" aria-label="Housing Materials" required>
                                     <option value="Concrete">Concrete</option>
                                     <option value="Semi-Concrete">Semi-Concrete</option>
                                     <option value="Wood">Wood</option>
@@ -130,23 +133,21 @@
                                     <label style="display: flex; align-items: center; gap: 6px;">
                                         <input type="checkbox" name="deepWell" value="Deep Well">
                                         Deep Well
-                                    </label><br>
-                            
+                                    </label>
                                     <label style="display: flex; align-items: center; gap: 6px;">
                                         <input type="checkbox" name="waterPump" value="Water Pump">
                                         Water Pump
-                                    </label><br>
-                            
+                                    </label>
                                     <label style="display: flex; align-items: center; gap: 6px;">
                                         <input type="checkbox" name="mineral" value="Mineral">
                                         Mineral
-                                    </label><br>
+                                    </label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <button type="submit" id="submit_add_survey" style="display: flex; margin-left: auto;">SUBMIT</button>
-                </form>
+                </form>                
             </main>
         </div>
 

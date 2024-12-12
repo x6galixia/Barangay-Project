@@ -189,6 +189,88 @@ INSERT INTO rClassification (rClassificationName)VALUES
     ('Unemployed'),
     ('None');
 
+CREATE TABLE house_classification (
+    id SERIAL PRIMARY KEY NOT NULL,
+    houseNumber INT NULL,
+    houseRepresentative VARCHAR(255) NOT NULL,
+    numberOfFamilies INT NOT NULL,
+    isWithCr BOOLEAN DEFAULT FALSE,
+    isWith40mZone BOOLEAN DEFAULT FALSE,
+    isEnergized BOOLEAN DEFAULT FALSE,
+    housingMaterials VARCHAR(50) NULL CHECK (housingMaterials IN ('Concrete', 'Semi-Concrete', 'Wood')),
+    waterSource VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE barangay_officials (
+    id SERIAL PRIMARY KEY NOT NULL,
+    
+    -- Punong Barangay
+    punongBarangayLastName VARCHAR(255) NOT NULL,
+    punongBarangayFirstName VARCHAR(255) NOT NULL,
+    punongBarangayMiddleName VARCHAR(255),
+    punongBarangayImage TEXT,
+
+    -- Kagawad 1
+    kagawad1LastName VARCHAR(255) NOT NULL,
+    kagawad1FirstName VARCHAR(255) NOT NULL,
+    kagawad1MiddleName VARCHAR(255),
+    kagawad1Image TEXT,
+
+    -- Kagawad 2
+    kagawad2LastName VARCHAR(255) NOT NULL,
+    kagawad2FirstName VARCHAR(255) NOT NULL,
+    kagawad2MiddleName VARCHAR(255),
+    kagawad2Image TEXT,
+
+    -- Kagawad 3
+    kagawad3LastName VARCHAR(255) NOT NULL,
+    kagawad3FirstName VARCHAR(255) NOT NULL,
+    kagawad3MiddleName VARCHAR(255),
+    kagawad3Image TEXT,
+
+    -- Kagawad 4
+    kagawad4LastName VARCHAR(255) NOT NULL,
+    kagawad4FirstName VARCHAR(255) NOT NULL,
+    kagawad4MiddleName VARCHAR(255),
+    kagawad4Image TEXT,
+
+    -- Kagawad 5
+    kagawad5LastName VARCHAR(255) NOT NULL,
+    kagawad5FirstName VARCHAR(255) NOT NULL,
+    kagawad5MiddleName VARCHAR(255),
+    kagawad5Image TEXT,
+
+    -- Kagawad 6
+    kagawad6LastName VARCHAR(255) NOT NULL,
+    kagawad6FirstName VARCHAR(255) NOT NULL,
+    kagawad6MiddleName VARCHAR(255),
+    kagawad6Image TEXT,
+
+    -- Kagawad 7
+    kagawad7LastName VARCHAR(255) NOT NULL,
+    kagawad7FirstName VARCHAR(255) NOT NULL,
+    kagawad7MiddleName VARCHAR(255),
+    kagawad7Image TEXT,
+
+    -- SK Chairperson
+    SKChairpersonLastName VARCHAR(255) NOT NULL,
+    SKChairpersonFirstName VARCHAR(255) NOT NULL,
+    SKChairpersonMiddleName VARCHAR(255),
+    SKChairpersonImage TEXT,
+
+    -- Barangay Secretary
+    barangaySecretaryLastName VARCHAR(255) NOT NULL,
+    barangaySecretaryFirstName VARCHAR(255) NOT NULL,
+    barangaySecretaryMiddleName VARCHAR(255),
+    barangaySecretaryImage TEXT,
+
+    -- Barangay Treasurer
+    barangayTreasurerLastName VARCHAR(255) NOT NULL,
+    barangayTreasurerFirstName VARCHAR(255) NOT NULL,
+    barangayTreasurerMiddleName VARCHAR(255),
+    barangayTreasurerImage TEXT
+);
+
 isResident
 last_name
 first_name
