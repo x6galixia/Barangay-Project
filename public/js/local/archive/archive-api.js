@@ -379,15 +379,15 @@ function docChanges() {
             formContainer.innerHTML = `
             <div class="inputWithLabel" id="surubadan">
                 <label>Contracting Parties 1</label>
-                <input type="text" aria-label="Contracting Parties 1" name="parties1" required>
+                <input type="text" aria-label="Contracting Parties 1" id="parties1" name="parties1" required>
             </div>
             <div class="inputWithLabel" id="surubadan">
                 <label>Contracting Parties 2</label>
-                <input type="text" aria-label="Contracting Parties 2" name="parties2" required>
+                <input type="text" aria-label="Contracting Parties 2" id="parties2" name="parties2" required>
             </div>
             <div class="inputWithLabel">
                 <label>Date</label>
-                <input type="date" aria-label="Date" name="date" required>
+                <input type="date" aria-label="Date" id="date" name="date" required>
             </div>
             `
         }
@@ -419,11 +419,11 @@ function docChanges() {
             formContainer.innerHTML = `
             <div class="inputWithLabel" id="surubadan">
                 <label>Ordinance Number</label>
-                <input type="number" aria-label="Ordinance Number" name="ordinanceNumber" required>
+                <input type="number" aria-label="Ordinance Number" id="ordinanceNumber" name="ordinanceNumber" required>
             </div>
             <div class="inputWithLabel" id="surubadan">
                 <label>Ordinance Title</label>
-                <input type="text" aria-label="Ordinance Title" name="ordinanceTitle" required>
+                <input type="text" aria-label="Ordinance Title" id="ordinanceTitle" name="ordinanceTitle" required>
             </div>
             <div class="inputWithLabel" id="authorContainer" style="margin-top:4px">
             </div>
@@ -433,7 +433,7 @@ function docChanges() {
             </div>
             <div class="inputWithLabel">
                 <label>Date Approved</label>
-                <input type="date" aria-label="Date Approved" name="dateApproved" required>
+                <input type="date" aria-label="Date Approved" id="date" name="dateApproved" required>
             </div>
             `
         }
@@ -441,15 +441,15 @@ function docChanges() {
             formContainer.innerHTML = `
             <div class="inputWithLabel" id="surubadan">
                 <label>Resolution Number</label>
-                <input type="number" aria-label="Resolution Number" name="resolutionNumber" required>
+                <input type="number" aria-label="Resolution Number" id="resolutionNumber" name="resolutionNumber" required>
             </div>
             <div class="inputWithLabel" id="surubadan">
                 <label>Series of Year</label>
-                <input type="text" aria-label="Series of Year" name="yearSeries" required>
+                <input type="text" aria-label="Series of Year" id="yearSeries" name="yearSeries" required>
             </div>
             <div class="inputWithLabel">
                 <label>Date</label>
-                <input type="date" aria-label="Date" name="date" required>
+                <input type="date" aria-label="Date" id="date" name="date" required>
             </div>
             `
         }
@@ -457,11 +457,11 @@ function docChanges() {
             formContainer.innerHTML = `
             <div class="inputWithLabel" id="surubadan">
                 <label>Regulation Number (Ex. 1st)</label>
-                <input type="text" aria-label="Ika Pira na Regulation" name="regulationNumber" required>
+                <input type="text" aria-label="Ika Pira na Regulation" id="regulationNumber" name="regulationNumber" required>
             </div>
             <div class="inputWithLabel">
                 <label>Date</label>
-                <input type="date" aria-label="Date" name="date" required>
+                <input type="date" aria-label="Date" id="date" name="date" required>
             </div>
             `
         }
@@ -522,6 +522,8 @@ window.popUp_three_dot = function (button) {
         document.querySelector('#add-document form').action = `/archive/update-archive-item`;
         updateContainer.classList.add("visible");
         overlay.classList.toggle("visible");
+
+        console.log(archID);
 
         fetch(`/archive/archive-item/${archID}`)
             .then(response => {
@@ -589,48 +591,142 @@ function deleteItem(archiveID) {
     }
 }
 
+// Fills inputs dynamically based on data fetched from the server
 function fillInputs(data) {
     clearFillInputs();
     console.log('Data passed to fillInputs:', data);
 
-    const contractingParts = (data.contractingpersons && data.contractingpersons.split(' and ')) || [];
+    // Ensure typename exists and is in lowercase
+    const docType = (data.typename || '').toLowerCase();
 
-    const elements = {
-        itemId: data.id,
-        docType: data.doctype,
-        Contracting1: contractingParts[0] || '',
-        Contracting2: contractingParts[1] || '',
-        date: data.date ? data.date.split('T')[0] : '',
+    // Common fields
+    const commonElements = {
+        docType: data.typename || '',
     };
 
-    Object.keys(elements).forEach(id => {
+    Object.keys(commonElements).forEach(id => {
         const element = document.getElementById(id);
         if (element) {
-            element.value = elements[id] || '';
+            element.value = commonElements[id] || '';
         } else {
             console.warn(`Element with ID ${id} not found`);
         }
     });
 
+    // Handle specific document types
+    switch (docType) {
+        case 'lupon':
+            if (data.luponDetails && data.luponDetails.length > 0) {
+                const details = data.luponDetails[0];
+                populateFields({
+                    luponCaseNumber: details.casenumber,
+                    complainant: details.complainant,
+                    respondent: details.respondent,
+                    dateFiled: details.datefiled ? details.datefiled.split('T')[0] : '',
+                    caseType: details.casetype,
+                });
+                setImage(details.image);
+            }
+            break;
+
+        case 'panumduman':
+            if (data.panumdumanDetails && data.panumdumanDetails.length > 0) {
+                const details = data.panumdumanDetails[0];
+                const contractingParts = (details.contractingpersons || '').split(',');
+                populateFields({
+                    parties1: contractingParts[0] || '',
+                    parties2: contractingParts[1] || '',
+                    date: details.date ? details.date.split('T')[0] : '',
+                });
+                setImage(details.image);
+            }
+            break;
+
+        case 'regularization minutes':
+            if (data.regularizationDetails && data.regularizationDetails.length > 0) {
+                const details = data.regularizationDetails[0];
+                populateFields({
+                    regulationNumber: details.regulationnumber,
+                    dates: details.date ? details.date.split('T')[0] : '',
+                });
+                setImage(details.image);
+            }
+            break;
+
+        case 'resolution':
+            if (data.resolutionDetails && data.resolutionDetails.length > 0) {
+                const details = data.resolutionDetails[0];
+                populateFields({
+                    resolutionNumber: details.resolutionnumber,
+                    yearSeries: details.seriesyear,
+                    date: details.date ? details.date.split('T')[0] : '',
+                });
+                setImage(details.image);
+            }
+            break;
+
+        case 'ordinance':
+            if (data.ordinanceDetails && data.ordinanceDetails.length > 0) {
+                const details = data.ordinanceDetails[0];
+                const authors = (details.authors || '').split(',');
+                const coAuthors = (details.coauthors || '').split(',');
+                const sponsors = (details.sponsors || '').split(',');
+                populateFields({
+                    ordinanceNumber: details.ordinancenumber,
+                    ordinanceTitle: details.title,
+                    date: details.dateapproved ? details.dateapproved.split('T')[0] : '',
+                    author1: authors[0] || '',
+                    coAuthor1: coAuthors[0] || '',
+                    sponsor1: sponsors[0] || '',
+                });
+                setImage(details.image);
+            }
+            break;
+
+        default:
+            console.warn(`Unrecognized or unsupported document type: ${data.typename}`);
+    }
+}
+
+// Populate specific input fields
+function populateFields(fields) {
+    Object.keys(fields).forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.value = fields[id] || '';
+        } else {
+            console.warn(`Element with ID ${id} not found`);
+        }
+    });
+}
+
+// Update the image preview
+function setImage(imagePath) {
     const pictureElement = document.getElementById('fileInput');
-    const preview = document.getElementById("imagePreview");
+    const preview = document.getElementById('imagePreview');
+    if (preview) {
+        preview.innerHTML = imagePath
+            ? `<img src="/uploads/archive-img/${imagePath}" alt="Uploaded Image">`
+            : '<p>No Image Uploaded</p>';
+    }
     if (pictureElement) {
-        pictureElement.src = data.img ? `/uploads/archive-img/${data.img}` : '';
-        preview.innerHTML = `<img src="/uploads/archive-img/${data.img}" alt="Uploaded Image">`;
+        pictureElement.src = imagePath ? `/uploads/archive-img/${imagePath}` : '';
     } else {
         console.error('Image element not found or is not an IMG tag');
     }
 }
-function clearFillInputs() {
-    const elements = {
-        itemId,
-        docType,
-        Contracting1,
-        Contracting2,
-        date
-    };
 
-    Object.keys(elements).forEach(id => {
+// Clear all inputs
+function clearFillInputs() {
+    const inputIds = [
+        'docType', 'luponCaseNumber', 'complainant', 'respondent', 'dateFiled', 'caseType',
+        'parties1', 'parties2', 'date',
+        'regulationNumber', 'dates',
+        'resolutionNumber', 'yearSeries',
+        'ordinanceNumber', 'ordinanceTitle', 'author1', 'coAuthor1', 'sponsor1',
+    ];
+
+    inputIds.forEach(id => {
         const element = document.getElementById(id);
         if (element) {
             element.value = '';
@@ -640,12 +736,12 @@ function clearFillInputs() {
     });
 
     const pictureElement = document.getElementById('fileInput');
-    const preview = document.getElementById("imagePreview");
+    const preview = document.getElementById('imagePreview');
     if (pictureElement) {
         pictureElement.src = '';
-        preview.innerHTML = `<p>No Image Uploaded</p>`;
-    } else {
-        console.error('Image element not found or is not an IMG tag');
+    }
+    if (preview) {
+        preview.innerHTML = '<p>No Image Uploaded</p>';
     }
 }
 

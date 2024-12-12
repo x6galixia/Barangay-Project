@@ -74,21 +74,80 @@ router.get("/dashboard", async (req, res) => {
 
 router.get("/archive-item/:id", async (req, res) => {
     const itemId = req.params.id;
+
+    // Validate the ID
+    if (!itemId || isNaN(itemId)) {
+        return res.status(400).json({ error: "Invalid or missing archive ID." });
+    }
+
     try {
+        // Fetch the archive item from the database
+        const archiveQuery = `
+            SELECT a.*, dt.typeName 
+            FROM archive a
+            INNER JOIN document_type dt ON a.doctypeId = dt.doctypeId
+            WHERE a.archiveId = $1
+        `;
+        const archiveResult = await mPool.query(archiveQuery, [itemId]);
 
-        const archiveData = await mPool.query(`SELECT * FROM archive WHERE id = $1`, [itemId]);
+        if (archiveResult.rows.length > 0) {
+            const archiveItem = archiveResult.rows[0];
 
-        if (archiveData.rows.length > 0) {
-            console.log("Archive data: ",archiveData.rows[0]);
+            // Fetch additional details based on the document type
+            switch (archiveItem.doctypeid) {
+                case 1: // Panumduman
+                    const panumdumanData = await mPool.query(
+                        `SELECT * FROM panumduman WHERE archiveId = $1`,
+                        [itemId]
+                    );
+                    archiveItem.panumdumanDetails = panumdumanData.rows;
+                    break;
+
+                case 2: // Lupon
+                    const luponData = await mPool.query(
+                        `SELECT * FROM lupon WHERE archiveId = $1`,
+                        [itemId]
+                    );
+                    archiveItem.luponDetails = luponData.rows;
+                    break;
+
+                case 3: // Ordinance
+                    const ordinanceData = await mPool.query(
+                        `SELECT * FROM ordinance WHERE archiveId = $1`,
+                        [itemId]
+                    );
+                    archiveItem.ordinanceDetails = ordinanceData.rows;
+                    break;
+
+                case 4: // Resolution
+                    const resolutionData = await mPool.query(
+                        `SELECT * FROM resolution WHERE archiveId = $1`,
+                        [itemId]
+                    );
+                    archiveItem.resolutionDetails = resolutionData.rows;
+                    break;
+
+                case 5: // Regularization Minutes
+                    const regularizationData = await mPool.query(
+                        `SELECT * FROM regularization_minutes WHERE archiveId = $1`,
+                        [itemId]
+                    );
+                    archiveItem.regularizationDetails = regularizationData.rows;
+                    break;
+
+                default:
+                    console.log(`Unknown document type: ${archiveItem.doctypeId}`);
+            }
+
+            console.log("Archive data:", archiveItem);
+            res.json({ success: true, data: archiveItem });
         } else {
-            console.log(`No Archive data for archive Id: ${itemId}`);
+            console.log(`No Archive data found for archive ID: ${itemId}`);
+            res.status(404).json({ error: `No Archive data found for archive ID: ${itemId}` });
         }
-
-        res.json(archiveData.rows[0]);
-        
     } catch (err) {
-        console.error("Error: ", err.stack, err.message);
-        res.status(500).send("Internal server error");
+        console.error("Database Error:", err.stack);
+        res.status(500).json({ error: "Internal server error. Please try again later." });
     }
 });
 
@@ -150,7 +209,7 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
             await mPool.query(
                 `INSERT INTO panumduman (archiveId, date, image, contractingPersons)
                  VALUES ($1, $2, $3, $4)`,
-                [archiveId, req.body.date, req.file?.path, contractingPersons]
+                [archiveId, req.body.date, requestData.documentData.image, contractingPersons]
             );
         } else if (doctypeId === 2) { // Lupon
             await mPool.query(
@@ -217,14 +276,14 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
     }
 });
 
-router.post("/update-archive-item", upload.single('picture'), async (req, res) => {
+router.post("/update-archive-item", upload.single('image'), async (req, res) => {
 
 });
 
 router.delete("/delete-archive-item/:id", async (req, res) => {
     const archiveId = req.params.id;
     console.log(archiveId);
-    
+
     try {
         await mPool.query(`DELETE FROM archive WHERE archiveId = $1`, [archiveId]);
         res.redirect("/archive/dashboard");
