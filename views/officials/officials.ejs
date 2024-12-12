@@ -303,8 +303,9 @@
                 <h1 class="heading">BARANGAY OFFICIALS</h1>
                 <main>
                     <form id="formToAddResident" action="" method="POST" enctype="multipart/form-data">
+                        <hr>
                         <div class="add-survey-input-container">
-                            <h3>Punong Barangay</h3>
+                            <h3 style="position: sticky; top: 0px; background-color: white;">Punong Barangay</h3>
                             <div class="row">
                                 <div>
                                     <div class="inputWithLabel" id="surubadan">
@@ -334,6 +335,302 @@
                                 </div>
                             </div>
                         </div>
+                        <hr>
+                        <div class="add-survey-input-container">
+                            <h3 style="position: sticky; top: 0px; background-color: white;">Barangay Kagawad</h3>
+                            <div class="row">
+                                <div>
+                                    <div class="inputWithLabel" id="surubadan">
+                                        <label>Last Name</label>
+                                        <input type="text" aria-label="Last Name" name="kagawad1LastName" required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>First Name</label>
+                                        <input type="text" aria-label="First Name" name="kagawad1FirstName"
+                                            required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Middle Name</label>
+                                        <input type="text" aria-label="Middle Name" name="kagawad1MiddleName"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="ID-container">
+                                    <div class="image-preview" id="imagePreview1">
+                                        <p>No image uploaded</p>
+                                    </div>
+                                    <div class="buttons">
+                                        <button type="button" class="button upload" onclick="triggerUpload1()">Upload</button>
+                                        <input type="file" name="kagawad1Image" id="fileInput1" accept="image/*"
+                                            onchange="displayImage1(event)">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <div class="inputWithLabel" id="surubadan">
+                                        <label>Last Name</label>
+                                        <input type="text" aria-label="Last Name" name="kagawad2LastName" required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>First Name</label>
+                                        <input type="text" aria-label="First Name" name="kagawad2FirstName"
+                                            required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Middle Name</label>
+                                        <input type="text" aria-label="Middle Name" name="kagawad2MiddleName"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="ID-container">
+                                    <div class="image-preview" id="imagePreview2">
+                                        <p>No image uploaded</p>
+                                    </div>
+                                    <div class="buttons">
+                                        <button type="button" class="button upload" onclick="triggerUpload2()">Upload</button>
+                                        <input type="file" name="kagawad2Image" id="fileInput2" accept="image/*"
+                                            onchange="displayImage2(event)">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <div class="inputWithLabel" id="surubadan">
+                                        <label>Last Name</label>
+                                        <input type="text" aria-label="Last Name" name="kagawad3LastName" required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>First Name</label>
+                                        <input type="text" aria-label="First Name" name="kagawad3FirstName"
+                                            required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Middle Name</label>
+                                        <input type="text" aria-label="Middle Name" name="kagawad3MiddleName"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="ID-container">
+                                    <div class="image-preview" id="imagePreview3">
+                                        <p>No image uploaded</p>
+                                    </div>
+                                    <div class="buttons">
+                                        <button type="button" class="button upload" onclick="triggerUpload3()">Upload</button>
+                                        <input type="file" name="kagawad3Image" id="fileInput3" accept="image/*"
+                                            onchange="displayImage3(event)">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <div class="inputWithLabel" id="surubadan">
+                                        <label>Last Name</label>
+                                        <input type="text" aria-label="Last Name" name="kagawad4LastName" required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>First Name</label>
+                                        <input type="text" aria-label="First Name" name="kagawad4FirstName"
+                                            required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Middle Name</label>
+                                        <input type="text" aria-label="Middle Name" name="kagawad4MiddleName"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="ID-container">
+                                    <div class="image-preview" id="imagePreview4">
+                                        <p>No image uploaded</p>
+                                    </div>
+                                    <div class="buttons">
+                                        <button type="button" class="button upload" onclick="triggerUpload4()">Upload</button>
+                                        <input type="file" name="kagawad4Image" id="fileInput4" accept="image/*"
+                                            onchange="displayImage4(event)">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <div class="inputWithLabel" id="surubadan">
+                                        <label>Last Name</label>
+                                        <input type="text" aria-label="Last Name" name="kagawad5LastName" required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>First Name</label>
+                                        <input type="text" aria-label="First Name" name="kagawad5FirstName"
+                                            required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Middle Name</label>
+                                        <input type="text" aria-label="Middle Name" name="kagawad5MiddleName"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="ID-container">
+                                    <div class="image-preview" id="imagePreview5">
+                                        <p>No image uploaded</p>
+                                    </div>
+                                    <div class="buttons">
+                                        <button type="button" class="button upload" onclick="triggerUpload5()">Upload</button>
+                                        <input type="file" name="kagawad5Image" id="fileInput5" accept="image/*"
+                                            onchange="displayImage5(event)">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <div class="inputWithLabel" id="surubadan">
+                                        <label>Last Name</label>
+                                        <input type="text" aria-label="Last Name" name="kagawad6LastName" required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>First Name</label>
+                                        <input type="text" aria-label="First Name" name="kagawad6FirstName"
+                                            required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Middle Name</label>
+                                        <input type="text" aria-label="Middle Name" name="kagawad6MiddleName"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="ID-container">
+                                    <div class="image-preview" id="imagePreview6">
+                                        <p>No image uploaded</p>
+                                    </div>
+                                    <div class="buttons">
+                                        <button type="button" class="button upload" onclick="triggerUpload6()">Upload</button>
+                                        <input type="file" name="kagawad6Image" id="fileInput6" accept="image/*"
+                                            onchange="displayImage6(event)">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <div class="inputWithLabel" id="surubadan">
+                                        <label>Last Name</label>
+                                        <input type="text" aria-label="Last Name" name="kagawad7LastName" required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>First Name</label>
+                                        <input type="text" aria-label="First Name" name="kagawad7FirstName"
+                                            required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Middle Name</label>
+                                        <input type="text" aria-label="Middle Name" name="kagawad7MiddleName"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="ID-container">
+                                    <div class="image-preview" id="imagePreview7">
+                                        <p>No image uploaded</p>
+                                    </div>
+                                    <div class="buttons">
+                                        <button type="button" class="button upload" onclick="triggerUpload7()">Upload</button>
+                                        <input type="file" name="kagawad7Image" id="fileInput7" accept="image/*"
+                                            onchange="displayImage7(event)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="add-survey-input-container">
+                            <h3 style="position: sticky; top: 0px; background-color: white;">SK Chairperson</h3>
+                            <div class="row">
+                                <div>
+                                    <div class="inputWithLabel" id="surubadan">
+                                        <label>Last Name</label>
+                                        <input type="text" aria-label="Last Name" name="SKChairpersonLastName" required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>First Name</label>
+                                        <input type="text" aria-label="First Name" name="SKChairpersonFirstName"
+                                            required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Middle Name</label>
+                                        <input type="text" aria-label="Middle Name" name="SKChairpersonMiddleName"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="ID-container">
+                                    <div class="image-preview" id="imagePreview10">
+                                        <p>No image uploaded</p>
+                                    </div>
+                                    <div class="buttons">
+                                        <button type="button" class="button upload" onclick="triggerUpload10()">Upload</button>
+                                        <input type="file" name="SKChairpersonImage" id="fileInput10" accept="image/*"
+                                            onchange="displayImage10(event)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="add-survey-input-container">
+                            <h3 style="position: sticky; top: 0px; background-color: white;">Barangay Secretary</h3>
+                            <div class="row">
+                                <div>
+                                    <div class="inputWithLabel" id="surubadan">
+                                        <label>Last Name</label>
+                                        <input type="text" aria-label="Last Name" name="barangaySecretaryLastName" required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>First Name</label>
+                                        <input type="text" aria-label="First Name" name="barangaySecretaryFirstName"
+                                            required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Middle Name</label>
+                                        <input type="text" aria-label="Middle Name" name="barangaySecretaryMiddleName"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="ID-container">
+                                    <div class="image-preview" id="imagePreview8">
+                                        <p>No image uploaded</p>
+                                    </div>
+                                    <div class="buttons">
+                                        <button type="button" class="button upload" onclick="triggerUpload8()">Upload</button>
+                                        <input type="file" name="barangaySecretaryImage" id="fileInput8" accept="image/*"
+                                            onchange="displayImage8(event)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="add-survey-input-container">
+                            <h3 style="position: sticky; top: 0px; background-color: white;">Barangay Treasurer</h3>
+                            <div class="row">
+                                <div>
+                                    <div class="inputWithLabel" id="surubadan">
+                                        <label>Last Name</label>
+                                        <input type="text" aria-label="Last Name" name="barangayTreasurerLastName" required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>First Name</label>
+                                        <input type="text" aria-label="First Name" name="barangayTreasurerFirstName"
+                                            required>
+                                    </div>
+                                    <div class="inputWithLabel">
+                                        <label>Middle Name</label>
+                                        <input type="text" aria-label="Middle Name" name="barangayTreasurerMiddleName"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="ID-container">
+                                    <div class="image-preview" id="imagePreview9">
+                                        <p>No image uploaded</p>
+                                    </div>
+                                    <div class="buttons">
+                                        <button type="button" class="button upload" onclick="triggerUpload9()">Upload</button>
+                                        <input type="file" name="barangayTreasurerImage" id="fileInput9" accept="image/*"
+                                            onchange="displayImage9(event)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <button type="submit" id="submit_add_officials"
                             style="display: flex; margin-left: auto;">SUBMIT</button>
                     </form>
@@ -344,6 +641,185 @@
 <script src="../../js/global/pop-up.js"></script>
 <script>
     document.querySelector("header>nav>ul>li:nth-child(7)").classList.toggle("selected");
+
+    function triggerUpload() {
+        document.getElementById("fileInput").click();
+    }    
+    function triggerUpload1() {
+        document.getElementById("fileInput1").click();
+    }
+    function triggerUpload2() {
+        document.getElementById("fileInput2").click();
+    }
+    function triggerUpload3() {
+        document.getElementById("fileInput3").click();
+    }
+    function triggerUpload4() {
+        document.getElementById("fileInput4").click();
+    }
+    function triggerUpload5() {
+        document.getElementById("fileInput5").click();
+    }
+    function triggerUpload6() {
+        document.getElementById("fileInput6").click();
+    }
+    function triggerUpload7() {
+        document.getElementById("fileInput7").click();
+    }
+    function triggerUpload8() {
+        document.getElementById("fileInput8").click();
+    }
+    function triggerUpload9() {
+        document.getElementById("fileInput9").click();
+    }
+    function triggerUpload10() {
+        document.getElementById("fileInput10").click();
+    }
+
+    // Function to display the selected image
+    function displayImage(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview");
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = `<p>No image uploaded</p>`;
+        }
+    }
+    function displayImage1(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview1");
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = `<p>No image uploaded</p>`;
+        }
+    }
+    function displayImage2(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview2");
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = `<p>No image uploaded</p>`;
+        }
+    }
+    function displayImage3(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview3");
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = `<p>No image uploaded</p>`;
+        }
+    }
+    function displayImage4(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview4");
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = `<p>No image uploaded</p>`;
+        }
+    }
+    function displayImage6(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview6");
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = `<p>No image uploaded</p>`;
+        }
+    }
+    function displayImage7(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview7");
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = `<p>No image uploaded</p>`;
+        }
+    }
+    function displayImage5(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview5");
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = `<p>No image uploaded</p>`;
+        }
+    }
+    function displayImage8(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview8");
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = `<p>No image uploaded</p>`;
+        }
+    }
+    function displayImage9(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview9");
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = `<p>No image uploaded</p>`;
+        }
+    }
+    function displayImage10(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview10");
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = `<p>No image uploaded</p>`;
+        }
+    }
 </script>
 
 </html>
