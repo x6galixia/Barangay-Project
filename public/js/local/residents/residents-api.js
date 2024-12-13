@@ -90,7 +90,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             const residents = data.getResidentsList;
             // Clear the table body
             residentsTableBody.innerHTML = '';
-
             if (residents.length === 0) {
                 // Display a "No residents found" message
                 const noDataRow = document.createElement('tr');
@@ -126,6 +125,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                                 >Update</button>
                                 <button id="generate-id" onclick="popUp_three_dot(this)"
                                 data-fullname="${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}"
+                                data-punongBarangay="${resident.punongbarangayfirstname.toUpperCase()} ${resident.punongbarangaymiddlename.toUpperCase() ? resident.punongbarangaymiddlename.toUpperCase() : ''} ${resident.punongbarangaylastname.toUpperCase()}"
                                 data-idNumber="${resident.idnumber}"
                                 data-globalId="${resident.globalid}"
                                 data-isResident="${resident.isresident}"
@@ -290,6 +290,7 @@ window.popUp_three_dot = function (button) {
         document.getElementById('idNumber').innerText = button.getAttribute('data-idNumber');
         document.getElementById('emergencyContactName').innerText = button.getAttribute('data-contactFullName');
         document.getElementById('IDemergencyContactNumber').innerText = button.getAttribute('data-contactPhone');
+        document.getElementById('punongBarangay').innerText = button.getAttribute('data-punongBarangay');
 
         if (isResident === "true") {
             highlighter.innerHTML = "";

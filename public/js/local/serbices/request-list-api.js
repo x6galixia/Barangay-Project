@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <td>${formattedDate}</td>
                 <td><button 
                 data-purpose="${request.purpose}"
+                data-punongBarangay="${request.punongbarangayfirstname.toLocaleUpperCase()} ${request.punongbarangaymiddlename.toLocaleUpperCase() ? request.punongbarangaymiddlename.toLocaleUpperCase() : ''} ${request.punongbarangaylastname.toLocaleUpperCase()}"
                 data-age="${request.age}"
                 data-birthdate="${request.birthdate}"
                 data-birthplace="${request.birthplace}"
@@ -97,6 +98,12 @@ window.processCertificate = function (button) {
   const birthplace = button.getAttribute('data-birthplace');
   document.querySelector(".overlay").classList.toggle("visible");
   setCurrentDate();
+  const punongBarangay = button.getAttribute('data-punongBarangay');
+
+//  BARANGAY OFFICIALS
+  document.querySelectorAll('.punongBarangay').forEach(element => {
+    element.innerText = `HON. ${punongBarangay}`;
+  });
 
   if (purpose === 'Oath Of Undertaking') {
       document.getElementById("oathFullName").innerHTML = `${firstName} ${middleName} ${lastName}`.toLocaleUpperCase();
@@ -224,7 +231,6 @@ window.processCertificate = function (button) {
   
       viewCertificate.addEventListener('click',()=> {
         viewCertificateDetails("brgyClearance")
-        alert('yawa ka');
       });
     }
     else if (purpose === 'Building Clearance') {
