@@ -14,8 +14,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       // barangay officlas names
       document.getElementById('punongBarangay').innerText = `HON. ${official.punongbarangayfirstname.toUpperCase()} ${official.punongbarangaymiddlename.toUpperCase() || ""} ${official.punongbarangaylastname.toUpperCase()}`
       document.getElementById('SKChairperson').innerText = `HON. ${official.skchairpersonfirstname.toUpperCase()} ${official.skchairpersonmiddlename.toUpperCase() || ""} ${official.skchairpersonlastname.toUpperCase()}`
-      document.getElementById('secretaryName').innerText = `${official.barangaysecretaryfirstname.toUpperCase()} ${official.barangaysecretarymiddlename.toUpperCase() || ""} ${official.skchairpersonlastname.toUpperCase()}`
-      document.getElementById('treasurerName').innerText = `${official.barangaytreasurerfirstname.toUpperCase()} ${official.barangaytreasurermiddlename.toUpperCase() || ""} ${official.skchairpersonlastname.toUpperCase()}`
+      document.getElementById('secretaryName').innerText = `${official.barangaysecretaryfirstname.toUpperCase()} ${official.barangaysecretarymiddlename.toUpperCase() || ""} ${official.barangaysecretarylastname.toUpperCase()}`
+      document.getElementById('treasurerName').innerText = `${official.barangaytreasurerfirstname.toUpperCase()} ${official.barangaytreasurermiddlename.toUpperCase() || ""} ${official.barangaytreasurerlastname.toUpperCase()}`
       
       for (let i = 1; i <= 7; i++) {
         // Construct the property names dynamically
