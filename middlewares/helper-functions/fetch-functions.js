@@ -34,11 +34,13 @@ async function fetchResidentsLists(page, limit, searchQuery = '', isNonResident 
       bd.originalbarangay, bd.originalcity,
       bd.originalprovince,
       r.isPwd, r.isSoloParent, r.isYouth, r.is4ps, r.isResident, r.civilStatus,
-      r.isOutOfSchoolYouth, r.isSkm, r.isKm
+      r.isOutOfSchoolYouth, r.isSkm, r.isKm,
+      bo.punongbarangaylastname, bo.punongbarangayfirstname, bo.punongbarangaymiddlename
     FROM residents r
     LEFT JOIN rClassification rc ON r.rClassificationId = rc.rClassificationId
     LEFT JOIN contactPerson cp ON r.emergencyContactId = cp.contactPersonId
     LEFT JOIN boarders bd ON r.residentsid = bd.boarderinresidentid
+    CROSS JOIN barangay_officials bo
     WHERE r.isResident = $3
       ${searchCondition}
     ORDER BY r.fname
@@ -96,9 +98,11 @@ async function fetchRequestLists(page, limit) {
       SELECT 
           r.residentsid, r.dateadded, r.purpose, r.isReleased,
           rd.fname, rd.mname, rd.lname, rd.gender, rd.age, rd.civilstatus, rd.street,
-          rd.purok, rd.barangay, rd.city, rd.province, rd.birthdate, rd.birthplace
+          rd.purok, rd.barangay, rd.city, rd.province, rd.birthdate, rd.birthplace,
+          bo.punongbarangaylastname, bo.punongbarangayfirstname, bo.punongbarangaymiddlename
       FROM requests r
       LEFT JOIN residents rd ON r.residentsid = rd.residentsid
+      CROSS JOIN barangay_officials bo
       WHERE r.isReleased = false
       ORDER BY r.id DESC
       LIMIT $1 OFFSET $2;
@@ -108,6 +112,21 @@ async function fetchRequestLists(page, limit) {
       getRequestList: getRequestList.rows,
       totalPages,
       totalItems
+    };
+  } catch (err) {
+    console.error("Error fetching residents list: ", err.message, err.stack);
+    throw new Error("Error fetching residents list");
+  }
+}
+
+async function fetchOfficialList() {
+  try {
+    const getOfficialList = await mPool.query(`
+      SELECT * FROM barangay_officials;
+    `);
+
+    return {
+      getOfficialList: getOfficialList,
     };
   } catch (err) {
     console.error("Error fetching residents list: ", err.message, err.stack);
@@ -378,5 +397,6 @@ module.exports = {
   fetchRequestLists,
   fetchInventoryLists,
   fetchArchiveLists,
-  fetchArchiveData
+  fetchArchiveData,
+  fetchOfficialList
 };

@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const mPool = require("../../models/mDatabase");
 const { barangayOfficialsSchema } = require("../../middlewares/schemas/schemas");
+const { fetchOfficialList } = require("../../middlewares/helper-functions/fetch-functions");
 
 // Multer configuration for image uploads
 const storage = multer.diskStorage({
@@ -44,10 +45,29 @@ const deleteUploadedFiles = (files) => {
 
 router.use("/uploads/barangay-officials-images", express.static("uploads"));
 
-router.get("/dashboard", (req, res) => {
-    res.render("officials/officials", {
-        title: "officials"
-    });
+router.get("/dashboard", async (req, res) => {
+    const isAjax = req.query.ajax === "true";
+    try {
+        const { getOfficialList } = await fetchOfficialList();
+
+        if (isAjax) {
+            return res.json({
+                title: "Barangay Officials",
+                getOfficialList,
+                user: req.user,
+            });
+        }
+
+        res.render("officials/officials", {
+            title: "Barangay Officials",
+            getOfficialList,
+            user: req.user,
+        });
+
+    } catch (err) {
+        console.error("Error: ", err.message, err.stack);
+        res.status(500).send("Internal server error");
+    }
 });
 
 // POST route for updating barangay officials
@@ -75,6 +95,8 @@ router.post('/update-barangay-officials', upload.fields([
             uploadedImages[fieldName] = req.files[fieldName][0].filename;
         }
     }
+
+    console.log("Images Uploaded: ", uploadedImages);
 
     try {
         // Check if any officials already exist
@@ -123,17 +145,28 @@ router.post('/update-barangay-officials', upload.fields([
             const updateQuery = `
                 UPDATE barangay_officials
                 SET
-                    punongBarangayLastName = $1, punongBarangayFirstName = $2, punongBarangayMiddleName = $3, punongBarangayImage = $4,
-                    kagawad1LastName = $5, kagawad1FirstName = $6, kagawad1MiddleName = $7, kagawad1Image = $8,
-                    kagawad2LastName = $9, kagawad2FirstName = $10, kagawad2MiddleName = $11, kagawad2Image = $12,
-                    kagawad3LastName = $13, kagawad3FirstName = $14, kagawad3MiddleName = $15, kagawad3Image = $16,
-                    kagawad4LastName = $17, kagawad4FirstName = $18, kagawad4MiddleName = $19, kagawad4Image = $20,
-                    kagawad5LastName = $21, kagawad5FirstName = $22, kagawad5MiddleName = $23, kagawad5Image = $24,
-                    kagawad6LastName = $25, kagawad6FirstName = $26, kagawad6MiddleName = $27, kagawad6Image = $28,
-                    kagawad7LastName = $29, kagawad7FirstName = $30, kagawad7MiddleName = $31, kagawad7Image = $32,
-                    SKChairpersonLastName = $33, SKChairpersonFirstName = $34, SKChairpersonMiddleName = $35, SKChairpersonImage = $36,
-                    barangaySecretaryLastName = $37, barangaySecretaryFirstName = $38, barangaySecretaryMiddleName = $39, barangaySecretaryImage = $40,
-                    barangayTreasurerLastName = $41, barangayTreasurerFirstName = $42, barangayTreasurerMiddleName = $43, barangayTreasurerImage = $44
+                    punongBarangayLastName = $1, punongBarangayFirstName = $2, punongBarangayMiddleName = $3, 
+                    punongBarangayImage = COALESCE($4, punongBarangayImage),
+                    kagawad1LastName = $5, kagawad1FirstName = $6, kagawad1MiddleName = $7, 
+                    kagawad1Image = COALESCE($8, kagawad1Image),
+                    kagawad2LastName = $9, kagawad2FirstName = $10, kagawad2MiddleName = $11, 
+                    kagawad2Image = COALESCE($12, kagawad2Image),
+                    kagawad3LastName = $13, kagawad3FirstName = $14, kagawad3MiddleName = $15, 
+                    kagawad3Image = COALESCE($16, kagawad3Image),
+                    kagawad4LastName = $17, kagawad4FirstName = $18, kagawad4MiddleName = $19, 
+                    kagawad4Image = COALESCE($20, kagawad4Image),
+                    kagawad5LastName = $21, kagawad5FirstName = $22, kagawad5MiddleName = $23, 
+                    kagawad5Image = COALESCE($24, kagawad5Image),
+                    kagawad6LastName = $25, kagawad6FirstName = $26, kagawad6MiddleName = $27, 
+                    kagawad6Image = COALESCE($28, kagawad6Image),
+                    kagawad7LastName = $29, kagawad7FirstName = $30, kagawad7MiddleName = $31, 
+                    kagawad7Image = COALESCE($32, kagawad7Image),
+                    SKChairpersonLastName = $33, SKChairpersonFirstName = $34, SKChairpersonMiddleName = $35, 
+                    SKChairpersonImage = COALESCE($36, SKChairpersonImage),
+                    barangaySecretaryLastName = $37, barangaySecretaryFirstName = $38, barangaySecretaryMiddleName = $39, 
+                    barangaySecretaryImage = COALESCE($40, barangaySecretaryImage),
+                    barangayTreasurerLastName = $41, barangayTreasurerFirstName = $42, barangayTreasurerMiddleName = $43, 
+                    barangayTreasurerImage = COALESCE($44, barangayTreasurerImage)
                 WHERE id = $45
             `;
 
@@ -161,5 +194,6 @@ router.post('/update-barangay-officials', upload.fields([
         res.status(500).json({ error: 'Internal server error.' });
     }
 });
+
 
 module.exports = router;

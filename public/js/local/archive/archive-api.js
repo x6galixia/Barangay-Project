@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const selectedValue1 = getURLParameter('type') || 'Lupon';
     const searchQuery = document.getElementById('searchInput').value.trim();
+    document.getElementById("docType").value = type;
 
     if (selectedValue1 === "Lupon") {
         console.log("1 selected");

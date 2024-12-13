@@ -345,14 +345,14 @@ router.post('/dashboard/update-archive', upload.single('image'), async (req, res
         if (doctypeId === 1) { // Panumduman
             await mPool.query(
                 `UPDATE panumduman
-                 SET date = $1, image = $2, contractingPersons = $3
+                 SET date = $1, image = COALESCE($2, image), contractingPersons = $3
                  WHERE archiveId = $4`,
                 [req.body.date, requestData.documentData.image, contractingPersons, archiveId]
             );
         } else if (doctypeId === 2) { // Lupon
             await mPool.query(
                 `UPDATE lupon
-                 SET caseNumber = $1, complainant = $2, respondent = $3, dateFiled = $4, image = $5, caseType = $6
+                 SET caseNumber = $1, complainant = $2, respondent = $3, dateFiled = $4, image = COALESCE($5, image), caseType = $6
                  WHERE archiveId = $7`,
                 [
                     req.body.luponCaseNumber,
@@ -367,7 +367,7 @@ router.post('/dashboard/update-archive', upload.single('image'), async (req, res
         } else if (doctypeId === 3) { // Ordinance
             await mPool.query(
                 `UPDATE ordinance
-                 SET ordinanceNumber = $1, title = $2, authors = $3, coAuthors = $4, sponsors = $5, image = $6, dateApproved = $7
+                 SET ordinanceNumber = $1, title = $2, authors = $3, coAuthors = $4, sponsors = $5, image = COALESCE($6, image), dateApproved = $7
                  WHERE archiveId = $8`,
                 [
                     req.body.ordinanceNumber,
@@ -383,7 +383,7 @@ router.post('/dashboard/update-archive', upload.single('image'), async (req, res
         } else if (doctypeId === 4) { // Resolution
             await mPool.query(
                 `UPDATE resolution
-                 SET resolutionNumber = $1, seriesYear = $2, image = $3, date = $4
+                 SET resolutionNumber = $1, seriesYear = $2, image = COALESCE($3, image), date = $4
                  WHERE archiveId = $5`,
                 [
                     req.body.resolutionNumber,
@@ -396,7 +396,7 @@ router.post('/dashboard/update-archive', upload.single('image'), async (req, res
         } else if (doctypeId === 5) { // Regularization Minutes
             await mPool.query(
                 `UPDATE regularization_minutes
-                 SET regulationNumber = $1, image = $2, date = $3
+                 SET regulationNumber = $1, image = COALESCE($2, image), date = $3
                  WHERE archiveId = $4`,
                 [
                     req.body.regulationNumber,
