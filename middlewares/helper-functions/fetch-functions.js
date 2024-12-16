@@ -80,7 +80,6 @@ async function fetchResidentsLists(page, limit, searchQuery = '', isNonResident 
   }
 }
 
-// Fetch function for request where released is false
 async function fetchRequestLists(page, limit) {
   const offset = (page - 1) * limit;
 
@@ -138,7 +137,7 @@ async function fetchInventoryLists(page, limit, searchQuery = '', isFunctional =
   const offset = (page - 1) * limit;
 
   const inventoryValues = [limit, offset, isFunctional];
-  const totalItemsValues = [!isFunctional];
+  const totalItemsValues = [isFunctional];
 
   let searchCondition = '';
   if (searchQuery && searchQuery.trim() !== '') {
@@ -163,7 +162,8 @@ async function fetchInventoryLists(page, limit, searchQuery = '', isFunctional =
         i.isFunctional,
         c.categoryId,
         c.categoryName
-    FROM inventory i JOIN categories c ON i.categoryId = c.categoryId
+    FROM inventory i 
+    JOIN categories c ON i.categoryId = c.categoryId
     WHERE i.isFunctional = $3
     ${searchCondition}
     ORDER BY i.iName
@@ -175,73 +175,26 @@ async function fetchInventoryLists(page, limit, searchQuery = '', isFunctional =
     FROM inventory i 
     JOIN categories c ON i.categoryId = c.categoryId
     WHERE i.isFunctional = $1
-      ${searchQuery && searchQuery.trim() !== '' ? `AND (
-          CONCAT(i.iName, ' ', COALESCE(c.categoryName, '')) ILIKE $2
-          OR i.iName ILIKE $2
-          OR c.categoryName ILIKE $2
-      )` : ''}
+    ${searchCondition}
   `;
+
+  console.log("Total Items Query:", totalItemsQuery);  // Debugging line
+  console.log("Inventory Query:", inventoryQuery);  // Debugging line
+  console.log('isFunctional:', isFunctional);  // Debugging line
 
   try {
     const totalItemsResult = await mPool.query(totalItemsQuery, totalItemsValues);
     const totalItems = parseInt(totalItemsResult.rows[0].count, 10);
+    console.log("Total Items:", totalItems);  // Debugging line
     const totalPages = Math.ceil(totalItems / limit);
+    console.log("Total Pages:", totalPages);  // Debugging line
 
     const inventoryResult = await mPool.query(inventoryQuery, inventoryValues);
+    console.log("Inventory Results:", inventoryResult.rows);  // Debugging line
     return { getInventoryList: inventoryResult.rows, totalPages };
   } catch (err) {
     console.error('Error fetching INVENTORY list:', err.message);
     throw new Error('Error fetching INVENTORY list');
-  }
-}
-
-async function fetchArchiveLists(page, limit, searchQuery = '') {
-  const offset = (page - 1) * limit;
-
-  const archiveValues = [limit, offset];
-  const totalItemsValues = [];
-
-  let searchCondition = '';
-  if (searchQuery && searchQuery.trim() !== '') {
-    const searchPattern = `%${searchQuery.trim()}%`;
-    searchCondition = ` 
-      AND (
-        CONCAT(contractingPersons, ' ', COALESCE(docType)) ILIKE $${archiveValues.length + 1}
-        OR contractingPersons ILIKE $${archiveValues.length + 1}
-        OR docType ILIKE $${archiveValues.length + 1}
-      )`;
-    archiveValues.push(searchPattern);
-    totalItemsValues.push(searchPattern);
-  }
-
-  const archiveQuery = `
-    SELECT * FROM archive
-    WHERE 1=1  ${searchCondition}
-    ORDER BY contractingPersons
-    LIMIT $1::INTEGER OFFSET $2::INTEGER;
-  `;
-
-  const totalItemsQuery = `
-    SELECT COUNT(*) as count
-    FROM archive
-    WHERE 1=1
-    ${searchQuery && searchQuery.trim() !== '' ? `AND (
-        CONCAT(contractingPersons, ' ', COALESCE(docType)) ILIKE $1
-        OR contractingPersons ILIKE $1
-        OR docType ILIKE $1
-    )` : ''}
-  `;
-
-  try {
-    const totalItemsResult = await mPool.query(totalItemsQuery, totalItemsValues);
-    const totalItems = parseInt(totalItemsResult.rows[0].count, 10);
-    const totalPages = Math.ceil(totalItems / limit);
-
-    const archiveResult = await mPool.query(archiveQuery, archiveValues);
-    return { getArchiveList: archiveResult.rows, totalPages };
-  } catch (err) {
-    console.error('Error fetching ARCHIVE list:', err.message);
-    throw new Error('Error fetching ARCHIVE list');
   }
 }
 
@@ -396,7 +349,6 @@ module.exports = {
   fetchResidentsLists,
   fetchRequestLists,
   fetchInventoryLists,
-  fetchArchiveLists,
   fetchArchiveData,
   fetchOfficialList
 };
