@@ -69,39 +69,26 @@
                     <button id="add-survey-button" onclick="popUp_button(this)">ADD SURVEY</button>
                 </div>
                 <div id="meow" style="display: flex; flex-direction: column;">
-
                     <div class="separate" style="flex-direction: column; width: 100%;">
                         <div style="align-self: self-start; display: flex; flex-direction: column; gap: 4px; width: fit-content;">
-    
                             <label for="year-dropdown">Select Year: </label>
-                            <select id="year-dropdown">
-                            </select>
+                            <select id="year-dropdown"></select>
                         </div>
-
                         <div style="display: flex; flex-direction: column;">
-
                             <h2 style="margin-left: 0;">Overall Statistics</h2>
                             <div id="overall-container" class="oberall" style="display: flex; gap: 8px;">
                                 <!-- Overall data will be inserted here -->
                             </div>
                         </div>
-                        
-                        <!-- Display Statistics -->
-                         <div>
-
-                             <h2 style="margin-left: 0;">Household Classification by purok</h2>
-                             <div id="statistics-container">
-                                 <!-- Data will be inserted here -->
-                             </div>
-                         </div>
-
-                         
+                        <div>
+                            <h2 style="margin-left: 0;">Household Classification by Purok</h2>
+                            <div id="statistics-container">
+                                <!-- Data will be inserted here -->
+                            </div>
+                        </div>
                     </div>
-
                 </div>
             </div>
-
-
         </div>
         <div class="pop-up" id="add-survey">
 
@@ -224,36 +211,41 @@
     // Fetch statistics for the selected year
     function fetchStatistics(year) {
         $.get(`/statistics/house-classification?year=${year}`, function (data) {
-            // Display the year
             $('#year').text(data.year);
 
             // Display individual statistics by purok
-            let statisticsHtml = '<table><thead><tr><th>Purok</th><th>Total House Classifications</th><th>Total Families</th><th>Total with CR</th><th>Total with 40m Zone</th><th>Total Energized</th><th>Housing Materials</th><th>Water Source</th></tr></thead><tbody>';
+            let statisticsHtml = '<table><thead><tr><th>Purok</th><th>Concrete</th><th>Semi-Concrete</th><th>Wood</th><th>Deep Well</th><th>Water Pump</th><th>Mineral</th><th>Total House Classifications</th><th>Total Families</th><th>Total with CR</th><th>Total with 40m Zone</th><th>Total Energized</th></tr></thead><tbody>';
+
             data.statistics.forEach(stat => {
                 statisticsHtml += `
-                        <tr>
-                            <td>${stat.purok}</td>
-                            <td>${stat.total_house_classifications}</td>
-                            <td>${stat.total_families}</td>
-                            <td>${stat.total_with_cr}</td>
-                            <td>${stat.total_with_40m_zone}</td>
-                            <td>${stat.total_energized}</td>
-                            <td>${stat.housing_materials}</td>
-                            <td>${stat.water_source}</td>
-                        </tr>
-                    `;
+                    <tr>
+                        <td>${stat.purok}</td>
+                        <td>${stat.concrete_count}</td>
+                        <td>${stat.semi_concrete_count}</td>
+                        <td>${stat.wood_count}</td>
+                        <td>${stat.deep_well_count}</td>
+                        <td>${stat.water_pump_count}</td>
+                        <td>${stat.mineral_count}</td>
+                        <td>${stat.total_house_classifications}</td>
+                        <td>${stat.total_families}</td>
+                        <td>${stat.total_with_cr}</td>
+                        <td>${stat.total_with_40m_zone}</td>
+                        <td>${stat.total_energized}</td>
+                    </tr>
+                `;
             });
-            statisticsHtml += `</table>`;
+
+            statisticsHtml += `</tbody></table>`;
             $('#statistics-container').html(statisticsHtml);
 
             // Display overall statistics
             let overallHtml = `
-                    <div><h5>Total House Classifications</h5> <h3>${data.overall.overall_house_classifications}</h3></div>
-                    <div><h5>Total Families</h5> <h3>${data.overall.overall_families}</h3></div>
-                    <div><h5>Total with CR</h5> <h3>${data.overall.overall_with_cr}</h3></div>
-                    <div><h5>Total with 40m Zone</h5> <h3>${data.overall.overall_with_40m_zone}</h3></div>
-                    <div><h5>Total Energized</h5> <h3>${data.overall.overall_energized}</h3></div>
-                `;
+                <div><h5>Total House Classifications</h5> <h3>${data.overall.overall_house_classifications}</h3></div>
+                <div><h5>Total Families</h5> <h3>${data.overall.overall_families}</h3></div>
+                <div><h5>Total with CR</h5> <h3>${data.overall.overall_with_cr}</h3></div>
+                <div><h5>Total with 40m Zone</h5> <h3>${data.overall.overall_with_40m_zone}</h3></div>
+                <div><h5>Total Energized</h5> <h3>${data.overall.overall_energized}</h3></div>
+            `;
             $('#overall-container').html(overallHtml);
         }).fail(function () {
             alert('Failed to fetch statistics');
