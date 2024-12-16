@@ -10,8 +10,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (type && dropdown) {
         dropdown.value = type;
     }
-    // fetchArchiveLists().then(attachDotEventListeners);
-    // docChanges();
 
     // Function to update the URL parameters
     function updateURLParameter(key, value) {
@@ -29,6 +27,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     const selectedValue1 = getURLParameter('type') || 'Lupon';
     const searchQuery = document.getElementById('searchInput').value.trim();
     document.getElementById("docType").value = type;
+
+    searchInput.addEventListener('input', () => {
+        const searchQuery = searchInput.value.trim();
+        fetchArchiveLists(1, 10, searchQuery, selectedValue1);
+    });
 
     if (selectedValue1 === "Lupon") {
         console.log("1 selected");
@@ -113,24 +116,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
     }
 
-
-
-    // Listen for changes to search input
-    searchInput.addEventListener('input', () => {
-        const searchQuery = searchInput.value.trim();
-
-        fetchArchiveLists(page, limit, searchQuery);
-    });
-
     // Fetch inventory based on parameters
     async function fetchArchiveLists(page = 1, limit = 10, searchQuery = '', doctype = 'Lupon') {
-        // alert("www");
         try {
 
             const response = await fetch(
                 `http://localhost:3000/archive/dashboard?ajax=true&page=${page}&limit=${limit}&search=${encodeURIComponent(searchQuery)}&doctype=${doctype}`
             );
-
+            
 
             if (!response.ok) {
                 throw new Error("Failed to fetch archive data");
@@ -138,12 +131,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             const data = await response.json();
             const archive = data.archiveList;
-            console.log(archive);
             archiveTableBody.innerHTML = '';
 
             showColumnsForDoctype(doctype);
 
-            if (doctype === 'Lupon') {
+            if ((doctype === 'Lupon' && searchQuery) || doctype === 'Lupon') {
                 archive.forEach(arch1 => {
                     if (arch1.length === 0) {
                         const noDataRow = document.createElement('tr');
@@ -180,7 +172,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     })
                 });
             }
-            if (doctype === 'Ordinance') {
+            if ((doctype === 'Ordinance' && searchQuery) || doctype === 'Ordinance') {
                 archive.forEach(arch1 => {
                     if (arch1.length === 0) {
                         const noDataRow = document.createElement('tr');
@@ -232,7 +224,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     })
                 });
             }
-            if (doctype === 'Panumduman') {
+            if ((doctype === 'Panumduman' && searchQuery) || doctype === 'Panumduman') {
                 archive.forEach(arch => {
                     if (arch.length === 0) {
                         const noDataRow = document.createElement('tr');
@@ -277,7 +269,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     })
                 });
             }
-            if (doctype === 'Regularization Minutes') {
+            if ((doctype === 'Regularization Minutes' && searchQuery) || doctype === 'Regularization Minutes') {
                 archive.forEach(arch1 => {
                     if (arch1.length === 0) {
                         const noDataRow = document.createElement('tr');
@@ -312,7 +304,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     })
                 });
             }
-            if (doctype === 'Resolution') {
+            if ((doctype === 'Resolution' && searchQuery) || doctype === 'Resolution') {
                 archive.forEach(arch1 => {
                     if (arch1.length === 0) {
                         const noDataRow = document.createElement('tr');
