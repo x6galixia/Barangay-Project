@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../css/global/general.css">
     <link rel="stylesheet" href="../css/local/statistics.css">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>
         <%= title %>
@@ -67,11 +68,23 @@
                 <button id="add-survey-button" onclick="popUp_button(this)">ADD SURVEY</button>
             </div>
             <div id="meow">
-                <div class="chart">
-                    <canvas id="householdClassificationChart"></canvas>
+                <h1>House Classification Statistics</h1>
+
+                <!-- Dropdown for selecting year -->
+                <label for="year-dropdown">Select Year: </label>
+                <select id="year-dropdown">
+                    <!-- Options will be populated here -->
+                </select>
+            
+                <!-- Display Statistics -->
+                <div id="statistics-container">
+                    <!-- Data will be inserted here -->
                 </div>
-                <div class="separate">
-                    <div id="householdClassificationText"></div>
+                
+                <!-- Display Overall Statistics -->
+                <h2>Overall Statistics</h2>
+                <div id="overall-container">
+                    <!-- Overall data will be inserted here -->
                 </div>
             </div>
 
@@ -86,6 +99,18 @@
                 <form id="formToAddResident" action="/statistics/house-classification-survey" method="POST">
                     <div class="add-survey-input-container">
                         <div class="row">
+                            <div id="surveyPurok" class="inputWithLabel">
+                                <label for="">Purok</label>
+                                <select name="surveyPurok" id="surveyPurok" aria-label="Purok">
+                                    <option value="Seguidila">Seguidila</option>
+                                    <option value="Sitaw">Sitaw</option>
+                                    <option value="Talbos">Talbos</option>
+                                    <option value="Petchay">Petchay</option>
+                                    <option value="Ampalaya">Ampalaya</option>
+                                    <option value="Mustaza">Mustaza</option>
+                                    <option value="Kalabasa">Kalabasa</option>
+                                </select>
+                            </div>
                             <div class="inputWithLabel">
                                 <label>House Number (Optional)</label>
                                 <input type="number" aria-label="House Number (Optional)" name="houseNumber" min="1">
@@ -156,6 +181,78 @@
 <script src="../../js/local/statistics/statistics-api.js"></script>
 <script>
     document.querySelector("header>nav>ul>li:nth-child(6)").classList.toggle("selected");
+</script>
+
+<script>
+    function fetchAvailableYears() {
+            $.get('/statistics/available-years', function(data) {
+                const yearDropdown = $('#year-dropdown');
+                yearDropdown.empty(); // Clear any existing options
+
+                // Populate the dropdown with years
+                data.forEach(item => {
+                    yearDropdown.append(new Option(item.year, item.year));
+                });
+
+                // Optionally, set the default selected year to the first available one
+                if (data.length > 0) {
+                    fetchStatistics(data[0].year); // Fetch data for the first available year
+                    yearDropdown.val(data[0].year); // Set the default year in the dropdown
+                }
+            }).fail(function() {
+                alert('Failed to fetch available years');
+            });
+        }
+
+        // Fetch statistics for the selected year
+        function fetchStatistics(year) {
+            $.get(`/statistics/house-classification?year=${year}`, function(data) {
+                // Display the year
+                $('#year').text(data.year);
+
+                // Display individual statistics by purok
+                let statisticsHtml = '<table><tr><th>Purok</th><th>Total House Classifications</th><th>Total Families</th><th>Total with CR</th><th>Total with 40m Zone</th><th>Total Energized</th><th>Housing Materials</th><th>Water Source</th></tr>';
+                data.statistics.forEach(stat => {
+                    statisticsHtml += `
+                        <tr>
+                            <td>${stat.purok}</td>
+                            <td>${stat.total_house_classifications}</td>
+                            <td>${stat.total_families}</td>
+                            <td>${stat.total_with_cr}</td>
+                            <td>${stat.total_with_40m_zone}</td>
+                            <td>${stat.total_energized}</td>
+                            <td>${stat.housing_materials}</td>
+                            <td>${stat.water_source}</td>
+                        </tr>
+                    `;
+                });
+                statisticsHtml += '</table>';
+                $('#statistics-container').html(statisticsHtml);
+
+                // Display overall statistics
+                let overallHtml = `
+                    <p>Total House Classifications: ${data.overall.overall_house_classifications}</p>
+                    <p>Total Families: ${data.overall.overall_families}</p>
+                    <p>Total with CR: ${data.overall.overall_with_cr}</p>
+                    <p>Total with 40m Zone: ${data.overall.overall_with_40m_zone}</p>
+                    <p>Total Energized: ${data.overall.overall_energized}</p>
+                `;
+                $('#overall-container').html(overallHtml);
+            }).fail(function() {
+                alert('Failed to fetch statistics');
+            });
+        }
+
+        // Update statistics when a new year is selected
+        $('#year-dropdown').change(function() {
+            const selectedYear = $(this).val();
+            fetchStatistics(selectedYear); // Fetch and display data for the selected year
+        });
+
+        // Fetch available years when the page is ready
+        $(document).ready(function() {
+            fetchAvailableYears();
+        });
 </script>
 
 </html>
