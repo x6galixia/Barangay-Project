@@ -210,15 +210,24 @@ async function fetchArchiveData(page, limit, searchQuery = '', doctype = null) {
 
   if (searchQuery && searchQuery.trim() !== '') {
     const searchPattern = `%${searchQuery.trim()}%`;
+    // Modify search condition to use specific fields based on the type
     searchCondition = `
       AND (
-        dt.typeName ILIKE $${archiveValues.length + 1}
-        OR CAST(a.archiveId AS TEXT) ILIKE $${archiveValues.length + 1}
+        CAST(a.archiveId AS TEXT) ILIKE $${archiveValues.length + 1}  -- Search by archiveId
+        OR EXISTS (SELECT 1 FROM panumduman p WHERE p.archiveId = a.archiveId AND p.contractingPersons ILIKE $${archiveValues.length + 1})  -- Search within panumduman
+        OR EXISTS (SELECT 1 FROM lupon l WHERE l.archiveId = a.archiveId AND l.caseNumber ILIKE $${archiveValues.length + 1})  -- Search within lupon
+        OR EXISTS (SELECT 1 FROM ordinance o WHERE o.archiveId = a.archiveId AND o.ordinanceNumber ILIKE $${archiveValues.length + 1})  -- Search within ordinance
+        OR EXISTS (SELECT 1 FROM resolution r WHERE r.archiveId = a.archiveId AND r.resolutionNumber ILIKE $${archiveValues.length + 1})  -- Search within resolution
+        OR EXISTS (SELECT 1 FROM regularization_minutes rm WHERE rm.archiveId = a.archiveId AND rm.regulationNumber::TEXT ILIKE $${archiveValues.length + 1})  -- Search within regularization_minutes
       )`;
     searchConditionForTotal = `
       AND (
-        dt.typeName ILIKE $${totalItemsValues.length + 1}
-        OR CAST(a.archiveId AS TEXT) ILIKE $${totalItemsValues.length + 1}
+        CAST(a.archiveId AS TEXT) ILIKE $${totalItemsValues.length + 1}
+        OR EXISTS (SELECT 1 FROM panumduman p WHERE p.archiveId = a.archiveId AND p.contractingPersons ILIKE $${totalItemsValues.length + 1})
+        OR EXISTS (SELECT 1 FROM lupon l WHERE l.archiveId = a.archiveId AND l.caseNumber ILIKE $${totalItemsValues.length + 1})
+        OR EXISTS (SELECT 1 FROM ordinance o WHERE o.archiveId = a.archiveId AND o.ordinanceNumber ILIKE $${totalItemsValues.length + 1})
+        OR EXISTS (SELECT 1 FROM resolution r WHERE r.archiveId = a.archiveId AND r.resolutionNumber ILIKE $${totalItemsValues.length + 1})
+        OR EXISTS (SELECT 1 FROM regularization_minutes rm WHERE rm.archiveId = a.archiveId AND rm.regulationNumber::TEXT ILIKE $${totalItemsValues.length + 1})
       )`;
     archiveValues.push(searchPattern);
     totalItemsValues.push(searchPattern);
@@ -233,90 +242,90 @@ async function fetchArchiveData(page, limit, searchQuery = '', doctype = null) {
 
   const archiveQuery = `
     SELECT
-  a.archiveId, dt.typeName,
-  CASE dt.typeName
-    WHEN 'Panumduman' THEN (
-      SELECT json_agg(
-        json_build_object(
-          'archID', p.archiveId,
-          'date', p.date,
-          'image', p.image,
-          'contractingPersons', p.contractingPersons,
-          'panumdumanId', p.panumdumanid
+      a.archiveId, dt.typeName,
+      CASE dt.typeName
+        WHEN 'Panumduman' THEN (
+          SELECT json_agg(
+            json_build_object(
+              'archID', p.archiveId,
+              'date', p.date,
+              'image', p.image,
+              'contractingPersons', p.contractingPersons,
+              'panumdumanId', p.panumdumanid
+            )
+          )
+          FROM panumduman p
+          WHERE p.archiveId = a.archiveId
         )
-      )
-      FROM panumduman p
-      WHERE p.archiveId = a.archiveId
-    )
-    WHEN 'Lupon' THEN (
-      SELECT json_agg(
-        json_build_object(
-          'archID', l.archiveId,
-          'caseNumber', l.caseNumber,
-          'complainant', l.complainant,
-          'respondent', l.respondent,
-          'dateFiled', l.dateFiled,
-          'image', l.image,
-          'caseType', l.caseType,
-          'luponId', l.luponid
+        WHEN 'Lupon' THEN (
+          SELECT json_agg(
+            json_build_object(
+              'archID', l.archiveId,
+              'caseNumber', l.caseNumber,
+              'complainant', l.complainant,
+              'respondent', l.respondent,
+              'dateFiled', l.dateFiled,
+              'image', l.image,
+              'caseType', l.caseType,
+              'luponId', l.luponid
+            )
+          )
+          FROM lupon l
+          WHERE l.archiveId = a.archiveId
         )
-      )
-      FROM lupon l
-      WHERE l.archiveId = a.archiveId
-    )
-    WHEN 'Ordinance' THEN (
-      SELECT json_agg(
-        json_build_object(
-          'archID', o.archiveId,
-          'ordinanceNumber', o.ordinanceNumber,
-          'title', o.title,
-          'authors', o.authors,
-          'coAuthors', o.coAuthors,
-          'sponsors', o.sponsors,
-          'image', o.image,
-          'dateApproved', o.dateApproved,
-          'ordinanceId', o.ordinanceid
+        WHEN 'Ordinance' THEN (
+          SELECT json_agg(
+            json_build_object(
+              'archID', o.archiveId,
+              'ordinanceNumber', o.ordinanceNumber,
+              'title', o.title,
+              'authors', o.authors,
+              'coAuthors', o.coAuthors,
+              'sponsors', o.sponsors,
+              'image', o.image,
+              'dateApproved', o.dateApproved,
+              'ordinanceId', o.ordinanceid
+            )
+          )
+          FROM ordinance o
+          WHERE o.archiveId = a.archiveId
         )
-      )
-      FROM ordinance o
-      WHERE o.archiveId = a.archiveId
-    )
-    WHEN 'Resolution' THEN (
-      SELECT json_agg(
-        json_build_object(
-          'archID', r.archiveId,
-          'resolutionNumber', r.resolutionNumber,
-          'seriesYear', r.seriesYear,
-          'image', r.image,
-          'date', r.date,
-          'resolutionId', r.resolutionid
+        WHEN 'Resolution' THEN (
+          SELECT json_agg(
+            json_build_object(
+              'archID', r.archiveId,
+              'resolutionNumber', r.resolutionNumber,
+              'seriesYear', r.seriesYear,
+              'image', r.image,
+              'date', r.date,
+              'resolutionId', r.resolutionid
+            )
+          )
+          FROM resolution r
+          WHERE r.archiveId = a.archiveId
         )
-      )
-      FROM resolution r
-      WHERE r.archiveId = a.archiveId
-    )
-    WHEN 'Regularization Minutes' THEN (
-      SELECT json_agg(
-        json_build_object(
-          'archID', rm.archiveId,
-          'regulationNumber', rm.regulationNumber,
-          'image', rm.image,
-          'date', rm.date,
-          'regularizationId', rm.regularizationid
+        WHEN 'Regularization Minutes' THEN (
+          SELECT json_agg(
+            json_build_object(
+              'archID', rm.archiveId,
+              'regulationNumber', rm.regulationNumber,
+              'image', rm.image,
+              'date', rm.date,
+              'regularizationId', rm.regularizationid
+            )
+          )
+          FROM regularization_minutes rm
+          WHERE rm.archiveId = a.archiveId
         )
-      )
-      FROM regularization_minutes rm
-      WHERE rm.archiveId = a.archiveId
-    )
-    ELSE NULL
-  END AS documentDetails
-FROM archive a
-JOIN document_type dt ON a.doctypeId = dt.doctypeId
-WHERE 1=1
-  ${doctypeCondition}
-  ${searchCondition}
-ORDER BY a.archiveId
-LIMIT $1 OFFSET $2;
+        ELSE NULL
+      END AS documentDetails
+    FROM archive a
+    JOIN document_type dt ON a.doctypeId = dt.doctypeId
+    WHERE 1=1
+      ${doctypeCondition}
+      ${searchCondition}
+    ORDER BY a.archiveId
+    LIMIT $1 OFFSET $2;
   `;
 
   const totalItemsQuery = `
