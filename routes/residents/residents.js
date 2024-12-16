@@ -58,6 +58,8 @@ router.get("/dashboard", async (req, res) => {
             totalPages,
             limit,
         });
+
+        console.log("Residents list",getResidentsList);
     } catch (err) {
         console.error("Error: ", err.message, err.stack);
         res.status(500).send("Internal server error");

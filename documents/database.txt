@@ -184,10 +184,10 @@ INSERT INTO rClassification (rClassificationName) VALUES
     ('Drivers'),
     ('OFW'),
     ('Kasambahay'),
-    ('Boarders'),
     ('Entrepreneur'),
     ('Unemployed'),
-    ('None');
+    ('None'),
+    ('Boarders');
 
 CREATE TABLE house_classification (
     id SERIAL PRIMARY KEY NOT NULL,
