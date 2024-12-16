@@ -63,30 +63,44 @@
                 </div>
             </div>
 
-            <div style="display: flex; align-items: center; justify-content: space-between; margin: 20px 3%;">
-                <h2>Household Classification</h2>
-                <button id="add-survey-button" onclick="popUp_button(this)">ADD SURVEY</button>
-            </div>
-            <div id="meow">
-                <h1>House Classification Statistics</h1>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 20px 3%;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin: 20px 3%; width: 100%;">
+                    <h1>Household Classification</h1>
+                    <button id="add-survey-button" onclick="popUp_button(this)">ADD SURVEY</button>
+                </div>
+                <div id="meow" style="display: flex; flex-direction: column;">
 
-                <!-- Dropdown for selecting year -->
-                <label for="year-dropdown">Select Year: </label>
-                <select id="year-dropdown">
-                    <!-- Options will be populated here -->
-                </select>
-            
-                <!-- Display Statistics -->
-                <div id="statistics-container">
-                    <!-- Data will be inserted here -->
-                </div>
-                
-                <!-- Display Overall Statistics -->
-                <h2>Overall Statistics</h2>
-                <div id="overall-container">
-                    <!-- Overall data will be inserted here -->
+                    <div class="separate" style="flex-direction: column; width: 100%;">
+                        <div style="align-self: self-start; display: flex; flex-direction: column; gap: 4px; width: fit-content;">
+    
+                            <label for="year-dropdown">Select Year: </label>
+                            <select id="year-dropdown">
+                            </select>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column;">
+
+                            <h2 style="margin-left: 0;">Overall Statistics</h2>
+                            <div id="overall-container" class="oberall" style="display: flex; gap: 8px;">
+                                <!-- Overall data will be inserted here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Display Statistics -->
+                         <div>
+
+                             <h2 style="margin-left: 0;">Household Classification by purok</h2>
+                             <div id="statistics-container">
+                                 <!-- Data will be inserted here -->
+                             </div>
+                         </div>
+
+                         
+                    </div>
+
                 </div>
             </div>
+
 
         </div>
         <div class="pop-up" id="add-survey">
@@ -129,11 +143,13 @@
                             </div>
                             <div class="inputWithLabel" id="surubadan">
                                 <label>House Representative</label>
-                                <input type="text" aria-label="House Representative" name="houseRepresentative" required>
+                                <input type="text" aria-label="House Representative" name="houseRepresentative"
+                                    required>
                             </div>
                             <div class="inputWithLabel">
                                 <label>Number of Families</label>
-                                <input type="number" aria-label="Number of Families" name="numberOfFamilies" min="1" required>
+                                <input type="number" aria-label="Number of Families" name="numberOfFamilies" min="1"
+                                    required>
                             </div>
                             <div class="inputWithLabel" id="masubad">
                                 <label>With CR</label>
@@ -183,8 +199,9 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" id="submit_add_survey" style="display: flex; margin-left: auto;">SUBMIT</button>
-                </form>                
+                    <button type="submit" id="submit_add_survey"
+                        style="display: flex; margin-left: auto;">SUBMIT</button>
+                </form>
             </main>
         </div>
 
@@ -197,35 +214,35 @@
 
 <script>
     function fetchAvailableYears() {
-            $.get('/statistics/available-years', function(data) {
-                const yearDropdown = $('#year-dropdown');
-                yearDropdown.empty(); // Clear any existing options
+        $.get('/statistics/available-years', function (data) {
+            const yearDropdown = $('#year-dropdown');
+            yearDropdown.empty(); // Clear any existing options
 
-                // Populate the dropdown with years
-                data.forEach(item => {
-                    yearDropdown.append(new Option(item.year, item.year));
-                });
-
-                // Optionally, set the default selected year to the first available one
-                if (data.length > 0) {
-                    fetchStatistics(data[0].year); // Fetch data for the first available year
-                    yearDropdown.val(data[0].year); // Set the default year in the dropdown
-                }
-            }).fail(function() {
-                alert('Failed to fetch available years');
+            // Populate the dropdown with years
+            data.forEach(item => {
+                yearDropdown.append(new Option(item.year, item.year));
             });
-        }
 
-        // Fetch statistics for the selected year
-        function fetchStatistics(year) {
-            $.get(`/statistics/house-classification?year=${year}`, function(data) {
-                // Display the year
-                $('#year').text(data.year);
+            // Optionally, set the default selected year to the first available one
+            if (data.length > 0) {
+                fetchStatistics(data[0].year); // Fetch data for the first available year
+                yearDropdown.val(data[0].year); // Set the default year in the dropdown
+            }
+        }).fail(function () {
+            alert('Failed to fetch available years');
+        });
+    }
 
-                // Display individual statistics by purok
-                let statisticsHtml = '<table><tr><th>Purok</th><th>Total House Classifications</th><th>Total Families</th><th>Total with CR</th><th>Total with 40m Zone</th><th>Total Energized</th><th>Housing Materials</th><th>Water Source</th></tr>';
-                data.statistics.forEach(stat => {
-                    statisticsHtml += `
+    // Fetch statistics for the selected year
+    function fetchStatistics(year) {
+        $.get(`/statistics/house-classification?year=${year}`, function (data) {
+            // Display the year
+            $('#year').text(data.year);
+
+            // Display individual statistics by purok
+            let statisticsHtml = '<table><thead><tr><th>Purok</th><th>Total House Classifications</th><th>Total Families</th><th>Total with CR</th><th>Total with 40m Zone</th><th>Total Energized</th><th>Housing Materials</th><th>Water Source</th></tr></thead><tbody>';
+            data.statistics.forEach(stat => {
+                statisticsHtml += `
                         <tr>
                             <td>${stat.purok}</td>
                             <td>${stat.total_house_classifications}</td>
@@ -237,34 +254,34 @@
                             <td>${stat.water_source}</td>
                         </tr>
                     `;
-                });
-                statisticsHtml += '</table>';
-                $('#statistics-container').html(statisticsHtml);
-
-                // Display overall statistics
-                let overallHtml = `
-                    <p>Total House Classifications: ${data.overall.overall_house_classifications}</p>
-                    <p>Total Families: ${data.overall.overall_families}</p>
-                    <p>Total with CR: ${data.overall.overall_with_cr}</p>
-                    <p>Total with 40m Zone: ${data.overall.overall_with_40m_zone}</p>
-                    <p>Total Energized: ${data.overall.overall_energized}</p>
-                `;
-                $('#overall-container').html(overallHtml);
-            }).fail(function() {
-                alert('Failed to fetch statistics');
             });
-        }
+            statisticsHtml += `</table>`;
+            $('#statistics-container').html(statisticsHtml);
 
-        // Update statistics when a new year is selected
-        $('#year-dropdown').change(function() {
-            const selectedYear = $(this).val();
-            fetchStatistics(selectedYear); // Fetch and display data for the selected year
+            // Display overall statistics
+            let overallHtml = `
+                    <div><h5>Total House Classifications</h5> <h3>${data.overall.overall_house_classifications}</h3></div>
+                    <div><h5>Total Families</h5> <h3>${data.overall.overall_families}</h3></div>
+                    <div><h5>Total with CR</h5> <h3>${data.overall.overall_with_cr}</h3></div>
+                    <div><h5>Total with 40m Zone</h5> <h3>${data.overall.overall_with_40m_zone}</h3></div>
+                    <div><h5>Total Energized</h5> <h3>${data.overall.overall_energized}</h3></div>
+                `;
+            $('#overall-container').html(overallHtml);
+        }).fail(function () {
+            alert('Failed to fetch statistics');
         });
+    }
 
-        // Fetch available years when the page is ready
-        $(document).ready(function() {
-            fetchAvailableYears();
-        });
+    // Update statistics when a new year is selected
+    $('#year-dropdown').change(function () {
+        const selectedYear = $(this).val();
+        fetchStatistics(selectedYear); // Fetch and display data for the selected year
+    });
+
+    // Fetch available years when the page is ready
+    $(document).ready(function () {
+        fetchAvailableYears();
+    });
 </script>
 
 </html>
