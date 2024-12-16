@@ -45,7 +45,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             const data = await response.json();
             const inventory = data.getInventoryList;
-            console.log(inventory);
 
             inventoryTableBody.innerHTML = '';
 
@@ -79,7 +78,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 inventoryTableBody.appendChild(row);
             });
             attachDotEventListeners();
-            updatePaginationLinks(page, limit);
+            updatePaginationLinks(data.currentPage, data.totalPages);
         } catch (error) {
             console.error("Error fetching inventory data: ", error);
             inventoryTableBody.innerHTML = '<tr><td colspan="5">Error loading data</td></tr>';

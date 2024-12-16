@@ -175,12 +175,12 @@ async function fetchInventoryLists(page, limit, searchQuery = '', isFunctional =
     FROM inventory i 
     JOIN categories c ON i.categoryId = c.categoryId
     WHERE i.isFunctional = $1
-    ${searchCondition}
+    ${searchQuery && searchQuery.trim() !== '' ? ` AND (
+        CONCAT(i.iName, ' ', COALESCE(c.categoryName)) ILIKE $2
+        OR i.iName ILIKE $2
+        OR c.categoryName ILIKE $2
+      )` : ''}
   `;
-
-  console.log("Total Items Query:", totalItemsQuery);  // Debugging line
-  console.log("Inventory Query:", inventoryQuery);  // Debugging line
-  console.log('isFunctional:', isFunctional);  // Debugging line
 
   try {
     const totalItemsResult = await mPool.query(totalItemsQuery, totalItemsValues);
@@ -191,14 +191,14 @@ async function fetchInventoryLists(page, limit, searchQuery = '', isFunctional =
 
     const inventoryResult = await mPool.query(inventoryQuery, inventoryValues);
     console.log("Inventory Results:", inventoryResult.rows);  // Debugging line
-    return { getInventoryList: inventoryResult.rows, totalPages };
+    return { getInventoryList: inventoryResult.rows, totalItems, totalPages };
   } catch (err) {
     console.error('Error fetching INVENTORY list:', err.message);
     throw new Error('Error fetching INVENTORY list');
   }
 }
 
-async function fetchArchiveData(page, limit, searchQuery = '', doctype = null) {
+async function fetchArchiveData(page, limit, searchQuery = '', doctype = 'Lupon') {
   const offset = (page - 1) * limit;
   const archiveValues = [limit, offset];
   const totalItemsValues = [];
@@ -334,6 +334,9 @@ LIMIT $1 OFFSET $2;
     const totalItems = parseInt(totalItemsResult.rows[0].count, 10);
     const totalPages = Math.ceil(totalItems / limit);
 
+    console.log("SearchCondition",searchCondition)
+    console.log("doctypecondition",doctypeCondition)
+    
     // Fetch paginated archive data
     const archiveResult = await mPool.query(archiveQuery, archiveValues);
     const archiveList = archiveResult.rows;
