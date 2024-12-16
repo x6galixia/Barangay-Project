@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mPool = require("../../models/mDatabase");
 const { fetchResidentsLists } = require("../../middlewares/helper-functions/fetch-functions");
-const calculateAge = require("../../middlewares/helper-functions/calculations");
+const { calculateAge } = require("../../middlewares/helper-functions/calculations");
 const { generateGlobalNextId, generateIdNumberNextId, getCurrentYear } = require("../../middlewares/helper-functions/id-generator");
 const { residentSchema } = require("../../middlewares/schemas/schemas");
 
