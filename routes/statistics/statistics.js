@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mPool = require("../../models/mDatabase");
+const { getCurrentDate } = require("../../middlewares/helper-functions/calculations");
 const { houseClassification } = require("../../middlewares/schemas/schemas");
 
 router.get("/dashboard", (req, res) => {
@@ -154,7 +155,6 @@ router.get("/residents-by-purok", async (req, res) => {
     }
 });
 
-//group by purok, then get total population, male , female, senior, pwd
 router.get("/barangay-population", async (req, res) => {
     try {
         const totalPopulationResult = await mPool.query(`
@@ -198,6 +198,94 @@ router.get("/barangay-population", async (req, res) => {
     }
 });
 
+router.get('/available-years', async (req, res) => {
+    try {
+        const query = `
+            SELECT DISTINCT EXTRACT(YEAR FROM date) AS year
+            FROM house_classification
+            ORDER BY year DESC;
+        `;
+        const { rows } = await mPool.query(query);
+        res.json(rows);
+    } catch (err) {
+        console.error("Error:", err.message);
+        res.status(500).send("Internal server error");
+    }
+});
+
+router.get("/house-classification", async (req, res) => {
+    const { year } = req.query;
+
+    if (!year) {
+        return res.status(400).json({ error: 'Year is required' });
+    }
+
+    try {
+        // Query for house classification statistics by year
+        const query = `
+            SELECT 
+                EXTRACT(YEAR FROM date) AS year,
+                purok,
+                COUNT(id) AS total_house_classifications,
+                SUM(numberOfFamilies) AS total_families,
+                SUM(CASE WHEN isWithCr THEN 1 ELSE 0 END) AS total_with_cr,
+                SUM(CASE WHEN isWith40mZone THEN 1 ELSE 0 END) AS total_with_40m_zone,
+                SUM(CASE WHEN isEnergized THEN 1 ELSE 0 END) AS total_energized,
+                housingMaterials AS housing_materials,
+                waterSource AS water_source
+            FROM house_classification
+            WHERE EXTRACT(YEAR FROM date) = $1
+            GROUP BY year, purok, housingMaterials, waterSource
+            ORDER BY year, purok;
+        `;
+        
+        // Execute the query
+        const { rows } = await mPool.query(query, [year]);
+
+        // Query for overall statistics (without grouping by purok)
+        const overallQuery = `
+            SELECT 
+                COUNT(id) AS overall_house_classifications,
+                SUM(numberOfFamilies) AS overall_families,
+                SUM(CASE WHEN isWithCr THEN 1 ELSE 0 END) AS overall_with_cr,
+                SUM(CASE WHEN isWith40mZone THEN 1 ELSE 0 END) AS overall_with_40m_zone,
+                SUM(CASE WHEN isEnergized THEN 1 ELSE 0 END) AS overall_energized
+            FROM house_classification
+            WHERE EXTRACT(YEAR FROM date) = $1;
+        `;
+
+        const { rows: overallRows } = await mPool.query(overallQuery, [year]);
+
+        // Map rows to ensure numeric values
+        const formattedRows = rows.map(row => ({
+            ...row,
+            total_house_classifications: Number(row.total_house_classifications),
+            total_families: Number(row.total_families),
+            total_with_cr: Number(row.total_with_cr),
+            total_with_40m_zone: Number(row.total_with_40m_zone),
+            total_energized: Number(row.total_energized)
+        }));
+
+        const overall = overallRows[0] ? {
+            overall_house_classifications: Number(overallRows[0].overall_house_classifications),
+            overall_families: Number(overallRows[0].overall_families),
+            overall_with_cr: Number(overallRows[0].overall_with_cr),
+            overall_with_40m_zone: Number(overallRows[0].overall_with_40m_zone),
+            overall_energized: Number(overallRows[0].overall_energized)
+        } : {};
+
+        // Send the response
+        res.json({
+            year: year,
+            statistics: formattedRows,
+            overall: overall
+        });
+    } catch (err) {
+        console.error("Error: ", err.message, err.stack);
+        res.status(500).send("Internal server error");
+    }
+});
+
 router.post("/house-classification-survey", async (req, res) => {
 
     // Convert boolean-like values
@@ -218,12 +306,15 @@ router.post("/house-classification-survey", async (req, res) => {
     // Water source aggregation
     const waterSource = [value.deepWell, value.waterPump, value.mineral].filter(Boolean).join(',');
 
+    const date = getCurrentDate();
     try {
         await mPool.query(`
             INSERT INTO house_classification 
-            (houseNumber, houseRepresentative, numberOfFamilies, isWithCr, isWith40mZone, isEnergized, housingMaterials, waterSource)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            (date, purok, houseNumber, houseRepresentative, numberOfFamilies, isWithCr, isWith40mZone, isEnergized, housingMaterials, waterSource)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
         `, [
+            date,
+            value.surveyPurok,
             value.houseNumber,
             value.houseRepresentative,
             value.numberOfFamilies,

@@ -173,6 +173,7 @@ const archiveSchema = Joi.object({
 });
 
 const houseClassification = Joi.object({
+    surveyPurok: Joi.string().optional().allow(null),
     houseNumber: Joi.number().integer().positive().allow(null),
     houseRepresentative: Joi.string().max(255).required(),
     numberOfFamilies: Joi.number().integer().positive().required(),

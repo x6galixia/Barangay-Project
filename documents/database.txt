@@ -33,11 +33,11 @@ CREATE TABLE document_type (
 );
 
 INSERT INTO document_type (typeName) VALUES 
-('Panumduman'),
-('Lupon'),
-('Ordinance'),
-('Resolution'),
-('Regularization Minutes');
+    ('Panumduman'),
+    ('Lupon'),
+    ('Ordinance'),
+    ('Resolution'),
+    ('Regularization Minutes');
 
 CREATE TABLE archive (
     archiveId SERIAL PRIMARY KEY,
@@ -174,7 +174,7 @@ CREATE TABLE requests (
 );
 
 --inserts
-INSERT INTO rClassification (rClassificationName)VALUES 
+INSERT INTO rClassification (rClassificationName) VALUES 
     ('Government employee'),
     ('Private employee'),
     ('Carpenters'),
@@ -191,6 +191,8 @@ INSERT INTO rClassification (rClassificationName)VALUES
 
 CREATE TABLE house_classification (
     id SERIAL PRIMARY KEY NOT NULL,
+    date DATE NOT NULL DEFAULT CURRENT_DATE,
+    purok VARCHAR(255) NULL, 
     houseNumber INT NULL,
     houseRepresentative VARCHAR(255) NOT NULL,
     numberOfFamilies INT NOT NULL,
