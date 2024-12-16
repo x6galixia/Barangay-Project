@@ -361,13 +361,27 @@ document.addEventListener("DOMContentLoaded", async function () {
     function updatePaginationLinks(currentPage, totalPages) {
         const paginationNav = document.getElementById('paginationNav');
         paginationNav.innerHTML = '';
-
+    
         if (currentPage > 1) {
-            paginationNav.innerHTML += `<a href="?page=${currentPage - 1}&limit=${limit}&search=${encodeURIComponent(searchInput.value)}" aria-label="Previous Page">Previous</a>`;
+            const prevButton = document.createElement('button');
+            prevButton.textContent = 'Previous';
+            prevButton.addEventListener('click', () => {
+                const newPage = currentPage - 1;
+                updateURLParameter('page', newPage);
+                fetchArchiveLists(newPage, limit, searchInput.value, getURLParameter('type'));
+            });
+            paginationNav.appendChild(prevButton);
         }
-
+    
         if (currentPage < totalPages) {
-            paginationNav.innerHTML += `<a href="?page=${currentPage + 1}&limit=${limit}&search=${encodeURIComponent(searchInput.value)}" aria-label="Next Page">Next</a>`;
+            const nextButton = document.createElement('button');
+            nextButton.textContent = 'Next';
+            nextButton.addEventListener('click', () => {
+                const newPage = currentPage + 1;
+                updateURLParameter('page', newPage);
+                fetchArchiveLists(newPage, limit, searchInput.value, getURLParameter('type'));
+            });
+            paginationNav.appendChild(nextButton);
         }
     }
 });
