@@ -16,18 +16,15 @@
 <body>
     <%- include("../includes/header.ejs") %>
         <main class="officialsMain">
-            <button id="add-official-button" onclick="popUp_button(this)"
-                style="display: flex ;margin-left: auto; margin-bottom: 24px;">UPDATE BARANGAY OFFICIALS</button>
+            <button id="add-official-button" onclick="popUp_button(this)">UPDATE BARANGAY OFFICIALS</button>
             <div class="exec">
-                <div class="headingOfficials">
-                    <h1>BARANGGAY MAYPANGDAN</h1>
-                    <h2>ORGANIZATIONAL CHART</h2>
-                </div>
-                <div class="officials">
-                    
-                    <div class="officials-container">
-                        <img class="profile" id="punongBarangayImage" src="" alt="">
-                        <div class="back-images" style="height: 100%;">
+                <div>
+                    <div class="headingOfficials">
+                        <h1>BARANGGAY MAYPANGDAN</h1>
+                        <h2>ORGANIZATIONAL CHART</h2>
+                    </div>
+                    <div class="officialMainContainer">
+                        <div class="backgroundImages">
                             <div>
                                 <img src="../images/flag.png" alt="">
                             </div>
@@ -36,26 +33,212 @@
                             </div>
 
                         </div>
-                        <div class="rect">
-                            <div class="logo-of">
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-                            <div class="info">
-                                <div class="make-cent cent">
+                        <img id="punongBarangayImage" src="" alt="">
+                        <div class="description">
+                            <img src="../images/logo1.png" alt="">
+                            <div class="title">
+                                <div>
                                     <h3 id="punongBarangay"></h3>
-                                    <p>Punong Baranggay</p>
+                                    <div class="titleTo">
+                                        <p style="font-size: 12px;">Punong Baranggay</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                     </div>
+                    <div class="officialer">
+                        <div class="officialMainContainer">
+                            <div class="backgroundImages">
+                                <div>
+                                    <img src="../images/flag.png" alt="">
+                                </div>
+                                <div>
+                                    <img src="../images/logo1.png" alt="">
+                                </div>
 
-                </div>
+                            </div>
+                            <img id="kagawadImage1" src="" alt="">
+                            <div class="description">
+                                <img src="../images/logo1.png" alt="">
+                                <div class="title">
+                                    <div>
+                                        <h3 id="kagawad1"></h3>
+                                        <div class="titleTo">
 
-                <div class="officialer">
-                    <div class="officials-container">
-                        <img class="profile" id="kagawadImage1" src="" alt="">
-                        <div class="back-images" style="height: 100%;">
+                                            <p>Chairman of health, Sanitazion</p>
+                                            <p>Chairman of Beautification</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="officialMainContainer">
+                            <img id="kagawadImage2" src="" alt="">
+                            <div class="backgroundImages" style="height: 100%;">
+                                <div>
+                                    <img src="../images/flag.png" alt="">
+                                </div>
+                                <div>
+                                    <img src="../images/logo1.png" alt="">
+                                </div>
+
+                            </div>
+                            <div class="description">
+                                <img src="../images/logo1.png" alt="">
+                                <div class="title">
+                                    <div>
+                                        <h3 id="kagawad2"></h3>
+                                        <div class="titleTo">
+
+                                            <p>Chairman on Peace and Order, Anti Drugs</p>
+                                            <p>Chairman of Disaster Risk Reduction Management</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="officialMainContainer">
+                            <img id="kagawadImage3" src="" alt="">
+                            <div class="backgroundImages" style="height: 100%;">
+                                <div>
+                                    <img src="../images/flag.png" alt="">
+                                </div>
+                                <div>
+                                    <img src="../images/logo1.png" alt="">
+                                </div>
+
+                            </div>
+                            <div class="description">
+                                <img src="../images/logo1.png" alt="">
+                                <div class="title">
+                                    <div>
+                                        <h3 id="kagawad3"></h3>
+                                        <div class="titleTo">
+
+                                            <p>Chairman on Agriculture</p>
+                                            <p>Chairman of Environment & Waste Management</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="officialer">
+                        <div class="officialMainContainer">
+                            <img id="kagawadImage4" src="" alt="">
+                            <div class="backgroundImages" style="height: 100%;">
+                                <div>
+                                    <img src="../images/flag.png" alt="">
+                                </div>
+                                <div>
+                                    <img src="../images/logo1.png" alt="">
+                                </div>
+
+                            </div>
+                            <div class="description">
+                                <img src="../images/logo1.png" alt="">
+                                <div class="title">
+                                    <div>
+                                        <h3 id="kagawad4"></h3>
+                                        <div class="titleTo">
+
+                                            <p>Chairman on Tourism, Trade and Industry</p>
+                                            <p>Chairman of Women, Children and Family</p>
+                                            <p>Chairman of Socio-cultural Affairs</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="officialMainContainer">
+                            <img id="kagawadImage5" src="" alt="">
+                            <div class="backgroundImages" style="height: 100%;">
+                                <div>
+                                    <img src="../images/flag.png" alt="">
+                                </div>
+                                <div>
+                                    <img src="../images/logo1.png" alt="">
+                                </div>
+
+                            </div>
+                            <div class="description">
+                                <img src="../images/logo1.png" alt="">
+                                <div class="title">
+                                    <div>
+                                        <h3 id="kagawad5"></h3>
+                                        <div class="titleTo">
+                                            <p>Chairman of Appropriation, Budget and Finance</p>
+                                            <p>Chairman of Infrastructure and Maintenance</p>
+                                            <p>Chairman of BIDS and Awards</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="officialMainContainer">
+                            <img id="kagawadImage6" src="" alt="">
+                            <div class="backgroundImages" style="height: 100%;">
+                                <div>
+                                    <img src="../images/flag.png" alt="">
+                                </div>
+                                <div>
+                                    <img src="../images/logo1.png" alt="">
+                                </div>
+
+                            </div>
+                            <div class="description">
+                                <img src="../images/logo1.png" alt="">
+                                <div class="title">
+                                    <div>
+                                        <h3 id="kagawad6"></h3>
+                                        <div class="titleTo">
+
+                                            <p>Chairman on Laws, Rules, Ways and means</p>
+                                            <p>Chairman of Cooperative and Development</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="officialMainContainer">
+                            <img id="kagawadImage7" src="" alt="">
+                            <div class="backgroundImages" style="height: 100%;">
+                                <div>
+                                    <img src="../images/flag.png" alt="">
+                                </div>
+                                <div>
+                                    <img src="../images/logo1.png" alt="">
+                                </div>
+
+                            </div>
+                            <div class="description">
+                                <img src="../images/logo1.png" alt="">
+                                <div class="title">
+                                    <div>
+                                        <h3 id="kagawad7"></h3>
+                                        <div class="titleTo">
+
+                                            <p>Chairman on Education</p>
+                                            <p>Chairman of Gender and Development</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="officialMainContainer">
+                        <img id="SKChairpersonImage" src="" alt="">
+                        <div class="backgroundImages" style="height: 100%;">
                             <div>
                                 <img src="../images/flag.png" alt="">
                             </div>
@@ -64,257 +247,73 @@
                             </div>
 
                         </div>
-                        <div class="rect">
-                            <div class="logo-of">
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-                            <div class="info">
-                                <div class="make-cent">
-                                    <h3 id="kagawad1"></h3>
-                                    <p>Chairman of health, Sanitazion</p>
-                                    <p>Chairman of Beautification</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="officials-container">
-                        <img class="profile" id="kagawadImage2" src="" alt="">
-                        <div class="back-images" style="height: 100%;">
-                            <div>
-                                <img src="../images/flag.png" alt="">
-                            </div>
-                            <div>
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-
-                        </div>
-                        <div class="rect">
-                            <div class="logo-of logo-in">
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-                            <div class="info">
-                                <div class="make-cent centor">
-                                    <h3 id="kagawad2"></h3>
-                                    <p>Chairman on Peace and Order, Anti Drugs</p>
-                                    <p>Chairman of Disaster Risk Reduction Management</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="officials-container">
-                        <img class="profile" id="kagawadImage3" src="" alt="">
-                        <div class="back-images" style="height: 100%;">
-                            <div>
-                                <img src="../images/flag.png" alt="">
-                            </div>
-                            <div>
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-
-                        </div>
-                        <div class="rect">
-                            <div class="logo-of">
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-                            <div class="info">
-                                <div class="make-cent centor">
-                                    <h3 id="kagawad3"></h3>
-                                    <p>Chairman on Agriculture</p>
-                                    <p>Chairman of Environment & Waste Management</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="officials-container">
-                        <img class="profile" id="kagawadImage4" src="" alt="">
-                        <div class="back-images" style="height: 100%;">
-                            <div>
-                                <img src="../images/flag.png" alt="">
-                            </div>
-                            <div>
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-
-                        </div>
-                        <div class="rect">
-                            <div class="logo-of logo-out">
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-                            <div class="info">
-                                <div class="make-cent centor">
-                                    <h3 id="kagawad4"></h3>
-                                    <p>Chairman on Tourism, Trade and Industry</p>
-                                    <p>Chairman of Women, Children and Family</p>
-                                    <p>Chairman of Socio-cultural Affairs</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-                <div class="officialer">
-                    <div class="officials-container">
-                        <img class="profile" id="kagawadImage5" src="" alt="">
-                        <div class="back-images" style="height: 100%;">
-                            <div>
-                                <img src="../images/flag.png" alt="">
-                            </div>
-                            <div>
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-
-                        </div>
-                        <div class="rect">
-                            <div class="logo-of">
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-                            <div class="info">
-                                <div class="make-cent centor">
-                                    <h3 id="kagawad5"></h3>
-                                    <p>Chairman of Appropriation, Budget and Finance</p>
-                                    <p>Chairman of Infrastructure and Maintenance</p>
-                                    <p>Chairman of BIDS and Awards</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="officials-container">
-                        <img class="profile" id="kagawadImage6" src="" alt="">
-                        <div class="back-images" style="height: 100%;">
-                            <div>
-                                <img src="../images/flag.png" alt="">
-                            </div>
-                            <div>
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-
-                        </div>
-                        <div class="rect">
-                            <div class="logo-of">
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-                            <div class="info">
-                                <div class="make-cent centor">
-                                    <h3 id="kagawad6"></h3>
-                                    <p>Chairman on Laws, Rules, Ways and means</p>
-                                    <p>Chairman of Cooperative and Development</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="officials-container">
-                        <img class="profile" id="kagawadImage7" src="" alt="">
-                        <div class="back-images" style="height: 100%;">
-                            <div>
-                                <img src="../images/flag.png" alt="">
-                            </div>
-                            <div>
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-
-                        </div>
-                        <div class="rect">
-                            <div class="logo-of logo-out">
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-                            <div class="info">
-                                <div class="make-cent centor">
-                                    <h3 id="kagawad7"></h3>
-                                    <p>Chairman on Education</p>
-                                    <p>Chairman of Gender and Development</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                </div>
-                <div class="officialer">
-                    <div class="officials">
-                    <div class="officials-container" id="treasurer">
-                        <img class="profile" id="secretaryImage" src="" alt="">
-                        <div class="back-images" style="height: 100%;">
-                            <div>
-                                <img src="../images/flag.png" alt="">
-                            </div>
-                            <div>
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-
-                        </div>
-                        <div class="rect">
-                            <div class="logo-of">
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-                            <div class="info">
-                                <div class="make-cent">
-                                    <h3 id="secretaryName"></h3>
-                                    <p>Baranggay Secretary</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="officials-container">
-                        <img class="profile" id="SKChairpersonImage" src="" alt="">
-                        <div class="back-images" style="height: 100%;">
-                            <div>
-                                <img src="../images/flag.png" alt="">
-                            </div>
-                            <div>
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-
-                        </div>
-                        <div class="rect">
-                            <div class="logo-of">
-                                <img src="../images/logo1.png" alt="">
-                            </div>
-                            <div class="info">
+                        <div class="description">
+                            <img src="../images/logo1.png" alt="">
+                            <div class="title">
                                 <div class="make-cent cent">
                                     <h3 id="SKChairperson"></h3>
-                                    <p>SK Chairperson</p>
-                                    <p>Chairman of Youth and Devevlopment</p>
+                                    <div class="titleTo">
+
+                                        <p>SK Chairperson</p>
+                                        <p>Chairman of Youth and Devevlopment</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                     </div>
-                    <div class="officials-container" id="treasurer">
-                        <img class="profile" id="treasurerImage" src="" alt="">
-                        <div class="back-images" style="height: 100%;">
-                            <div>
-                                <img src="../images/flag.png" alt="">
-                            </div>
-                            <div>
-                                <img src="../images/logo1.png" alt="">
-                            </div>
+                    <div class="officialer">
+                        <div class="officialMainContainer" id="treasurer">
+                            <img id="secretaryImage" src="" alt="">
+                            <div class="backgroundImages" style="height: 100%;">
+                                <div>
+                                    <img src="../images/flag.png" alt="">
+                                </div>
+                                <div>
+                                    <img src="../images/logo1.png" alt="">
+                                </div>
 
-                        </div>
-                        <div class="rect">
-                            <div class="logo-of">
-                                <img src="../images/logo1.png" alt="">
                             </div>
-                            <div class="info">
-                                <div class="make-cent">
-                                    <h3 id="treasurerName"></h3>
-                                    <p>Baranggay Treasurer</p>
+                            <div class="description">
+                                <img src="../images/logo1.png" alt="">
+                                <div class="title">
+                                    <div>
+                                        <h3 id="secretaryName"></h3>
+                                        <div class="titleTo">
+
+                                            <p style="font-size: 12px;">Baranggay Secretary</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
+                        <div class="officialMainContainer" id="treasurer">
+                            <img id="treasurerImage" src="" alt="">
+                            <div class="backgroundImages" style="height: 100%;">
+                                <div>
+                                    <img src="../images/flag.png" alt="">
+                                </div>
+                                <div>
+                                    <img src="../images/logo1.png" alt="">
+                                </div>
 
+                            </div>
+                            <div class="description">
+                                <img src="../images/logo1.png" alt="">
+                                <div class="title">
+                                    <div>
+                                        <h3 id="treasurerName"></h3>
+                                        <div class="titleTo">
+
+                                            <p style="font-size: 12px;">Baranggay Treasurer</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-
-                </div>
-
-
                 </div>
             </div>
 
@@ -328,7 +327,8 @@
                 <h1 class="heading">BARANGAY OFFICIALS</h1>
 
                 <main>
-                    <form id="formToAddResident" action="/officials//update-barangay-officials" method="POST" enctype="multipart/form-data">
+                    <form id="formToAddResident" action="/officials//update-barangay-officials" method="POST"
+                        enctype="multipart/form-data">
                         <hr>
                         <div class="add-survey-input-container">
                             <h3 style="position: sticky; top: 0px; background-color: white;">Punong Barangay</h3>
@@ -336,7 +336,8 @@
                                 <div>
                                     <div class="inputWithLabel" id="surubadan">
                                         <label>Last Name</label>
-                                        <input type="text" aria-label="Last Name" name="punongBarangayLastName" required>
+                                        <input type="text" aria-label="Last Name" name="punongBarangayLastName"
+                                            required>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>First Name</label>
@@ -354,7 +355,8 @@
                                         <p>No image uploaded</p>
                                     </div>
                                     <div class="buttons">
-                                        <button type="button" class="button upload" onclick="triggerUpload()">Upload</button>
+                                        <button type="button" class="button upload"
+                                            onclick="triggerUpload()">Upload</button>
                                         <input type="file" name="punongBarangayImage" id="fileInput" accept="image/*"
                                             onchange="displayImage(event)">
                                     </div>
@@ -372,13 +374,11 @@
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>First Name</label>
-                                        <input type="text" aria-label="First Name" name="kagawad1FirstName"
-                                            required>
+                                        <input type="text" aria-label="First Name" name="kagawad1FirstName" required>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Middle Name</label>
-                                        <input type="text" aria-label="Middle Name" name="kagawad1MiddleName"
-                                            required>
+                                        <input type="text" aria-label="Middle Name" name="kagawad1MiddleName" required>
                                     </div>
                                 </div>
                                 <div class="ID-container">
@@ -386,7 +386,8 @@
                                         <p>No image uploaded</p>
                                     </div>
                                     <div class="buttons">
-                                        <button type="button" class="button upload" onclick="triggerUpload1()">Upload</button>
+                                        <button type="button" class="button upload"
+                                            onclick="triggerUpload1()">Upload</button>
                                         <input type="file" name="kagawad1Image" id="fileInput1" accept="image/*"
                                             onchange="displayImage1(event)">
                                     </div>
@@ -400,13 +401,11 @@
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>First Name</label>
-                                        <input type="text" aria-label="First Name" name="kagawad2FirstName"
-                                            required>
+                                        <input type="text" aria-label="First Name" name="kagawad2FirstName" required>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Middle Name</label>
-                                        <input type="text" aria-label="Middle Name" name="kagawad2MiddleName"
-                                            required>
+                                        <input type="text" aria-label="Middle Name" name="kagawad2MiddleName" required>
                                     </div>
                                 </div>
                                 <div class="ID-container">
@@ -414,7 +413,8 @@
                                         <p>No image uploaded</p>
                                     </div>
                                     <div class="buttons">
-                                        <button type="button" class="button upload" onclick="triggerUpload2()">Upload</button>
+                                        <button type="button" class="button upload"
+                                            onclick="triggerUpload2()">Upload</button>
                                         <input type="file" name="kagawad2Image" id="fileInput2" accept="image/*"
                                             onchange="displayImage2(event)">
                                     </div>
@@ -428,13 +428,11 @@
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>First Name</label>
-                                        <input type="text" aria-label="First Name" name="kagawad3FirstName"
-                                            required>
+                                        <input type="text" aria-label="First Name" name="kagawad3FirstName" required>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Middle Name</label>
-                                        <input type="text" aria-label="Middle Name" name="kagawad3MiddleName"
-                                            required>
+                                        <input type="text" aria-label="Middle Name" name="kagawad3MiddleName" required>
                                     </div>
                                 </div>
                                 <div class="ID-container">
@@ -442,7 +440,8 @@
                                         <p>No image uploaded</p>
                                     </div>
                                     <div class="buttons">
-                                        <button type="button" class="button upload" onclick="triggerUpload3()">Upload</button>
+                                        <button type="button" class="button upload"
+                                            onclick="triggerUpload3()">Upload</button>
                                         <input type="file" name="kagawad3Image" id="fileInput3" accept="image/*"
                                             onchange="displayImage3(event)">
                                     </div>
@@ -456,13 +455,11 @@
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>First Name</label>
-                                        <input type="text" aria-label="First Name" name="kagawad4FirstName"
-                                            required>
+                                        <input type="text" aria-label="First Name" name="kagawad4FirstName" required>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Middle Name</label>
-                                        <input type="text" aria-label="Middle Name" name="kagawad4MiddleName"
-                                            required>
+                                        <input type="text" aria-label="Middle Name" name="kagawad4MiddleName" required>
                                     </div>
                                 </div>
                                 <div class="ID-container">
@@ -470,7 +467,8 @@
                                         <p>No image uploaded</p>
                                     </div>
                                     <div class="buttons">
-                                        <button type="button" class="button upload" onclick="triggerUpload4()">Upload</button>
+                                        <button type="button" class="button upload"
+                                            onclick="triggerUpload4()">Upload</button>
                                         <input type="file" name="kagawad4Image" id="fileInput4" accept="image/*"
                                             onchange="displayImage4(event)">
                                     </div>
@@ -484,13 +482,11 @@
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>First Name</label>
-                                        <input type="text" aria-label="First Name" name="kagawad5FirstName"
-                                            required>
+                                        <input type="text" aria-label="First Name" name="kagawad5FirstName" required>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Middle Name</label>
-                                        <input type="text" aria-label="Middle Name" name="kagawad5MiddleName"
-                                            required>
+                                        <input type="text" aria-label="Middle Name" name="kagawad5MiddleName" required>
                                     </div>
                                 </div>
                                 <div class="ID-container">
@@ -498,7 +494,8 @@
                                         <p>No image uploaded</p>
                                     </div>
                                     <div class="buttons">
-                                        <button type="button" class="button upload" onclick="triggerUpload5()">Upload</button>
+                                        <button type="button" class="button upload"
+                                            onclick="triggerUpload5()">Upload</button>
                                         <input type="file" name="kagawad5Image" id="fileInput5" accept="image/*"
                                             onchange="displayImage5(event)">
                                     </div>
@@ -512,13 +509,11 @@
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>First Name</label>
-                                        <input type="text" aria-label="First Name" name="kagawad6FirstName"
-                                            required>
+                                        <input type="text" aria-label="First Name" name="kagawad6FirstName" required>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Middle Name</label>
-                                        <input type="text" aria-label="Middle Name" name="kagawad6MiddleName"
-                                            required>
+                                        <input type="text" aria-label="Middle Name" name="kagawad6MiddleName" required>
                                     </div>
                                 </div>
                                 <div class="ID-container">
@@ -526,7 +521,8 @@
                                         <p>No image uploaded</p>
                                     </div>
                                     <div class="buttons">
-                                        <button type="button" class="button upload" onclick="triggerUpload6()">Upload</button>
+                                        <button type="button" class="button upload"
+                                            onclick="triggerUpload6()">Upload</button>
                                         <input type="file" name="kagawad6Image" id="fileInput6" accept="image/*"
                                             onchange="displayImage6(event)">
                                     </div>
@@ -540,13 +536,11 @@
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>First Name</label>
-                                        <input type="text" aria-label="First Name" name="kagawad7FirstName"
-                                            required>
+                                        <input type="text" aria-label="First Name" name="kagawad7FirstName" required>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>Middle Name</label>
-                                        <input type="text" aria-label="Middle Name" name="kagawad7MiddleName"
-                                            required>
+                                        <input type="text" aria-label="Middle Name" name="kagawad7MiddleName" required>
                                     </div>
                                 </div>
                                 <div class="ID-container">
@@ -554,7 +548,8 @@
                                         <p>No image uploaded</p>
                                     </div>
                                     <div class="buttons">
-                                        <button type="button" class="button upload" onclick="triggerUpload7()">Upload</button>
+                                        <button type="button" class="button upload"
+                                            onclick="triggerUpload7()">Upload</button>
                                         <input type="file" name="kagawad7Image" id="fileInput7" accept="image/*"
                                             onchange="displayImage7(event)">
                                     </div>
@@ -586,7 +581,8 @@
                                         <p>No image uploaded</p>
                                     </div>
                                     <div class="buttons">
-                                        <button type="button" class="button upload" onclick="triggerUpload10()">Upload</button>
+                                        <button type="button" class="button upload"
+                                            onclick="triggerUpload10()">Upload</button>
                                         <input type="file" name="SKChairpersonImage" id="fileInput10" accept="image/*"
                                             onchange="displayImage10(event)">
                                     </div>
@@ -600,7 +596,8 @@
                                 <div>
                                     <div class="inputWithLabel" id="surubadan">
                                         <label>Last Name</label>
-                                        <input type="text" aria-label="Last Name" name="barangaySecretaryLastName" required>
+                                        <input type="text" aria-label="Last Name" name="barangaySecretaryLastName"
+                                            required>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>First Name</label>
@@ -618,9 +615,10 @@
                                         <p>No image uploaded</p>
                                     </div>
                                     <div class="buttons">
-                                        <button type="button" class="button upload" onclick="triggerUpload8()">Upload</button>
-                                        <input type="file" name="barangaySecretaryImage" id="fileInput8" accept="image/*"
-                                            onchange="displayImage8(event)">
+                                        <button type="button" class="button upload"
+                                            onclick="triggerUpload8()">Upload</button>
+                                        <input type="file" name="barangaySecretaryImage" id="fileInput8"
+                                            accept="image/*" onchange="displayImage8(event)">
                                     </div>
                                 </div>
                             </div>
@@ -632,7 +630,8 @@
                                 <div>
                                     <div class="inputWithLabel" id="surubadan">
                                         <label>Last Name</label>
-                                        <input type="text" aria-label="Last Name" name="barangayTreasurerLastName" required>
+                                        <input type="text" aria-label="Last Name" name="barangayTreasurerLastName"
+                                            required>
                                     </div>
                                     <div class="inputWithLabel">
                                         <label>First Name</label>
@@ -650,9 +649,10 @@
                                         <p>No image uploaded</p>
                                     </div>
                                     <div class="buttons">
-                                        <button type="button" class="button upload" onclick="triggerUpload9()">Upload</button>
-                                        <input type="file" name="barangayTreasurerImage" id="fileInput9" accept="image/*"
-                                            onchange="displayImage9(event)">
+                                        <button type="button" class="button upload"
+                                            onclick="triggerUpload9()">Upload</button>
+                                        <input type="file" name="barangayTreasurerImage" id="fileInput9"
+                                            accept="image/*" onchange="displayImage9(event)">
                                     </div>
                                 </div>
                             </div>
@@ -671,7 +671,7 @@
 
     function triggerUpload() {
         document.getElementById("fileInput").click();
-    }    
+    }
     function triggerUpload1() {
         document.getElementById("fileInput1").click();
     }

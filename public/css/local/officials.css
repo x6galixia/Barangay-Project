@@ -1,244 +1,73 @@
 /* Base styles for all devices */
 .officialsMain {
     margin: 0;
-    padding: 50px 50px;
+}
+
+body {
+    overflow: scroll;
+}
+
+#add-official-button {
+    display: flex;
+    right: 50px;
+    margin-top: 30px;
+    position: absolute;
+    z-index: 1;
+}
+.overlay{
+    z-index: 2;
 }
 
 .exec {
     height: fit-content;
-    width: 100%;
+    position: absolute;
+    width: 100vw;
+    top: 190px;
+    height: fit-content;
     background-image: url('../../images/brgy.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    border-radius: 20px;
-    padding-bottom: 50px;
     overflow: auto;
+    padding-top: 50px;
+}
+
+.exec>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+    gap: 70px;
+    width: fit-content;
 }
 
 .headingOfficials {
     text-align: center;
     color: white;
-    padding: 50px;
-}
-
-.officials-container {
-    height: 380px;
-    width: 320px;
-    background: linear-gradient(to bottom, #E6E6E6, #808080);
-    justify-content: center;
-    display: flex;
-    position: relative;
-}
-
-.officials {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 150px;
-    margin-top: 20px;
 }
 
 .officialer {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin-top: 50px;
-    gap: 80px;
+    gap: 40px;
 }
 
-.profile {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    display: flex;
-    bottom: 0;
+.titleTo {
+    font-size: calc(.5rem + .1vw);
 }
 
-.rect {
-    z-index: 1;
-    background-color: rgba(255, 255, 255, 0.5);
-    width: 100%;
-    height: fit-content;
-    display: flex;
-    position: absolute;
-    padding-bottom: 10px;
-    bottom: 0;
-}
-
-.logo-of img {
-    height: 40px;
-}
-
-.logo-of {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0px 20px 0px 10px;
-}
-
-.info {
-    margin-top: 5px;
-}
-
-.info p {
-    font-size: 12px;
-}
-
-.back-images {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding-right: 20px;
-    padding-top: 20px;
-}
-
-.make-cent {
-    text-align: center;
-}
-
-.centor p {
-    font-size: 10px !important;
-}
-
-.logo-in {
-    margin-right: 10px !important;
-}
-
-.logo-out {
-    margin-right: 0;
-}
-
-.sk {
-    background-image: url('../../images/sk.png');
-    width: 100%;
-    height: 950px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    border-radius: 20px;
-    margin-top: 40px;
-    padding-top: 50px;
-}
-
-.text-sk {
-    background-color: #F83B3B;
-    width: fit-content;
-    height: fit-content;
-    padding: 10px 20px 10px 60px;
-    color: white;
-}
-
-.heading-sk {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.heading-sk img {
-    margin-right: -30px;
-    margin-top: 10px;
-}
-
-/* Responsive styles for devices with width 768px and below */
-@media (max-width: 768px) {
-    .officials {
-        gap: 30px;
-    }
-
-    .officialer {
-        gap: 20px;
-    }
-
-    .officials-container {
-        width: 280px;
-        height: 320px;
-    }
-
-    .profile {
-        height: 250px;
-    }
-
-    .heading {
-        padding: 30px;
-        font-size: 1.2rem;
-    }
-
-    .info p {
-        font-size: 10px;
-    }
-
-    .back-images {
-        padding-right: 10px;
-        padding-top: 10px;
-    }
-
-    .rect {
-        padding-bottom: 5px;
-    }
-
-    .make-cent {
-        font-size: 14px;
-    }
-
-    .text-sk {
-        padding: 10px 15px;
-    }
-}
-
-/* Responsive styles for devices with width 480px and below */
-@media (max-width: 480px) {
-    .officials-container {
-        width: 100%;
-        height: auto;
-        margin-bottom: 20px;
-    }
-    .officialer {
-        gap: 20px; /* Smaller gap between items */ /* Reduce margin-top for smaller screens */
-    }
-
-    .profile {
-        height: 200px;
-    }
-
-    .officials {
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .officialer {
-        flex-direction: column;
-        gap: 30px;
-    }
-
-    .text-sk {
-        padding: 8px 10px;
-    }
-
-    .heading {
-        padding: 20px;
-        font-size: 1rem;
-    }
-
-    .info p {
-        font-size: 9px;
-    }
-
-    .logo-of img {
-        height: 30px;
-    }
-}
-
-.row{
+.row {
     display: flex;
     align-items: center;
 }
-.row> div:first-child{
+
+.row>div:first-child {
     margin-top: -24px;
     flex: 1;
 }
-.image-preview{
+
+.image-preview {
     height: 200px !important;
 }
 
@@ -251,11 +80,84 @@
 #fileInput7,
 #fileInput8,
 #fileInput9,
-#fileInput10
-{
+#fileInput10 {
     display: none;
 }
 
-#add-officials{
+#add-officials {
     width: 50%;
+}
+
+.officialMainContainer {
+    position: fixed;
+    width: 22vw;
+    height: 52vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    background: linear-gradient(to bottom, #E6E6E6, #808080);
+    overflow: hidden;
+    border: 1px solid gray;
+}
+
+.officialMainContainer>img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.officialMainContainer>.backgroundImages {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+.officialMainContainer>.backgroundImages >div {
+   height: 100%;
+}
+.officialMainContainer>.backgroundImages >div:first-child img {
+   height: 80%;
+}
+.officialMainContainer>.backgroundImages> div:last-child img {
+   height: 25%;
+}
+
+.officialMainContainer>.backgroundImages>div:last-child {
+    align-self: self-start;
+    margin: 30px 30px 0 0;
+}
+
+.officialMainContainer>.description {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 100%;
+    align-items: center;
+    min-height: 25%;
+}
+
+.officialMainContainer>.description img {
+    width: 15%;
+    margin-left: 10px;
+}
+
+.officialMainContainer>.description .title {
+    text-align: center;
+    flex: 1;
+}
+
+.officialMainContainer>.description .title>div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.officialMainContainer>.description .title h3 {
+    font-size: calc(.9rem + .1vw);
 }
