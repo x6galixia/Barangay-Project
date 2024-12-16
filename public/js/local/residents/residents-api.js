@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const residentsTableBody = document.getElementById('residentsTableBody');
     const urlParams = new URLSearchParams(window.location.search);
     const searchInput = document.getElementById('searchInput');
-    const page = parseInt(urlParams.get('page')) || 1;
+    const page = parseInt(urlParams.get('page')) || 1; // Ensure the page number is passed to fetchResidents
     const limit = parseInt(urlParams.get('limit')) || 10;
     const isResidentInput = document.getElementById('isResident');
     isResidentInput.value = "Resident";
@@ -158,15 +158,26 @@ document.addEventListener("DOMContentLoaded", async function () {
     function updatePaginationLinks(currentPage, totalPages) {
         const paginationNav = document.getElementById('paginationNav');
         paginationNav.innerHTML = '';
-
+    
         if (currentPage > 1) {
-            paginationNav.innerHTML += `<a href="?page=${currentPage - 1}&limit=${limit}&search=${encodeURIComponent(searchInput.value)}" aria-label="Previous Page">Previous</a>`;
+            const prevPage = document.createElement('button');
+            prevPage.textContent = 'Previous';
+            prevPage.addEventListener('click', () => {
+                fetchResidents(currentPage - 1, limit, searchInput.value.trim(), selectedValue1 === 'Non-residents');
+            });
+            paginationNav.appendChild(prevPage);
         }
-
+    
         if (currentPage < totalPages) {
-            paginationNav.innerHTML += `<a href="?page=${currentPage + 1}&limit=${limit}&search=${encodeURIComponent(searchInput.value)}" aria-label="Next Page">Next</a>`;
+            const nextPage = document.createElement('button');
+            nextPage.textContent = 'Next';
+            nextPage.addEventListener('click', () => {
+                fetchResidents(currentPage + 1, limit, searchInput.value.trim(), selectedValue1 === 'Non-residents');
+            });
+            paginationNav.appendChild(nextPage);
         }
     }
+    
 
     attachDotEventListeners();
 });
