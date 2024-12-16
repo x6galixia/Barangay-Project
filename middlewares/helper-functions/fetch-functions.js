@@ -1,5 +1,5 @@
 const mPool = require("../../models/mDatabase");
-const calculateAge = require("./calculations");
+const { calculateAge } = require("./calculations");
 
 async function fetchResidentsLists(page, limit, searchQuery = '', isNonResident = true) {
   const offset = (page - 1) * limit;
