@@ -228,7 +228,7 @@
             $('#year').text(data.year);
 
             // Display individual statistics by purok
-            let statisticsHtml = '<table><thead><tr><th>Purok</th><th>Total House Classifications</th><th>Total Families</th><th>Total with CR</th><th>Total with 40m Zone</th><th>Total Energized</th><th>Housing Materials</th><th>Water Source</th></tr></thead><tbody>';
+            let statisticsHtml = '<table><thead><tr><th>Purok</th><th>Total Household</th><th>Total Families</th><th>Total with CR</th><th>Total with 40m Zone</th><th>Total Energized</th><th>Housing Materials</th><th>Water Source</th></tr></thead><tbody>';
             data.statistics.forEach(stat => {
                 statisticsHtml += `
                         <tr>
@@ -248,7 +248,7 @@
 
             // Display overall statistics
             let overallHtml = `
-                    <div><h5>Total House Classifications</h5> <h3>${data.overall.overall_house_classifications}</h3></div>
+                    <div><h5>Total Household</h5> <h3>${data.overall.overall_house_classifications}</h3></div>
                     <div><h5>Total Families</h5> <h3>${data.overall.overall_families}</h3></div>
                     <div><h5>Total with CR</h5> <h3>${data.overall.overall_with_cr}</h3></div>
                     <div><h5>Total with 40m Zone</h5> <h3>${data.overall.overall_with_40m_zone}</h3></div>
