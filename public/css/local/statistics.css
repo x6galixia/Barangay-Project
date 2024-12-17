@@ -135,3 +135,25 @@ table>thead>tr>th {
     gap: 12px;
     margin-bottom: 12px;
 }
+
+.oberall{
+    width: 100%;
+    justify-content: space-around;
+    
+}
+.oberall h5{
+    font-weight: normal;
+}
+.oberall div{
+    display: flex;
+    flex-direction:column-reverse;
+    align-items: center;
+    justify-content: center;
+    background-color: #33A90F;
+    border-radius: 10px;
+    color: white;
+    width: 150px;
+    height: 130px;
+    text-align: center;
+    box-shadow:  0 4px 15px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.05);;
+}
