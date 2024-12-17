@@ -1197,7 +1197,7 @@ window.processCertificate = function (button) {
 
       console.log(selectedCertificate);
     });
-    imageContainer.classList.add("visible");
+    imageContainer.classList.remove("visible");
     convertToImage.classList.remove("visible");
   // document.getElementById("certificate").classList.add("visible");
 

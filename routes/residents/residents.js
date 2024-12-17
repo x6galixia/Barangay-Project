@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mPool = require("../../models/mDatabase");
 const { fetchResidentsLists } = require("../../middlewares/helper-functions/fetch-functions");
-const calculateAge = require("../../middlewares/helper-functions/calculations");
+const { calculateAge } = require("../../middlewares/helper-functions/calculations");
 const { generateGlobalNextId, generateIdNumberNextId, getCurrentYear } = require("../../middlewares/helper-functions/id-generator");
 const { residentSchema } = require("../../middlewares/schemas/schemas");
 
@@ -58,6 +58,8 @@ router.get("/dashboard", async (req, res) => {
             totalPages,
             limit,
         });
+
+        console.log("Residents list",getResidentsList);
     } catch (err) {
         console.error("Error: ", err.message, err.stack);
         res.status(500).send("Internal server error");

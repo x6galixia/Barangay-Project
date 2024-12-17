@@ -221,21 +221,27 @@ router.get("/house-classification", async (req, res) => {
     }
 
     try {
-        // Query for house classification statistics by year
+        // Query for house classification statistics by year, grouped by purok, housingMaterials, and waterSource
         const query = `
             SELECT 
                 EXTRACT(YEAR FROM date) AS year,
                 purok,
+                -- Count occurrences of each housing material
+                COUNT(CASE WHEN housingMaterials = 'Concrete' THEN 1 END) AS concrete_count,
+                COUNT(CASE WHEN housingMaterials = 'Semi-Concrete' THEN 1 END) AS semi_concrete_count,
+                COUNT(CASE WHEN housingMaterials = 'Wood' THEN 1 END) AS wood_count,
+                -- Count occurrences of each water source
+                COUNT(CASE WHEN waterSource LIKE '%Deep Well%' THEN 1 END) AS deep_well_count,
+                COUNT(CASE WHEN waterSource LIKE '%Water Pump%' THEN 1 END) AS water_pump_count,
+                COUNT(CASE WHEN waterSource LIKE '%Mineral%' THEN 1 END) AS mineral_count,
                 COUNT(id) AS total_house_classifications,
                 SUM(numberOfFamilies) AS total_families,
                 SUM(CASE WHEN isWithCr THEN 1 ELSE 0 END) AS total_with_cr,
                 SUM(CASE WHEN isWith40mZone THEN 1 ELSE 0 END) AS total_with_40m_zone,
-                SUM(CASE WHEN isEnergized THEN 1 ELSE 0 END) AS total_energized,
-                housingMaterials AS housing_materials,
-                waterSource AS water_source
+                SUM(CASE WHEN isEnergized THEN 1 ELSE 0 END) AS total_energized
             FROM house_classification
             WHERE EXTRACT(YEAR FROM date) = $1
-            GROUP BY year, purok, housingMaterials, waterSource
+            GROUP BY year, purok
             ORDER BY year, purok;
         `;
         
@@ -259,6 +265,12 @@ router.get("/house-classification", async (req, res) => {
         // Map rows to ensure numeric values
         const formattedRows = rows.map(row => ({
             ...row,
+            concrete_count: Number(row.concrete_count),
+            semi_concrete_count: Number(row.semi_concrete_count),
+            wood_count: Number(row.wood_count),
+            deep_well_count: Number(row.deep_well_count),
+            water_pump_count: Number(row.water_pump_count),
+            mineral_count: Number(row.mineral_count),
             total_house_classifications: Number(row.total_house_classifications),
             total_families: Number(row.total_families),
             total_with_cr: Number(row.total_with_cr),
@@ -266,6 +278,7 @@ router.get("/house-classification", async (req, res) => {
             total_energized: Number(row.total_energized)
         }));
 
+        // Overall statistics
         const overall = overallRows[0] ? {
             overall_house_classifications: Number(overallRows[0].overall_house_classifications),
             overall_families: Number(overallRows[0].overall_families),
@@ -287,11 +300,6 @@ router.get("/house-classification", async (req, res) => {
 });
 
 router.post("/house-classification-survey", async (req, res) => {
-
-    // Convert boolean-like values
-    req.body.isWithCr = req.body.withCR === "true";
-    req.body.isWith40mZone = req.body.with40mZone === "true";
-    req.body.isEnergized = req.body.energized === "true";
 
     // Parse number fields
     req.body.houseNumber = req.body.houseNumber ? parseInt(req.body.houseNumber, 10) : null;

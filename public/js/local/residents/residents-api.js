@@ -464,7 +464,7 @@ function residentFormField() {
             <option value="9">Kasambahay</option>
             <option value="10">Entrepreneur</option>
             <option value="11">Unemployed</option>
-            <option value="0">None</option>
+            <option value="12">None</option>
         `;
     // address
     addressSection.insertAdjacentHTML('afterbegin', `
@@ -530,7 +530,7 @@ function nonResidentFormField() {
     document.getElementById('province').value = "";
     document.getElementById('residentPageTitle').innerText = "LIST OF NON-RESIDENT";
     sectorsDropdown.innerHTML = `
-            <option value="10">Resident Boarders</option>
+            <option value="13">Resident Boarders</option>
         `;
 
     isResidentInput.value = "non-resident";
@@ -576,10 +576,10 @@ function fillSector(data) {
         case "Kasambahay":
             return "9";
         case "Boarders":
-            return "10";
+            return "13";
         case "Entrepreneur":
             return "11";
-        case "Unemployed":
+        case "None":
             return "12";
         default:
             return "0";
