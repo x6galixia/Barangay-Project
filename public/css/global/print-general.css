@@ -89,7 +89,7 @@
 .title {
     position: relative;
     z-index: 2;
-    color: red;
+    color: red !important;
     /* font-size: 20pt; */
     text-align: center;
     margin-top: 20px;
@@ -146,14 +146,12 @@
     position: relative;
     z-index: 2;
     margin: 30px 60px;
-    line-height: 12px;
 }
 
 .seal1 {
     position: absolute;
     z-index: 2;
-    left: 35%;
-    line-height: 12px;
+    left: 42%;
     transform: translate(-100%, -70%);
 }
 
@@ -302,6 +300,11 @@
     height: 100px;
     width: 100px;
     border: solid black 1px;
+}
+
+
+#printCert  {
+    display: none;
 }
 
 
