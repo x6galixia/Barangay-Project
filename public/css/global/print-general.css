@@ -89,7 +89,7 @@
 .title {
     position: relative;
     z-index: 2;
-    color: red;
+    color: red !important;
     /* font-size: 20pt; */
     text-align: center;
     margin-top: 20px;
@@ -146,14 +146,12 @@
     position: relative;
     z-index: 2;
     margin: 30px 60px;
-    line-height: 12px;
 }
 
 .seal1 {
     position: absolute;
     z-index: 2;
-    left: 35%;
-    line-height: 12px;
+    left: 42%;
     transform: translate(-100%, -70%);
 }
 
@@ -247,6 +245,17 @@
     width: 35%;
     /* border: solid rgb(223, 35, 35) 1px; */
 }
+.lefttt-d {
+    background-image: url("../../images/violet-left-d.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    background-size: cover;
+    text-align: center;
+    height: 650px;
+    width: 28%
+    /* border: solid rgb(223, 35, 35) 1px; */
+}
 .lefttt-singleness {
     background-image: url("../../images/brow-pattern.png");
     background-position: center;
@@ -302,6 +311,11 @@
     height: 100px;
     width: 100px;
     border: solid black 1px;
+}
+
+
+#printCert  {
+    display: none;
 }
 
 
