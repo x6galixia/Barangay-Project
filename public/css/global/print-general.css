@@ -245,6 +245,17 @@
     width: 35%;
     /* border: solid rgb(223, 35, 35) 1px; */
 }
+.lefttt-d {
+    background-image: url("../../images/violet-left-d.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    background-size: cover;
+    text-align: center;
+    height: 650px;
+    width: 28%
+    /* border: solid rgb(223, 35, 35) 1px; */
+}
 .lefttt-singleness {
     background-image: url("../../images/brow-pattern.png");
     background-position: center;
