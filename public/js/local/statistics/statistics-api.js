@@ -7,40 +7,22 @@ document.addEventListener("DOMContentLoaded", function () {
       const overall = data.overall;
       const overallTotal = overall.total_population;
 
-      // Display overall population data
-      document.getElementById("overallPopulation1").innerHTML = `
-        <h3>Overall Population</h3>
-        <p>Total Population: ${overallTotal}</p>
-    `;
+    //   // Display overall population data
+    //   document.getElementById("overallPopulation1").innerHTML = `
+    //     <p>Overall Population</p>
+    //     <h3>${overallTotal}</h3>
+    // `;
 
       // Total Classification Data (Display in table format)
-      let totalClassificationTable = `
-        <h3>Total Resident Sectors</h3>
-        <table border="1" cellspacing="0" cellpadding="5">
-            <thead>
-                <tr>
-                    <th>Classification</th>
-                    <th>Count</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
+      let totalClassificationTable = ``;
 
       for (const [classification, count] of Object.entries(
         data.totalClassificationData
       )) {
         totalClassificationTable += `
-            <tr>
-                <td><strong>${classification}</strong></td>
-                <td>${count}</td>
-            </tr>
+            <div><h5>${classification}</h5> <h3>${count}</h3></div>
         `;
       }
-
-      totalClassificationTable += `
-            </tbody>
-        </table>
-    `;
       document.getElementById("totalClassificationDetails").innerHTML =
         totalClassificationTable;
 
@@ -200,36 +182,36 @@ document.addEventListener("DOMContentLoaded", function () {
       const allCounts = Object.values(ageRangeTotals); // Corresponding total counts
 
       // Render chart
-      const ctx = document.getElementById("ageDemographicsChart");
-      new Chart(ctx, {
-        type: "doughnut",
-        data: {
-          labels: allLabels,
-          datasets: [
-            {
-              label: "Age Demographics",
-              data: allCounts,
-              backgroundColor: [
-                "#FF6384",
-                "#36A2EB",
-                "#FFCE56",
-                "#FF9F40",
-                "#4BC0C0",
-              ], // Adjust colors if needed
-              borderColor: "#fff",
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-        },
-      });
+      // const ctx = document.getElementById("ageDemographicsChart");
+      // new Chart(ctx, {
+      //   type: "doughnut",
+      //   data: {
+      //     labels: allLabels,
+      //     datasets: [
+      //       {
+      //         label: "Age Demographics",
+      //         data: allCounts,
+      //         backgroundColor: [
+      //           "#FF6384",
+      //           "#36A2EB",
+      //           "#FFCE56",
+      //           "#FF9F40",
+      //           "#4BC0C0",
+      //         ], // Adjust colors if needed
+      //         borderColor: "#fff",
+      //         borderWidth: 1,
+      //       },
+      //     ],
+      //   },
+      //   options: {
+      //     responsive: true,
+      //     scales: {
+      //       y: {
+      //         beginAtZero: true,
+      //       },
+      //     },
+      //   },
+      // });
 
       // Render the age demographics details in a table for purok
       const demographicsTextContainer = document.getElementById(
@@ -240,10 +222,10 @@ document.addEventListener("DOMContentLoaded", function () {
       // Create the container to hold both tables side by side
       let demographicsTables = `
       <div class="table-container">
-      <div>
+      <div style="width:100%">
         <!-- First Table: Age Demographics by Purok -->
         <h3>Age Demographics by Purok</h3>
-        <table>
+        <table border="1" cellspacing="0" cellpadding="5">
           <thead>
             <tr>
               <th>Purok</th>
@@ -281,32 +263,15 @@ document.addEventListener("DOMContentLoaded", function () {
       demographicsTables += `</tbody></table></div>`;
 
       // Second Table: Total Residents for Each Age Range
-      demographicsTables += `
-            <div>
-            <h3>Total Age Demographics</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Age Range</th>
-            <th>Total Residents</th>
-          </tr>
-        </thead>
-        <tbody>
-        </div>
-    `;
+      const ageTotalContainer = document.getElementById('overallPopulationAge');
 
       // Add the total residents for each age range in the second table
       Object.keys(ageRangeTotals).forEach((ageRange) => {
-        demographicsTables += `
-        <tr>
-          <td>${ageRange}</td>
-          <td><strong>${ageRangeTotals[ageRange]}</strong></td>
-        </tr>
+        ageTotalContainer.innerHTML += `
+        <div><h5>${ageRange}</h5> <h3>${ageRangeTotals[ageRange]}</h3></div>
       `;
       });
 
-      // Close the second table body and table
-      demographicsTables += `</tbody></table></div>`;
 
       // Insert the tables container into the container element
       demographicsTextContainer.innerHTML = demographicsTables;
@@ -365,64 +330,64 @@ document.addEventListener("DOMContentLoaded", function () {
         0
       );
 
-      // Render the doughnut chart
-      const ctx = document.getElementById("statusChart").getContext("2d");
-      new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: purokLabels, // Use purok labels as the X-axis labels
-          datasets: [
-            {
-              label: "PWD",
-              data: pwdCounts,
-              backgroundColor: "#FF9F40",
-              hoverOffset: 4,
-            },
-            {
-              label: "Solo Parent",
-              data: soloParentCounts,
-              backgroundColor: "#FFCD56",
-              hoverOffset: 4,
-            },
-            {
-              label: "Youth",
-              data: youthCounts,
-              backgroundColor: "#4BC0C0",
-              hoverOffset: 4,
-            },
-            {
-              label: "4Ps",
-              data: is4psCounts,
-              backgroundColor: "#FF6384",
-              hoverOffset: 4,
-            },
-            {
-              label: "Out of school youth",
-              data: outOfSchoolYouthCounts,
-              backgroundColor: "#FF8384",
-              hoverOffset: 4,
-            },
-            {
-              label: "Samahan ng kababaihan",
-              data: samahanNgKababaihanCounts,
-              backgroundColor: "#FF9384",
-              hoverOffset: 4,
-            },
-            {
-              label: "Samahan ng kababayin-an",
-              data: samahanNgKababayinanCounts,
-              backgroundColor: "#FF1384",
-              hoverOffset: 4,
-            },
-            {
-              label: "Resident Boarders",
-              data: residentBoardersCounts,
-              backgroundColor: "#FF3384",
-              hoverOffset: 4,
-            },
-          ],
-        },
-      });
+      // // Render the doughnut chart
+      // const ctx = document.getElementById("statusChart").getContext("2d");
+      // new Chart(ctx, {
+      //   type: "bar",
+      //   data: {
+      //     labels: purokLabels, // Use purok labels as the X-axis labels
+      //     datasets: [
+      //       {
+      //         label: "PWD",
+      //         data: pwdCounts,
+      //         backgroundColor: "#FF9F40",
+      //         hoverOffset: 4,
+      //       },
+      //       {
+      //         label: "Solo Parent",
+      //         data: soloParentCounts,
+      //         backgroundColor: "#FFCD56",
+      //         hoverOffset: 4,
+      //       },
+      //       {
+      //         label: "Youth",
+      //         data: youthCounts,
+      //         backgroundColor: "#4BC0C0",
+      //         hoverOffset: 4,
+      //       },
+      //       {
+      //         label: "4Ps",
+      //         data: is4psCounts,
+      //         backgroundColor: "#FF6384",
+      //         hoverOffset: 4,
+      //       },
+      //       {
+      //         label: "Out of school youth",
+      //         data: outOfSchoolYouthCounts,
+      //         backgroundColor: "#FF8384",
+      //         hoverOffset: 4,
+      //       },
+      //       {
+      //         label: "Samahan ng kababaihan",
+      //         data: samahanNgKababaihanCounts,
+      //         backgroundColor: "#FF9384",
+      //         hoverOffset: 4,
+      //       },
+      //       {
+      //         label: "Samahan ng kababayin-an",
+      //         data: samahanNgKababayinanCounts,
+      //         backgroundColor: "#FF1384",
+      //         hoverOffset: 4,
+      //       },
+      //       {
+      //         label: "Resident Boarders",
+      //         data: residentBoardersCounts,
+      //         backgroundColor: "#FF3384",
+      //         hoverOffset: 4,
+      //       },
+      //     ],
+      //   },
+      // });
 
       // Render the resident status details in a table for purok
       const statusTextContainer = document.getElementById("residentStatusText");
@@ -431,10 +396,10 @@ document.addEventListener("DOMContentLoaded", function () {
       // Create a container to hold the tables side by side
       let statusTables = `
         <div class="table-container">
-        <div>
+        <div style="width: 100%">
             <!-- First Table: Resident Status by Purok -->
             <h3>Resident Status by Purok</h3>
-            <table>
+            <table border="1" cellspacing="0" cellpadding="5">
                 <thead>
                     <tr>
                         <th>Purok</th>
@@ -466,61 +431,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${samahanNgKababayinanCounts[index]}</td>
                 <td>${residentBoardersCounts[index]}</td>
             </tr>
+
         `;
       });
 
-      // Close the first table body and the table
-      statusTables += `
-        </tbody>
-    </table>
-    </div>      
-    <!-- Second Table: Total Status Count -->
-    <div>
-    <h3>Resident Total Status</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Status</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>PWD</td>
-                <td>${totalPwd}</td>
-            </tr>
-            <tr>
-                <td>Solo Parent</td>
-                <td>${totalSoloParent}</td>
-            </tr>
-            <tr>
-                <td>Youth</td>
-                <td>${totalYouth}</td>
-            </tr>
-            <tr>
-                <td>4Ps</td>
-                <td>${total4ps}</td>
-            </tr>
-            <tr>
-                <td>Out of school youth</td>
-                <td>${totaloutOfSchoolYouthCounts}</td>
-            </tr>
-            <tr>
-                <td>Samahan ng kababaihan</td>
-                <td>${totalsamahanNgKababaihanCounts}</td>
-            </tr>
-            <tr>
-                <td>Samahan ng kababayin-an</td>
-                <td>${totalsamahanNgKababayinanCounts}</td>
-            </tr>
-            <tr>
-                <td>Resident Boarders</td>
-                <td>${totalNonResidents}</td>  <!-- Corrected total value -->
-            </tr>
-        </tbody>
+      statusTables += `        </tbody>
     </table>
     </div>
-</div>
+</div>`;
+
+      // Close the first table body and the table
+      document.getElementById('overallPopulationStatus1').innerHTML += `
+
+        <div><h5>Solo Parent</h5> <h3>${totalSoloParent}</h3></div>
+        <div><h5>Youth</h5> <h3>${totalYouth}</h3></div>
+        <div><h5>4ps</h5> <h3>${total4ps}</h3></div>
+        <div><h5>Out of School Youth</h5> <h3>${totaloutOfSchoolYouthCounts}</h3></div>
+        <div><h5>Samahan ng Kababaihan</h5> <h3>${totalsamahanNgKababaihanCounts}</h3></div>
+        <div><h5>Kababayin-an han Maypangdan</h5> <h3>${totalsamahanNgKababayinanCounts}</h3></div>
+        <div><h5>Resident Boarders</h5> <h3>${totalNonResidents}</h3></div>
     `;
 
       // Insert the tables container into the container element
@@ -570,37 +499,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Display overall population data in a table with "Label" and "Count" headers
       document.getElementById("overallPopulation").innerHTML = `
-        <h3>Total Resident Classification</h3>
-        <table border="1" cellspacing="0" cellpadding="5">
-            <thead>
-                <tr>
-                    <th>Label</th>
-                    <th>Count</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Male</td>
-                    <td>${overallMale}</td>
-                </tr>
-                <tr>
-                    <td>Female</td>
-                    <td>${overallFemale}</td>
-                </tr>
-                <tr>
-                    <td>Senior Citizens</td>
-                    <td>${overallSenior}</td>
-                </tr>
-                <tr>
-                    <td>PWDs</td>
-                    <td>${overallPwd}</td>
-                </tr>
-                <tr>
-                    <td><strong>Total Population</strong></td>
-                    <td><strong>${overallTotal}</strong></td>
-                </tr>
-            </tbody>
-        </table>
+        <div><h5>Total Male</h5> <h3>${overallMale}</h3></div>
+        <div><h5>Total Female</h5> <h3>${overallFemale}</h3></div>
+        <div><h5>Total Senior Citizens</h5> <h3>${overallSenior}</h3></div>
+        <div><h5>Total PWDs</h5> <h3>${overallPwd}</h3></div>
+        <div><h5>Total Population</h5> <h3>${overallTotal}</h3></div>
     `;
 
       // Extract data for chart

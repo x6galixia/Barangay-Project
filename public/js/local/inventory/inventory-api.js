@@ -2,10 +2,43 @@ document.addEventListener("DOMContentLoaded", async function () {
     const inventoryTableBody = document.getElementById('inventoryTableBody');
     const urlParams = new URLSearchParams(window.location.search);
     const searchInput = document.getElementById('searchInput');
+    const type = urlParams.get('type');
     const page = parseInt(urlParams.get('page')) || 1;
     const limit = parseInt(urlParams.get('limit')) || 10;
+    const dropdown = document.querySelector('#inventory-dropdown');
+    if (type && dropdown) {
+        dropdown.value = type;
+    }
 
-    fetchInventory(page, limit);
+    // Function to update the URL parameters
+    function updateURLParameter(key, value) {
+        const url = new URL(window.location);
+        url.searchParams.set(key, value);
+        window.history.replaceState({}, '', url);
+        window.location.href = url;
+    }
+
+    function getURLParameter(key) {
+        const url = new URL(window.location);
+        return url.searchParams.get(key);
+    }
+
+    const selectedValue1 = getURLParameter('type') || 'functional';
+    const searchQuery = document.getElementById('searchInput').value.trim();
+
+    if (selectedValue1 === "functional") {
+        fetchInventory(page, limit, searchQuery, true);
+    }
+    else if (selectedValue1 === "non-functional") {
+        fetchInventory(page, limit, searchQuery, false);
+    }
+
+    // Event listener for the dropdown change
+    dropdown.addEventListener('change', function () {
+        const selectedValue = this.value.trim();
+        updateURLParameter('type', selectedValue);
+    });
+
 
     // Listen for changes to search input
     searchInput.addEventListener('input', () => {
@@ -16,18 +49,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         fetchInventory(page, limit, searchQuery, isFunctional);
     });
 
-    document.querySelector('.inventory-dropdown').addEventListener('change', function () {
-        const selectedValue = this.value.trim();
-        const searchQuery = searchInput.value.trim();
-        const isFunctional = selectedValue === 'functional';
-
-        if (selectedValue === "functional") {
-            fetchInventory(page, limit, searchQuery, true);
-        }
-        else if (selectedValue === "non-functional") {
-            fetchInventory(page, limit, searchQuery, false);
-        }
-    });
 
 
     // Fetch inventory based on parameters
