@@ -324,7 +324,7 @@ input[type="search"]::placeholder {
   display: none;
   overflow: auto;
   z-index: 2;
-  max-height: 80%;
+  max-height: 80vh;
 }
 
 .pop-up>.close-container {

@@ -14,8 +14,22 @@
   gap: 24px;
 }
 
+#add-resident main {
+  height: 80%;
+  overflow: auto;
+}
+#add-resident main::-webkit-scrollbar {
+ display: none;
+}
+
+.pop-up{
+  overflow: hidden;
+}
+
+
 #add-resident {
   width: 60%;
+  height: 80vh;
 }
 
 #add-resident form #submit_add_resident {

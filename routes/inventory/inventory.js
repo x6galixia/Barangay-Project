@@ -74,7 +74,6 @@ router.post("/dashboard/add-item", async (req, res) => {
             RETURNING categoryid
         `, [value.categoryName]);
 
-        console.log("Category Insert Result:", categoryIdResult);
 
         if (!categoryIdResult.rows || categoryIdResult.rows.length === 0) {
             throw new Error("Failed to insert category or retrieve categoryId");
@@ -82,14 +81,19 @@ router.post("/dashboard/add-item", async (req, res) => {
 
         const categoryId = categoryIdResult.rows[0].categoryid;
 
-        console.log("Retrieved categoryId:", categoryId);
 
         await mPool.query(`
             INSERT INTO inventory (iName, quantity, iPrice, dateAdded, categoryId, isFunctional) 
             VALUES ($1, $2, $3, $4, $5, $6)
         `, [value.iName, value.quantity, value.iPrice, value.dateAdded, categoryId, value.isFunctional]);
+
         req.flash('success', 'Item Added Successfully!');
-        res.redirect("/inventory/dashboard");
+        res.redirect(value.isFunctional === true 
+            ? "/inventory/dashboard?type=functional" 
+            : (value.isFunctional === false 
+                ? "/inventory/dashboard?type=non-functional" 
+                : "/inventory/dashboard")
+        );
     } catch (err) {
         console.error("Error: ", err.message, err.stack);
         res.status(500).send("Internal server error");
@@ -142,7 +146,12 @@ router.post("/dashboard/update-item", async (req, res) => {
         }
 
         req.flash('success', 'Item Updated Successfully!');
-        res.redirect("/inventory/dashboard");
+        res.redirect(value.isFunctional === true 
+            ? "/inventory/dashboard?type=functional" 
+            : (value.isFunctional === false 
+                ? "/inventory/dashboard?type=non-functional" 
+                : "/inventory/dashboard")
+        );
     } catch (err) {
         console.error("Error: ", err.stack, err.message);
         res.status(500).send("Internal server error");

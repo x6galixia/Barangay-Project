@@ -215,8 +215,17 @@ async function fetchArchiveData(page, limit, searchQuery = '', doctype = 'Lupon'
       AND (
         CAST(a.archiveId AS TEXT) ILIKE $${archiveValues.length + 1}  -- Search by archiveId
         OR EXISTS (SELECT 1 FROM panumduman p WHERE p.archiveId = a.archiveId AND p.contractingPersons ILIKE $${archiveValues.length + 1})  -- Search within panumduman
-        OR EXISTS (SELECT 1 FROM lupon l WHERE l.archiveId = a.archiveId AND l.caseNumber ILIKE $${archiveValues.length + 1})  -- Search within lupon
-        OR EXISTS (SELECT 1 FROM ordinance o WHERE o.archiveId = a.archiveId AND o.ordinanceNumber ILIKE $${archiveValues.length + 1})  -- Search within ordinance
+        OR EXISTS (SELECT 1 FROM lupon l WHERE l.archiveId = a.archiveId AND (
+          l.caseNumber ILIKE $${archiveValues.length + 1}
+          OR l.complainant ILIKE $${archiveValues.length + 1}
+          OR l.respondent ILIKE $${archiveValues.length + 1}
+        ))  -- Search within lupon
+        OR EXISTS (SELECT 1 FROM ordinance o WHERE o.archiveId = a.archiveId AND (
+          o.ordinanceNumber ILIKE $${archiveValues.length + 1}
+          OR o.authors ILIKE $${archiveValues.length + 1}
+          OR o.coauthors ILIKE $${archiveValues.length + 1}
+          OR o.sponsors ILIKE $${archiveValues.length + 1}
+        ))  -- Search within ordinance
         OR EXISTS (SELECT 1 FROM resolution r WHERE r.archiveId = a.archiveId AND r.resolutionNumber ILIKE $${archiveValues.length + 1})  -- Search within resolution
         OR EXISTS (SELECT 1 FROM regularization_minutes rm WHERE rm.archiveId = a.archiveId AND rm.regulationNumber::TEXT ILIKE $${archiveValues.length + 1})  -- Search within regularization_minutes
       )`;
@@ -224,8 +233,17 @@ async function fetchArchiveData(page, limit, searchQuery = '', doctype = 'Lupon'
       AND (
         CAST(a.archiveId AS TEXT) ILIKE $${totalItemsValues.length + 1}
         OR EXISTS (SELECT 1 FROM panumduman p WHERE p.archiveId = a.archiveId AND p.contractingPersons ILIKE $${totalItemsValues.length + 1})
-        OR EXISTS (SELECT 1 FROM lupon l WHERE l.archiveId = a.archiveId AND l.caseNumber ILIKE $${totalItemsValues.length + 1})
-        OR EXISTS (SELECT 1 FROM ordinance o WHERE o.archiveId = a.archiveId AND o.ordinanceNumber ILIKE $${totalItemsValues.length + 1})
+        OR EXISTS (SELECT 1 FROM lupon l WHERE l.archiveId = a.archiveId AND (
+          l.caseNumber ILIKE $${totalItemsValues.length + 1}
+          OR l.complainant ILIKE $${totalItemsValues.length + 1}
+          OR l.respondent ILIKE $${totalItemsValues.length + 1}
+        ))
+        OR EXISTS (SELECT 1 FROM ordinance o WHERE o.archiveId = a.archiveId AND (
+          o.ordinanceNumber ILIKE $${totalItemsValues.length + 1}
+          OR o.authors ILIKE $${totalItemsValues.length + 1}
+          OR o.coauthors ILIKE $${totalItemsValues.length + 1}
+          OR o.sponsors ILIKE $${totalItemsValues.length + 1}
+        ))
         OR EXISTS (SELECT 1 FROM resolution r WHERE r.archiveId = a.archiveId AND r.resolutionNumber ILIKE $${totalItemsValues.length + 1})
         OR EXISTS (SELECT 1 FROM regularization_minutes rm WHERE rm.archiveId = a.archiveId AND rm.regulationNumber::TEXT ILIKE $${totalItemsValues.length + 1})
       )`;
@@ -342,9 +360,6 @@ async function fetchArchiveData(page, limit, searchQuery = '', doctype = 'Lupon'
     const totalItemsResult = await mPool.query(totalItemsQuery, totalItemsValues);
     const totalItems = parseInt(totalItemsResult.rows[0].count, 10);
     const totalPages = Math.ceil(totalItems / limit);
-
-    console.log("SearchCondition",searchCondition)
-    console.log("doctypecondition",doctypeCondition)
     
     // Fetch paginated archive data
     const archiveResult = await mPool.query(archiveQuery, archiveValues);

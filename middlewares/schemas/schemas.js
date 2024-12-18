@@ -166,7 +166,7 @@ const archiveSchema = Joi.object({
         // Regularization Minutes
         regulationNumber: Joi.when('doctypeId', {
             is: 5,
-            then: Joi.number().integer().required(),
+            then: Joi.string().required(),
             otherwise: Joi.optional().allow(null)
         })
     }).required()

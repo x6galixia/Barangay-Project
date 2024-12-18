@@ -36,6 +36,7 @@
                             <th class="luponTableHead" style="display: none;">Respondent</th>
                             <th class="luponTableHead" style="display: none;">Date Filed</th>
                             <th class="luponTableHead" style="display: none;">Type Of Case</th>
+                            <th class="luponTableHead" style="display: none;">Status</th>
 
                             <!-- Ordinance -->
                             <th class="ordinanceTableHead" style="display: none;">Ordinance Number</th>
@@ -108,6 +109,24 @@
                                     <label>Type Of Case</label>
                                     <input id="caseType" type="text" aria-label="Date Filed" name="caseType" required>
                                 </div>
+                                <div class="inputWithLabel">
+                                    <label for="">Case Stage</label>
+                                    <select class="caseStage-dropdown" name="caseStage" id="caseStage">
+                                        <option value=" default" disabled selected>
+                                        Select a Status
+                                        </option>
+                                        <option value="Settled">Settled</option>
+                                        <option value="Resolve">Resolve</option>
+                                        <option value="Dismissed">Dismissed</option>
+                                        <option value="Withdrawn">Withdrawn</option>
+                                        <option value="Deferred">Deferred</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Under Investigation">Under Investigation</option>
+                                        <option value="For Hearing">For Hearing</option>
+                                        <option value="For Finality">For Finality</option>
+                                        <option value="Pending Resolution">Pending Resolution</option>
+                                    </select>
+                                    </div>
                             </div>
                         </div>
                         <div class="ID-container">

@@ -111,18 +111,18 @@
           </div>
         </div>
         <% } %>
-            <div class="alert alert-danger errorMan" id="submit_prompt1">
-              <img src="../images/error.png" alt="">
-              <div>
-                <h2>Scanning QR Failed</h2>
-                <p class="error-message">
-                  <%= messages.error%>
-                </p>
-                <main>
-                  <button type="button" class="button-green" onclick="closePopup()">Done</button>
-                </main>
-              </div>
+          <div class="alert alert-danger errorMan" id="submit_prompt1">
+            <img src="../images/error.png" alt="">
+            <div>
+              <h2>Scanning QR Failed</h2>
+              <p class="error-message">
+                <%= messages.error%>
+              </p>
+              <main>
+                <button type="button" class="button-green" onclick="closePopup()">Done</button>
+              </main>
             </div>
+          </div>
     </main>
 </body>
 <script src="../../js/local/request-api.js"></script>
@@ -130,15 +130,15 @@
 <script>
   document.querySelector("header>nav>ul>li:first-child").classList.toggle("selected");
   function closePopup() {
-  if (submitPrompt) {
-    submitPrompt.style.display = "none";
+    if (submitPrompt) {
+      submitPrompt.style.display = "none";
+    }
+    if (document.getElementById("submit_prompt1")) {
+      document.getElementById("submit_prompt1").classList.remove("visible1")
+    }
+    overlay.classList.remove("visible");
+    window.location.reload();
   }
-  if (document.getElementById("submit_prompt1")) {
-    document.getElementById("submit_prompt1").classList.remove("visible1")
-  }
-  overlay.classList.remove("visible");
-  window.location.reload();
-}
 </script>
 
 </html>

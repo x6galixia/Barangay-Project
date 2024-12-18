@@ -18,70 +18,92 @@
     <%- include("../includes/header.ejs") %>
 
         <div class="container">
-            <h2>Resident Sectors</h2>
-            <div id="meow">
-                <div class="chart">
-                    <canvas id="barangayPopulationChart1"></canvas>
-                </div>
-                <div class="separate">
-                    <div>
+            <div class="statsMainContainer">
+                <h1>Resident Sectors</h1>
+                <div id="meow">
+                    <!-- <div class="chart">
+                        <canvas id="barangayPopulationChart1"></canvas>
+                    </div> -->
+                    <div class="separate">
+                        <div>
+                            <h3>Total Resident Sectors</h3>
+                            <div id="totalClassificationDetails" class="oberall"></div>
+                        </div>
                         <div id="classificationByPurokDetails"></div>
-                        <div id="overallPopulation1"></div>
                     </div>
-                    <div id="totalClassificationDetails"></div>
                 </div>
             </div>
+            <hr>
+            <div class="statsMainContainer">
 
-            <h2>Residents Classification</h2>
-            <div id="meow">
-                <div class="chart">
-                    <canvas id="barangayPopulationChart"></canvas>
-                </div>
-                <div class="separate">
-                    <div id="totalsByPurokDetails"></div>
-                    <div id="overallPopulation"></div>
+                <h1>Residents Classification</h1>
+                <div id="meow">
+                    <!-- <div class="chart">
+                        <canvas id="barangayPopulationChart"></canvas>
+                    </div> -->
+                    <div class="separate">
+                        <div>
+                            <h3 style="margin-left: 0;">Total Resident Classification</h3>
+                            <div id="overallPopulation" class="oberall"></div>
+                        </div>
+                        <div id="totalsByPurokDetails"></div>
+                    </div>
                 </div>
             </div>
+            <hr>
+            <div class="statsMainContainer">
 
-            <h2>Resident Status</h2>
-            <div id="meow">
-                <div class="chart">
-                    <canvas id="statusChart"></canvas>
-                </div>
-                <div class="separate">
-                    <div id="residentStatusText"></div>
+                <h1>Resident Status</h1>
+                <div id="meow">
+                    <!-- <div class="chart">
+                        <canvas id="statusChart"></canvas>
+                    </div> -->
+                    <div class="separate">
+                        <div>
+                            <h3 style="margin-left: 0;">Total Resident Status</h3>
+                            <div id="overallPopulationStatus1" class="oberall"></div>
+                        </div>
+                        <div id="residentStatusText"></div>
+                    </div>
                 </div>
             </div>
+            <hr>
+            <div class="statsMainContainer">
 
-            <h2>Age Demographics</h2>
-            <div id="meow">
-                <div class="chart">
-                    <canvas id="ageDemographicsChart"></canvas>
-                </div>
-                <div class="separate">
-                    <div id="ageDemographicsText"></div>
+                <h1>Age Demographics</h1>
+                <div id="meow">
+                    <!-- <div class="chart">
+                        <canvas id="ageDemographicsChart"></canvas>
+                    </div> -->
+                    <div class="separate">
+                        <div>
+                            <h3>Total Age Demographics</h3>
+                            <div id="overallPopulationAge" class="oberall"></div>
+                        </div>
+                        <div id="ageDemographicsText"></div>
+                    </div>
                 </div>
             </div>
-
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin: 20px 3%;">
+            <hr>
+            <div class="statsMainContainer">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin: 20px 3%; width: 100%;">
                     <h1>Household Classification</h1>
-                    <button id="add-survey-button" onclick="popUp_button(this)">ADD SURVEY</button>
+                    <button id="add-survey-button" onclick="popUp_button(this)"><p>ADD SURVEY</p></button>
                 </div>
-                <div id="meow" style="display: flex; flex-direction: column;">
-                    <div class="separate" style="flex-direction: column; width: 100%;">
+                <div id="meow">
+                    <div class="separate">
                         <div style="align-self: self-start; display: flex; flex-direction: column; gap: 4px; width: fit-content;">
                             <label for="year-dropdown">Select Year: </label>
                             <select id="year-dropdown"></select>
                         </div>
-                        <div style="display: flex; flex-direction: column;">
-                            <h2 style="margin-left: 0;">Overall Statistics</h2>
-                            <div id="overall-container" class="oberall" style="display: flex; gap: 8px;">
+                        <div class="oberallContainer">
+                            <h3 style="margin-left: 0;">Overall Statistics</h3>
+                            <div id="overall-container" class="oberall">
                                 <!-- Overall data will be inserted here -->
                             </div>
                         </div>
                         <div>
-                            <h2 style="margin-left: 0;">Household Classification by Purok</h2>
+                            <h3 style="margin-left: 0;">Household Classification by Purok</h3>
                             <div id="statistics-container">
                                 <!-- Data will be inserted here -->
                             </div>
@@ -214,7 +236,7 @@
             $('#year').text(data.year);
 
             // Display individual statistics by purok
-            let statisticsHtml = '<table><thead><tr><th>Purok</th><th>Concrete</th><th>Semi-Concrete</th><th>Wood</th><th>Deep Well</th><th>Water Pump</th><th>Mineral</th><th>Total House Classifications</th><th>Total Families</th><th>Total with CR</th><th>Total with 40m Zone</th><th>Total Energized</th></tr></thead><tbody>';
+            let statisticsHtml = '<table><thead><tr><th>Purok</th><th>Concrete</th><th>Semi-Concrete</th><th>Wood</th><th>Deep Well</th><th>Water Pump</th><th>Mineral</th><th>Household</th><th>Families</th><th>with CR</th><th>40m Zone</th><th>Energized</th></tr></thead><tbody>';
 
             data.statistics.forEach(stat => {
                 statisticsHtml += `
@@ -240,7 +262,7 @@
 
             // Display overall statistics
             let overallHtml = `
-                <div><h5>Total House Classifications</h5> <h3>${data.overall.overall_house_classifications}</h3></div>
+                <div><h5>Total Household</h5> <h3>${data.overall.overall_house_classifications}</h3></div>
                 <div><h5>Total Families</h5> <h3>${data.overall.overall_families}</h3></div>
                 <div><h5>Total with CR</h5> <h3>${data.overall.overall_with_cr}</h3></div>
                 <div><h5>Total with 40m Zone</h5> <h3>${data.overall.overall_with_40m_zone}</h3></div>

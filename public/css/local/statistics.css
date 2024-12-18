@@ -5,8 +5,12 @@
 }
 
 .container {
-    padding: 40px;
+    padding: 40px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
+
 
 #tunga {
     margin-bottom: 50px;
@@ -27,6 +31,7 @@
 .separate h3 {
     font-size: 20px;
     text-wrap: nowrap;
+    margin-bottom: 12px;
 }
 
 #meow {
@@ -36,8 +41,8 @@
     margin-bottom: 40px;
     align-items: center;
     gap: 40px;
-    margin-bottom: 80px;
     padding: 0 3%;
+    width: 100%;
 }
 
 #meow>div {
@@ -45,9 +50,9 @@
     width: 50%;
 }
 
-.container h2 {
+.container h2, h1 {
     margin-bottom: 20px;
-    margin-left: 3%;
+    width: 100%;
 }
 
 
@@ -59,7 +64,8 @@
     padding: 30px 30px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
     align-self: stretch;
-    width: fit-content;
+    flex-direction: column;
+    width: 100% !important;
     overflow: auto;
 }
 
@@ -69,10 +75,6 @@
 
 #overallPopulation {
     padding-bottom: 40px;
-}
-
-#overallPopulation1 p {
-    font-size: 20px;
 }
 
 .barangayPopulationChart1 {
@@ -96,6 +98,10 @@
 #totalsByPurokDetails ul {
 
     margin: 10px;
+}
+
+#add-survey-button p{
+    text-wrap: nowrap;
 }
 
 .chart {
@@ -129,24 +135,29 @@ table>thead>tr>th {
     text-wrap: wrap;
 }
 
-.add-survey-input-container > .row{
+.add-survey-input-container>.row {
     display: flex;
     flex-direction: column;
     gap: 12px;
     margin-bottom: 12px;
 }
 
-.oberall{
+.oberall {
     width: 100%;
     justify-content: space-around;
-    
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+
 }
-.oberall h5{
+
+.oberall h5 {
     font-weight: normal;
 }
-.oberall div{
+
+.oberall div {
     display: flex;
-    flex-direction:column-reverse;
+    flex-direction: column-reverse;
     align-items: center;
     justify-content: center;
     background-color: #33A90F;
@@ -155,5 +166,28 @@ table>thead>tr>th {
     width: 150px;
     height: 130px;
     text-align: center;
-    box-shadow:  0 4px 15px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.05);;
+    gap: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.05);
+    ;
+}
+
+.statsMainContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 3%;
+}
+
+.oberallContainer {
+    display: flex;
+    flex-direction: column;
+}
+.subContainer{
+    display: flex;
+    gap: 24px;
+    width: 100%;
+}
+.subContainer > div{
+   flex: 1;
 }

@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const selectedValue1 = getURLParameter('type') || 'Lupon';
     const searchQuery = document.getElementById('searchInput').value.trim();
+    const addArchibeForm = document.getElementById('add-document');
     document.getElementById("docType").value = type;
 
     searchInput.addEventListener('input', () => {
@@ -36,22 +37,27 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (selectedValue1 === "Lupon") {
         console.log("1 selected");
         // toggleColumns(true);
+        addArchibeForm.style.height = 'fit-content';
         fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
     } else if (selectedValue1 === "Ordinance") {
         console.log("2 selected");
         // toggleColumns(false);
+        addArchibeForm.style.height = '75vh';
         fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
     } else if (selectedValue1 === "Panumduman") {
         console.log("3 selected");
         // toggleColumns(false);
+        addArchibeForm.style.height = 'fit-content';
         fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
     } else if (selectedValue1 === "Regularization Minutes") {
         console.log("4 selected");
         // toggleColumns(false);
+        addArchibeForm.style.height = 'fit-content';
         fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
     } else if (selectedValue1 === "Resolution") {
         console.log("5 selected");
         // toggleColumns(false);
+        addArchibeForm.style.height = 'fit-content';
         fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
     }
 
@@ -123,7 +129,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const response = await fetch(
                 `http://localhost:3000/archive/dashboard?ajax=true&page=${page}&limit=${limit}&search=${encodeURIComponent(searchQuery)}&doctype=${doctype}`
             );
-            
+
 
             if (!response.ok) {
                 throw new Error("Failed to fetch archive data");
@@ -132,27 +138,44 @@ document.addEventListener("DOMContentLoaded", async function () {
             const data = await response.json();
             const archive = data.archiveList;
             archiveTableBody.innerHTML = '';
-
+            console.log(data);
             showColumnsForDoctype(doctype);
 
-            if ((doctype === 'Lupon' && searchQuery) || doctype === 'Lupon') {
-                archive.forEach(arch1 => {
-                    if (arch1.length === 0) {
-                        const noDataRow = document.createElement('tr');
-                        noDataRow.innerHTML = `
+            if (doctype === 'Lupon') {
+                if (archive.length === 0) {
+                    const noDataRow = document.createElement('tr');
+                    noDataRow.innerHTML = `
                             <td colspan="7" class="text-center">No ${doctype} Documents Found.</td>
                         `;
-                        archiveTableBody.appendChild(noDataRow);
-                        return;
-                    }
+                    archiveTableBody.appendChild(noDataRow);
+                    return;
+                }
+                archive.forEach(arch1 => {
                     arch1.documentdetails.forEach(detail => {
                         const row = document.createElement('tr');
+
+                        const statusColors = {
+                            "Pending": "#FFFF00",       // Yellow
+                            "Under Investigation": "#ADD8E6", // Light Blue 
+                            "Withdrawn": "#D3D3D3",     // Gray
+                            "Deferred": "#FFA500",      // Orange
+                            "For Hearing": "#0000FF",   // Blue
+                            "For Finality": "#90EE90",  // Light Green
+                            "Pending Resolution": "#800080", // Purple
+                            "Resolved": "#008000",      // Green
+                            "Dismissed": "#FF0000",     // Red
+                            "Settled": "#D3D3D3"        // Light Gray
+                        };
+
+                        const statusColor = statusColors[detail.status] || "#000000";
+
                         row.innerHTML = `
                             <td>${detail.caseNumber}</td>
                             <td>${detail.complainant}</td>
                             <td>${detail.respondent}</td>
                             <td>${new Date(detail.dateFiled).toLocaleDateString()}</td>
                             <td>${detail.caseType}</td>
+                            <td style="color: ${statusColor};">${detail.status}</td> 
                             <td>${arch1.typename}</td>
                             <td class="menu-row">
                                 <img class="dot" src="../icon/triple-dot.svg" alt="">
@@ -172,16 +195,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                     })
                 });
             }
-            if ((doctype === 'Ordinance' && searchQuery) || doctype === 'Ordinance') {
-                archive.forEach(arch1 => {
-                    if (arch1.length === 0) {
-                        const noDataRow = document.createElement('tr');
-                        noDataRow.innerHTML = `
+            if (doctype === 'Ordinance') {
+                if (archive.length === 0) {
+                    const noDataRow = document.createElement('tr');
+                    noDataRow.innerHTML = `
                             <td colspan="8" class="text-center">No ${doctype} Documents Found.</td>
                         `;
-                        archiveTableBody.appendChild(noDataRow);
-                        return;
-                    }
+                    archiveTableBody.appendChild(noDataRow);
+                    return;
+                }
+                archive.forEach(arch1 => {
 
                     arch1.documentdetails.forEach(detail => {
                         const row = document.createElement('tr');
@@ -224,16 +247,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                     })
                 });
             }
-            if ((doctype === 'Panumduman' && searchQuery) || doctype === 'Panumduman') {
-                archive.forEach(arch => {
-                    if (arch.length === 0) {
-                        const noDataRow = document.createElement('tr');
-                        noDataRow.innerHTML = `
+            if (doctype === 'Panumduman') {
+                if (archive.length === 0) {
+                    const noDataRow = document.createElement('tr');
+                    noDataRow.innerHTML = `
                             <td colspan="4" class="text-center">No ${doctype} Documents Found.</td>
                         `;
-                        archiveTableBody.appendChild(noDataRow);
-                        return;
-                    }
+                    archiveTableBody.appendChild(noDataRow);
+                    return;
+                }
+                archive.forEach(arch => {
                     arch.documentdetails.forEach(detail => {
                         const row = document.createElement('tr');
                         function formatStringNames(data, fallbackMessage) {
@@ -269,16 +292,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                     })
                 });
             }
-            if ((doctype === 'Regularization Minutes' && searchQuery) || doctype === 'Regularization Minutes') {
-                archive.forEach(arch1 => {
-                    if (arch1.length === 0) {
-                        const noDataRow = document.createElement('tr');
-                        noDataRow.innerHTML = `
+            if (doctype === 'Regularization Minutes') {
+                if (archive.length === 0) {
+                    const noDataRow = document.createElement('tr');
+                    noDataRow.innerHTML = `
                             <td colspan="4" class="text-center">No ${doctype} Documents Found.</td>
                         `;
-                        archiveTableBody.appendChild(noDataRow);
-                        return;
-                    }
+                    archiveTableBody.appendChild(noDataRow);
+                    return;
+                }
+                archive.forEach(arch1 => {
 
                     arch1.documentdetails.forEach(detail => {
                         const row = document.createElement('tr');
@@ -304,16 +327,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                     })
                 });
             }
-            if ((doctype === 'Resolution' && searchQuery) || doctype === 'Resolution') {
-                archive.forEach(arch1 => {
-                    if (arch1.length === 0) {
-                        const noDataRow = document.createElement('tr');
-                        noDataRow.innerHTML = `
+            if (doctype === 'Resolution') {
+                if (archive.length === 0) {
+                    const noDataRow = document.createElement('tr');
+                    noDataRow.innerHTML = `
                             <td colspan="5" class="text-center">No ${doctype} Documents Found.</td>
                         `;
-                        archiveTableBody.appendChild(noDataRow);
-                        return;
-                    }
+                    archiveTableBody.appendChild(noDataRow);
+                    return;
+                }
+                archive.forEach(arch1 => {
 
                     arch1.documentdetails.forEach(detail => {
                         const row = document.createElement('tr');
@@ -353,7 +376,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     function updatePaginationLinks(currentPage, totalPages) {
         const paginationNav = document.getElementById('paginationNav');
         paginationNav.innerHTML = '';
-    
+
         if (currentPage > 1) {
             const prevButton = document.createElement('button');
             prevButton.textContent = 'Previous';
@@ -364,7 +387,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             });
             paginationNav.appendChild(prevButton);
         }
-    
+
         if (currentPage < totalPages) {
             const nextButton = document.createElement('button');
             nextButton.textContent = 'Next';
@@ -417,6 +440,24 @@ function docChangesSelected(doctype, authorsLength, coAuthorsLength, sponsorsLen
             <div class="inputWithLabel">
                 <label>Type Of Case</label>
                 <input type="text" aria-label="Date Filed" name="caseType" id="caseType" required>
+            </div>
+            <div class="inputWithLabel">
+            <label for="">Case Stage</label>
+            <select class="caseStage-dropdown" name="caseStage" id="caseStage">
+                <option value=" default" disabled selected>
+                Select a Status
+                </option>
+                <option value="Settled">Settled</option>
+                <option value="Resolve">Resolve</option>
+                <option value="Dismissed">Dismissed</option>
+                <option value="Withdrawn">Withdrawn</option>
+                <option value="Deferred">Deferred</option>
+                <option value="Pending">Pending</option>
+                <option value="Under Investigation">Under Investigation</option>
+                <option value="For Hearing">For Hearing</option>
+                <option value="For Finality">For Finality</option>
+                <option value="Pending Resolution">Pending Resolution</option>
+            </select>
             </div>
             `
     }
@@ -639,6 +680,24 @@ function popUp_button(button) {
             <div class="inputWithLabel">
                 <label>Type Of Case</label>
                 <input type="text" aria-label="Date Filed" name="caseType" id=caseType required>
+            </div>
+            <div class="inputWithLabel">
+            <label for="">Case Stage</label>
+            <select class="caseStage-dropdown" name="caseStage" id="caseStage">
+                <option value=" default" disabled selected>
+                Select a Status
+                </option>
+                <option value="Settled">Settled</option>
+                <option value="Resolve">Resolve</option>
+                <option value="Dismissed">Dismissed</option>
+                <option value="Withdrawn">Withdrawn</option>
+                <option value="Deferred">Deferred</option>
+                <option value="Pending">Pending</option>
+                <option value="Under Investigation">Under Investigation</option>
+                <option value="For Hearing">For Hearing</option>
+                <option value="For Finality">For Finality</option>
+                <option value="Pending Resolution">Pending Resolution</option>
+            </select>
             </div>
             `
         }
@@ -869,6 +928,7 @@ function setImage(imagePath) {
 // function
 function addTextarea() {
     const container = document.getElementById("authorContainer");
+    if (container.children.length == 3) return (alert('The maximum number of authors allowed is 3.'));
     const div = document.createElement('div');
     div.classList.add('inputWithLabel');
     div.setAttribute('id', `author-${authorCount}`);
@@ -906,7 +966,7 @@ function removeTextarea() {
 }
 function addTextarea1() {
     const container = document.getElementById("co-AuthorContainer");
-
+    if (container.children.length == 3) return (alert('The maximum number of co-authors allowed is 3.'));
     const div = document.createElement('div');
     div.classList.add('inputWithLabel');
     div.setAttribute('id', `co-Author-${coAuthorCount}`);
@@ -943,7 +1003,7 @@ function removeTextarea1() {
 }
 function addTextarea2() {
     const container = document.getElementById("sponsorContainer");
-
+    if (container.children.length == 3) return (alert('The maximum number of sponsors allowed is 3.'));
     const div = document.createElement('div');
     div.classList.add('inputWithLabel');
     div.setAttribute('id', `sponsor-${sponsorCount}`);
