@@ -1,5 +1,5 @@
 
-<div class="A4 with-logo-bg visible" id="residency">
+<div class="A4 with-logo-bg" id="residency">
     <%- include("../includes/print-header.ejs") %>
     <div class="cert-header"><img class="linya" src="../images/header-line.png" alt=""></div>
     <img class="bg-logo" src="../images/certificate-background-logo.png" alt="">
@@ -7,31 +7,31 @@
         <div class="lefttt-RA-1162" style="width: 180px; font-size: .6; padding: .5em;">
             <div><p style="font-size: 1.05rem;"><strong><span style="letter-spacing: 5px;">SANNGUNIANG </span><br> BARANGAY COUNCIL</strong></p></div>
             <div class="m" style="text-align: center;">
-                <strong><p>HON. IAN C. GONZALES</p></strong>
+                <strong><p class="punongBarangay"></p></strong>
                 <p><em>Punong Barangay</em></p>
             </div>
             <div class="m" style="text-align: center;">
                 <div><p style="font-size: 1.01rem;"><strong><span style="letter-spacing: 5px;">SANNGUNIANG </span><br> BARANGAY MEMBERS</strong></p></div>
                 <div class="ngarans" style="text-align: center; font-size: .75rem;">
-                    <strong><p>HON. CARMELA O. CABEL</p></strong>
-                    <strong><p>HON. MANUEL R. BAGAINDOC</p></strong>
-                    <strong><p>HON. RAUL E. ALAMBRA</p></strong>
-                    <strong><p>HON. BENITO A. APELADO</p></strong>
-                    <strong><p>HON. AIMEE GRACE C. AGDA</p></strong>
-                    <strong><p>HON.  DAMIANO C. BALDOS</p></strong>
-                    <strong><p>HON. EDNAR C. PADRO</p></strong>
+                    <strong><p class="kagawad1">HON. CARMELA O. CABEL</p></strong>
+                    <strong><p class="kagawad2">HON. MANUEL R. BAGAINDOC</p></strong>
+                    <strong><p class="kagawad3">HON. RAUL E. ALAMBRA</p></strong>
+                    <strong><p class="kagawad4">HON. BENITO A. APELADO</p></strong>
+                    <strong><p class="kagawad5">HON. AIMEE GRACE C. AGDA</p></strong>
+                    <strong><p class="kagawad6">HON.  DAMIANO C. BALDOS</p></strong>
+                    <strong><p class="kagawad7">HON. EDNAR C. PADRO</p></strong>
                 </div>
             </div>
             <div class="m" style="text-align: center; text-wrap: nowrap; font-size: .75rem;">
-                <strong><p>HON. DEXTER G. AQUINO</p></strong>
+                <strong><p class="SKChairperson">HON. DEXTER G. AQUINO</p></strong>
                 <p><em>SK Chairperson</em></p>
             </div>
             <div class="m" style="text-align: center; text-wrap: nowrap; font-size: .75rem;">
-                <strong><p>MR. DOMINIQUE C. CARAGA</p></strong>
+                <strong><p class="brgySecretary">MR. DOMINIQUE C. CARAGA</p></strong>
                 <p><em>Barangay Secretary</em></p>
             </div>
             <div class="m" style="text-align: center; font-size: .75rem;">
-                <strong><p>MS. ARIANE C. AGDA</p></strong>
+                <strong><p class="brgyTreasurer">MS. ARIANE C. AGDA</p></strong>
                 <p><em>Barangay Treasurer</em></p>
             </div>
             <!-- <div style="font-size: 14px; line-height: 10px; text-align: start; margin-top: 3em;">
@@ -48,26 +48,26 @@
             <div class="context">
                 <div style="text-align: center;"><h2 style="margin: 0;">BARAGAY  RESIDENCY</h2></div>
                 <p class="wala"><strong>TO WHOM THIS MAY CONCERN:</strong></p>
-                <p><strong>THIS IS TO CERTIFY</strong> that <strong>OBINA, NILO M.,</strong> is a bona fide resident of: </p>
+                <p><strong>THIS IS TO CERTIFY</strong> that <strong id="residencyFullName">(FULLNAME)</strong>, is a bona fide resident of: </p>
                 <div style="display: flex; flex-direction: column; gap: 68px">
                     <div class="g-row-2">
-                        <p>Street</p>               <p>:</p>   <p>Donato Dorado</p>
-                        <p>Purok</p>                <p>:</p>   <p>Siguidila</p>
-                        <p>Barangay</p>             <p>:</p>   <p>Maypangdan</p>
-                        <p>City</p>                 <p>:</p>   <p>Borongan City</p>
-                        <p>Province</p>             <p>:</p>   <p>Eastern Samar</p>
-                        <p>Since</p>                <p>:</p>   <p>2015 tp present</p>
-                        <p>Years living</p>         <p>:</p>   <p>60</p>
-                        <p>Purpose</p>              <p>:</p>   <p>Senior Citizen Application Requirement</p>
+                        <p>Street</p>               <p>:</p>   <p id="residencyStreet">(STREET)</p>
+                        <p>Purok</p>                <p>:</p>   <p id="residencyPurok">(PUROK)</p>
+                        <p>Barangay</p>             <p>:</p>   <p id="residencyBarangay">(BARANGAY)</p>
+                        <p>City</p>                 <p>:</p>   <p id="residencyMunicipality">(MUNICIPALITY)</p>
+                        <p>Province</p>             <p>:</p>   <p id="residencyProvince">(PROVINCE)</p>
+                        <p>Since</p>                <p>:</p>   <p id="residencySince">(RESIDENT SINCE)</p>
+                        <p>Years living</p>         <p>:</p>   <p id="residencyYearsLiving">(YEARS OF LIVING)</p>
+                        <p>Purpose</p>              <p>:</p>   <p id="residencyPurpose">(PURPOSE)</p>
                     </div>
 
                     <div class="g-row-2">
-                        <p>OPT ID</p>           <p>:</p>   <p>Asuncion</p>
-                        <p>CTC Number</p>       <p>:</p>   <p>Seguidila</p>
-                        <p>CTC Issued</p>       <p>:</p>   <p>Maypangdan</p>
-                        <p>CTC Date</p>         <p>:</p>   <p>Borongan</p>
-                        <p>O.R Number</p>       <p>:</p>   <p>Eastern Samar</p>
-                        <p>Date Printed</p>     <p>:</p>   <p>Eastern Samar</p>
+                        <p>OPT ID</p>           <p>:</p>   <p id="residencyOPTID"></p>
+                        <p>CTC Number</p>       <p>:</p>   <p id="residencyCTCNumber"></p>
+                        <p>CTC Issued</p>       <p>:</p>   <p id="residencyCTCIssued"></p>
+                        <p>CTC Date</p>         <p>:</p>   <p id="residencyCTCDate"></p>
+                        <p>O.R Number</p>       <p>:</p>   <p id="residencyORNos"></p>
+                        <p>Date Printed</p>     <p>:</p>   <p id="residencyDatePrinted"></p>
                     </div>
                 </div>
             </div>
@@ -78,8 +78,8 @@
             <div>
                 <p>Attesded by:</p>
                 <div style="text-align: center;">
-                    <p><strong class="punongBarangay"><u>MR. DOMNIQUE C. CARAGA</u></strong></p>
-                    <em>Punong Barangay</em>
+                    <p><strong id="residencyAttestedBy"><u>(ATTESTED BY)</u></strong></p>
+                    <em id="residencyPositionOrRole">(Position or Role)</em>
                 </div>
             </div>
         </div>
@@ -87,14 +87,14 @@
             <div>
                 <p>Approved by:</p>
                 <div style="text-align: center;">
-                    <p><strong class="punongBarangay"><u>HON. IAN C. GONZALES</u></strong></p>
-                    <em>Barangay Secretary</em>
+                    <p><strong class="punongBarangay"><u class="punongBarangay"></u></strong></p>
+                    <em>Punong Barangay</em>
                 </div>
             </div>
         </div>
     </div>
     <div style="position: relative; z-index: 2; font-size: 12px; margin-top: 2em;">
-        <p>Valid for 90 days from the date of issued.</p>
+        <p>Valid for <span id="residencyBalidationDays"></span> from the date of issued.</p>
         <p>NOT VALID WITHOUT OFFICIAL DRY SEAL</p>
     </div>
     <%- include("../includes/print-footer.ejs") %>

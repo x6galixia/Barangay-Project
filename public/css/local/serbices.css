@@ -28,3 +28,11 @@ table {
   background-color: #33A90F;
   color: white;
 }
+
+#process-certificate{
+  width: 45%;
+}
+
+#certificate{
+  width: 50%;
+}
