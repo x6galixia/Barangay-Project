@@ -107,7 +107,7 @@ window.processCertificate = function (button) {
 
   if (purpose === 'Oath Of Undertaking') {
       document.getElementById("oathFullName").innerHTML = `${firstName} ${middleName} ${lastName}`.toLocaleUpperCase();
-      document.getElementById("oathFullName1").innerHTML = `${firstName} ${middleName} ${lastName}`.toLocaleUpperCase();
+      // document.getElementById("oathFullName1").innerHTML = `${firstName} ${middleName} ${lastName}`.toLocaleUpperCase();
       document.getElementById("oathAddress").innerText = `${barangay}, ${city}, ${province}`;
       document.getElementById("oathGender").innerHTML = `${gender}`;
       document.getElementById("oathAge").innerHTML = `${age}`;
@@ -162,6 +162,10 @@ window.processCertificate = function (button) {
               <input type="text" id="brgyClearanceCTCNosInput">
           </div>
           <div class="inputWithLabel">
+              <label for="">CTC Issued</label>
+              <input type="text" id="brgyClearanceCTCIssuedInput">
+          </div>
+          <div class="inputWithLabel">
               <label for="">Date Issued</label>
               <input type="date" id="brgyClearanceDateIssuedInput">
           </div>
@@ -172,6 +176,10 @@ window.processCertificate = function (button) {
           <div class="inputWithLabel">
               <label for="">Date Printed</label>
               <input type="date" id="brgyClearanceDatePrintedInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Validation Days (Ex. 90 days)</label>
+              <input type="text" id="brgyClearanceValidationInput">
           </div>
       `;
   
@@ -213,9 +221,11 @@ window.processCertificate = function (button) {
             document.getElementById("brgyClearanceRemarks").innerText = document.getElementById("brgyClearanceRemarksInput").value.toUpperCase();
             document.getElementById("brgyClearanceOptID").innerText = document.getElementById("brgyClearanceOptIDInput").value;
             document.getElementById("brgyClearanceCTCNos").innerText = document.getElementById("brgyClearanceCTCNosInput").value;
+            document.getElementById("brgyClearanceCTCIssued").innerText = document.getElementById("brgyClearanceCTCIssuedInput").value;
             document.getElementById("brgyClearanceDateIssued").innerText = document.getElementById("brgyClearanceDateIssuedInput").value;
             document.getElementById("brgyClearanceORNos").innerText = document.getElementById("brgyClearanceORNosInput").value;
             document.getElementById("brgyClearanceDatePrinted").innerText = document.getElementById("brgyClearanceDatePrintedInput").value;
+            document.getElementById("brgyClearanceValidation").innerText = document.getElementById("brgyClearanceValidationInput").value;
     
             if (certificatePurposeInput.type === "text") {
               brgyClearancePurpose.innerText = selectedPurpose.toUpperCase();
@@ -448,7 +458,7 @@ window.processCertificate = function (button) {
               <input type="hidden" id="certificatePurpose" style="margin-top:12px">
           </div>
           <div class="inputWithLabel">
-              <label for="">Business Name or Trade Activityi</label>
+              <label for="">Business Name or Trade Activity</label>
               <input type="text" id="businessClosureBusinessNameInput">
           </div>
           <div class="inputWithLabel">
@@ -667,14 +677,13 @@ window.processCertificate = function (button) {
   
       viewCertificate.addEventListener('click',()=> viewCertificateDetails("guardianship"));
     }
-    // uyung ibang certificate gamitin
     else if (purpose === 'Income') {
       certificateMainForm.innerHTML = `
           <div class="inputWithLabel">
               <label for="certificatePurpose">Purpose</label>
               <select class="certficate-purpose-dropdown" id="selectPurpose">
                   <option value="default" disabled selected>Select a Purpose</option>
-                  <option value="Motor Load Requirement">Motor Load Requirement</option>
+                  <option value="Motor Loan Requirement">Motor Loan Requirement</option>
                   <option value="Others">Others</option>
               </select>
               <input type="hidden" id="certificatePurpose" style="margin-top:12px">
@@ -1025,22 +1034,79 @@ window.processCertificate = function (button) {
     else if (purpose === 'Residency') {
       certificateMainForm.innerHTML = `
           <div class="inputWithLabel">
-              <label for="">Resident Since</label>
+              <label for="certificatePurpose">Purpose</label>
+              <select class="certficate-purpose-dropdown" id="selectPurpose">
+                  <option value="default" disabled selected>Select a Purpose</option>
+                  <option value="4ps Benificiary Transfer Requirement">4ps Benificiary Transfer Requirement</option>
+                  <option value="LTO Application Requirement">LTO Application Requirement</option>
+                  <option value="PSA Application Requirement">PSA Application Requirement</option>
+                  <option value="Residency Transfer Requirement">Residency Transfer Requirement</option>
+                  <option value="Senior Citizen Application Requirement">Senior Citizen Application Requirement</option>
+                  <option value="Water Connection Application Requirement">Water Connection Application Requirement</option>
+                  <option value="Whatever legal purpose">Whatever legal purpose</option>
+                  <option value="Others">Others</option>
+              </select>
+              <input type="hidden" id="certificatePurpose" style="margin-top:12px">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Resident Since (Ex. 2013 to present)</label>
               <input type="text" id="residencyResidentSinceInput">
           </div>
           <div class="inputWithLabel">
-              <label for="">Resident Until</label>
-              <input type="text" id="residencyResidentUntilInput">
+              <label for="">Years living</label>
+              <input type="number" id="residencyResidentYearsLivingInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Opt ID</label>
+              <input type="text" id="residencyOptIDInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">CTC Nos</label>
+              <input type="text" id="residencyCTCNosInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">CTC Issued</label>
+              <input type="text" id="residencyCTCIssuedInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Date Issued</label>
+              <input type="date" id="residencyDateIssuedInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Date Printed</label>
+              <input type="date" id="residencyDatePrintedInput">
           </div>
           <div class="inputWithLabel">
               <label for="">OR Nos</label>
               <input type="number" id="residencyORNumberInput">
           </div>
           <div class="inputWithLabel">
-              <label for="">Validation Days</label>
-              <input type="number" id="residencyValidationInput">
+              <label for="">Attested By</label>
+              <input type="text" id="residencyAttestedInput">
+          </div>
+          <div class="inputWithLabel" style="flex:1">
+              <label for="">Position or Role (Ex. Barangay Secretary)</label>
+              <input type="text" id="residencyAttestedPositionInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Validation Days (Ex. 90 Days)</label>
+              <input type="text" id="residencyValidationInput">
           </div>
       `;
+
+      document.getElementById("selectPurpose").addEventListener('change', function () {
+        const selectedValue = this.value.trim();
+        const certificatePurposeInput = document.getElementById("certificatePurpose");
+  
+        if (selectedValue === "Others") {
+          certificatePurposeInput.type = "text";
+          certificatePurposeInput.value = "";
+          certificatePurposeInput.placeholder = "Enter the purpose";
+        } else {
+          certificatePurposeInput.type = "hidden";
+          certificatePurposeInput.value = selectedValue;
+        }
+      });
   
   
       document.getElementById("residencyFullName").innerText =
@@ -1051,12 +1117,36 @@ window.processCertificate = function (button) {
       document.getElementById("residencyMunicipality").innerHTML = city;
       document.getElementById("residencyProvince").innerHTML = province;
   
-  
+      
+
       document.addEventListener('click', function (event) {
         if(event.target.classList.contains("applyChanges")){
-          document.getElementById("residencySince").innerText = document.getElementById("residencyResidentSinceInput").value.toUpperCase();
-          document.getElementById("residencyUntil").innerText = document.getElementById("residencyResidentUntilInput").value.toUpperCase();
-          alert("Changes applied");
+          const certificatePurposeInput = document.getElementById("selectPurpose");
+          const selectedPurpose = certificatePurposeInput.value.trim();
+          
+          if (selectedPurpose && selectedPurpose !== "default") {
+            if (selectedPurpose === "Whatever legal purpose"){
+              residencyPurpose.innerText = "";
+            } else {
+              const residencyPurpose = document.getElementById("residencyPurpose");
+              residencyPurpose.innerText = selectedPurpose;
+            }
+            document.getElementById("residencySince").innerText = document.getElementById("residencyResidentSinceInput").value;
+            document.getElementById("residencyYearsLiving").innerText = document.getElementById("residencyResidentYearsLivingInput").value;
+            document.getElementById("residencyOPTID").innerText = document.getElementById("residencyOptIDInput").value;
+            document.getElementById("residencyCTCNumber").innerText = document.getElementById("residencyCTCNosInput").value;
+            document.getElementById("residencyCTCIssued").innerText = document.getElementById("residencyCTCIssuedInput").value;
+            document.getElementById("residencyCTCDate").innerText = document.getElementById("residencyDateIssuedInput").value;
+            document.getElementById("residencyORNos").innerText = document.getElementById("residencyORNumberInput").value;
+            document.getElementById("residencyDatePrinted").innerText = document.getElementById("residencyDatePrintedInput").value;
+            document.getElementById("residencyAttestedBy").innerText = document.getElementById("residencyAttestedInput").value.toUpperCase();
+            document.getElementById("residencyPositionOrRole").innerText = document.getElementById("residencyAttestedPositionInput").value;
+            document.getElementById("residencyBalidationDays").innerText = document.getElementById("residencyValidationInput").value;
+            
+            alert("Changes applied: " + selectedPurpose);
+          } else {
+            alert("Please select a purpose");
+          }
         }
       });
   
@@ -1098,7 +1188,7 @@ window.processCertificate = function (button) {
       });
   
   
-      document.getElementById("samePersonFullName").innerText = `${lastName}, ${firstName} ${middleName}`;
+      document.getElementById("samePersonFullName").innerText = `${lastName}, ${firstName} ${middleName}`.toUpperCase();
       document.getElementById("samePersonAddress").innerText = `Brgy. ${barangay}, ${city}, ${province}`;
   
       document.addEventListener('click', function (event) {
@@ -1168,14 +1258,72 @@ window.processCertificate = function (button) {
       viewCertificate.addEventListener('click', () => viewCertificateDetails("singleness"));
     }
     else if (purpose === 'Solo Parent') {
+      certificateMainForm.innerHTML = `
+          <div class="inputWithLabel">
+              <label for="">Former Partner's Name</label>
+              <input type="text" id="soloParentPartnerInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Time Apar(13 years)</label>
+              <input type="text" id="soloParentTimeApartInput">
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label style="margin-right: auto">Certification Details <br> <i>(Press ctrl+b for bold, ctrl+i for italic, and ctrl+u for underline)</i></label>
+          </div>
+          <div 
+            id="soloParentCertificationDetailsInput"
+            contenteditable="true"
+            style="
+              border: 1px solid #000;
+              padding: 8px;
+              min-height: 80px;
+              margin: 5px 0;
+              font-family: Arial, sans-serif;
+              border-radius: 10px;
+              outline: none;
+            "
+            onkeydown="handleFormatting(event, this)"
+          ></div>
+          <div class="inputWithLabel">
+              <label for="">OR Nos</label>
+              <input type="number" id="soloParentORNumberInput">
+          </div>
+      `;
+
+      document.getElementById("soloParentFullName").innerText =`${lastName}, ${firstName} ${middleName}`.toUpperCase();
+      document.getElementById("soloParentAddress").innerText = `Purok ${purok}, Barangay ${barangay}, ${city}, Province of ${province}`;
+
+      document.addEventListener('click', function (event) {
+        if(event.target.classList.contains("applyChanges")){ 
+          document.getElementById("soloParentPartner").innerText = document.getElementById("soloParentPartnerInput").value.toLocaleUpperCase();
+          document.getElementById("soloParentTimeApart").innerText = document.getElementById("soloParentTimeApartInput").value;
+          document.getElementById("soloParentCertificationDetails").innerHTML = document.getElementById("soloParentCertificationDetailsInput").innerHTML;
+          document.getElementById("soloParentORNos").innerHTML = document.getElementById("soloParentORNumberInput").value;
+          
+            alert("Changes applied");
+        }
+      });
+
       viewCertificate.addEventListener('click',()=> viewCertificateDetails("soloParent"));
+    }
+    else if (purpose === 'Common Law') {
+      viewCertificate.addEventListener('click',()=> viewCertificateDetails("commonLaw"));
+    }
+    else if (purpose === 'Employment') {
+      viewCertificate.addEventListener('click',()=> viewCertificateDetails("employment"));
+    }
+    else if (purpose === 'Water District') {
+      viewCertificate.addEventListener('click',()=> viewCertificateDetails("waterDistrict"));
+    }
+    else if (purpose === 'Death Certificate') {
+      viewCertificate.addEventListener('click',()=> viewCertificateDetails("death"));
     }
   }
   // Function to view certificate
   function viewCertificateDetails(selectedCertificate) {
     document.getElementById("certificate").classList.add("visible");
   
-    const hiddenContainers = document.querySelectorAll("#residency, #indigency, #RA11261, #brgyClearance, #singleness, #guardianship, #income, #landNoClaim, #noDuplication, #panumduman, #buildingClearance, #burailClearance, #businessClearance, #businessClosure, #lateRegistration, #soloParent, #oathUndertaking, #goodMoral, #samePerson");
+    const hiddenContainers = document.querySelectorAll("#residency, #indigency, #RA11261, #brgyClearance, #singleness, #guardianship, #income, #landNoClaim, #noDuplication, #panumduman, #buildingClearance, #burailClearance, #businessClearance, #businessClosure, #lateRegistration, #soloParent, #oathUndertaking, #goodMoral, #samePerson, #commonLaw, #death, #employment, #waterDistrict");
     hiddenContainers.forEach(container => container.classList.remove("visible"));
     
     var convertToImage = document.getElementById(selectedCertificate);
