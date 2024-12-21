@@ -95,7 +95,8 @@
                                 </div>
                                 <div class="inputWithLabel" id="surubadan">
                                     <label>Complainant</label>
-                                    <input id="complainant" type="text" aria-label="Complainant" name="complainant" required>
+                                    <input id="complainant" type="text" aria-label="Complainant" name="complainant" placeholder="Search for a resident" required>
+                                    <div id="results"></div>
                                 </div>
                                 <div class="inputWithLabel" id="surubadan">
                                     <label>Respondent</label>
@@ -193,6 +194,7 @@
 </body>
 <script src="../../js/global/pop-up.js"></script>
 <script src="../../js/local/archive/archive-api.js"></script>
+<script src="../../js/local/archive/helper-functions.js"></script>
 <script>
     document.querySelector("header>nav>ul>li:nth-child(5)").classList.toggle("selected");
     // Function to trigger file input click
