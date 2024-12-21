@@ -218,23 +218,24 @@
         }
     }
 </script>
-<script>
-    
-document.getElementById('complainant').addEventListener('input', function () {
-    const query = this.value.trim();
 
-    console.log("HEY I'M CLICKED HAHAHAHHAAH",query);
-    
+<script>  
+document.getElementById('complainant').addEventListener('input', function () {
+    const query = document.getElementById("complainant").value;
+
+    console.log("Input query:", query); // Debugging the input value.
+
     if (query.length > 0) {
         fetch(`/archive/get-resident?query=${encodeURIComponent(query)}`)
             .then(response => {
+                console.log("Response status:", response.status); // Log response status.
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 return response.json();
             })
             .then(data => {
-                console.log("Residents:", data);
+                console.log("Fetched residents:", data); // Log fetched data.
                 const resultsContainer = document.getElementById('results');
                 resultsContainer.innerHTML = '';
 
@@ -249,13 +250,25 @@ document.getElementById('complainant').addEventListener('input', function () {
                 }
             })
             .catch(error => {
-                console.error("Error fetching residents:", error);
+                console.error("Error fetching residents:", error); // Log any errors.
             });
     } else {
-        const resultsContainer = document.getElementById('results');
-        resultsContainer.innerHTML = '';
+        document.getElementById('results').innerHTML = ''; // Clear results for empty input.
     }
 });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const complainantField = document.getElementById('complainant');
+        if (complainantField) {
+            complainantField.addEventListener('input', function () {
+                console.log("Inline script triggered:", this.value);
+            });
+        } else {
+            console.error("Complainant input field not found!");
+        }
+    });
 </script>
 
 </html>

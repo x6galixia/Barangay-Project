@@ -151,7 +151,6 @@ CREATE TABLE residents (
     isOutOfSchoolYouth BOOLEAN DEFAULT FALSE, 
     isSkm BOOLEAN DEFAULT FALSE,              
     isKm BOOLEAN DEFAULT FALSE,
-    caseStatus VARCHAR(255) NULL,
     isPaid BOOLEAN DEFAULT FALSE NULL                 
 );
 

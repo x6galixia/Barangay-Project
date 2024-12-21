@@ -114,6 +114,7 @@ const archiveSchema = Joi.object({
             then: Joi.string().required(),
             otherwise: Joi.optional().allow(null)
         }),
+        caseStage: Joi.string().optional().allow(""),
 
         // Ordinance
         ordinanceNumber: Joi.when('doctypeId', {
