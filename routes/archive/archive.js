@@ -151,6 +151,27 @@ router.get("/archive-item/:id", async (req, res) => {
     }
 });
 
+router.get("/get-resident", async (req, res) => {
+    const { query } = req.query;
+
+    if (!query) {
+        return res.status(400).send("Query parameter is required");
+    }
+
+    try {
+        const result = await mPool.query(
+            `SELECT residentsid, fname, mname, lname 
+             FROM residents 
+             WHERE CONCAT(fname, ' ', mname, ' ', lname) ILIKE $1`, 
+            [`%${query}%`]
+        );
+        return res.json(result.rows);
+    } catch (err) {
+        console.error("Error: ", err.stack, err.message);
+        res.status(500).send("Internal server error");
+    }
+});
+
 router.post('/dashboard/add-archive', upload.single('image'), async (req, res) => {
     console.log("Request Body:", req.body);
     console.log("File:", req.file);
