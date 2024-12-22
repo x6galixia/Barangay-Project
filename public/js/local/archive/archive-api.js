@@ -427,7 +427,8 @@ function docChangesSelected(doctype, authorsLength, coAuthorsLength, sponsorsLen
             </div>
             <div class="inputWithLabel" id="surubadan">
                 <label>Complainant</label>
-                <input type="text" aria-label="Complainant" name="complainant" id="complainant" required>
+                <input id="complainant" type="text" aria-label="Complainant" name="complainant" placeholder="Search for a resident" required>
+                <div id="results"></div>
             </div>
             <div class="inputWithLabel" id="surubadan">
                 <label>Respondent</label>
@@ -668,7 +669,8 @@ function popUp_button(button) {
             </div>
             <div class="inputWithLabel" id="surubadan">
                 <label>Complainant</label>
-                <input type="text" aria-label="Complainant" name="complainant" id="complainant" required>
+                <input id="complainant" type="text" aria-label="Complainant" name="complainant" placeholder="Search for a resident" required>
+                <div id="results"></div>
             </div>
             <div class="inputWithLabel" id="surubadan">
                 <label>Respondent</label>

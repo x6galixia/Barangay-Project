@@ -151,6 +151,27 @@ router.get("/archive-item/:id", async (req, res) => {
     }
 });
 
+router.get("/get-resident", async (req, res) => {
+    const { query } = req.query;
+
+    if (!query) {
+        return res.status(400).send("Query parameter is required");
+    }
+
+    try {
+        const result = await mPool.query(
+            `SELECT residentsid, fname, mname, lname 
+             FROM residents 
+             WHERE CONCAT(fname, ' ', mname, ' ', lname) ILIKE $1`, 
+            [`%${query}%`]
+        );
+        return res.json(result.rows);
+    } catch (err) {
+        console.error("Error: ", err.stack, err.message);
+        res.status(500).send("Internal server error");
+    }
+});
+
 router.post('/dashboard/add-archive', upload.single('image'), async (req, res) => {
     console.log("Request Body:", req.body);
     console.log("File:", req.file);
@@ -213,8 +234,8 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
             );
         } else if (doctypeId === 2) { // Lupon
             await mPool.query(
-                `INSERT INTO lupon (archiveId, caseNumber, complainant, respondent, dateFiled, image, caseType)
-                 VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+                `INSERT INTO lupon (archiveId, caseNumber, complainant, respondent, dateFiled, image, caseType, caseStage)
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
                 [
                     archiveId,
                     req.body.luponCaseNumber,
@@ -222,7 +243,8 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
                     req.body.respondent,
                     req.body.dateFiled,
                     requestData.documentData.image,
-                    req.body.caseType
+                    req.body.caseType,
+                    req.body.caseStage
                 ]
             );
         } else if (doctypeId === 3) { // Ordinance

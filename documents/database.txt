@@ -63,6 +63,7 @@ CREATE TABLE lupon (
     dateFiled DATE NOT NULL,
     image VARCHAR(255), -- Path to the image
     caseType VARCHAR(100), -- Example: Civil, Criminal, etc.
+    caseStage VARCHAR(100),
     FOREIGN KEY (archiveId) REFERENCES archive(archiveId)  ON DELETE CASCADE
 );
 
@@ -149,7 +150,8 @@ CREATE TABLE residents (
     is4ps BOOLEAN DEFAULT FALSE,              
     isOutOfSchoolYouth BOOLEAN DEFAULT FALSE, 
     isSkm BOOLEAN DEFAULT FALSE,              
-    isKm BOOLEAN DEFAULT FALSE                  
+    isKm BOOLEAN DEFAULT FALSE,
+    isPaid BOOLEAN DEFAULT FALSE NULL                 
 );
 
 CREATE TABLE boarders (
