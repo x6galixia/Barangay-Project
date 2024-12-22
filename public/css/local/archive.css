@@ -21,9 +21,9 @@
   height: 80%;
   overflow: auto;
 }
-#add-document main::-webkit-scrollbar {
+/* #add-document main::-webkit-scrollbar {
  display: none;
-}
+} */
 
 .pop-up{
   overflow: hidden;

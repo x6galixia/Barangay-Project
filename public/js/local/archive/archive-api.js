@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (selectedValue1 === "Lupon") {
         console.log("1 selected");
         // toggleColumns(true);
-        addArchibeForm.style.height = 'fit-content';
+        addArchibeForm.style.height = '75vh';
         fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
     } else if (selectedValue1 === "Ordinance") {
         console.log("2 selected");
@@ -641,9 +641,9 @@ function popUp_button(button) {
         setImage("");
         document.querySelector('#add-document #submit_add_document').innerText = "SUBMIT";
         document.querySelector('#add-document form').action = `/archive/dashboard/add-archive`;
-        document.querySelector('#add-document .heading').innerHTML = `ADD ${type.toUpperCase()} <br> DOCUMENT`;
         const formContainer = document.getElementById('archiveInputContainer');
         if (type === "Panumduman") {
+            document.querySelector('#add-document .heading').innerHTML = `ADD ${type.toUpperCase()} DOCUMENT`;
             formContainer.innerHTML = `
             <div class="inputWithLabel" id="surubadan">
                 <label>Contracting Parties 1</label>
@@ -660,6 +660,7 @@ function popUp_button(button) {
             `
         }
         if (type === "Lupon") {
+            document.querySelector('#add-document .heading').innerHTML = `ADD ${type.toUpperCase()} DOCUMENT`;
             formContainer.innerHTML = `
             <div class="inputWithLabel" id="surubadan">
                 <label>Lupon Case Number</label>
@@ -702,6 +703,7 @@ function popUp_button(button) {
             `
         }
         if (type === "Ordinance") {
+            document.querySelector('#add-document .heading').innerHTML = `ADD ${type.toUpperCase()} DOCUMENT`;
             authorCount = 1;
             coAuthorCount = 1;
             sponsorCount = 1;
@@ -730,6 +732,7 @@ function popUp_button(button) {
             addTextarea2();
         }
         if (type === "Resolution") {
+            document.querySelector('#add-document .heading').innerHTML = `ADD ${type.toUpperCase()} DOCUMENT`;
             formContainer.innerHTML = `
             <div class="inputWithLabel" id="surubadan">
                 <label>Resolution Number</label>
@@ -746,6 +749,7 @@ function popUp_button(button) {
             `
         }
         if (type === "Regularization Minutes") {
+            document.querySelector('#add-document .heading').innerHTML = `ADD ${type.toUpperCase()} <br> DOCUMENT`;
             formContainer.innerHTML = `
             <div class="inputWithLabel" id="surubadan">
                 <label>Regulation Number (Ex. 1st)</label>
