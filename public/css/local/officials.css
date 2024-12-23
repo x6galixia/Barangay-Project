@@ -48,7 +48,7 @@ body {
 .headingOfficials {
     text-align: center;
     color: white;
-    font-size: 28px;
+    font-size: 26px;
 }
 
 .officialer {
@@ -95,7 +95,7 @@ body {
 
 .officialMainContainer {
     position: fixed;
-    width: 17vw;
+    width: 18vw;
     height: 42vh;
     display: flex;
     flex-direction: column;
@@ -164,5 +164,5 @@ body {
 }
 
 .officialMainContainer>.description .title h3 {
-    font-size: calc(.9rem + .1vw);
+    font-size: 14px;
 }

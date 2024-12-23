@@ -98,7 +98,17 @@ async function fetchRequestLists(page, limit) {
           r.residentsid, r.dateadded, r.purpose, r.isReleased,
           rd.fname, rd.mname, rd.lname, rd.gender, rd.age, rd.civilstatus, rd.street,
           rd.purok, rd.barangay, rd.city, rd.province, rd.birthdate, rd.birthplace,
-          bo.punongbarangaylastname, bo.punongbarangayfirstname, bo.punongbarangaymiddlename
+          bo.punongbarangaylastname, bo.punongbarangayfirstname, bo.punongbarangaymiddlename,
+          bo.kagawad1lastname, bo.kagawad1firstname, bo.kagawad1middlename,
+          bo.kagawad2lastname, bo.kagawad2firstname, bo.kagawad2middlename,
+          bo.kagawad3lastname, bo.kagawad3firstname, bo.kagawad3middlename,
+          bo.kagawad4lastname, bo.kagawad4firstname, bo.kagawad4middlename,
+          bo.kagawad5lastname, bo.kagawad5firstname, bo.kagawad5middlename,
+          bo.kagawad6lastname, bo.kagawad6firstname, bo.kagawad6middlename,
+          bo.kagawad7lastname, bo.kagawad7firstname, bo.kagawad7middlename,
+          bo.skchairpersonlastname, bo.skchairpersonfirstname, bo.skchairpersonmiddlename,
+          bo.barangaysecretarylastname, bo.barangaysecretaryfirstname, bo.barangaysecretarymiddlename,
+          bo.barangaytreasurerlastname, bo.barangaytreasurerfirstname, bo.barangaytreasurermiddlename
       FROM requests r
       LEFT JOIN residents rd ON r.residentsid = rd.residentsid
       CROSS JOIN barangay_officials bo
@@ -285,6 +295,7 @@ async function fetchArchiveData(page, limit, searchQuery = '', doctype = 'Lupon'
               'dateFiled', l.dateFiled,
               'image', l.image,
               'caseType', l.caseType,
+              'caseStage', l.casestage,
               'luponId', l.luponid
             )
           )
