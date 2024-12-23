@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const prevPage = document.createElement('button');
             prevPage.textContent = 'Previous';
             prevPage.addEventListener('click', () => {
-                fetchResidents(currentPage - 1, limit, searchInput.value.trim(), selectedValue1 === 'Non-residents');
+                fetchResidents(currentPage - 1, limit, searchInput.value.trim(), selectedValue1 === 'Non-residents').then(attachDotEventListeners);
             });
             paginationNav.appendChild(prevPage);
         }
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const nextPage = document.createElement('button');
             nextPage.textContent = 'Next';
             nextPage.addEventListener('click', () => {
-                fetchResidents(currentPage + 1, limit, searchInput.value.trim(), selectedValue1 === 'Non-residents');
+                fetchResidents(currentPage + 1, limit, searchInput.value.trim(), selectedValue1 === 'Non-residents').then(attachDotEventListeners);
             });
             paginationNav.appendChild(nextPage);
         }

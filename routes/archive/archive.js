@@ -446,6 +446,7 @@ router.delete("/delete-archive-item/:id", async (req, res) => {
 
     try {
         await mPool.query(`DELETE FROM archive WHERE archiveId = $1`, [archiveId]);
+        req.flash('success', 'Document DELETED Successfully!');
         res.redirect("/archive/dashboard");
     } catch (err) {
         console.error("Error: ", err.stack, err.message);

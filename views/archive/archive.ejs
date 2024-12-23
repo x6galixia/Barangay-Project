@@ -95,12 +95,12 @@
                                 </div>
                                 <div class="inputWithLabel" id="surubadan">
                                     <label>Complainant</label>
-                                    <input id="complainant" type="text" aria-label="Complainant" name="complainant" placeholder="Search for a resident" required>
+                                    <input id="complainant" type="text" aria-label="Complainant" name="complainant" required>
                                     <div id="results"></div>
                                 </div>
                                 <div class="inputWithLabel" id="surubadan">
                                     <label>Respondent</label>
-                                    <input id="respondent" type="text" aria-label="Respondent" name="respondent" required>
+                                    <input id="respondent" type="text" aria-label="Respondent" name="respondent" required autocomplete="off">
                                 </div>
                                 <div class="inputWithLabel">
                                     <label>Date Filed</label>
@@ -219,56 +219,7 @@
     }
 </script>
 
-<script>  
-document.getElementById('complainant').addEventListener('input', function () {
-    const query = document.getElementById("complainant").value;
 
-    console.log("Input query:", query); // Debugging the input value.
 
-    if (query.length > 0) {
-        fetch(`/archive/get-resident?query=${encodeURIComponent(query)}`)
-            .then(response => {
-                console.log("Response status:", response.status); // Log response status.
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Fetched residents:", data); // Log fetched data.
-                const resultsContainer = document.getElementById('results');
-                resultsContainer.innerHTML = '';
-
-                if (data.length > 0) {
-                    data.forEach(resident => {
-                        const listItem = document.createElement('div');
-                        listItem.textContent = `${resident.fname} ${resident.mname} ${resident.lname}`;
-                        resultsContainer.appendChild(listItem);
-                    });
-                } else {
-                    resultsContainer.textContent = 'No results found';
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching residents:", error); // Log any errors.
-            });
-    } else {
-        document.getElementById('results').innerHTML = ''; // Clear results for empty input.
-    }
-});
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const complainantField = document.getElementById('complainant');
-        if (complainantField) {
-            complainantField.addEventListener('input', function () {
-                console.log("Inline script triggered:", this.value);
-            });
-        } else {
-            console.error("Complainant input field not found!");
-        }
-    });
-</script>
 
 </html>

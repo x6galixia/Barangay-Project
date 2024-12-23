@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     searchInput.addEventListener('input', () => {
         const searchQuery = searchInput.value.trim();
-        fetchArchiveLists(1, 10, searchQuery, selectedValue1);
+        fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
     });
 
     if (selectedValue1 === "Lupon") {
@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         // toggleColumns(true);
         addArchibeForm.style.height = '75vh';
         fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
+        
     } else if (selectedValue1 === "Ordinance") {
         console.log("2 selected");
         // toggleColumns(false);
@@ -153,29 +154,30 @@ document.addEventListener("DOMContentLoaded", async function () {
                 archive.forEach(arch1 => {
                     arch1.documentdetails.forEach(detail => {
                         const row = document.createElement('tr');
-
+                        const date = new Date(detail.dateFiled);
+                        const formattedDate = `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
                         const statusColors = {
-                            "Pending": "#FFFF00",       // Yellow
-                            "Under Investigation": "#ADD8E6", // Light Blue 
-                            "Withdrawn": "#D3D3D3",     // Gray
-                            "Deferred": "#FFA500",      // Orange
-                            "For Hearing": "#0000FF",   // Blue
-                            "For Finality": "#90EE90",  // Light Green
-                            "Pending Resolution": "#800080", // Purple
-                            "Resolved": "#008000",      // Green
-                            "Dismissed": "#FF0000",     // Red
-                            "Settled": "#D3D3D3"        // Light Gray
+                            "Pending": "#FF5733",       // Bright Red-Orange (bold)
+                            "Under Investigation": "#1F77B4", // Strong Blue
+                            "Withdrawn": "#7F8C8D",     // Dark Gray (easy to read on white)
+                            "Deferred": "#E67E22",      // Dark Orange (eye-catching)
+                            "For Hearing": "#2980B9",   // Strong Blue (professional and visible)
+                            "For Finality": "#27AE60",  // Vibrant Green (clear and noticeable)
+                            "Pending Resolution": "#8E44AD", // Bold Purple
+                            "Resolved": "#2ECC71",      // Bright Green (positive and vibrant)
+                            "Dismissed": "#C0392B",     // Dark Red (strong contrast)
+                            "Settled": "#95A5A6"        // Darker Gray (subtle but visible)
                         };
 
-                        const statusColor = statusColors[detail.status] || "#000000";
+                        const statusColor = statusColors[detail.caseStage] || "#000000";
 
                         row.innerHTML = `
                             <td>${detail.caseNumber}</td>
                             <td>${detail.complainant}</td>
                             <td>${detail.respondent}</td>
-                            <td>${new Date(detail.dateFiled).toLocaleDateString()}</td>
+                            <td>${formattedDate}</td>
                             <td>${detail.caseType}</td>
-                            <td style="color: ${statusColor};">${detail.status}</td> 
+                            <td style="color: ${statusColor};">${detail.caseStage}</td> 
                             <td>${arch1.typename}</td>
                             <td class="menu-row">
                                 <img class="dot" src="../icon/triple-dot.svg" alt="">
@@ -208,6 +210,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                     arch1.documentdetails.forEach(detail => {
                         const row = document.createElement('tr');
+                        const date = new Date(detail.dateApproved);
+                        const formattedDate = `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
                         function formatStringNames(data, fallbackMessage) {
                             if (typeof data === 'string' && data.trim() !== '') {
                                 return data
@@ -227,7 +231,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                             <td>${formattedAuthors}</td>
                             <td>${formattedCoAuthors}</td>
                             <td>${formattedSponsors}</td>
-                            <td>${new Date(detail.dateApproved).toLocaleDateString()}</td>
+                            <td>${formattedDate}</td>
                             <td>${arch1.typename}</td>
                             <td class="menu-row">
                                 <img class="dot" src="../icon/triple-dot.svg" alt="">
@@ -259,6 +263,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 archive.forEach(arch => {
                     arch.documentdetails.forEach(detail => {
                         const row = document.createElement('tr');
+                        const date = new Date(detail.date);
+                        const formattedDate = `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
                         function formatStringNames(data, fallbackMessage) {
                             if (typeof data === 'string' && data.trim() !== '') {
                                 return data
@@ -272,7 +278,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                         const formattedContractingPerson = formatStringNames(detail.contractingPersons, 'No Contracting Persons available');
                         row.innerHTML = `
                             <td>${formattedContractingPerson}</td>
-                            <td>${new Date(detail.date).toLocaleDateString()}</td>
+                            <td>${formattedDate}</td>
                             <td>${arch.typename}</td>
                             <td class="menu-row">
                                 <img class="dot" src="../icon/triple-dot.svg" alt="">
@@ -305,9 +311,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                     arch1.documentdetails.forEach(detail => {
                         const row = document.createElement('tr');
+                        const date = new Date(detail.date);
+                        const formattedDate = `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
                         row.innerHTML = `
                             <td>${detail.regulationNumber}</td>
-                            <td>${new Date(detail.date).toLocaleDateString()}</td>
+                            <td>${formattedDate}</td>
                             <td>${arch1.typename}</td>
                             <td class="menu-row">
                                 <img class="dot" src="../icon/triple-dot.svg" alt="">
@@ -340,10 +348,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                     arch1.documentdetails.forEach(detail => {
                         const row = document.createElement('tr');
+                        const date = new Date(detail.date);
+                        const formattedDate = `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
                         row.innerHTML = `
                             <td>${detail.resolutionNumber}</td>
                             <td>${detail.seriesYear}</td>
-                            <td>${new Date(detail.date).toLocaleDateString()}</td>
+                            <td>${formattedDate}</td>
                             <td>${arch1.typename}</td>
                             <td class="menu-row">
                                 <img class="dot" src="../icon/triple-dot.svg" alt="">
@@ -381,9 +391,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const prevButton = document.createElement('button');
             prevButton.textContent = 'Previous';
             prevButton.addEventListener('click', () => {
-                const newPage = currentPage - 1;
-                updateURLParameter('page', newPage);
-                fetchArchiveLists(newPage, limit, searchInput.value, getURLParameter('type'));
+                fetchArchiveLists(currentPage - 1, limit, searchInput.value, getURLParameter('type'));
             });
             paginationNav.appendChild(prevButton);
         }
@@ -392,9 +400,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const nextButton = document.createElement('button');
             nextButton.textContent = 'Next';
             nextButton.addEventListener('click', () => {
-                const newPage = currentPage + 1;
-                updateURLParameter('page', newPage);
-                fetchArchiveLists(newPage, limit, searchInput.value, getURLParameter('type'));
+                fetchArchiveLists(currentPage + 1, limit, searchInput.value, getURLParameter('type'));
             });
             paginationNav.appendChild(nextButton);
         }
@@ -427,12 +433,12 @@ function docChangesSelected(doctype, authorsLength, coAuthorsLength, sponsorsLen
             </div>
             <div class="inputWithLabel" id="surubadan">
                 <label>Complainant</label>
-                <input id="complainant" type="text" aria-label="Complainant" name="complainant" placeholder="Search for a resident" required>
-                <div id="results"></div>
-            </div>
-            <div class="inputWithLabel" id="surubadan">
+                <input type="text" aria-label="Complainant" name="complainant" required>
+                </div>
+                <div class="inputWithLabel" id="surubadan">
                 <label>Respondent</label>
-                <input type="text" aria-label="Respondent" name="respondent" id="respondent" required>
+                <input type="text" aria-label="Respondent" id="respondent" name="respondent" id="respondent" required autocomplete="off">
+                <div id="results"></div>
             </div>
             <div class="inputWithLabel">
                 <label>Date Filed</label>
@@ -669,12 +675,12 @@ function popUp_button(button) {
             </div>
             <div class="inputWithLabel" id="surubadan">
                 <label>Complainant</label>
-                <input id="complainant" type="text" aria-label="Complainant" name="complainant" placeholder="Search for a resident" required>
-                <div id="results"></div>
-            </div>
-            <div class="inputWithLabel" id="surubadan">
+                <input type="text" aria-label="Complainant" name="complainant" required>
+                </div>
+                <div class="inputWithLabel" id="surubadan">
                 <label>Respondent</label>
-                <input type="text" aria-label="Respondent" name="respondent" id="respondent" required>
+                <input type="text" aria-label="Respondent" id="respondent" name="respondent" id="respondent" required autocomplete="off">
+                <div id="results" style="display:none"></div>
             </div>
             <div class="inputWithLabel">
                 <label>Date Filed</label>
@@ -762,6 +768,54 @@ function popUp_button(button) {
                 <input type="date" aria-label="Date" id="date" name="date" required>
             </div>
             `
+        }
+
+        document.getElementById('respondent').addEventListener('input', function () {
+            const query = document.getElementById("respondent").value;
+        
+            console.log("Input query:", query); // Debugging the input value.
+        
+            if (query.length > 0) {
+                fetch(`/archive/get-resident?query=${encodeURIComponent(query)}`)
+                    .then(response => {
+                        console.log("Response status:", response.status); // Log response status.
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Fetched residents:", data); // Log fetched data.
+                        const resultsContainer = document.getElementById('results');
+                        resultsContainer.style.display = 'flex';
+                        resultsContainer.innerHTML = '';
+        
+                        if (data.length > 0) {
+                            data.forEach(resident => {
+                                const listItem = document.createElement('div');
+                                listItem.textContent = `${resident.fname} ${resident.mname} ${resident.lname}`;
+                                resultsContainer.appendChild(listItem);
+                            });
+                        } else {
+                            resultsContainer.textContent = '--No results found!--';
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching residents:", error); // Log any errors.
+                    });
+            } else {
+                document.getElementById('results').innerHTML = ''; // Clear results for empty input.
+                document.getElementById('results').style.display = 'none';
+            }
+        });
+    
+        const complainantField = document.getElementById('respondent');
+        if (complainantField) {
+            complainantField.addEventListener('input', function () {
+                console.log("Inline script triggered:", this.value);
+            });
+        } else {
+            console.error("Responcent input field not found!");
         }
 
         addDocument.classList.toggle("visible");

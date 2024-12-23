@@ -295,6 +295,7 @@ async function fetchArchiveData(page, limit, searchQuery = '', doctype = 'Lupon'
               'dateFiled', l.dateFiled,
               'image', l.image,
               'caseType', l.caseType,
+              'caseStage', l.casestage,
               'luponId', l.luponid
             )
           )

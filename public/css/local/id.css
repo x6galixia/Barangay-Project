@@ -18,6 +18,16 @@ html {
     border: 1px solid #000;
 }
 
+.id-container, .id-back, .id-containers, .id-backs{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.id-backs .signature-containers{
+    color: #000;
+}
+
 .id-container #address {
     overflow-wrap: break-word;
 }
@@ -101,18 +111,14 @@ html {
     padding: 4px 0;
 }
 
-.signature-container {
-    text-align: center;
-    margin-top: 17px;
-    padding: 0 86px;
-}
-
 .signature-container hr {
     border: 0;
     border-top: 1px solid black;
+    width: 300%;
 }
 
 .signature-container span {
+    color: #000 !important;
     font-size: 9px;
     font-style: italic;
 }
@@ -190,9 +196,17 @@ html {
 }
 
 .signature-containers {
-    margin-top: 24px;
-    text-align: center;
-    color: white;
+  text-align: center;
+  color: white;
+  position: absolute;
+  bottom: 0;
+  align-self: center;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
 }
 
 .signature-containers .name {
