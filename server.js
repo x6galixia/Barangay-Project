@@ -20,6 +20,7 @@ const residentsRouter = require("./routes/residents/residents");
 const servicesRouter = require("./routes/services/services");
 const statisticsRouter = require("./routes/statistics/statistics");
 const officialsRouter = require("./routes/officials/officials");
+const { title } = require('process');
 
 //-------CONNECTING TO DATABASE-------//
 mPool.connect()
@@ -77,6 +78,12 @@ app.use("/officials", officialsRouter);
 app.get("/", (req, res) => {
     res.redirect("/home/dashboard");
 });
+
+app.use((req, res) => {
+    res.status(404).render('404', { title: '404 Not Found' });
+  });
+
+
 
 //------ERROR HANDLING-------//
 app.use((err, req, res, next) => {

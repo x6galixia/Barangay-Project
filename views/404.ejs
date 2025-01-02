@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/global/general.css">
+    <link rel="stylesheet" href="../css/local/resident.css">
+    <link rel="stylesheet" href="../css/local/id.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <title>
+        <%= title %>
+    </title>
+    <style>
+      .mainContainer{
+        display: grid;
+        place-items: center;
+        margin-top: 7%;
+      }
+
+      .errorText{
+        color: #33A90F;
+        font-size: 100px;
+        font-weight: 900;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+</head>
+
+<body>
+    <%- include("./includes/header.ejs") %>
+        <main class="mainContainer">
+          <h1 class="errorText">404</h1>
+          <h2>Oop's sorry we can't find that page!</h2>
+        </main>
+</body>
+
+</html>
