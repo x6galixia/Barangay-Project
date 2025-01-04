@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { fetchRequestLists } = require("../../middlewares/helper-functions/fetch-functions");
+const mPool = require('../../models/mDatabase');
 
 router.get("/dashboard", async (req, res) => {
     const page = parseInt(req.query.page) || 1;
@@ -39,5 +40,23 @@ router.get("/dashboard", async (req, res) => {
 router.get("/print-services", (req, res) => {
     res.render("services/print-services");
 });
+
+router.delete("/delete-request/:id", async (req, res) => {
+    const requestId = req.params.id;
+
+    try {
+        // Execute the DELETE query
+        await mPool.query(`DELETE FROM requests WHERE residentsId = $1`, [requestId]);
+
+        // Send a success response
+        res.status(200).json({ message: "Request deleted successfully." });
+    } catch (err) {
+        console.error("Error deleting request:", err.stack, err.message);
+
+        // Send an error response
+        res.status(500).json({ error: "Failed to delete the request. Please try again later." });
+    }
+});
+
 
 module.exports = router;

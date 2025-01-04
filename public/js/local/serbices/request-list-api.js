@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                                   data-civilStatus="${request.civilstatus}"
                                   data-gender="${request.gender}"
                                   onclick="processCertificate(this)">Process</button>
-                            <button id="update-id" onclick="">Remove</button>
+                            <button id="update-id" onclick="removeRequest(this)">Remove</button>
                         </div>
                     </div>
                 </td>
@@ -1946,4 +1946,39 @@ document.querySelectorAll(".close_popUp").forEach(function (closeBtn) {
   });
 });
 
+function removeRequest(buttonElement) {
+  // Get the parent `tr` element (row) of the clicked button
+  const row = buttonElement.closest('tr');
+  const requestId = buttonElement.parentElement.getAttribute('data-id');
 
+  // Optionally, confirm the removal
+  if (confirm('Are you sure you want to remove this request?')) {
+      // Remove the row from the DOM
+      row.remove();
+      deleteItem(requestId);
+  }
+}
+
+async function deleteItem(requestID) {
+  console.log("Delete triggered for request ID:", requestID);
+
+  try {
+      const response = await fetch(`/services/delete-request/${requestID}`, {
+          method: 'DELETE',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+
+      if (response.ok) {
+          console.log("Request deleted successfully.");
+          location.reload(); // Reload to reflect the changes
+      } else {
+          console.error("Error: Failed to delete the item. Status:", response.status);
+          alert('Failed to delete the request. Please try again.');
+      }
+  } catch (error) {
+      console.error('Error deleting item:', error);
+      alert('An error occurred while deleting the request. Please try again.');
+  }
+}
