@@ -112,17 +112,20 @@
                             <div class="row">
                                 <div class="inputWithLabel">
                                     <label for="">Educational Attainment</label>
-                                    <select id="educAttainment" name="educAttainment" aria-label="Educational Attainment">
+                                    <select id="educAttainment" name="educAttainment"
+                                        aria-label="Educational Attainment">
                                         <option value="No Formal Education">No Formal Education</option>
                                         <option value="Primary Education">Primary Education</option>
-                                        <option value="Secondary Education(High School)">Secondary Education(High School)</option>
+                                        <option value="Secondary Education(High School)">Secondary Education(High
+                                            School)</option>
                                         <option value="High School Graduate">High School Graduate</option>
                                         <option value="Some College">Some College</option>
                                         <option value="Associate's Degree">Associate's Degree</option>
                                         <option value="Bachelor's Degree">Bachelor's Degree</option>
                                         <option value="Master's Degree">Master's Degree</option>
                                         <option value="Doctorate(PhD)">Doctorate(PhD)</option>
-                                        <option value="Vocational Training/Certificate">Vocational Training/Certificate</option>
+                                        <option value="Vocational Training/Certificate">Vocational Training/Certificate
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="inputWithLabel">
@@ -425,7 +428,7 @@
                     }
                 }
             </style>
-            <div class="pop-up" id="generate-ID">
+            <div class="pop-up" id="generate-ID" style="overflow: auto;">
                 <div class="close-container">
                     <img src="../icon/close.svg" alt="" class="close_popUp">
                 </div>
@@ -446,7 +449,7 @@
                             <div class="sub-head">
                                 <h2>BARANGAY ID</h2>
                             </div>
-                            
+
                             <div class="id-img">
                                 <p id="boardersHighlighter" style="margin-bottom: 4px; font-size: 12px;"></p>
                                 <img id="residentPicture" src="../images/wow.jpg" alt="">
@@ -471,7 +474,7 @@
                                 </p>
                             </div>
 
-                            <div class="signature-container">
+                            <div class="signature-containers signature-container">
                                 <hr class="signature-line">
                                 <span class="signature-text">Signature</span>
                             </div>
@@ -481,7 +484,8 @@
                                 <h2>LGU-MAYPANGDAN</h2>
                                 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is to certify that the bearer of this card
                                     whose
-                                    picture and signature appear herein is a <span id="identification">resident</span> of Barangay Maypangdan Borongan
+                                    picture and signature appear herein is a <span id="identification">resident</span>
+                                    of Barangay Maypangdan Borongan
                                     City.
                                 </p>
                             </div>
@@ -510,13 +514,10 @@
                                     <span class="Civil-stat" style="margin-right: 2px;">Address:</span>
                                     <span class="value" id="emergencyContactAddress">Contact Person Address</span>
                                 </p>
-                                <div class="signature-containers">
-                                    <p class="name" id="punongBarangay"></p>
-                                    <p class="position">Punong Baranggay</p>
-                                </div>
                             </div>
-                            <div class="bottom">
-
+                            <div class="signature-containers">
+                                <p class="name" id="punongBarangay"></p>
+                                <p class="position">Punong Baranggay</p>
                             </div>
                         </div>
 
@@ -566,81 +567,81 @@
 
     // Function to simulate image capture
     function captureImage() {
-    const webcam = document.getElementById("webcam");
-    const canvas = document.getElementById("canvas");
-    const preview = document.getElementById("imagePreview");
-    const fileInput = document.getElementById("fileInput");
-    
-    // Check if webcam is already streaming
-    if (!webcam.srcObject) {
-        // Access the user's webcam
-        navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-                webcam.srcObject = stream;
-                preview.style.display = "none";
-                webcam.style.display = "block"; // Show the webcam
-            })
-            .catch(err => {
-                alert("Unable to access the camera: " + err.message);
-            });
-    } else {
-        // Capture image from webcam
-        preview.style.display = "flex";
-        const context = canvas.getContext("2d");
-        canvas.width = webcam.videoWidth;
-        canvas.height = webcam.videoHeight;
-        context.drawImage(webcam, 0, 0, canvas.width, canvas.height);
+        const webcam = document.getElementById("webcam");
+        const canvas = document.getElementById("canvas");
+        const preview = document.getElementById("imagePreview");
+        const fileInput = document.getElementById("fileInput");
 
-        // Stop webcam stream
-        const stream = webcam.srcObject;
-        const tracks = stream.getTracks();
-        tracks.forEach(track => track.stop());
-        webcam.srcObject = null;
-        webcam.style.display = "none";
+        // Check if webcam is already streaming
+        if (!webcam.srcObject) {
+            // Access the user's webcam
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    webcam.srcObject = stream;
+                    preview.style.display = "none";
+                    webcam.style.display = "block"; // Show the webcam
+                })
+                .catch(err => {
+                    alert("Unable to access the camera: " + err.message);
+                });
+        } else {
+            // Capture image from webcam
+            preview.style.display = "flex";
+            const context = canvas.getContext("2d");
+            canvas.width = webcam.videoWidth;
+            canvas.height = webcam.videoHeight;
+            context.drawImage(webcam, 0, 0, canvas.width, canvas.height);
 
-        // Display captured image
-        const imageData = canvas.toDataURL("image/png");
-        preview.innerHTML = `<img src="${imageData}" alt="Captured Image">`;
+            // Stop webcam stream
+            const stream = webcam.srcObject;
+            const tracks = stream.getTracks();
+            tracks.forEach(track => track.stop());
+            webcam.srcObject = null;
+            webcam.style.display = "none";
 
-        // Convert base64 image to Blob and then to a File object
-        const byteString = atob(imageData.split(',')[1]); // Decode base64 string
-        const ab = new ArrayBuffer(byteString.length);
-        const ia = new Uint8Array(ab);
-        for (let i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
+            // Display captured image
+            const imageData = canvas.toDataURL("image/png");
+            preview.innerHTML = `<img src="${imageData}" alt="Captured Image">`;
+
+            // Convert base64 image to Blob and then to a File object
+            const byteString = atob(imageData.split(',')[1]); // Decode base64 string
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            const blob = new Blob([ab], { type: 'image/png' });
+            const file = new File([blob], "captured_image.png", { type: "image/png" });
+
+            // Create a DataTransfer object to simulate file input
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+
+            // Assign the file to the file input element
+            fileInput.files = dataTransfer.files;
         }
-        const blob = new Blob([ab], { type: 'image/png' });
-        const file = new File([blob], "captured_image.png", { type: "image/png" });
-
-        // Create a DataTransfer object to simulate file input
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(file);
-
-        // Assign the file to the file input element
-        fileInput.files = dataTransfer.files;
     }
-}
 
-// Function to trigger file input click
-function triggerUpload() {
-    document.getElementById("fileInput").click();
-}
-
-// Function to display the selected image
-function displayImage(event) {
-    const file = event.target.files[0];
-    const preview = document.getElementById("imagePreview");
-
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
-        };
-        reader.readAsDataURL(file);
-    } else {
-        preview.innerHTML = `<p>No image uploaded</p>`;
+    // Function to trigger file input click
+    function triggerUpload() {
+        document.getElementById("fileInput").click();
     }
-}
+
+    // Function to display the selected image
+    function displayImage(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview");
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = `<p>No image uploaded</p>`;
+        }
+    }
 
 </script>
 

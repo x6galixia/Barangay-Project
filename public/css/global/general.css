@@ -107,6 +107,7 @@ select {
   outline: none;
   border: 1px solid black;
   height: 38px;
+  background-color: #FFF;
 }
 
 input {

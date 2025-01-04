@@ -10,10 +10,10 @@
     <!-- mahusay na logo footer -->
     <img class="mahusay-logo" src="../images/mahusay-na.png" alt="">
     <div class="context">
-        <p class="wala"><strong>TO WHOM IT MAY CONCERN:</strong></p>
-        <p><strong>THIS IS TO CERTIFY</strong> that <strong><u>OBINA, ELAINE MAE B.,</u></strong> female/male, single/married/widow/widower, a resident of Purok Mustaza, Barangay Maypangdan, Borongan City, Province of Eastern Samar, is currently employed as a Food Attendant at a food stall located at the Business Center, Eastern Samar State University (ESSU) Compound.</p>
-        <p>This certification is issued upon request of the herein interested party for <strong style="color: red;">DSWD FINANCIAL ASSISTANCE REQUIREMENT ONLY</strong>.</p>
-        <p>Given this <strong><u>2nd</u></strong> day of <strong><u>SEPTEMBER</u></strong>  20<strong><u>24</u></strong>, at Barangay Maypangdan, Borongan City, Eastern Samar.</p>
+        <p><strong>TO WHOM IT MAY CONCERN:</strong></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><i>THIS IS TO CERTIFY</i></strong> that <strong><u id="employmentFullName">(FULLNAME)</u></strong>, <span id="employmentGender">(GENDER)</span>, <span id="employmentStatus">(STATUS)</span>, a resident of <span id="employmentAddress">(ADDRESS)</span>, is currently employed as a <span id="employmentJobTitle">(JOB TITLE)</span> at <span id="employmentWorkplace">(WORKPLACE)</span> located at <span id="employmentWorkLocation">(WORK LOCATION)</span>.</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This certification is issued upon request of the herein interested party for <strong style="color: red;" id="employmentPurpose">(PURPOSE)</strong>.</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Given this <strong><u id="dateDay"></u></strong> day of <strong><u id="dateMonth"></u></strong>,  <strong><u id="dateYear"></u></strong>, at Barangay Maypangdan, Borongan City, Eastern Samar.</p>
     </div>
     <div style="display: flex; justify-content: end; margin-right: 71px; margin-top: 200px;">
         <div class="certified">
@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="seal">
-        <p>Valid for <span id="indigencyValidation">(VALIDATION)</span> from the date of issued.</p>
+        <p>Valid for <span id="employmentValidation">(VALIDATION)</span> from the date of issued.</p>
         <p>Not valid without seal.</p>
     </div>
     <div><%- include("../includes/print-footer.ejs") %></div>

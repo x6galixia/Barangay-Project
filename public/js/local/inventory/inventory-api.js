@@ -80,10 +80,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             inventory.forEach(invent => {
                 const row = document.createElement('tr');
+                const date = new Date(invent.dateadded);
+                const formattedDate = `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
                 row.innerHTML = `
                     <td>${invent.inventory_name || 'N/A'}</td>
                     <td>${invent.quantity}</td>
-                    <td>${new Date(invent.dateadded).toLocaleDateString()}</td>
+                    <td>${formattedDate}</td>
                     <td>${invent.iprice}</td>
                      <td class="menu-row">
                         <img class="dot" src="../icon/triple-dot.svg" alt="...">

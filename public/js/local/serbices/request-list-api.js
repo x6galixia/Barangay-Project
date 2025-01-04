@@ -36,6 +36,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <td><button 
                 data-purpose="${request.purpose}"
                 data-punongBarangay="${request.punongbarangayfirstname.toLocaleUpperCase()} ${request.punongbarangaymiddlename.toLocaleUpperCase() ? request.punongbarangaymiddlename.toLocaleUpperCase() : ''} ${request.punongbarangaylastname.toLocaleUpperCase()}"
+                data-skchairperson="${request.skchairpersonfirstname.toLocaleUpperCase()} ${request.skchairpersonmiddlename.toLocaleUpperCase() ? request.skchairpersonmiddlename.toLocaleUpperCase() : ''} ${request.skchairpersonlastname.toLocaleUpperCase()}"
+                data-secretary="${request.barangaysecretaryfirstname.toLocaleUpperCase()} ${request.barangaysecretarymiddlename.toLocaleUpperCase() ? request.barangaysecretarymiddlename.toLocaleUpperCase() : ''} ${request.barangaysecretarylastname.toLocaleUpperCase()}"
+                data-treasurer="${request.barangaytreasurerfirstname.toLocaleUpperCase()} ${request.barangaytreasurermiddlename.toLocaleUpperCase() ? request.barangaytreasurermiddlename.toLocaleUpperCase() : ''} ${request.barangaytreasurerlastname.toLocaleUpperCase()}"
+                data-kagawad1="${request.kagawad1firstname.toLocaleUpperCase()} ${request.kagawad1middlename.toLocaleUpperCase() ? request.kagawad1middlename.toLocaleUpperCase() : ''} ${request.kagawad1lastname.toLocaleUpperCase()}"
+                data-kagawad2="${request.kagawad2firstname.toLocaleUpperCase()} ${request.kagawad2middlename.toLocaleUpperCase() ? request.kagawad2middlename.toLocaleUpperCase() : ''} ${request.kagawad2lastname.toLocaleUpperCase()}"
+                data-kagawad3="${request.kagawad3firstname.toLocaleUpperCase()} ${request.kagawad3middlename.toLocaleUpperCase() ? request.kagawad3middlename.toLocaleUpperCase() : ''} ${request.kagawad3lastname.toLocaleUpperCase()}"
+                data-kagawad4="${request.kagawad4firstname.toLocaleUpperCase()} ${request.kagawad4middlename.toLocaleUpperCase() ? request.kagawad4middlename.toLocaleUpperCase() : ''} ${request.kagawad4lastname.toLocaleUpperCase()}"
+                data-kagawad5="${request.kagawad5firstname.toLocaleUpperCase()} ${request.kagawad5middlename.toLocaleUpperCase() ? request.kagawad5middlename.toLocaleUpperCase() : ''} ${request.kagawad5lastname.toLocaleUpperCase()}"
+                data-kagawad6="${request.kagawad6firstname.toLocaleUpperCase()} ${request.kagawad6middlename.toLocaleUpperCase() ? request.kagawad6middlename.toLocaleUpperCase() : ''} ${request.kagawad6lastname.toLocaleUpperCase()}"
+                data-kagawad7="${request.kagawad7firstname.toLocaleUpperCase()} ${request.kagawad7middlename.toLocaleUpperCase() ? request.kagawad7middlename.toLocaleUpperCase() : ''} ${request.kagawad7lastname.toLocaleUpperCase()}"
                 data-age="${request.age}"
                 data-birthdate="${request.birthdate}"
                 data-birthplace="${request.birthplace}"
@@ -99,29 +109,56 @@ window.processCertificate = function (button) {
   document.querySelector(".overlay").classList.toggle("visible");
   setCurrentDate();
   const punongBarangay = button.getAttribute('data-punongBarangay');
+  const skchairperson = button.getAttribute('data-skchairperson');
+  const brgySecretary = button.getAttribute('data-secretary');
+  const brgyTreasurer = button.getAttribute('data-treasurer');
+  const kagawad1 = button.getAttribute('data-kagawad1');
+  const kagawad2 = button.getAttribute('data-kagawad2');
+  const kagawad3 = button.getAttribute('data-kagawad3');
+  const kagawad4 = button.getAttribute('data-kagawad4');
+  const kagawad5 = button.getAttribute('data-kagawad5');
+  const kagawad6 = button.getAttribute('data-kagawad6');
+  const kagawad7 = button.getAttribute('data-kagawad7');
 
-//  BARANGAY OFFICIALS
+  //  BARANGAY OFFICIALS
   document.querySelectorAll('.punongBarangay').forEach(element => {
     element.innerText = `HON. ${punongBarangay}`;
   });
+  document.querySelectorAll('.SKChairPerson').forEach(element => {
+    element.innerText = `HON. ${skchairperson}`;
+  });
+  document.querySelectorAll('.brgySecretary').forEach(element => {
+    element.innerText = `${brgySecretary}`;
+  });
+  document.querySelectorAll('.brgyTreasurer').forEach(element => {
+    element.innerText = `${brgyTreasurer}`;
+  });
+  for (let i = 1; i <= 7; i++) {
+    const kagawad = button.getAttribute(`data-kagawad${i}`);
+    document.querySelectorAll(`.kagawad${i}`).forEach(element => {
+      element.innerText = `HON. ${kagawad}`;
+    });
+  }
+  
+  
 
   if (purpose === 'Oath Of Undertaking') {
-      document.getElementById("oathFullName").innerHTML = `${firstName} ${middleName} ${lastName}`.toLocaleUpperCase();
-      // document.getElementById("oathFullName1").innerHTML = `${firstName} ${middleName} ${lastName}`.toLocaleUpperCase();
-      document.getElementById("oathAddress").innerText = `${barangay}, ${city}, ${province}`;
-      document.getElementById("oathGender").innerHTML = `${gender}`;
-      document.getElementById("oathAge").innerHTML = `${age}`;
+    document.getElementById("oathFullName").innerHTML = `${firstName} ${middleName} ${lastName}`.toLocaleUpperCase();
+    // document.getElementById("oathFullName1").innerHTML = `${firstName} ${middleName} ${lastName}`.toLocaleUpperCase();
+    document.getElementById("oathAddress").innerText = `${barangay}, ${city}, ${province}`;
+    document.getElementById("oathGender").innerHTML = `${gender}`;
+    document.getElementById("oathAge").innerHTML = `${age}`;
     viewCertificateDetails("oathUndertaking");
   } else {
 
     document.querySelector("#process-certificate").classList.toggle("visible");
     document.getElementById("certificateHeading").innerText = purpose;
-  
+
     const viewCertificate = document.getElementById("viewCertificate");
     const certificateMainForm = document.getElementById("certificateMainForm");
     certificateMainForm.innerHTML = "";
 
-  
+
     if (purpose === 'Brgy. Clearance') {
       certificateMainForm.innerHTML = `
           <div class="inputWithLabel">
@@ -182,11 +219,11 @@ window.processCertificate = function (button) {
               <input type="text" id="brgyClearanceValidationInput">
           </div>
       `;
-  
+
       document.getElementById("selectPurpose").addEventListener('change', function () {
         const selectedValue = this.value.trim();
         const certificatePurposeInput = document.getElementById("certificatePurpose");
-  
+
         if (selectedValue === "Others") {
           certificatePurposeInput.type = "text";
           certificatePurposeInput.value = "";
@@ -196,8 +233,8 @@ window.processCertificate = function (button) {
           certificatePurposeInput.value = selectedValue;
         }
       });
-  
-  
+
+
       document.getElementById("brgyClearanceLastName").innerText = `${lastName}`.toUpperCase();
       document.getElementById("brgyClearanceFirstName").innerText = `${firstName}`.toUpperCase();
       document.getElementById("brgyClearanceMiddleName").innerText = `${middleName}`.toUpperCase();
@@ -209,15 +246,15 @@ window.processCertificate = function (button) {
         day: 'numeric'
       });
       document.getElementById("brgyClearanceCivilStatus").innerText = `${civilStatus}`;
-  
+
       document.addEventListener('click', function (event) {
-        if(event.target.classList.contains("applyChanges")){
+        if (event.target.classList.contains("applyChanges")) {
           const certificatePurposeInput = document.getElementById("certificatePurpose");
           const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
-    
+
           if (selectedPurpose && selectedPurpose !== "default") {
             const brgyClearancePurpose = document.getElementById("brgyClearancePurpose");
-    
+
             document.getElementById("brgyClearanceRemarks").innerText = document.getElementById("brgyClearanceRemarksInput").value.toUpperCase();
             document.getElementById("brgyClearanceOptID").innerText = document.getElementById("brgyClearanceOptIDInput").value;
             document.getElementById("brgyClearanceCTCNos").innerText = document.getElementById("brgyClearanceCTCNosInput").value;
@@ -226,7 +263,7 @@ window.processCertificate = function (button) {
             document.getElementById("brgyClearanceORNos").innerText = document.getElementById("brgyClearanceORNosInput").value;
             document.getElementById("brgyClearanceDatePrinted").innerText = document.getElementById("brgyClearanceDatePrintedInput").value;
             document.getElementById("brgyClearanceValidation").innerText = document.getElementById("brgyClearanceValidationInput").value;
-    
+
             if (certificatePurposeInput.type === "text") {
               brgyClearancePurpose.innerText = selectedPurpose.toUpperCase();
             } else {
@@ -238,8 +275,8 @@ window.processCertificate = function (button) {
           }
         }
       });
-  
-      viewCertificate.addEventListener('click',()=> {
+
+      viewCertificate.addEventListener('click', () => {
         viewCertificateDetails("brgyClearance")
       });
     }
@@ -263,33 +300,33 @@ window.processCertificate = function (button) {
               <input type="text" id="buildingClearanceORNosInput">
           </div>
       `;
-  
-  
+
+
       document.getElementById("buildingClearanceFullName").innerText =
         `${lastName}, ${firstName} ${middleName}`.toUpperCase();
       document.getElementById("buildingClearanceAddress").innerText = `Purok ${purok}, Barangay ${barangay}, ${city}, Province of ${province}`;
       document.getElementById("buildingClearanceStatus").innerHTML = `${civilStatus}`;
-  
+
       document.addEventListener('click', function (event) {
-        if(event.target.classList.contains("applyChanges")){
+        if (event.target.classList.contains("applyChanges")) {
           const certificatePurposeInput = document.getElementById("selectPurpose");
           const selectedPurpose = certificatePurposeInput.value.trim();
 
-          
+
           if (selectedPurpose && selectedPurpose !== "default") {
             const buildingCLearancePurpose = document.getElementById("buildingClearancePurpose");
             const buildingCLearancePurpose1 = document.getElementById("buildingClearancePurpose1");
             document.getElementById("buildingClearanceLocation").innerText = document.getElementById("buildingClearanceLocationInput").value || "(LOCATION)";
             document.getElementById("buildingClearanceORNos").innerText = document.getElementById("buildingClearanceORNosInput").value;
-              buildingCLearancePurpose.innerText = selectedPurpose;
-              buildingCLearancePurpose1.innerText = selectedPurpose;
+            buildingCLearancePurpose.innerText = selectedPurpose;
+            buildingCLearancePurpose1.innerText = selectedPurpose;
             alert("Changes applied: " + selectedPurpose);
           } else {
             alert("Please select a purpose");
           }
         }
       });
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("buildingClearance"));
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("buildingClearance"));
     }
     else if (purpose === 'Burial Certificate') {
       certificateMainForm.innerHTML = `
@@ -360,9 +397,9 @@ window.processCertificate = function (button) {
           </div>
       `;
 
-  
+
       document.addEventListener('click', function (event) {
-        if(event.target.classList.contains("applyChanges")){  
+        if (event.target.classList.contains("applyChanges")) {
           const startDateInput = document.getElementById("burialLamayStartInput").value;
           const durationInput = parseInt(document.getElementById("burialLamayDaysInput").value, 10);
           const burialFirstName = document.getElementById("burialFirstNameInput").value;
@@ -387,15 +424,15 @@ window.processCertificate = function (button) {
           document.getElementById("burialORNos").innerText = document.getElementById("burialORNosInput").value;
           document.getElementById("burialValication").innerText = document.getElementById("burialValidationInput").value;
 
-          if (document.getElementById("burialGenderInput").value === "Male"){
+          if (document.getElementById("burialGenderInput").value === "Male") {
             document.getElementById("burialCourtesyTitle").innerText = `Mr. ${burialLastName}`;
           } else {
             document.getElementById("burialCourtesyTitle").innerText = `Ms. ${burialLastName}`;
           }
-            alert("Changes applied");
+          alert("Changes applied");
         }
       });
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("burailClearance"));
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("burailClearance"));
     }
     else if (purpose === 'Business Clearance') {
       certificateMainForm.innerHTML = `
@@ -429,22 +466,22 @@ window.processCertificate = function (button) {
       `;
 
       document.getElementById("businessClearanceDateIssued").innerText = getCurrentDate();
-  
+
       document.addEventListener('click', function (event) {
-        if(event.target.classList.contains("applyChanges")){  
+        if (event.target.classList.contains("applyChanges")) {
           const status = document.getElementById("businessClearanceStatusInput");
           const selectedStatus = status.value.toUpperCase();
-            document.getElementById("businessClearanceBusinessName").innerText = document.getElementById("businessClearanceBusinessNameInput").value.toUpperCase() || "(BUSINESS NAME)";
-            document.getElementById("businessClearanceBusinessLocation").innerText = document.getElementById("businessClearanceBusinessLocationInput").value.toUpperCase() || "(LOCATION OF BUSINESS)";
-            document.getElementById("busnessClearanceOperator").innerText = document.getElementById("businessClearanceBusinessOwnerInput").value.toUpperCase() || "(OPERATE/MANAGER)";
-            document.getElementById("businessClearanceOwnersAddress").innerText = document.getElementById("businessClearanceBusinessOwnerAddressInput").value.toUpperCase() || "(OWNER'S ADDRESS)";
-            document.getElementById("businessClearanceStatus").innerText = selectedStatus;
-            document.getElementById("businessClearanceORNos").innerText = document.getElementById("businessClearanceORNosInput").value;
-    
-            alert("Changes applied");
+          document.getElementById("businessClearanceBusinessName").innerText = document.getElementById("businessClearanceBusinessNameInput").value.toUpperCase() || "(BUSINESS NAME)";
+          document.getElementById("businessClearanceBusinessLocation").innerText = document.getElementById("businessClearanceBusinessLocationInput").value.toUpperCase() || "(LOCATION OF BUSINESS)";
+          document.getElementById("busnessClearanceOperator").innerText = document.getElementById("businessClearanceBusinessOwnerInput").value.toUpperCase() || "(OPERATE/MANAGER)";
+          document.getElementById("businessClearanceOwnersAddress").innerText = document.getElementById("businessClearanceBusinessOwnerAddressInput").value.toUpperCase() || "(OWNER'S ADDRESS)";
+          document.getElementById("businessClearanceStatus").innerText = selectedStatus;
+          document.getElementById("businessClearanceORNos").innerText = document.getElementById("businessClearanceORNosInput").value;
+
+          alert("Changes applied");
         }
       });
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("businessClearance"));
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("businessClearance"));
     }
     else if (purpose === 'Business Closure') {
       certificateMainForm.innerHTML = `
@@ -486,11 +523,11 @@ window.processCertificate = function (button) {
               <input type="text" id="businessClosureORNosInput">
           </div>
       `;
-  
+
       document.getElementById("selectPurpose").addEventListener('change', function () {
         const selectedValue = this.value.trim();
         const certificatePurposeInput = document.getElementById("certificatePurpose");
-  
+
         if (selectedValue === "Others") {
           certificatePurposeInput.type = "text";
           certificatePurposeInput.value = "";
@@ -500,15 +537,15 @@ window.processCertificate = function (button) {
           certificatePurposeInput.value = selectedValue;
         }
       });
-  
+
       document.addEventListener('click', function (event) {
-        if(event.target.classList.contains("applyChanges")){
+        if (event.target.classList.contains("applyChanges")) {
           const certificatePurposeInput = document.getElementById("certificatePurpose");
           const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
-    
+
           if (selectedPurpose && selectedPurpose !== "default") {
             const businessClosurePurpose = document.getElementById("businessClosurePurpose");
-    
+
             document.getElementById("businessClosureBusinessName").innerText = document.getElementById("businessClosureBusinessNameInput").value.toUpperCase() || "(BUSINESS NAME)";
             document.getElementById("businessClosureBusinessLocation").innerText = document.getElementById("businessClosureBusinessLocationInput").value || "(BUSINESS LOCATION)";
             document.getElementById("businessClosureOwnersName").innerText = document.getElementById("businessClosureBusinessOwnerInput").value.toUpperCase() || "(OWNER'S NAME)";
@@ -516,7 +553,7 @@ window.processCertificate = function (button) {
             document.getElementById("businessClosureClosedSince").innerText = document.getElementById("businessClosureClosedSinceInput").value || "(CLOSED SINCE)";
             document.getElementById("businessClosureClosedUntil").innerText = document.getElementById("businessClosureClosedUntilInput").value || "(CLOSED UNTIL)";
             document.getElementById("businessClosureORNos").innerText = document.getElementById("businessClosureORNosInput").value;
-    
+
             if (certificatePurposeInput.type === "text") {
               businessClosurePurpose.innerText = selectedPurpose.toUpperCase();
             } else {
@@ -528,8 +565,8 @@ window.processCertificate = function (button) {
           }
         }
       });
-  
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("businessClosure"));
+
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("businessClosure"));
     }
     else if (purpose === 'Good Moral') {
       certificateMainForm.innerHTML = `
@@ -548,11 +585,11 @@ window.processCertificate = function (button) {
               <input type="text" id="goodMoralORNosInput">
           </div>
       `;
-  
+
       document.getElementById("selectPurpose").addEventListener('change', function () {
         const selectedValue = this.value.trim();
         const certificatePurposeInput = document.getElementById("certificatePurpose");
-  
+
         if (selectedValue === "Others") {
           certificatePurposeInput.type = "text";
           certificatePurposeInput.value = "";
@@ -562,32 +599,32 @@ window.processCertificate = function (button) {
           certificatePurposeInput.value = selectedValue;
         }
       });
-  
-  
+
+
       document.getElementById("goodMoralFullName").innerText = `${lastName}, ${firstName} ${middleName}`.toUpperCase();
       document.getElementById("goodMoralAddress").innerText = `Purok ${purok}, ${barangay}, ${city}, ${province}`;
       document.getElementById("goodMoralAge").innerText = `${age}`;
       document.getElementById("goodMoralGender").innerText = `${gender}`;
       document.getElementById("goodMoralStatus").innerText = `${civilStatus}`;
-  
+
       document.addEventListener('click', function (event) {
-        if(event.target.classList.contains("applyChanges")){
+        if (event.target.classList.contains("applyChanges")) {
           const certificatePurposeInput = document.getElementById("certificatePurpose");
           const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
-    
+
           if (selectedPurpose && selectedPurpose !== "default") {
             const goodMoralPurpose = document.getElementById("goodMoralPurpose");
-    
+
             // document.getElementById("goodMoralORNos").innerText = document.getElementById("goodMoralORNosInput").value;
-    
+
             if (certificatePurposeInput.type === "text") {
               document.getElementById("goodMoralIfASelectedPurpose").style.display = "block";
               goodMoralPurpose.innerHTML = `<strong>${selectedPurpose}</strong>`.toUpperCase() + "purposes";
             } else {
-              if (selectedPurpose === "Whatever legal purpose"){
+              if (selectedPurpose === "Whatever legal purpose") {
                 document.getElementById("goodMoralIfASelectedPurpose").style.display = "none";
                 goodMoralPurpose.innerText = selectedPurpose.toLowerCase();
-              } else{
+              } else {
                 document.getElementById("goodMoralIfASelectedPurpose").style.display = "block";
                 goodMoralPurpose.innerHTML = `<strong>${selectedPurpose}</strong>`.toUpperCase() + " purposes";
               }
@@ -598,8 +635,8 @@ window.processCertificate = function (button) {
           }
         }
       });
-  
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("goodMoral"));
+
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("goodMoral"));
     }
     else if (purpose === 'Guardianship') {
       certificateMainForm.innerHTML = `
@@ -630,11 +667,11 @@ window.processCertificate = function (button) {
               <input type="text" id="guardianshipORNosInput">
           </div>
       `;
-  
+
       document.getElementById("selectPurpose").addEventListener('change', function () {
         const selectedValue = this.value.trim();
         const certificatePurposeInput = document.getElementById("certificatePurpose");
-  
+
         if (selectedValue === "Others") {
           certificatePurposeInput.type = "text";
           certificatePurposeInput.value = "";
@@ -644,25 +681,25 @@ window.processCertificate = function (button) {
           certificatePurposeInput.value = selectedValue;
         }
       });
-  
-      document.getElementById("guardianshipFullName").innerText =`${lastName}, ${firstName} ${middleName}`.toUpperCase();
+
+      document.getElementById("guardianshipFullName").innerText = `${lastName}, ${firstName} ${middleName}`.toUpperCase();
       document.getElementById("guardianshipAddress").innerText = `Purok ${purok}, ${barangay}, ${city}, ${province}`;
       document.getElementById("guardianshipGender").innerText = `${gender}`;
       document.getElementById("guardianshipStatus").innerText = `${civilStatus}`;
-  
+
       document.addEventListener('click', function (event) {
-        if(event.target.classList.contains("applyChanges")){
+        if (event.target.classList.contains("applyChanges")) {
           const certificatePurposeInput = document.getElementById("certificatePurpose");
           const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
-    
+
           if (selectedPurpose && selectedPurpose !== "default") {
             const guardianshipPurpose = document.getElementById("guardianshipPurpose");
-    
+
             document.getElementById("guardianshipChildName").innerText = document.getElementById("guardianshipChildNameInput").value.toUpperCase() || "(CHILD NAME)";
             document.getElementById("guardianshipChildAge").innerText = document.getElementById("guardianshipChildAgeInput").value || "(CHILD AGE)";
             document.getElementById("guardianshipRelationship").innerText = document.getElementById("guardianshipChildRelationshipInput").value.toUpperCase() || "(RELATIONSHIP)";
             document.getElementById("guardianshipORNos").innerText = document.getElementById("guardianshipORNosInput").value;
-    
+
             if (certificatePurposeInput.type === "text") {
               guardianshipPurpose.innerText = selectedPurpose.toUpperCase();
             } else {
@@ -674,8 +711,8 @@ window.processCertificate = function (button) {
           }
         }
       });
-  
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("guardianship"));
+
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("guardianship"));
     }
     else if (purpose === 'Income') {
       certificateMainForm.innerHTML = `
@@ -701,11 +738,11 @@ window.processCertificate = function (button) {
               <input type="text" id="incomeORNosInput">
           </div>
       `;
-  
+
       document.getElementById("selectPurpose").addEventListener('change', function () {
         const selectedValue = this.value.trim();
         const certificatePurposeInput = document.getElementById("certificatePurpose");
-  
+
         if (selectedValue === "Others") {
           certificatePurposeInput.type = "text";
           certificatePurposeInput.value = "";
@@ -715,27 +752,27 @@ window.processCertificate = function (button) {
           certificatePurposeInput.value = selectedValue;
         }
       });
-  
-  
+
+
       document.getElementById("brgyClearanceAddress").innerText = `Purok ${purok}, ${barangay}, ${city}, ${province}`;
       document.getElementById("brgyClearanceAge").innerText = `${age}`;
       document.getElementById("brgyClearanceCivilStatus").innerText = `${civilStatus}`;
-  
+
       document.addEventListener('click', function (event) {
-        if(event.target.classList.contains("applyChanges")){
+        if (event.target.classList.contains("applyChanges")) {
           const certificatePurposeInput = document.getElementById("certificatePurpose");
           const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
-    
+
           if (selectedPurpose && selectedPurpose !== "default") {
             // const brgyClearancePurpose = document.getElementById("brgyClearancePurpose");
-    
+
             // document.getElementById("brgyClearanceRemarks").innerText = document.getElementById("brgyClearanceRemarksInput").value.toUpperCase();
             // document.getElementById("brgyClearanceOptID").innerText = document.getElementById("brgyClearanceOptIDInput").value;
             // document.getElementById("brgyClearanceCTCNos").innerText = document.getElementById("brgyClearanceCTCNosInput").value;
             // document.getElementById("brgyClearanceDateIssued").innerText = document.getElementById("brgyClearanceDateIssuedInput").value;
             // document.getElementById("brgyClearanceORNos").innerText = document.getElementById("brgyClearanceORNosInput").value;
             // document.getElementById("brgyClearanceDatePrinted").innerText = document.getElementById("brgyClearanceDatePrintedInput").value;
-    
+
             if (certificatePurposeInput.type === "text") {
               // brgyClearancePurpose.innerText = selectedPurpose.toUpperCase();
             } else {
@@ -747,8 +784,8 @@ window.processCertificate = function (button) {
           }
         }
       });
-  
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("income"));
+
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("income"));
     }
     else if (purpose === 'Indigency') {
       certificateMainForm.innerHTML = `
@@ -768,11 +805,11 @@ window.processCertificate = function (button) {
               <input type="text" id="indigencyValidationInput">
           </div>
       `;
-  
+
       document.getElementById("selectPurpose").addEventListener('change', function () {
         const selectedValue = this.value.trim();
         const certificatePurposeInput = document.getElementById("certificatePurpose");
-  
+
         if (selectedValue === "Others") {
           certificatePurposeInput.type = "text";
           certificatePurposeInput.value = "";
@@ -782,23 +819,23 @@ window.processCertificate = function (button) {
           certificatePurposeInput.value = selectedValue;
         }
       });
-  
-  
+
+
       document.getElementById("indigencyFullName").innerText =
         `${lastName}, ${firstName} ${middleName}`.toUpperCase();
       document.getElementById("indigencyAddress").innerText = `Purok ${purok}, Barangay ${barangay}, ${city}, Province of ${province}`;
       document.getElementById("indigencyGender").innerHTML = `<u>${gender}</u>`;
       document.getElementById("indigencyCivilStatus").innerHTML = `<u>${civilStatus}</u>`;
-  
+
       document.addEventListener('click', function (event) {
-        if(event.target.classList.contains("applyChanges")){
+        if (event.target.classList.contains("applyChanges")) {
           const certificatePurposeInput = document.getElementById("certificatePurpose");
           const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
           document.getElementById("indigencyValidation").innerText = document.getElementById("indigencyValidationInput").value;
-    
+
           if (selectedPurpose && selectedPurpose !== "default") {
             const indigencyPurpose = document.getElementById("indigencyPurpose");
-    
+
             if (certificatePurposeInput.type === "text") {
               indigencyPurpose.innerText = selectedPurpose.toUpperCase();
             } else {
@@ -820,10 +857,10 @@ window.processCertificate = function (button) {
           }
         }
       });
-      viewCertificate.addEventListener('click', ()=> viewCertificateDetails("indigency"));
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("indigency"));
     }
     else if (purpose === 'Land no claim') {
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("landNoClaim"));
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("landNoClaim"));
     }
     else if (purpose === 'Late Registration') {
       certificateMainForm.innerHTML = `
@@ -858,32 +895,32 @@ window.processCertificate = function (button) {
       </div>
   `;
 
-  document.getElementById("lateRegistrationFullName").innerText =`${firstName} ${middleName} ${lastName}`.toUpperCase();
-  document.getElementById("lateRegistrationFullName1").innerText =`${firstName} ${middleName} ${lastName}`.toUpperCase();
-  document.getElementById("lateRegistrationFirstName").innerText =`${firstName}`;
-  document.getElementById("lateRegistrationAddress").innerText = `${barangay}, ${city}, ${province}`;
-  document.getElementById("lateRegistrationGender").innerHTML = `${gender}`;
-  document.getElementById("lateRegistrationBirthPlace").innerHTML = `${birthplace}`;
-  document.getElementById("lateRegistrationBirthDate").innerHTML = new Date(birthdate).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
+      document.getElementById("lateRegistrationFullName").innerText = `${firstName} ${middleName} ${lastName}`.toUpperCase();
+      document.getElementById("lateRegistrationFullName1").innerText = `${firstName} ${middleName} ${lastName}`.toUpperCase();
+      document.getElementById("lateRegistrationFirstName").innerText = `${firstName}`;
+      document.getElementById("lateRegistrationAddress").innerText = `${barangay}, ${city}, ${province}`;
+      document.getElementById("lateRegistrationGender").innerHTML = `${gender}`;
+      document.getElementById("lateRegistrationBirthPlace").innerHTML = `${birthplace}`;
+      document.getElementById("lateRegistrationBirthDate").innerHTML = new Date(birthdate).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
 
-  document.addEventListener('click', function (event) {
-    if (event.target.classList.contains('applyChanges')) {
-      document.getElementById("lateRegistrationFather").innerText = document.getElementById("lateRegistrationFatherInput").value || "(FATHER'S NAME)";
-      document.getElementById("lateRegistrationMother").innerText = document.getElementById("lateRegistrationMotherInput").value || "(MOTHER'S NAME)";
-      document.getElementById("lateRegistrationPagAnak").innerText = document.getElementById("lateRegistrationPagAnakInput").value || "(TYPE OF BIRTH ASSISTANCE)";
-      document.getElementById("lateRegistrationNameNagAnak").innerText = document.getElementById("lateRegistrationNagAnakInput").value;
-      document.getElementById("lateRegistrationORNumber").innerText = document.getElementById("lateRegistrationORNumberInput").value;
-      document.getElementById("lateRegistrationValiddation").innerText = document.getElementById("lateRegistrationValidationInput").value || "(VALIDATION)";
-      alert("Changes applied");
-    }
-  });
-  
+      document.addEventListener('click', function (event) {
+        if (event.target.classList.contains('applyChanges')) {
+          document.getElementById("lateRegistrationFather").innerText = document.getElementById("lateRegistrationFatherInput").value || "(FATHER'S NAME)";
+          document.getElementById("lateRegistrationMother").innerText = document.getElementById("lateRegistrationMotherInput").value || "(MOTHER'S NAME)";
+          document.getElementById("lateRegistrationPagAnak").innerText = document.getElementById("lateRegistrationPagAnakInput").value || "(TYPE OF BIRTH ASSISTANCE)";
+          document.getElementById("lateRegistrationNameNagAnak").innerText = document.getElementById("lateRegistrationNagAnakInput").value;
+          document.getElementById("lateRegistrationORNumber").innerText = document.getElementById("lateRegistrationORNumberInput").value;
+          document.getElementById("lateRegistrationValiddation").innerText = document.getElementById("lateRegistrationValidationInput").value || "(VALIDATION)";
+          alert("Changes applied");
+        }
+      });
 
-  viewCertificate.addEventListener('click', () => viewCertificateDetails("lateRegistration"));
+
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("lateRegistration"));
     }
     else if (purpose === 'Panumduman') {
       certificateMainForm.innerHTML = `
@@ -934,14 +971,14 @@ window.processCertificate = function (button) {
       })
       document.getElementById("panumdumanDate").innerText = formattedDate;
       document.getElementById("panumdumanDate1").innerText = formattedDate;
-  
+
       document.addEventListener('click', function (event) {
-        if(event.target.classList.contains("applyChanges")){ 
+        if (event.target.classList.contains("applyChanges")) {
           const container = document.getElementById('textAreaContainer');
           const agreementsDiv = document.getElementById('panumdumanAgreements');
-          
+
           let agreementHTML = '';
-        
+
           const editableDivs = container.querySelectorAll('[contenteditable="true"]');
           editableDivs.forEach((div, index) => {
             const agreementNumber = index + 1;
@@ -950,7 +987,7 @@ window.processCertificate = function (button) {
               agreementHTML += `<p>${agreementNumber}. ${agreementValue}</p>`;
             }
           });
-        
+
           agreementsDiv.innerHTML = agreementHTML; // Render the agreements
 
           // document.getElementById("burialLamayDate").innerText = wakeDetails.wakeDate;
@@ -965,10 +1002,10 @@ window.processCertificate = function (button) {
           document.getElementById("panumdumanWitnessPosition").innerText = `${document.getElementById("panumdumanWitnessPositionInput").value || "(Position or Role)"}`;
           document.getElementById("panumdumanAttestedPosition").innerText = `${document.getElementById("panumdumanAttestedPositionInput").value || "(Position or Role)"}`;
 
-            alert("Changes applied");
+          alert("Changes applied");
         }
       });
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("panumduman"));
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("panumduman"));
     }
     else if (purpose === 'RA 11261') {
       certificateMainForm.innerHTML = `
@@ -987,11 +1024,11 @@ window.processCertificate = function (button) {
               <input type="hidden" id="certificatePurpose" style="margin-top:12px">
           </div>
       `;
-  
+
       document.getElementById("selectPurpose").addEventListener('change', function () {
         const selectedValue = this.value.trim();
         const certificatePurposeInput = document.getElementById("certificatePurpose");
-  
+
         if (selectedValue === "Others") {
           certificatePurposeInput.type = "text";
           certificatePurposeInput.value = "";
@@ -1001,22 +1038,22 @@ window.processCertificate = function (button) {
           certificatePurposeInput.value = selectedValue;
         }
       });
-  
-  
+
+
       document.getElementById("RAFullName").innerText =
         `${lastName}, ${firstName} ${middleName}`.toUpperCase();
       document.getElementById("RAAddress").innerText = `Purok ${purok}, Barangay ${barangay}, ${city}, Province of ${province}`;
       document.getElementById("RAGender").innerHTML = `<u>${gender}</u>`;
       document.getElementById("RACivilStatus").innerHTML = `<u>${civilStatus}</u>`;
-  
+
       document.addEventListener('click', function (event) {
-        if(event.target.classList.contains("applyChanges")){
+        if (event.target.classList.contains("applyChanges")) {
           const certificatePurposeInput = document.getElementById("certificatePurpose");
           const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
-    
+
           if (selectedPurpose && selectedPurpose !== "default") {
             const RAPurpose = document.getElementById("RAPurpose");
-    
+
             if (certificatePurposeInput.type === "text") {
               RAPurpose.innerText = selectedPurpose.toUpperCase();
             } else {
@@ -1028,8 +1065,8 @@ window.processCertificate = function (button) {
           }
         }
       });
-  
-      viewCertificate.addEventListener('click', ()=> viewCertificateDetails("RA11261"));
+
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("RA11261"));
     }
     else if (purpose === 'Residency') {
       certificateMainForm.innerHTML = `
@@ -1097,7 +1134,7 @@ window.processCertificate = function (button) {
       document.getElementById("selectPurpose").addEventListener('change', function () {
         const selectedValue = this.value.trim();
         const certificatePurposeInput = document.getElementById("certificatePurpose");
-  
+
         if (selectedValue === "Others") {
           certificatePurposeInput.type = "text";
           certificatePurposeInput.value = "";
@@ -1107,8 +1144,8 @@ window.processCertificate = function (button) {
           certificatePurposeInput.value = selectedValue;
         }
       });
-  
-  
+
+
       document.getElementById("residencyFullName").innerText =
         `${lastName}, ${firstName} ${middleName}`.toUpperCase();
       document.getElementById("residencyStreet").innerHTML = street;
@@ -1116,16 +1153,16 @@ window.processCertificate = function (button) {
       document.getElementById("residencyBarangay").innerHTML = barangay;
       document.getElementById("residencyMunicipality").innerHTML = city;
       document.getElementById("residencyProvince").innerHTML = province;
-  
-      
+
+
 
       document.addEventListener('click', function (event) {
-        if(event.target.classList.contains("applyChanges")){
+        if (event.target.classList.contains("applyChanges")) {
           const certificatePurposeInput = document.getElementById("selectPurpose");
           const selectedPurpose = certificatePurposeInput.value.trim();
-          
+
           if (selectedPurpose && selectedPurpose !== "default") {
-            if (selectedPurpose === "Whatever legal purpose"){
+            if (selectedPurpose === "Whatever legal purpose") {
               residencyPurpose.innerText = "";
             } else {
               const residencyPurpose = document.getElementById("residencyPurpose");
@@ -1142,14 +1179,14 @@ window.processCertificate = function (button) {
             document.getElementById("residencyAttestedBy").innerText = document.getElementById("residencyAttestedInput").value.toUpperCase();
             document.getElementById("residencyPositionOrRole").innerText = document.getElementById("residencyAttestedPositionInput").value;
             document.getElementById("residencyBalidationDays").innerText = document.getElementById("residencyValidationInput").value;
-            
+
             alert("Changes applied: " + selectedPurpose);
           } else {
             alert("Please select a purpose");
           }
         }
       });
-  
+
       viewCertificate.addEventListener('click', () => viewCertificateDetails("residency"));
     }
     else if (purpose === 'Same Person') {
@@ -1172,11 +1209,11 @@ window.processCertificate = function (button) {
               <input type="text" id="samePersonORNosInput">
           </div>
       `;
-  
+
       document.getElementById("selectPurpose").addEventListener('change', function () {
         const selectedValue = this.value.trim();
         const certificatePurposeInput = document.getElementById("certificatePurpose");
-  
+
         if (selectedValue === "Others") {
           certificatePurposeInput.type = "text";
           certificatePurposeInput.value = "";
@@ -1186,23 +1223,23 @@ window.processCertificate = function (button) {
           certificatePurposeInput.value = selectedValue;
         }
       });
-  
-  
+
+
       document.getElementById("samePersonFullName").innerText = `${lastName}, ${firstName} ${middleName}`.toUpperCase();
       document.getElementById("samePersonAddress").innerText = `Brgy. ${barangay}, ${city}, ${province}`;
-  
+
       document.addEventListener('click', function (event) {
-        if(event.target.classList.contains("applyChanges")){
+        if (event.target.classList.contains("applyChanges")) {
           const certificatePurposeInput = document.getElementById("certificatePurpose");
           const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
-    
+
           if (selectedPurpose && selectedPurpose !== "default") {
             const samePersonProgram = document.getElementById("samePersonProgram");
             const samePersonProgram1 = document.getElementById("samePersonProgram1");
-    
+
             document.getElementById("samePersonOtherName").innerText = document.getElementById("samePersonOtherNameInput").value.toUpperCase() || "(OTHER NAME)";
             document.getElementById("samePersonORNos").innerText = document.getElementById("samePersonORNosInput").value;
-    
+
             if (certificatePurposeInput.type === "text") {
               samePersonProgram.innerText = selectedPurpose;
               samePersonProgram1.innerText = selectedPurpose;
@@ -1216,8 +1253,8 @@ window.processCertificate = function (button) {
           }
         }
       });
-  
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("samePerson"));
+
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("samePerson"));
     }
     else if (purpose === 'Singleness') {
       certificateMainForm.innerHTML = `
@@ -1238,12 +1275,12 @@ window.processCertificate = function (button) {
               <input type="text" id="singlenessValidationInput">
           </div>
       `;
-  
-      document.getElementById("singlenessFullName").innerText =`${lastName}, ${firstName} ${middleName}`.toUpperCase();
+
+      document.getElementById("singlenessFullName").innerText = `${lastName}, ${firstName} ${middleName}`.toUpperCase();
       document.getElementById("singlenessAddress").innerText = `Purok ${purok}, Barangay ${barangay}, ${city}, Province of ${province}`;
       document.getElementById("singlenessGender").innerHTML = `<u>${gender}</u>`;
       document.getElementById("singlenessAge").innerHTML = `<u>${age}</u>`;
-  
+
       document.addEventListener('click', function (event) {
         if (event.target.classList.contains('applyChanges')) {
           document.getElementById("singlessCertificateNumber").innerText = document.getElementById("singlenessCertificateNumberInput").value || "(TEXT CERTIFICATE NUMBER)";
@@ -1253,8 +1290,8 @@ window.processCertificate = function (button) {
           alert("Changes applied");
         }
       });
-      
-  
+
+
       viewCertificate.addEventListener('click', () => viewCertificateDetails("singleness"));
     }
     else if (purpose === 'Solo Parent') {
@@ -1290,53 +1327,375 @@ window.processCertificate = function (button) {
           </div>
       `;
 
-      document.getElementById("soloParentFullName").innerText =`${lastName}, ${firstName} ${middleName}`.toUpperCase();
+      document.getElementById("soloParentFullName").innerText = `${lastName}, ${firstName} ${middleName}`.toUpperCase();
       document.getElementById("soloParentAddress").innerText = `Purok ${purok}, Barangay ${barangay}, ${city}, Province of ${province}`;
 
       document.addEventListener('click', function (event) {
-        if(event.target.classList.contains("applyChanges")){ 
+        if (event.target.classList.contains("applyChanges")) {
           document.getElementById("soloParentPartner").innerText = document.getElementById("soloParentPartnerInput").value.toLocaleUpperCase();
           document.getElementById("soloParentTimeApart").innerText = document.getElementById("soloParentTimeApartInput").value;
           document.getElementById("soloParentCertificationDetails").innerHTML = document.getElementById("soloParentCertificationDetailsInput").innerHTML;
           document.getElementById("soloParentORNos").innerHTML = document.getElementById("soloParentORNumberInput").value;
-          
-            alert("Changes applied");
+
+          alert("Changes applied");
         }
       });
 
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("soloParent"));
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("soloParent"));
     }
     else if (purpose === 'Common Law') {
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("commonLaw"));
+      certificateMainForm.innerHTML = `
+          <div class="inputWithLabel">
+              <label for="certificatePurpose">Purpose</label>
+              <select class="certficate-purpose-dropdown" id="selectPurpose">
+                  <option value="default" disabled selected>Select a Purpose</option>
+                  <option value="Loan Application Requirement">Loan Application Requirement</option>
+                  <option value="Others">Others</option>
+              </select>
+              <input type="hidden" id="certificatePurpose" style="margin-top:12px">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Partner's Name</label>
+              <input type="text" id="commonLawPartnerNameInput">
+          </div>
+          <div style="display:flex; gap:12px;">
+              <div class="inputWithLabel">
+              <label for="">Years Living Together</label>
+              <input type="number" id="commonLawYearsTogetherInput">
+              </div>
+              <div class="inputWithLabel">
+              <label for="">Time Period</label>
+              <select id="commonLawtimePeriodInput">
+                  <option value="Years">Years</option>
+                  <option value="Months">Months</option>
+              </select>
+              </div>
+          </div>
+          <div class="inputWithLabel">
+              <label for="">OR Nos</label>
+              <input type="text" id="commonLawORNosInput">
+          </div>
+      `;
+
+      document.getElementById("selectPurpose").addEventListener('change', function () {
+        const selectedValue = this.value.trim();
+        const certificatePurposeInput = document.getElementById("certificatePurpose");
+
+        if (selectedValue === "Others") {
+          certificatePurposeInput.type = "text";
+          certificatePurposeInput.value = "";
+          certificatePurposeInput.placeholder = "Enter the purpose";
+        } else {
+          certificatePurposeInput.type = "hidden";
+          certificatePurposeInput.value = selectedValue;
+        }
+      });
+
+
+      document.getElementById("commonLawFullName").innerText = `${lastName}, ${firstName} ${middleName}`.toUpperCase();
+      document.getElementById("commonLawAddress").innerText = `Barangay ${barangay}, ${city}, ${province}`;
+
+      document.addEventListener('click', function (event) {
+        if (event.target.classList.contains("applyChanges")) {
+          const certificatePurposeInput = document.getElementById("certificatePurpose");
+          const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
+
+          if (selectedPurpose && selectedPurpose !== "default") {
+            const commonLawPurpose = document.getElementById("commonLawPurpose");
+            const years = document.getElementById("commonLawYearsTogetherInput").value;
+
+
+            document.getElementById("commonLawPartnerName").innerText = document.getElementById("commonLawPartnerNameInput").value.toUpperCase() || "(OTHER NAME)";
+            document.getElementById("commonLawYearsTogether").innerText = `${numberToText(years)} (${years})` || "(YEARS LIVING TOGETHER)";
+            document.getElementById("commonLawYears").innerText = document.getElementById("commonLawtimePeriodInput").value;
+            document.getElementById("commonLawORNos").innerText = document.getElementById("commonLawORNosInput").value;
+
+            if (certificatePurposeInput.type === "text") {
+              commonLawPurpose.innerText = selectedPurpose.toUpperCase();
+            } else {
+              commonLawPurpose.innerText = selectedPurpose.toUpperCase();
+            }
+            alert("Changes applied: " + selectedPurpose);
+          } else {
+            alert("Please select a purpose or provide one if you selected 'Others'.");
+          }
+        }
+      });
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("commonLaw"));
     }
     else if (purpose === 'Employment') {
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("employment"));
+      certificateMainForm.innerHTML = `
+          <div class="inputWithLabel">
+              <label for="certificatePurpose">Purpose</label>
+              <select class="certficate-purpose-dropdown" id="selectPurpose">
+                  <option value="default" disabled selected>Select a Purpose</option>
+                  <option value="DSWD Financial Assistance Requirement Only">DSWD Financial Assistance Requirement Only</option>
+                  <option value="Others">Others</option>
+              </select>
+              <input type="hidden" id="certificatePurpose" style="margin-top:12px">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Job Title</label>
+              <input type="text" id="employmentJobTitleInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Workplace</label>
+              <input type="text" id="employmentWorkplaceInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Work Location</label>
+              <input type="text" id="employmentWorkLocationInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Validation Days (Ex. 90 days)</label>
+              <input type="text" id="employmentValidationInput">
+          </div>
+      `;
+
+      document.getElementById("selectPurpose").addEventListener('change', function () {
+        const selectedValue = this.value.trim();
+        const certificatePurposeInput = document.getElementById("certificatePurpose");
+
+        if (selectedValue === "Others") {
+          certificatePurposeInput.type = "text";
+          certificatePurposeInput.value = "";
+          certificatePurposeInput.placeholder = "Enter the purpose";
+        } else {
+          certificatePurposeInput.type = "hidden";
+          certificatePurposeInput.value = selectedValue;
+        }
+      });
+
+
+      document.getElementById("employmentFullName").innerText = `${lastName}, ${firstName} ${middleName}`.toUpperCase();
+      document.getElementById("employmentAddress").innerText = `Purok ${purok}, Barangay ${barangay}, ${city}, Province of ${province}`;
+      document.getElementById("employmentGender").innerText = gender;
+      document.getElementById("employmentStatus").innerText = civilStatus;
+
+      document.addEventListener('click', function (event) {
+        if (event.target.classList.contains("applyChanges")) {
+          const certificatePurposeInput = document.getElementById("certificatePurpose");
+          const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
+
+          if (selectedPurpose && selectedPurpose !== "default") {
+            const employmentPurpose = document.getElementById("employmentPurpose");
+
+
+            document.getElementById("employmentJobTitle").innerText = document.getElementById("employmentJobTitleInput").value || "(JOB TITLE)";
+            document.getElementById("employmentWorkplace").innerText = document.getElementById("employmentWorkplaceInput").value || "(WORKPLACE)";
+            document.getElementById("employmentWorkLocation").innerText = document.getElementById("employmentWorkLocationInput").value || "(WORK LOCATION)";
+            document.getElementById("employmentValidation").innerText = document.getElementById("employmentValidationInput").value || "(VALIDATION)";
+
+            if (certificatePurposeInput.type === "text") {
+              employmentPurpose.innerText = selectedPurpose.toUpperCase();
+            } else {
+              employmentPurpose.innerText = selectedPurpose.toUpperCase();
+            }
+            alert("Changes applied: " + selectedPurpose);
+          } else {
+            alert("Please select a purpose or provide one if you selected 'Others'.");
+          }
+        }
+      });
+
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("employment"));
     }
     else if (purpose === 'Water District') {
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("waterDistrict"));
+      certificateMainForm.innerHTML = `
+          <div class="inputWithLabel">
+              <label for="certificatePurpose">Purpose</label>
+              <select class="certficate-purpose-dropdown" id="selectPurpose">
+                  <option value="default" disabled selected>Select a Purpose</option>
+                  <option value="Instalation/Working Permit Application Requirement">Instalation/Working Permit Application Requirement</option>
+                  <option value="Others">Others</option>
+              </select>
+              <input type="hidden" id="certificatePurpose" style="margin-top:12px">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">OR Number</label>
+              <input type="number" id="waterDistrictORNosInput">
+          </div>
+      `;
+
+      document.getElementById("selectPurpose").addEventListener('change', function () {
+        const selectedValue = this.value.trim();
+        const certificatePurposeInput = document.getElementById("certificatePurpose");
+
+        if (selectedValue === "Others") {
+          certificatePurposeInput.type = "text";
+          certificatePurposeInput.value = "";
+          certificatePurposeInput.placeholder = "Enter the purpose";
+        } else {
+          certificatePurposeInput.type = "hidden";
+          certificatePurposeInput.value = selectedValue;
+        }
+      });
+
+
+      document.getElementById("waterDistrictFullName").innerText = `${lastName}, ${firstName} ${middleName}`.toUpperCase();
+      document.getElementById("waterDistrictAddress").innerText = `Purok ${purok}, Barangay ${barangay}, ${city}`.toLocaleUpperCase();
+
+      document.addEventListener('click', function (event) {
+        if (event.target.classList.contains("applyChanges")) {
+          const certificatePurposeInput = document.getElementById("certificatePurpose");
+          const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
+
+          if (selectedPurpose && selectedPurpose !== "default") {
+            const waterDistrictPurpose = document.getElementById("waterDistrictPurpose");
+
+            document.getElementById("waterDistrictORNos").innerText = document.getElementById("waterDistrictORNosInput").value;
+
+            if (certificatePurposeInput.type === "text") {
+              waterDistrictPurpose.innerText = selectedPurpose.toUpperCase();
+            } else {
+              waterDistrictPurpose.innerText = selectedPurpose.toUpperCase();
+            }
+            alert("Changes applied: " + selectedPurpose);
+          } else {
+            alert("Please select a purpose or provide one if you selected 'Others'.");
+          }
+        }
+      });
+
+
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("waterDistrict"));
     }
     else if (purpose === 'Death Certificate') {
-      viewCertificate.addEventListener('click',()=> viewCertificateDetails("death"));
+      certificateMainForm.innerHTML = `
+          <div style="display:flex; gap:12px">
+            <div class="inputWithLabel">
+              <label for="">Name of Deceased</label>
+              <input type="text" id="deathNameOfDeceasedInput">
+          </div>
+            <div class="inputWithLabel">
+              <label for="">Gender</label>
+              <select id="deathGenderInput">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+              </select>
+              </div>
+          </div>
+          <div style="display:flex; gap:12px">
+            <div class="inputWithLabel">
+              <label for="">Date of Birth</label>
+              <input type="date" id="deathDateOfBirthInput">
+          </div>
+            <div class="inputWithLabel">
+                <label for="">Age</label>
+                <input type="number" id="deathAgeInput">
+            </div>
+          </div>
+          <div style="display:flex; gap:12px">
+            <div class="inputWithLabel">
+                <label for="">Date of Death</label>
+                <input type="date" id="deathDateOfDeathInput">
+            </div>
+            <div class="inputWithLabel">
+                <label for="">Time of Death (Optional)</label>
+                <input type="time" id="deathTimeOfDeathInput">
+            </div>
+          </div>
+          <div style="display:flex; gap:12px">
+            <div class="inputWithLabel">
+                <label for="">Date of Burial</label>
+                <input type="date" id="deathDateOfBurialInput">
+            </div>
+            <div class="inputWithLabel">
+                <label for="">Place of Burial</label>
+                <input type="text" id="deathPlaceOfBurialInput">
+            </div>
+          </div>
+          <div class="inputWithLabel">
+              <label for="">Place of Death (Ex. Brgy. Maypangdan Borongan City)</label>
+              <input type="text" id="deathPlaceOfDeathInput">
+          </div>
+          <div class="inputWithLabel">
+              <label for="">OR Nos</label>
+              <input type="number" id="deathORNosInput">
+          </div>
+      `;
+
+      document.addEventListener('click', function (event) {
+        if (event.target.classList.contains("applyChanges")) {
+          const timeInput = document.getElementById("deathTimeOfDeathInput").value;
+
+          if (timeInput) {
+            const [hour, minute] = timeInput.split(":").map(Number);
+            let period = "";
+            if (hour >= 0 && hour < 12) {
+              period = "morning";
+            } else if (hour >= 12 && hour < 18) {
+              period = "afternoon";
+            } else {
+              period = "evening";
+            }
+    
+            // Convert to 12-hour format
+            const hours12 = hour % 12 || 12; // Convert 0 -> 12 for midnight
+            const ampm = hour < 12 ? "AM" : "PM";
+            const formattedTime = `${hours12}:${minute.toString().padStart(2, "0")} ${ampm}`;
+    
+            document.getElementById("deathTimeOfDeath").innerText = `around ${formattedTime} in the ${period}`;
+        }
+
+
+          document.getElementById("deathNameofDeceased").innerText = document.getElementById("deathNameOfDeceasedInput").value.toLocaleUpperCase() || "(NAME OF DECEASED)";
+          document.getElementById("deathNameOfDeceased1").innerText = document.getElementById("deathNameOfDeceasedInput").value.toLocaleUpperCase() || "(NAME OF DECEASED)";
+          document.getElementById("deathAge").innerText = document.getElementById("deathAgeInput").value || "(AGE)";
+          document.getElementById("deathPlaceOfBurial").innerText = document.getElementById("deathPlaceOfBurialInput").value || "(PLACE OF BURIAL)";
+          document.getElementById("deathPlaceOfDeath").innerText = document.getElementById("deathPlaceOfDeathInput").value || "(PLACE OF DEATH)";
+          document.getElementById("deathORNumber").innerText = document.getElementById("deathORNosInput").value;
+
+          if (document.getElementById("deathGenderInput").value === "Male") {
+            document.getElementById("deathGender").innerText = "He";
+            document.getElementById("deathGender1").innerText = "his";
+          } else if (document.getElementById("deathGenderInput").value === "Female") {
+            document.getElementById("deathGender").innerText = "She";
+            document.getElementById("deathGender1").innerText = "her";
+          }
+
+
+          document.getElementById("deathDateOfBirth").innerHTML = new Date(document.getElementById("deathDateOfBirthInput").value).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          }) || "(DATE OF BIRTH)";
+          document.getElementById("deathDateOfDeath").innerHTML = new Date(document.getElementById("deathDateOfDeathInput").value).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          }) || "(DATE OF DEATH)";
+          document.getElementById("deathDateOfBurial").innerHTML = new Date(document.getElementById("deathDateOfBurialInput").value).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          }) || "(DATE OF BURIAL)";
+
+          alert("Changes applied");
+        }
+      });
+
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("death"));
     }
   }
   // Function to view certificate
   function viewCertificateDetails(selectedCertificate) {
     document.getElementById("certificate").classList.add("visible");
-  
+
     const hiddenContainers = document.querySelectorAll("#residency, #indigency, #RA11261, #brgyClearance, #singleness, #guardianship, #income, #landNoClaim, #noDuplication, #panumduman, #buildingClearance, #burailClearance, #businessClearance, #businessClosure, #lateRegistration, #soloParent, #oathUndertaking, #goodMoral, #samePerson, #commonLaw, #death, #employment, #waterDistrict");
     hiddenContainers.forEach(container => container.classList.remove("visible"));
-    
+
     var convertToImage = document.getElementById(selectedCertificate);
     var imageContainer = document.getElementById("certificateContainer");
 
-    
+
     convertToImage.classList.add("visible");
     html2canvas(convertToImage).then((canvas) => {
       const img = canvas.toDataURL("image/png"); // Convert canvas to image data
       const imgElement = document.createElement("img");
       imgElement.src = img;
       imgElement.id = "certImg"
-      imgElement.style.width="100%"
+      imgElement.style.width = "100%"
       // imgElement.style.height="auto"
 
       // Append the generated image to the container
@@ -1347,15 +1706,15 @@ window.processCertificate = function (button) {
     });
     imageContainer.classList.remove("visible");
     convertToImage.classList.toggle("visible");
-  // document.getElementById("certificate").classList.add("visible");
+    // document.getElementById("certificate").classList.add("visible");
 
 
 
 
-    
-  
+
+
     document.querySelector(".closeCertificate").addEventListener("click", function () {
-      if(selectedCertificate === "oathUndertaking"){
+      if (selectedCertificate === "oathUndertaking") {
         document.querySelector(".overlay").classList.remove("visible");
       } else {
         document.querySelector(".overlay").classList.add("visible");
@@ -1396,32 +1755,32 @@ function formatDate(date) {
 // date with this format (00/00/0000)
 const padZero = (num) => (num < 10 ? `0${num}` : num);
 const getCurrentDate = () => {
-    const today = new Date();
-    const month = padZero(today.getMonth() + 1);
-    const day = padZero(today.getDate());
-    const year = today.getFullYear();
+  const today = new Date();
+  const month = padZero(today.getMonth() + 1);
+  const day = padZero(today.getDate());
+  const year = today.getFullYear();
 
-    return `${month}/${day}/${year}`;
+  return `${month}/${day}/${year}`;
 };
 
 // function for burial certificate
 function calculateEndDate(startDateInput, durationInput) {
   if (!startDateInput || isNaN(durationInput) || durationInput <= 0) {
-      return null;
+    return null;
   }
 
   const [year, month, day] = startDateInput.split('-');
-  
+
   const startDate = new Date(year, month - 1, day);
-  startDate.setHours(0, 0, 0, 0); 
+  startDate.setHours(0, 0, 0, 0);
 
   const endDate = new Date(startDate);
   endDate.setDate(startDate.getDate() + durationInput - 1);
 
   return {
-      startDate: formatDateWithoutYear(startDate),
-      endDate: formatDate(endDate),
-      duration: numberToText(durationInput) 
+    startDate: formatDateWithoutYear(startDate),
+    endDate: formatDate(endDate),
+    duration: numberToText(durationInput)
   };
 }
 function formatDateWithoutYear(date) {
@@ -1430,11 +1789,11 @@ function formatDateWithoutYear(date) {
 }
 function numberToText(num) {
   const words = [
-      "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
-      "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen",
-      "twenty", "twenty-one", "twenty-two", "twenty-three", "twenty-four", "twenty-five", "twenty-six", "twenty-seven", "twenty-eight", "twenty-nine",
-      "thirty", "thirty-one", "thirty-two", "thirty-three", "thirty-four", "thirty-five", "thirty-six", "thirty-seven", "thirty-eight", "thirty-nine",
-      "forty", "forty-one", "forty-two", "forty-three", "forty-four", "forty-five", "forty-six", "forty-seven", "forty-eight", "forty-nine", "fifty"
+    "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+    "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen",
+    "twenty", "twenty-one", "twenty-two", "twenty-three", "twenty-four", "twenty-five", "twenty-six", "twenty-seven", "twenty-eight", "twenty-nine",
+    "thirty", "thirty-one", "thirty-two", "thirty-three", "thirty-four", "thirty-five", "thirty-six", "thirty-seven", "thirty-eight", "thirty-nine",
+    "forty", "forty-one", "forty-two", "forty-three", "forty-four", "forty-five", "forty-six", "forty-seven", "forty-eight", "forty-nine", "fifty"
   ];
   return words[num] || num;
 }
@@ -1442,10 +1801,10 @@ function displayWakeMessage(startDateInput, durationInput) {
   const wakeDetails = calculateEndDate(startDateInput, durationInput);
 
   if (wakeDetails) {
-      return {
-        duration: `${wakeDetails.duration} (${durationInput})`,
-        wakeDate: `${wakeDetails.startDate} to ${wakeDetails.endDate}`,
-      };
+    return {
+      duration: `${wakeDetails.duration} (${durationInput})`,
+      wakeDate: `${wakeDetails.startDate} to ${wakeDetails.endDate}`,
+    };
   } else {
     return {
       duration: "(WAKE DURATION)",
@@ -1462,8 +1821,8 @@ function addTextarea() {
   const div = document.createElement('div');
   div.classList.add('inputWithLabel');
   div.setAttribute('id', `agreement-${agreementCount}`);
-  if (agreementCount === 1){
-      div.innerHTML = `
+  if (agreementCount === 1) {
+    div.innerHTML = `
       <div style="display: flex; align-items: center; gap: 8px;">
         <label style="margin-right: auto">Agreement: <strong>${agreementCount}</strong> <i>(Press ctrl+b for bold, ctrl+i for italic, and ctrl+u for underline)</i></label>
         <button onclick="addTextarea()">+</button>
@@ -1484,7 +1843,7 @@ function addTextarea() {
       ></div>
     `;
   } else {
-      div.innerHTML = `
+    div.innerHTML = `
       <div style="display: flex; align-items: center; gap: 8px;">
         <label style="margin-right: auto">Agreement: <strong>${agreementCount}</strong> <i>(Press ctrl+b for bold, ctrl+i for italic, and ctrl+u for underline)</i></label>
       </div>
@@ -1508,10 +1867,10 @@ function addTextarea() {
 }
 function removeTextarea() {
   const container = document.getElementById("textAreaContainer");
-  
-  if (container.children.length <= 1) return(alert('At least one Agreement is required!'));
 
-  const lastChild = container.lastElementChild; 
+  if (container.children.length <= 1) return (alert('At least one Agreement is required!'));
+
+  const lastChild = container.lastElementChild;
   if (lastChild) {
     container.removeChild(lastChild);
     agreementCount--;
