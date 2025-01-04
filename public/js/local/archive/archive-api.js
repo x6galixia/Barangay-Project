@@ -709,6 +709,54 @@ function popUp_button(button) {
             </select>
             </div>
             `
+
+            document.getElementById('respondent').addEventListener('input', function () {
+                const query = document.getElementById("respondent").value;
+            
+                console.log("Input query:", query); // Debugging the input value.
+            
+                if (query.length > 0) {
+                    fetch(`/archive/get-resident?query=${encodeURIComponent(query)}`)
+                        .then(response => {
+                            console.log("Response status:", response.status); // Log response status.
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log("Fetched residents:", data); // Log fetched data.
+                            const resultsContainer = document.getElementById('results');
+                            resultsContainer.style.display = 'flex';
+                            resultsContainer.innerHTML = '';
+            
+                            if (data.length > 0) {
+                                data.forEach(resident => {
+                                    const listItem = document.createElement('div');
+                                    listItem.textContent = `${resident.fname} ${resident.mname} ${resident.lname}`;
+                                    resultsContainer.appendChild(listItem);
+                                });
+                            } else {
+                                resultsContainer.textContent = '--No results found!--';
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error fetching residents:", error); // Log any errors.
+                        });
+                } else {
+                    document.getElementById('results').innerHTML = ''; // Clear results for empty input.
+                    document.getElementById('results').style.display = 'none';
+                }
+            });
+        
+            const complainantField = document.getElementById('respondent');
+            if (complainantField) {
+                complainantField.addEventListener('input', function () {
+                    console.log("Inline script triggered:", this.value);
+                });
+            } else {
+                console.error("Respondent input field not found!");
+            }
         }
         if (type === "Ordinance") {
             document.querySelector('#add-document .heading').innerHTML = `ADD ${type.toUpperCase()} DOCUMENT`;
@@ -768,54 +816,6 @@ function popUp_button(button) {
                 <input type="date" aria-label="Date" id="date" name="date" required>
             </div>
             `
-        }
-
-        document.getElementById('respondent').addEventListener('input', function () {
-            const query = document.getElementById("respondent").value;
-        
-            console.log("Input query:", query); // Debugging the input value.
-        
-            if (query.length > 0) {
-                fetch(`/archive/get-resident?query=${encodeURIComponent(query)}`)
-                    .then(response => {
-                        console.log("Response status:", response.status); // Log response status.
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log("Fetched residents:", data); // Log fetched data.
-                        const resultsContainer = document.getElementById('results');
-                        resultsContainer.style.display = 'flex';
-                        resultsContainer.innerHTML = '';
-        
-                        if (data.length > 0) {
-                            data.forEach(resident => {
-                                const listItem = document.createElement('div');
-                                listItem.textContent = `${resident.fname} ${resident.mname} ${resident.lname}`;
-                                resultsContainer.appendChild(listItem);
-                            });
-                        } else {
-                            resultsContainer.textContent = '--No results found!--';
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error fetching residents:", error); // Log any errors.
-                    });
-            } else {
-                document.getElementById('results').innerHTML = ''; // Clear results for empty input.
-                document.getElementById('results').style.display = 'none';
-            }
-        });
-    
-        const complainantField = document.getElementById('respondent');
-        if (complainantField) {
-            complainantField.addEventListener('input', function () {
-                console.log("Inline script triggered:", this.value);
-            });
-        } else {
-            console.error("Responcent input field not found!");
         }
 
         addDocument.classList.toggle("visible");
