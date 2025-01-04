@@ -33,39 +33,46 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <td>${request.fname} ${request.mname ? request.mname : ''} ${request.lname}</td>
                 <td>${request.purpose}</td>
                 <td>${formattedDate}</td>
-                <td><button 
-                data-purpose="${request.purpose}"
-                data-punongBarangay="${request.punongbarangayfirstname.toLocaleUpperCase()} ${request.punongbarangaymiddlename.toLocaleUpperCase() ? request.punongbarangaymiddlename.toLocaleUpperCase() : ''} ${request.punongbarangaylastname.toLocaleUpperCase()}"
-                data-skchairperson="${request.skchairpersonfirstname.toLocaleUpperCase()} ${request.skchairpersonmiddlename.toLocaleUpperCase() ? request.skchairpersonmiddlename.toLocaleUpperCase() : ''} ${request.skchairpersonlastname.toLocaleUpperCase()}"
-                data-secretary="${request.barangaysecretaryfirstname.toLocaleUpperCase()} ${request.barangaysecretarymiddlename.toLocaleUpperCase() ? request.barangaysecretarymiddlename.toLocaleUpperCase() : ''} ${request.barangaysecretarylastname.toLocaleUpperCase()}"
-                data-treasurer="${request.barangaytreasurerfirstname.toLocaleUpperCase()} ${request.barangaytreasurermiddlename.toLocaleUpperCase() ? request.barangaytreasurermiddlename.toLocaleUpperCase() : ''} ${request.barangaytreasurerlastname.toLocaleUpperCase()}"
-                data-kagawad1="${request.kagawad1firstname.toLocaleUpperCase()} ${request.kagawad1middlename.toLocaleUpperCase() ? request.kagawad1middlename.toLocaleUpperCase() : ''} ${request.kagawad1lastname.toLocaleUpperCase()}"
-                data-kagawad2="${request.kagawad2firstname.toLocaleUpperCase()} ${request.kagawad2middlename.toLocaleUpperCase() ? request.kagawad2middlename.toLocaleUpperCase() : ''} ${request.kagawad2lastname.toLocaleUpperCase()}"
-                data-kagawad3="${request.kagawad3firstname.toLocaleUpperCase()} ${request.kagawad3middlename.toLocaleUpperCase() ? request.kagawad3middlename.toLocaleUpperCase() : ''} ${request.kagawad3lastname.toLocaleUpperCase()}"
-                data-kagawad4="${request.kagawad4firstname.toLocaleUpperCase()} ${request.kagawad4middlename.toLocaleUpperCase() ? request.kagawad4middlename.toLocaleUpperCase() : ''} ${request.kagawad4lastname.toLocaleUpperCase()}"
-                data-kagawad5="${request.kagawad5firstname.toLocaleUpperCase()} ${request.kagawad5middlename.toLocaleUpperCase() ? request.kagawad5middlename.toLocaleUpperCase() : ''} ${request.kagawad5lastname.toLocaleUpperCase()}"
-                data-kagawad6="${request.kagawad6firstname.toLocaleUpperCase()} ${request.kagawad6middlename.toLocaleUpperCase() ? request.kagawad6middlename.toLocaleUpperCase() : ''} ${request.kagawad6lastname.toLocaleUpperCase()}"
-                data-kagawad7="${request.kagawad7firstname.toLocaleUpperCase()} ${request.kagawad7middlename.toLocaleUpperCase() ? request.kagawad7middlename.toLocaleUpperCase() : ''} ${request.kagawad7lastname.toLocaleUpperCase()}"
-                data-age="${request.age}"
-                data-birthdate="${request.birthdate}"
-                data-birthplace="${request.birthplace}"
-                data-firstName="${request.fname}"
-                data-lastName="${request.lname}"
-                data-middleName="${request.mname ? request.mname : ''}"
-                data-purok="${request.purok}"
-                data-street="${request.street}"
-                data-barangay="${request.barangay}"
-                data-city="${request.city}"
-                data-province="${request.province}"
-                data-civilStatus="${request.civilstatus}"
-                data-gender="${request.gender}"
-                
-                onclick="processCertificate(this)">Process</button></td>
+                <td class="menu-row">
+                    <img class="dot" src="../icon/triple-dot.svg" alt="">
+                    <div class="triple-dot">
+                        <div class="menu" data-id="${request.residentsid}">
+                            <button 
+                                  data-purpose="${request.purpose}"
+                                  data-punongBarangay="${request.punongbarangayfirstname.toLocaleUpperCase()} ${request.punongbarangaymiddlename.toLocaleUpperCase() ? request.punongbarangaymiddlename.toLocaleUpperCase() : ''} ${request.punongbarangaylastname.toLocaleUpperCase()}"
+                                  data-skchairperson="${request.skchairpersonfirstname.toLocaleUpperCase()} ${request.skchairpersonmiddlename.toLocaleUpperCase() ? request.skchairpersonmiddlename.toLocaleUpperCase() : ''} ${request.skchairpersonlastname.toLocaleUpperCase()}"
+                                  data-secretary="${request.barangaysecretaryfirstname.toLocaleUpperCase()} ${request.barangaysecretarymiddlename.toLocaleUpperCase() ? request.barangaysecretarymiddlename.toLocaleUpperCase() : ''} ${request.barangaysecretarylastname.toLocaleUpperCase()}"
+                                  data-treasurer="${request.barangaytreasurerfirstname.toLocaleUpperCase()} ${request.barangaytreasurermiddlename.toLocaleUpperCase() ? request.barangaytreasurermiddlename.toLocaleUpperCase() : ''} ${request.barangaytreasurerlastname.toLocaleUpperCase()}"
+                                  data-kagawad1="${request.kagawad1firstname.toLocaleUpperCase()} ${request.kagawad1middlename.toLocaleUpperCase() ? request.kagawad1middlename.toLocaleUpperCase() : ''} ${request.kagawad1lastname.toLocaleUpperCase()}"
+                                  data-kagawad2="${request.kagawad2firstname.toLocaleUpperCase()} ${request.kagawad2middlename.toLocaleUpperCase() ? request.kagawad2middlename.toLocaleUpperCase() : ''} ${request.kagawad2lastname.toLocaleUpperCase()}"
+                                  data-kagawad3="${request.kagawad3firstname.toLocaleUpperCase()} ${request.kagawad3middlename.toLocaleUpperCase() ? request.kagawad3middlename.toLocaleUpperCase() : ''} ${request.kagawad3lastname.toLocaleUpperCase()}"
+                                  data-kagawad4="${request.kagawad4firstname.toLocaleUpperCase()} ${request.kagawad4middlename.toLocaleUpperCase() ? request.kagawad4middlename.toLocaleUpperCase() : ''} ${request.kagawad4lastname.toLocaleUpperCase()}"
+                                  data-kagawad5="${request.kagawad5firstname.toLocaleUpperCase()} ${request.kagawad5middlename.toLocaleUpperCase() ? request.kagawad5middlename.toLocaleUpperCase() : ''} ${request.kagawad5lastname.toLocaleUpperCase()}"
+                                  data-kagawad6="${request.kagawad6firstname.toLocaleUpperCase()} ${request.kagawad6middlename.toLocaleUpperCase() ? request.kagawad6middlename.toLocaleUpperCase() : ''} ${request.kagawad6lastname.toLocaleUpperCase()}"
+                                  data-kagawad7="${request.kagawad7firstname.toLocaleUpperCase()} ${request.kagawad7middlename.toLocaleUpperCase() ? request.kagawad7middlename.toLocaleUpperCase() : ''} ${request.kagawad7lastname.toLocaleUpperCase()}"
+                                  data-age="${request.age}"
+                                  data-birthdate="${request.birthdate}"
+                                  data-birthplace="${request.birthplace}"
+                                  data-firstName="${request.fname}"
+                                  data-lastName="${request.lname}"
+                                  data-middleName="${request.mname ? request.mname : ''}"
+                                  data-purok="${request.purok}"
+                                  data-street="${request.street}"
+                                  data-barangay="${request.barangay}"
+                                  data-city="${request.city}"
+                                  data-province="${request.province}"
+                                  data-civilStatus="${request.civilstatus}"
+                                  data-gender="${request.gender}"
+                                  onclick="processCertificate(this)">Process</button>
+                            <button id="update-id" onclick="">Remove</button>
+                        </div>
+                    </div>
+                </td>
             `;
         requestTableBody.appendChild(row);
       });
     }
-
+    attachDotEventListeners();
     // Update pagination links
     updatePaginationLinks(data.currentPage, data.totalPages);
 
@@ -90,6 +97,25 @@ document.addEventListener("DOMContentLoaded", async function () {
   // attachDotEventListeners();
 });
 
+function attachDotEventListeners() {
+  document.querySelectorAll(".dot").forEach(function (dot) {
+      dot.addEventListener("click", function () {
+          console.log("dot clicked");
+          const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
+          tripleDotContainer.classList.add("visible");
+      });
+
+      document.addEventListener("click", function (event) {
+          if (!dot.contains(event.target)) {
+              const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
+              if (tripleDotContainer && tripleDotContainer.classList.contains("visible")) {
+                  tripleDotContainer.classList.remove("visible");
+              }
+          }
+      });
+  });
+
+}
 
 window.processCertificate = function (button) {
   const purpose = button.getAttribute('data-purpose');
