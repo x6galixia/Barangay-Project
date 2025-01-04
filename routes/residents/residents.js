@@ -222,8 +222,8 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
 
         // Step 4: Insert resident information into residents table
         await mPool.query(
-            `INSERT INTO residents (globalId, idNumber, fName, mName, lName, purok, street, barangay, city, province, birthDate, birthPlace, age, gender, picture, eAttainment, occupation, income, civilStatus, isResident, emergencyContactId, rClassificationId, isPwd, isSoloParent, isYouth, is4ps, isOutOfSchoolYouth, isSkm, isKm)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29)`,
+            `INSERT INTO residents (globalId, idNumber, fName, mName, lName, purok, street, barangay, city, province, birthDate, birthPlace, age, gender, picture, eAttainment, occupation, income, civilStatus, isResident, emergencyContactId, rClassificationId, isPwd, isSoloParent, isYouth, is4ps, isOutOfSchoolYouth, isSkm, isKm, isPaid)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30)`,
             [
                 newId,               // globalId
                 numNewId,            // idNumber
@@ -253,7 +253,8 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
                 value.is4ps,          // is4ps
                 value.isOutOfSchoolYouth,
                 value.isSkm,
-                value.isKm
+                value.isKm,
+                value.isPaid
             ]
         );
 
@@ -365,8 +366,8 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
 
         // Step 4: Insert the resident information into the residents table and retrieve the residentsid
         const residentInsertResult = await mPool.query(
-            `INSERT INTO residents (globalId, idNumber, fName, mName, lName, purok, street, barangay, city, province, birthDate, birthPlace, age, gender, picture, eAttainment, occupation, income, civilStatus, isResident, emergencyContactId, rClassificationId, isPwd, isSoloParent, isYouth, is4ps, isOutOfSchoolYouth, isSkm, isKm)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29)
+            `INSERT INTO residents (globalId, idNumber, fName, mName, lName, purok, street, barangay, city, province, birthDate, birthPlace, age, gender, picture, eAttainment, occupation, income, civilStatus, isResident, emergencyContactId, rClassificationId, isPwd, isSoloParent, isYouth, is4ps, isOutOfSchoolYouth, isSkm, isKm, isPaid)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30)
      RETURNING residentsid`,
             [
                 newId,               // globalId
@@ -397,7 +398,8 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
                 null,
                 null,
                 null,
-                null
+                null,
+                value.isPaid
             ]
         );
 
@@ -474,8 +476,8 @@ router.post("/dashboard/update-resident", upload.single('picture'), async (req, 
                  birthDate = $9, birthPlace = $10, age = $11, gender = $12, picture = COALESCE($13, picture), 
                  eAttainment = $14, occupation = $15, income = $16, civilStatus = $17, 
                  rClassificationId = $18, isPwd = $19, isSoloParent = $20, isYouth = $21, 
-                 is4ps = $22, isOutOfSchoolYouth = $23, isSkm = $24, isKm = $25
-             WHERE globalId = $26`,
+                 is4ps = $22, isOutOfSchoolYouth = $23, isSkm = $24, isKm = $25, isPaid = $26
+             WHERE globalId = $27`,
             [
                 value.first_name,    // fName
                 value.middle_name,   // mName
@@ -502,6 +504,7 @@ router.post("/dashboard/update-resident", upload.single('picture'), async (req, 
                 value.isOutOfSchoolYouth,
                 value.isSkm,
                 value.isKm,
+                value.isPaid,
                 value.globalId
             ]
         );
@@ -571,8 +574,8 @@ router.post("/dashboard/update-non-resident", upload.single('picture'), async (r
                  birthDate = $9, birthPlace = $10, age = $11, gender = $12, picture = COALESCE($13, picture), 
                  eAttainment = $14, occupation = $15, income = $16, civilStatus = $17, isResident = false, 
                  rClassificationId = $18, isPwd = $19, isSoloParent = $20, isYouth = $21, is4ps = $22, 
-                 isOutOfSchoolYouth = $23, isSkm = $24, isKm = $25
-             WHERE globalId = $26`,
+                 isOutOfSchoolYouth = $23, isSkm = $24, isKm = $25, isPaid = $26
+             WHERE globalId = $27`,
             [
                 value.first_name,    // fName
                 value.middle_name,   // mName
@@ -599,6 +602,7 @@ router.post("/dashboard/update-non-resident", upload.single('picture'), async (r
                 value.isOutOfSchoolYouth,
                 value.isSkm,
                 value.isKm,
+                value.isPaid,
                 value.globalId
             ]
         );
