@@ -59,12 +59,28 @@ function handleKeyPress(event) {
       })
       .then(data => {
           if (data.success) {
-              populateFormFields(data.data);
+              console.log(data);
+              console.log("asdsad", data.ispaid);
+              if (!data.data.ispaid){
+                const submitPrompt1 = document.getElementById("submit_prompt1");
+              if (submitPrompt1) {
+                  submitPrompt1.classList.add("visible1")
+                  document.querySelector('.error-message').textContent = "This account shows an outstanding balance. Please settle the payment to avoid service interruptions.";
+                  document.getElementById('scanningHeaderMessage').innerText = "Payment Reminder"
+                  const overlay = document.querySelector('.overlay');
+                  if (overlay) {
+                      overlay.classList.add("visible");
+                  }
+              }
+              } else {
+                populateFormFields(data.data);
+              }
           } else {
               const submitPrompt1 = document.getElementById("submit_prompt1");
               if (submitPrompt1) {
                   submitPrompt1.classList.add("visible1")
                   document.querySelector('.error-message').textContent = data.error;
+                  document.getElementById('scanningHeaderMessage').innerText = "Scanning QR Failed"
                   const overlay = document.querySelector('.overlay');
                   if (overlay) {
                       overlay.classList.add("visible");
