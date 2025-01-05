@@ -19,12 +19,14 @@ const residentsRouter = require("./routes/residents/residents");
 const servicesRouter = require("./routes/services/services");
 const statisticsRouter = require("./routes/statistics/statistics");
 const officialsRouter = require("./routes/officials/officials");
-const { title } = require('process');
 
 //-------CONNECTING TO DATABASE-------//
 mPool.connect()
     .then(() => console.log("Connected to database"))
-    .catch((err) => console.error("Error connecting to database:", err));
+    .catch((err) => {
+        console.error("Database connection error:", err.message);
+        console.error("Stack trace:", err.stack);
+    });
 
 //-------INITIALIZING VIEW ENGINE AND PATH------//
 app.set("view engine", "ejs");
@@ -35,14 +37,30 @@ app.use("/uploads", express.static('uploads'));
 
 //-------MIDDLEWARE CONFIGURATION-------//
 app.use(compression());
-app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
+
+const allowedOrigins = ['http://localhost:3000','http://192.168.1.2:3000', 'http://192.168.1.9:3000'];
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+}));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(session({
     secret: process.env.SECRET || 'fallback_secret',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: process.env.NODE_ENV === 'production' },
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
+        sameSite: 'lax',
+    },
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -66,6 +84,10 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send("Something broke!");
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection:', reason);
 });
 
 const PORT = process.env.PORT || 3000;
