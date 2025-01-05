@@ -51,6 +51,7 @@ router.get("/dashboard", async (req, res) => {
             return res.json({
                 title: "Archive",
                 archiveList,
+                user: req.user,
                 currentPage: page,
                 totalPages,
                 limit,
@@ -61,6 +62,7 @@ router.get("/dashboard", async (req, res) => {
         res.render("archive/archive", {
             title: "Archive",
             archiveList,
+            user: req.user,
             currentPage: page,
             totalPages,
             limit,

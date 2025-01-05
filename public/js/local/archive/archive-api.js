@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         try {
 
             const response = await fetch(
-                `http://localhost:3000/archive/dashboard?ajax=true&page=${page}&limit=${limit}&search=${encodeURIComponent(searchQuery)}&doctype=${doctype}`
+                `/archive/dashboard?ajax=true&page=${page}&limit=${limit}&search=${encodeURIComponent(searchQuery)}&doctype=${doctype}`
                 , {
                     method: 'GET', // Specify GET method (default is GET, but can be added explicitly)
                     headers: {

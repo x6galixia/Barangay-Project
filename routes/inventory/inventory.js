@@ -18,6 +18,7 @@ router.get("/dashboard", async (req, res) => {
             return res.json({
                 title: "Inventory",
                 getInventoryList,
+                user: req.user,
                 currentPage: page,
                 totalPages,
                 limit,
@@ -27,6 +28,7 @@ router.get("/dashboard", async (req, res) => {
         res.render("inventory/inventory", {
             title: "Inventory",
             getInventoryList,
+            user: req.user,
             currentPage: page,
             totalPages,
             limit,
