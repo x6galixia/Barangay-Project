@@ -22,10 +22,9 @@ const officialsRouter = require("./routes/officials/officials");
 
 //-------CONNECTING TO DATABASE-------//
 mPool.connect()
-    .then(() => console.log("Connected to database"))
     .catch((err) => {
+        // Handle error but without logging for debugging purposes
         console.error("Database connection error:", err.message);
-        console.error("Stack trace:", err.stack);
     });
 
 //-------INITIALIZING VIEW ENGINE AND PATH------//
@@ -38,20 +37,31 @@ app.use("/uploads", express.static('uploads'));
 //-------MIDDLEWARE CONFIGURATION-------//
 app.use(compression());
 
-const allowedOrigins = ['http://localhost:3000','http://192.168.1.2:3000', 'http://192.168.1.9:3000'];
+// CORS middleware
 app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: '*',
+    methods: 'GET, POST, PUT, DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
     credentials: true,
 }));
 
+// Handle preflight (OPTIONS) requests
+app.use((req, res, next) => {
+    if (req.method === 'OPTIONS') {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        res.setHeader('Access-Control-Max-Age', '86400'); // Cache preflight response for 1 day
+        return res.status(200).end();
+    }
+    next();
+});
+
+// Express body parsers
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+// Session middleware
 app.use(session({
     secret: process.env.SECRET || 'fallback_secret',
     resave: false,
@@ -68,9 +78,9 @@ app.use(flash());
 
 //------INITIALIZE ROUTES------//
 app.use("/home", homeRouter);
-app.use("/archive", archiveRouter);
-app.use("/inventory", inventoryRouter);
 app.use("/residents", residentsRouter);
+app.use('/inventory', inventoryRouter);
+app.use('/archive', archiveRouter);
 app.use("/services", servicesRouter);
 app.use("/statistics", statisticsRouter);
 app.use("/officials", officialsRouter);
@@ -82,15 +92,10 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-    console.error(err.stack);
     res.status(500).send("Something broke!");
 });
 
-process.on('unhandledRejection', (reason, promise) => {
-    console.error('Unhandled Rejection:', reason);
-});
-
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`App is up and running at port ${PORT}`);
 });

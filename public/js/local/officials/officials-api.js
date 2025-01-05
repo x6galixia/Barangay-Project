@@ -2,7 +2,15 @@
 document.addEventListener("DOMContentLoaded", async function () {
 
   try {
-    const response = await fetch(`/officials/dashboard?ajax=true`);
+    const response = await fetch(`/officials/dashboard?ajax=true`
+      , {
+        method: 'GET', // Specify GET method (default is GET, but can be added explicitly)
+        headers: {
+            'Content-Type': 'application/json',  // Ensure content is treated as JSON
+            'Accept': 'application/json',        // Expect JSON response
+        },
+    }
+    );
     if (!response.ok) {
       throw new Error("Failed to fetch request data");
     }
