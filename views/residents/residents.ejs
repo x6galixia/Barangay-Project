@@ -381,7 +381,6 @@
                             </div>
                             <hr>
                             <h3>Payments</h3>
-                            <label for="">Paid</label>
                             <select name="isPaid" id="">
                                 <option value="" selected disabled>select payment status</option>
                                 <option value="true">Paid</option>
@@ -582,6 +581,7 @@
 
         // Check if webcam is already streaming
         if (!webcam.srcObject) {
+            console.log("asdsad");
             // Access the user's webcam
             navigator.mediaDevices.getUserMedia({ video: true })
                 .then(stream => {

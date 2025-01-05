@@ -173,7 +173,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                             "Pending Resolution": "#8E44AD", // Bold Purple
                             "Resolved": "#2ECC71",      // Bright Green (positive and vibrant)
                             "Dismissed": "#C0392B",     // Dark Red (strong contrast)
-                            "Settled": "#95A5A6"        // Darker Gray (subtle but visible)
+                            "Settled Guilty": "#FF0000",     // Darker Gray (subtle but visible)
+                            "Settled Not Guilty": "#95A5A6"        // Darker Gray (subtle but visible)
                         };
 
                         const statusColor = statusColors[detail.caseStage] || "#000000";
@@ -461,7 +462,8 @@ function docChangesSelected(doctype, authorsLength, coAuthorsLength, sponsorsLen
                 <option value=" default" disabled selected>
                 Select a Status
                 </option>
-                <option value="Settled">Settled</option>
+                <option value="Settled Guilty">Settled Guilty</option>
+                <option value="Settled Not Guilty">Settled Not Guilty</option>
                 <option value="Resolve">Resolve</option>
                 <option value="Dismissed">Dismissed</option>
                 <option value="Withdrawn">Withdrawn</option>
@@ -676,93 +678,113 @@ function popUp_button(button) {
         if (type === "Lupon") {
             document.querySelector('#add-document .heading').innerHTML = `ADD ${type.toUpperCase()} DOCUMENT`;
             formContainer.innerHTML = `
-            <div class="inputWithLabel" id="surubadan">
-                <label>Lupon Case Number</label>
-                <input type="text" aria-label="Lupon Case Number" name="luponCaseNumber" id=luponCaseNumber required>
-            </div>
-            <div class="inputWithLabel" id="surubadan">
-                <label>Complainant</label>
-                <input type="text" aria-label="Complainant" name="complainant" required>
+                <div class="inputWithLabel">
+                    <label>Lupon Case Number</label>
+                    <input type="text" aria-label="Lupon Case Number" name="luponCaseNumber" id="luponCaseNumber" required>
                 </div>
-                <div class="inputWithLabel" id="surubadan">
-                <label>Respondent</label>
-                <input type="text" aria-label="Respondent" id="respondent" name="respondent" id="respondent" required autocomplete="off">
-                <div id="results" style="display:none"></div>
-            </div>
-            <div class="inputWithLabel">
-                <label>Date Filed</label>
-                <input type="date" aria-label="Date Filed" name="dateFiled" id="dateFiled" required>
-            </div>
-            <div class="inputWithLabel">
-                <label>Type Of Case</label>
-                <input type="text" aria-label="Date Filed" name="caseType" id=caseType required>
-            </div>
-            <div class="inputWithLabel">
-            <label for="">Case Stage</label>
-            <select class="caseStage-dropdown" name="caseStage" id="caseStage">
-                <option value=" default" disabled selected>
-                Select a Status
-                </option>
-                <option value="Settled">Settled</option>
-                <option value="Resolve">Resolve</option>
-                <option value="Dismissed">Dismissed</option>
-                <option value="Withdrawn">Withdrawn</option>
-                <option value="Deferred">Deferred</option>
-                <option value="Pending">Pending</option>
-                <option value="Under Investigation">Under Investigation</option>
-                <option value="For Hearing">For Hearing</option>
-                <option value="For Finality">For Finality</option>
-                <option value="Pending Resolution">Pending Resolution</option>
-            </select>
-            </div>
-            `
+                <div class="inputWithLabel">
+                    <label>Complainant</label>
+                    <input type="text" aria-label="Complainant" name="complainant" required>
+                </div>
+                <div class="inputWithLabel">
+                    <label>Respondent</label>
+                    <input type="text" aria-label="Respondent" id="respondent" name="respondent" required autocomplete="off">
+                    <div id="results" style="display:none"></div>
+                </div>
+                <div class="inputWithLabel">
+                    <label>Date Filed</label>
+                    <input type="date" aria-label="Date Filed" name="dateFiled" id="dateFiled" required>
+                </div>
+                <div class="inputWithLabel">
+                    <label>Type Of Case</label>
+                    <input type="text" aria-label="Type Of Case" name="caseType" id="caseType" required>
+                </div>
+                <div class="inputWithLabel">
+                    <label for="caseStage">Case Stage</label>
+                    <select class="caseStage-dropdown" name="caseStage" id="caseStage">
+                        <option value="" disabled selected>Select a Status</option>
+                        <option value="Settled Guilty">Settled Guilty</option>
+                        <option value="Settled Not Guilty">Settled Not Guilty</option>
+                        <option value="Resolve">Resolve</option>
+                        <option value="Dismissed">Dismissed</option>
+                        <option value="Withdrawn">Withdrawn</option>
+                        <option value="Deferred">Deferred</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Under Investigation">Under Investigation</option>
+                        <option value="For Hearing">For Hearing</option>
+                        <option value="For Finality">For Finality</option>
+                        <option value="Pending Resolution">Pending Resolution</option>
+                    </select>
+                </div>
+            `;
+
+            let debounceTimer;
+            let selectedIndex = -1;
 
             document.getElementById('respondent').addEventListener('input', function () {
-                const query = document.getElementById("respondent").value;
-            
-                console.log("Input query:", query); // Debugging the input value.
-            
+                clearTimeout(debounceTimer);
+                const query = this.value;
                 if (query.length > 0) {
-                    fetch(`/archive/get-resident?query=${encodeURIComponent(query)}`)
-                        .then(response => {
-                            console.log("Response status:", response.status); // Log response status.
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! Status: ${response.status}`);
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            console.log("Fetched residents:", data); // Log fetched data.
-                            const resultsContainer = document.getElementById('results');
-                            resultsContainer.style.display = 'flex';
-                            resultsContainer.innerHTML = '';
-            
-                            if (data.length > 0) {
-                                data.forEach(resident => {
-                                    const listItem = document.createElement('div');
-                                    listItem.textContent = `${resident.fname} ${resident.mname} ${resident.lname}`;
-                                    resultsContainer.appendChild(listItem);
-                                });
-                            } else {
-                                resultsContainer.textContent = '--No results found!--';
-                            }
-                        })
-                        .catch(error => {
-                            console.error("Error fetching residents:", error); // Log any errors.
-                        });
+                    debounceTimer = setTimeout(() => {
+                        fetch(`/archive/get-resident?query=${encodeURIComponent(query)}`)
+                            .then(response => {
+                                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                                return response.json();
+                            })
+                            .then(data => {
+                                const resultsContainer = document.getElementById('results');
+                                resultsContainer.style.display = 'flex';
+                                resultsContainer.innerHTML = '';
+
+                                if (data.length > 0) {
+                                    data.forEach(resident => {
+                                        const listItem = document.createElement('div');
+                                        listItem.textContent = `${resident.fname} ${resident.mname} ${resident.lname}`;
+                                        resultsContainer.appendChild(listItem);
+                                    });
+                                } else {
+                                    resultsContainer.innerHTML = '--No results found!--';
+                                }
+                            })
+                            .catch(error => console.error("Error fetching residents:", error));
+                    }, 300);
                 } else {
-                    document.getElementById('results').innerHTML = ''; // Clear results for empty input.
-                    document.getElementById('results').style.display = 'none';
+                    const resultsContainer = document.getElementById('results');
+                    resultsContainer.style.display = 'none';
+                    resultsContainer.innerHTML = '';
                 }
             });
-        
-            const complainantField = document.getElementById('respondent');
-            if (complainantField) {
-                complainantField.addEventListener('input', function () {
-                    console.log("Inline script triggered:", this.value);
-                });
-            } else {
-                console.error("Respondent input field not found!");
+
+            document.getElementById('results').addEventListener('click', function (event) {
+                if (event.target && event.target.nodeName === "DIV") {
+                    const selectedText = event.target.textContent;
+                    document.getElementById('respondent').value = selectedText;
+                    this.style.display = 'none';
+                }
+            });
+
+            document.getElementById('respondent').addEventListener('keydown', function (e) {
+                const resultsContainer = document.getElementById('results');
+                const items = resultsContainer.querySelectorAll('div');
+
+                if (items.length > 0) {
+                    if (e.key === 'ArrowDown') {
+                        selectedIndex = (selectedIndex + 1) % items.length;
+                        highlightItem(items, selectedIndex);
+                    } else if (e.key === 'ArrowUp') {
+                        selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+                        highlightItem(items, selectedIndex);
+                    } else if (e.key === 'Enter' && selectedIndex > -1) {
+                        this.value = items[selectedIndex].textContent;
+                        resultsContainer.style.display = 'none';
+                        selectedIndex = -1;
+                    }
+                }
+            });
+
+            function highlightItem(items, index) {
+                items.forEach(item => item.classList.remove('highlight'));
+                if (index >= 0) items[index].classList.add('highlight');
             }
         }
         if (type === "Ordinance") {
