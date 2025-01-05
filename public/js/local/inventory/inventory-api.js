@@ -57,6 +57,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             const response = await fetch(
                 `http://localhost:3000/inventory/dashboard?ajax=true&page=${page}&limit=${limit}&search=${encodeURIComponent(searchQuery)}&isFunctional=${isFunctional}`
+                , {
+                    method: 'GET', // Specify GET method (default is GET, but can be added explicitly)
+                    headers: {
+                        'Content-Type': 'application/json',  // Ensure content is treated as JSON
+                        'Accept': 'application/json',        // Expect JSON response
+                    },
+                }
             );
 
 

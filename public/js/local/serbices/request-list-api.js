@@ -8,7 +8,15 @@ document.addEventListener("DOMContentLoaded", async function () {
   const limit = parseInt(urlParams.get('limit')) || 10;
 
   try {
-    const response = await fetch(`/services/dashboard?ajax=true&page=${page}&limit=${limit}`);
+    const response = await fetch(`/services/dashboard?ajax=true&page=${page}&limit=${limit}`
+      , {
+        method: 'GET', // Specify GET method (default is GET, but can be added explicitly)
+        headers: {
+            'Content-Type': 'application/json',  // Ensure content is treated as JSON
+            'Accept': 'application/json',        // Expect JSON response
+        },
+    }
+    );
     if (!response.ok) {
       throw new Error("Failed to fetch request data");
     }

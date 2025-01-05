@@ -1,6 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
   // Fetch resident classification data and render chart
-  fetch("/statistics/resident-classification")
+  fetch("/statistics/resident-classification"
+    , {
+      method: 'GET', // Specify GET method (default is GET, but can be added explicitly)
+      headers: {
+          'Content-Type': 'application/json',  // Ensure content is treated as JSON
+          'Accept': 'application/json',        // Expect JSON response
+      },
+  }
+  )
   .then((response) => response.json())
   .then((data) => {
     // Classification Names
