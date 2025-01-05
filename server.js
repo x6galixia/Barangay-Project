@@ -1,13 +1,12 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
-require('dotenv').config();
 const path = require('path');
 const passport = require("passport");
 const cors = require("cors");
 const session = require("express-session");
 const flash = require("express-flash");
 const compression = require("compression");
-const bodyParser = require('body-parser');
 
 //-------DATABASES IMPORTING-------//
 const mPool = require("./models/mDatabase");
@@ -34,37 +33,20 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/node_modules", express.static(path.join(__dirname, "node_modules")));
 app.use("/uploads", express.static('uploads'));
 
-
 //-------MIDDLEWARE CONFIGURATION-------//
 app.use(compression());
-app.use(cors({
-    origin: ['http://localhost:3000'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-}));
-
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
-app.use(express.json());
+app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(session({
-    secret: process.env.SECRET,
+    secret: process.env.SECRET || 'fallback_secret',
     resave: false,
     saveUninitialized: true,
     cookie: { secure: process.env.NODE_ENV === 'production' },
 }));
-
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-
-//-------CACHE CONTROL-------//
-app.use((req, res, next) => {
-    res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
-    res.header("Expires", "-1");
-    res.header("Pragma", "no-cache");
-    next();
-});
 
 //------INITIALIZE ROUTES------//
 app.use("/home", homeRouter);
@@ -75,22 +57,18 @@ app.use("/services", servicesRouter);
 app.use("/statistics", statisticsRouter);
 app.use("/officials", officialsRouter);
 
-app.get("/", (req, res) => {
-    res.redirect("/home/dashboard");
-});
+app.get("/", (req, res) => res.redirect("/home/dashboard"));
 
 app.use((req, res) => {
     res.status(404).render('404', { title: '404 Not Found' });
-  });
+});
 
-
-
-//------ERROR HANDLING-------//
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send("Something broke!");
 });
 
-app.listen(process.env.PORT, () => {
-    console.log(`App is up and running at port ${process.env.PORT}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`App is up and running at port ${PORT}`);
 });

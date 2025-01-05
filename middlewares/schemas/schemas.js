@@ -43,6 +43,7 @@ const residentSchema = Joi.object({
     city: Joi.string().optional().allow(null),
     province: Joi.string().optional().allow(null),
     isResident: Joi.string().required(),
+    isPaid: Joi.boolean().optional().allow(null),
     nonResidentAddress: Joi.when('isResident', {
         is: "non-resident",
         then: nonResidentAddressSchema.optional(),
