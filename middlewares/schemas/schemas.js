@@ -5,7 +5,13 @@ const requestSchema = Joi.object({
     purpose: Joi.string().required().optional().allow(null),
     lastname: Joi.string().required().optional().allow(null),
     firstname: Joi.string().required().optional().allow(null),
-    middlename: Joi.string().required().optional().allow(null)
+    middlename: Joi.string().required().optional().allow(null),
+    age: Joi.string().required().optional().allow(null),
+    birthdate: Joi.date().required().optional().allow(null),
+    birthplace: Joi.string().optional().allow(""),
+    civilStatus: Joi.string().required().optional().allow(null),
+    purok: Joi.string().optional().allow(""),
+    grossIncome: Joi.number().optional().allow("")
 });
 
 const nonResidentAddressSchema = Joi.object({
