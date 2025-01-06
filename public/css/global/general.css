@@ -141,8 +141,8 @@ button {
   justify-self: end;
   align-self: self-end;
   display: flex;
-  justify-content: end;
-  align-items: end;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
 }
 

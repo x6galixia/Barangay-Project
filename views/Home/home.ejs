@@ -19,20 +19,27 @@
       <div class="heading">Service Request Form</div>
       <input type="text" id="qrInput" required style="opacity: 0; position: fixed; transform: translate(-50%, -50%),;">
       <form action="/home/service-request-form" method="POST" class="requestForm">
+        <div class="scanSwitch">
+          Manual Input
+          <label class="switch">
+              <input type="checkbox" id="scanSwitch">
+              <span class="slider round"></span>
+          </label>
+      </div>
         <input type="hidden" id="qrOutput" name="id" style="position: absolute;">
         <div class="formInputContainer">
           <div>
             <div class="inputWithLabel">
               <label for="">Last Name</label>
-              <input type="text" id="lastname" readonly>
+              <input type="text" id="lastname" name="lastname" readonly>
             </div>
             <div class="inputWithLabel">
               <label for="">First Name</label>
-              <input type="text" id="firstname" readonly>
+              <input type="text" id="firstname" name="firstname" readonly>
             </div>
             <div class="inputWithLabel">
               <label for="">Middle Name</label>
-              <input type="text" id="middlename" readonly>
+              <input type="text" id="middlename" name="middlename" readonly>
             </div>
             <div class="inputWithLabel">
               <label for="">Age</label>
@@ -93,7 +100,7 @@
           </div>
         </div>
 
-        <button type="submit" id="submitButton" disabled>SUBMIT</button>
+        <button type="submit" id="submitButton">SUBMIT</button>
       </form>
 
       <% if (messages.success) { %>
