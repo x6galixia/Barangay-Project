@@ -1,103 +1,119 @@
-// document.getElementById('scanSwitch').addEventListener('change', function () {
-const qrInputField = document.getElementById('qrInput');
-let scanning = false;
+document.getElementById('scanSwitch').addEventListener('change', function () {
+  let scanning = false;
+  const qrOutput = document.getElementById('qrOutput');
+  const inputFields = document.querySelectorAll('.formInputContainer input, .formInputContainer select');
 
-function checkId() {
-  const idInput = document.getElementById('qrOutput');
-  const submitButton = document.getElementById('submitButton');
-  
-  if (idInput.value.trim() !== '') {
-      submitButton.disabled = false;
-      console.log("false");
-    } else {
-    console.log("true");
-      submitButton.disabled = true;
-  }
-}
+  if (this.checked) {
+    // Switch is enabled
+    qrOutput.value = "MPDN0000"; // Set default value
+    inputFields.forEach(field => field.removeAttribute('readonly')); // Enable inputs
+    console.log("Inputs enabled. qrOutput set to 'MPDN0000'.");
+  } else {
+    // Switch is disabled
+    qrOutput.value = ""; // Clear value
+    inputFields.forEach(field => field.setAttribute('readonly', true)); // Disable inputs
+    console.log("Inputs disabled. qrOutput cleared.");
 
-window.addEventListener('load', checkId);
-document.getElementById('qrOutput').addEventListener('input', checkId);
 
-// Enable scanning and focus the QR input field
-document.addEventListener('keydown', handleKeyDown);
-qrInputField.addEventListener('keypress', handleKeyPress);
-qrInputField.focus(); // Focus on the QR input field when scanning is enabled
 
-// Function to handle keydown event
-function handleKeyDown(event) {
-  // Only focus the input if scanning is active and a character key was pressed
-  if (scanning === false && event.key.length === 1) {
-    scanning = true;
-    qrInputField.focus();
-  }
-}
 
-// Function to handle keypress event when 'Enter' is pressed
-function handleKeyPress(event) {
-  if (event.key === 'Enter') {
-    const scannedData = event.target.value;
-    const secretKey = "MnDev";
+    function checkId() {
+      const idInput = document.getElementById('qrOutput');
+      const submitButton = document.getElementById('submitButton');
 
-    // Decrypt function
-    function decryptData(cipherText, secretKey) {
-      const bytes = CryptoJS.AES.decrypt(cipherText, secretKey);
-      return bytes.toString(CryptoJS.enc.Utf8);
+      if (idInput.value.trim() !== '') {
+        submitButton.disabled = false;
+        console.log("false");
+      } else {
+        console.log("true");
+        submitButton.disabled = true;
+      }
     }
 
-    const decryptedData = decryptData(scannedData, secretKey);
+    window.addEventListener('load', checkId);
+    document.getElementById('qrOutput').addEventListener('input', checkId);
 
-    document.getElementById("qrOutput").value = decryptedData;
+    // Enable scanning and focus the QR input field
+    document.addEventListener('keydown', handleKeyDown);
+    qrInputField.addEventListener('keypress', handleKeyPress);
+    qrInputField.focus(); // Focus on the QR input field when scanning is enabled
 
-    fetch(`/home/dashboard/fetchScannedData?qrCode=${decryptedData}`, {
-      method: 'GET',
-      headers: {
-          'Content-Type': 'application/json'
+    // Function to handle keydown event
+    function handleKeyDown(event) {
+      // Only focus the input if scanning is active and a character key was pressed
+      if (scanning === false && event.key.length === 1) {
+        scanning = true;
+        qrInputField.focus();
       }
-  })
-      .then(response => {
-          return response.json();
-      })
-      .then(data => {
-          if (data.success) {
+    }
+
+    // Function to handle keypress event when 'Enter' is pressed
+    function handleKeyPress(event) {
+      if (event.key === 'Enter') {
+        const scannedData = event.target.value;
+        const secretKey = "MnDev";
+
+        // Decrypt function
+        function decryptData(cipherText, secretKey) {
+          const bytes = CryptoJS.AES.decrypt(cipherText, secretKey);
+          return bytes.toString(CryptoJS.enc.Utf8);
+        }
+
+        const decryptedData = decryptData(scannedData, secretKey);
+
+        document.getElementById("qrOutput").value = decryptedData;
+
+        fetch(`/home/dashboard/fetchScannedData?qrCode=${decryptedData}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(response => {
+            return response.json();
+          })
+          .then(data => {
+            if (data.success) {
               console.log(data);
               console.log("asdsad", data.ispaid);
-              if (!data.data.ispaid){
+              if (!data.data.ispaid) {
                 const submitPrompt1 = document.getElementById("submit_prompt1");
-              if (submitPrompt1) {
+                if (submitPrompt1) {
                   submitPrompt1.classList.add("visible1")
                   document.querySelector('.error-message').textContent = "This account shows an outstanding balance. Please settle the payment to avoid service interruptions.";
                   document.getElementById('scanningHeaderMessage').innerText = "Payment Reminder"
                   const overlay = document.querySelector('.overlay');
                   if (overlay) {
-                      overlay.classList.add("visible");
+                    overlay.classList.add("visible");
                   }
-              }
+                }
               } else {
                 populateFormFields(data.data);
               }
-          } else {
+            } else {
               const submitPrompt1 = document.getElementById("submit_prompt1");
               if (submitPrompt1) {
-                  submitPrompt1.classList.add("visible1")
-                  document.querySelector('.error-message').textContent = data.error;
-                  document.getElementById('scanningHeaderMessage').innerText = "Scanning QR Failed"
-                  const overlay = document.querySelector('.overlay');
-                  if (overlay) {
-                      overlay.classList.add("visible");
-                  }
+                submitPrompt1.classList.add("visible1")
+                document.querySelector('.error-message').textContent = data.error;
+                document.getElementById('scanningHeaderMessage').innerText = "Scanning QR Failed"
+                const overlay = document.querySelector('.overlay');
+                if (overlay) {
+                  overlay.classList.add("visible");
+                }
               }
-          }
-      })
-      .catch(error => {
-          console.error('Error:', error.message);
-          alert('An unexpected error occurred. Please try again later.');
-      });  
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error.message);
+            alert('An unexpected error occurred. Please try again later.');
+          });
 
-    event.target.value = '';
-    checkId();
+        event.target.value = '';
+        checkId();
+      }
+    }
   }
-}
-// });
+});
 
 function populateFormFields(data) {
   document.getElementById("lastname").value = data.lname || '';
@@ -110,7 +126,7 @@ function populateFormFields(data) {
   document.getElementById("grossIncome").value = data.income || '';
   document.getElementById("birthplace").value = data.birthplace || '';
 
-  if (data.isresident === true){
+  if (data.isresident === true) {
     document.getElementById("purpose").innerHTML = `
     <option value=" default" disabled selected>
       Select a Services

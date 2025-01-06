@@ -2,7 +2,10 @@ const Joi = require('joi');
 
 const requestSchema = Joi.object({
     id: Joi.string().required().optional().allow(null),
-    purpose: Joi.string().required().optional().allow(null)
+    purpose: Joi.string().required().optional().allow(null),
+    lastname: Joi.string().required().optional().allow(null),
+    firstname: Joi.string().required().optional().allow(null),
+    middlename: Joi.string().required().optional().allow(null)
 });
 
 const nonResidentAddressSchema = Joi.object({

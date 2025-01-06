@@ -441,12 +441,11 @@ function docChangesSelected(doctype, authorsLength, coAuthorsLength, sponsorsLen
             </div>
             <div class="inputWithLabel" id="surubadan">
                 <label>Complainant</label>
-                <input type="text" aria-label="Complainant" name="complainant" required>
+                <input type="text" aria-label="Complainant" name="complainant" id="complainant" required>
                 </div>
                 <div class="inputWithLabel" id="surubadan">
                 <label>Respondent</label>
                 <input type="text" aria-label="Respondent" id="respondent" name="respondent" id="respondent" required autocomplete="off">
-                <div id="results"></div>
             </div>
             <div class="inputWithLabel">
                 <label>Date Filed</label>
@@ -684,12 +683,11 @@ function popUp_button(button) {
                 </div>
                 <div class="inputWithLabel">
                     <label>Complainant</label>
-                    <input type="text" aria-label="Complainant" name="complainant" required>
+                    <input type="text" aria-label="Complainant" name="complainant " id="complainant" required>
                 </div>
                 <div class="inputWithLabel">
                     <label>Respondent</label>
                     <input type="text" aria-label="Respondent" id="respondent" name="respondent" required autocomplete="off">
-                    <div id="results" style="display:none"></div>
                 </div>
                 <div class="inputWithLabel">
                     <label>Date Filed</label>
@@ -717,75 +715,6 @@ function popUp_button(button) {
                     </select>
                 </div>
             `;
-
-            let debounceTimer;
-            let selectedIndex = -1;
-
-            document.getElementById('respondent').addEventListener('input', function () {
-                clearTimeout(debounceTimer);
-                const query = this.value;
-                if (query.length > 0) {
-                    debounceTimer = setTimeout(() => {
-                        fetch(`/archive/get-resident?query=${encodeURIComponent(query)}`)
-                            .then(response => {
-                                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                                return response.json();
-                            })
-                            .then(data => {
-                                const resultsContainer = document.getElementById('results');
-                                resultsContainer.style.display = 'flex';
-                                resultsContainer.innerHTML = '';
-
-                                if (data.length > 0) {
-                                    data.forEach(resident => {
-                                        const listItem = document.createElement('div');
-                                        listItem.textContent = `${resident.fname} ${resident.mname} ${resident.lname}`;
-                                        resultsContainer.appendChild(listItem);
-                                    });
-                                } else {
-                                    resultsContainer.innerHTML = '--No results found!--';
-                                }
-                            })
-                            .catch(error => console.error("Error fetching residents:", error));
-                    }, 300);
-                } else {
-                    const resultsContainer = document.getElementById('results');
-                    resultsContainer.style.display = 'none';
-                    resultsContainer.innerHTML = '';
-                }
-            });
-
-            document.getElementById('results').addEventListener('click', function (event) {
-                if (event.target && event.target.nodeName === "DIV") {
-                    const selectedText = event.target.textContent;
-                    document.getElementById('respondent').value = selectedText;
-                    this.style.display = 'none';
-                }
-            });
-
-            document.getElementById('respondent').addEventListener('keydown', function (e) {
-                const resultsContainer = document.getElementById('results');
-                const items = resultsContainer.querySelectorAll('div');
-
-                if (items.length > 0) {
-                    if (e.key === 'ArrowDown') {
-                        selectedIndex = (selectedIndex + 1) % items.length;
-                        highlightItem(items, selectedIndex);
-                    } else if (e.key === 'ArrowUp') {
-                        selectedIndex = (selectedIndex - 1 + items.length) % items.length;
-                        highlightItem(items, selectedIndex);
-                    } else if (e.key === 'Enter' && selectedIndex > -1) {
-                        this.value = items[selectedIndex].textContent;
-                        resultsContainer.style.display = 'none';
-                        selectedIndex = -1;
-                    }
-                }
-            });
-
-            function highlightItem(items, index) {
-                items.forEach(item => item.classList.remove('highlight'));
-                if (index >= 0) items[index].classList.add('highlight');
-            }
         }
         if (type === "Ordinance") {
             document.querySelector('#add-document .heading').innerHTML = `ADD ${type.toUpperCase()} DOCUMENT`;

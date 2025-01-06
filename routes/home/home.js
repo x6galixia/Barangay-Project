@@ -28,7 +28,7 @@ router.get("/dashboard/fetchScannedData", async (req, res) => {
         } else {
             res.status(200).json({ success: false, error: "QR not registered in the database!" });
         }
-        
+
     } catch (err) {
         console.error("Error querying database:", err.message);
         res.status(500).send("Server error");
@@ -43,20 +43,64 @@ router.post("/service-request-form", async (req, res) => {
     try {
         const residentExistQuery = `SELECT residentsid FROM residents WHERE globalid = $1`;
         const residentExistResult = await mPool.query(residentExistQuery, [value.id]);
+        if (value.id === "MPDN0000") {
 
-        if (residentExistResult.rows.length > 0) {
-            const residentsid = residentExistResult.rows[0].residentsid; // Get the residentsid from the query result
+            if (residentExistResult.rows.length > 0) {
+                const residentsid = residentExistResult.rows[0].residentsid;
 
-            const todayDate = new Date().toISOString().split('T')[0]; // Format today's date as YYYY-MM-DD
+                const updateResidentQuery = `
+                UPDATE residents 
+                SET lname = $1, fname = $2, mname = $3
+                WHERE residentsid = $4
+            `;
+                await mPool.query(updateResidentQuery, [
+                    value.lastname,
+                    value.firstname,
+                    value.middlename,
+                    residentsid,
+                ]);
 
-            await mPool.query(`
-                INSERT INTO requests (residentsid, dateadded, purpose) VALUES
-                ($1, $2, $3)`, [residentsid, todayDate, value.purpose]);
+            } else {
+                // Resident does not exist - Insert new record
+                const insertResidentQuery = `
+                INSERT INTO residents (globalid, idnumber, lname, fname, mname) 
+                VALUES ($1, $2, $3, $4, $5) 
+                RETURNING residentsid
+            `;
+                const insertResult = await mPool.query(insertResidentQuery, [
+                    value.id,
+                    "2020-0000",
+                    value.lastname,
+                    value.firstname,
+                    value.middlename,
+                ]);
 
-            req.flash('success', 'Request is transfered in services!');
+                const newResidentsId = insertResult.rows[0].residentsid;
+
+                const todayDate = new Date().toISOString().split('T')[0];
+
+                await mPool.query(`
+                INSERT INTO requests (residentsid, dateadded, purpose) 
+                VALUES ($1, $2, $3)`, [newResidentsId, todayDate, value.purpose]);
+                req.flash('success', 'Request is transfered in services!');
+            }
         } else {
-            req.flash('error', 'QR not registered in the database!');
+
+            if (residentExistResult.rows.length > 0) {
+                const residentsid = residentExistResult.rows[0].residentsid; // Get the residentsid from the query result
+
+                const todayDate = new Date().toISOString().split('T')[0]; // Format today's date as YYYY-MM-DD
+
+                await mPool.query(`
+                    INSERT INTO requests (residentsid, dateadded, purpose) VALUES
+                    ($1, $2, $3)`, [residentsid, todayDate, value.purpose]);
+
+                req.flash('success', 'Request is transfered in services!');
+            } else {
+                req.flash('error', 'QR not registered in the database!');
+            }
         }
+
 
         res.redirect('/home/dashboard');
 
