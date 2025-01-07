@@ -44,13 +44,12 @@ router.post("/service-request-form", async (req, res) => {
         const residentExistQuery = `SELECT residentsid FROM residents WHERE globalid = $1`;
         const residentExistResult = await mPool.query(residentExistQuery, [value.id]);
         if (value.id === "MPDN0000") {
-
             if (residentExistResult.rows.length > 0) {
                 const residentsid = residentExistResult.rows[0].residentsid;
 
                 const updateResidentQuery = `
                 UPDATE residents 
-                SET lname = $1, fname = $2, mname = $3
+                SET lname = $1, fname = $2, mname = $3, birthdate = $5, birthplace = $6, age = $7, income = $8, civilStatus = $9
                 WHERE residentsid = $4
             `;
                 await mPool.query(updateResidentQuery, [
@@ -58,13 +57,32 @@ router.post("/service-request-form", async (req, res) => {
                     value.firstname,
                     value.middlename,
                     residentsid,
+                    value.birthdate,
+                    value.birthplace,
+                    value.age,
+                    value.income,
+                    value.civilStatus,
                 ]);
 
+
+                const todayDate = new Date().toISOString().split('T')[0];
+
+                await mPool.query(`
+                INSERT INTO requests (residentsid, dateadded, purpose) 
+                VALUES ($1, $2, $3)`, [residentsid, todayDate, value.purpose]);
+                req.flash('success', 'Request is transfered in services!');
             } else {
                 // Resident does not exist - Insert new record
+
+                 //insert fake data in the required column for the contact person
+                 await mPool.query(`
+                    INSERT INTO contactPerson (contactPersonId, fname, lname) 
+                VALUES ($1, $2, $3)`, [0, "fake-data", "fake-data"]);
+                
+                //insert data to the mpdn000 row    
                 const insertResidentQuery = `
-                INSERT INTO residents (globalid, idnumber, lname, fname, mname) 
-                VALUES ($1, $2, $3, $4, $5) 
+                INSERT INTO residents (globalid, idnumber, lname, fname, mname, birthdate, birthplace, age, income, civilStatus, emergencyContactId, rClassificationId) 
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) 
                 RETURNING residentsid
             `;
                 const insertResult = await mPool.query(insertResidentQuery, [
@@ -73,7 +91,15 @@ router.post("/service-request-form", async (req, res) => {
                     value.lastname,
                     value.firstname,
                     value.middlename,
+                    value.birthdate,
+                    value.birthplace,
+                    value.age,
+                    value.income,
+                    value.civilStatus,
+                    0,
+                    12
                 ]);
+
 
                 const newResidentsId = insertResult.rows[0].residentsid;
 
@@ -110,5 +136,29 @@ router.post("/service-request-form", async (req, res) => {
         res.redirect('/home/dashboard');
     }
 });
+
+router.get('/dashboard/checkIfHasARecord', async (req, res) => {
+    const { name } = req.query;
+  
+    if (!name) {
+      return res.status(400).json({ error: 'Name parameter is required' });
+    }
+    try {
+      const query = `
+        SELECT EXISTS (
+          SELECT 1
+          FROM lupon
+          WHERE LOWER(respondent) LIKE LOWER('%' || $1 || '%')
+        );
+      `;
+      const values = [name];
+      const result = await mPool.query(query, values);
+  
+      res.status(200).json({ exists: result.rows[0].exists });
+    } catch (error) {
+      console.error('Error querying the database:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 
 module.exports = router;

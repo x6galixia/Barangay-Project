@@ -26,16 +26,16 @@
               <span class="slider round"></span>
           </label>
       </div>
-        <input type="hidden" id="qrOutput" name="id" style="position: absolute;">
+        <input type="hidden" id="qrOutput" name="id" style="position: absolute;" value="MPDN0000" >
         <div class="formInputContainer">
           <div>
             <div class="inputWithLabel">
               <label for="">Last Name</label>
-              <input type="text" id="lastname" name="lastname" readonly>
+              <input type="text" id="lastname" name="lastname" readonly required>
             </div>
             <div class="inputWithLabel">
               <label for="">First Name</label>
-              <input type="text" id="firstname" name="firstname" readonly>
+              <input type="text" id="firstname" name="firstname" readonly required>
             </div>
             <div class="inputWithLabel">
               <label for="">Middle Name</label>
@@ -43,34 +43,39 @@
             </div>
             <div class="inputWithLabel">
               <label for="">Age</label>
-              <input type="number" id="age" readonly>
+              <input type="number" id="age" name="age" readonly required>
             </div>
             <div class="inputWithLabel">
               <label for="">Birthday</label>
-              <input type="date" id="birthdate" readonly>
+              <input type="date" id="birthdate" name="birthdate" readonly required autocomplete="off">
             </div>
           </div>
           <div>
             <div class="inputWithLabel">
-              <label for="">Birthplace</label>
-              <input type="text" id="birthplace" readonly>
+              <label for="" id="birthplaceLabel">Birthplace</label>
+              <input type="text" id="birthplace" name="birthplace" readonly>
             </div>
             <div class="inputWithLabel">
               <label for="">Civil Status</label>
-              <input type="text" id="civilStatus" readonly>
+              <select id="civilStatus" name="civilStatus" required>
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
+                  <option value="Widow">Widow</option>
+                  <option value="Widower">Widower</option>
+              </select>
+          </div>
+            <div class="inputWithLabel">
+              <label for="" id="purokLabel">Purok</label>
+              <input type="text" id="purok" name="purok" readonly>
             </div>
             <div class="inputWithLabel">
-              <label for="">Purok</label>
-              <input type="text" id="purok" readonly>
-            </div>
-            <div class="inputWithLabel">
-              <label for="">Gross Income</label>
-              <input type="text" id="grossIncome" readonly>
+              <label for="" id="grossIncomeLabel">Gross Income</label>
+              <input type="text" id="grossIncome" name="grossIncome" readonly>
             </div>
             <div class="inputWithLabel">
               <label for="">Purpose</label>
-              <select class="services-dropdown" name="purpose" id="purpose">
-                <option value=" default" disabled selected>
+              <select class="services-dropdown" name="purpose" id="purpose" required>
+                <option value="" disabled selected>
                   Select a Services
                 </option>
                 <option value="Brgy. Clearance">Brgy. Clearance</option>
@@ -100,7 +105,7 @@
           </div>
         </div>
 
-        <button type="submit" id="submitButton">SUBMIT</button>
+        <button type="submit" id="submitButton" disabled>SUBMIT</button>
       </form>
 
       <% if (messages.success) { %>
@@ -144,7 +149,7 @@
       document.getElementById("submit_prompt1").classList.remove("visible1")
     }
     overlay.classList.remove("visible");
-    window.location.reload();
+    // window.location.reload();
   }
 </script>
 

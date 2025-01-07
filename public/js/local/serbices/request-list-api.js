@@ -12,10 +12,10 @@ document.addEventListener("DOMContentLoaded", async function () {
       , {
         method: 'GET', // Specify GET method (default is GET, but can be added explicitly)
         headers: {
-            'Content-Type': 'application/json',  // Ensure content is treated as JSON
-            'Accept': 'application/json',        // Expect JSON response
+          'Content-Type': 'application/json',  // Ensure content is treated as JSON
+          'Accept': 'application/json',        // Expect JSON response
         },
-    }
+      }
     );
     if (!response.ok) {
       throw new Error("Failed to fetch request data");
@@ -107,20 +107,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 function attachDotEventListeners() {
   document.querySelectorAll(".dot").forEach(function (dot) {
-      dot.addEventListener("click", function () {
-          console.log("dot clicked");
-          const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
-          tripleDotContainer.classList.add("visible");
-      });
+    dot.addEventListener("click", function () {
+      console.log("dot clicked");
+      const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
+      tripleDotContainer.classList.add("visible");
+    });
 
-      document.addEventListener("click", function (event) {
-          if (!dot.contains(event.target)) {
-              const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
-              if (tripleDotContainer && tripleDotContainer.classList.contains("visible")) {
-                  tripleDotContainer.classList.remove("visible");
-              }
-          }
-      });
+    document.addEventListener("click", function (event) {
+      if (!dot.contains(event.target)) {
+        const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
+        if (tripleDotContainer && tripleDotContainer.classList.contains("visible")) {
+          tripleDotContainer.classList.remove("visible");
+        }
+      }
+    });
   });
 
 }
@@ -173,8 +173,8 @@ window.processCertificate = function (button) {
       element.innerText = `HON. ${kagawad}`;
     });
   }
-  
-  
+
+
 
   if (purpose === 'Oath Of Undertaking') {
     document.getElementById("oathFullName").innerHTML = `${firstName} ${middleName} ${lastName}`.toLocaleUpperCase();
@@ -552,6 +552,23 @@ window.processCertificate = function (button) {
               <label for="">Closed Until</label>
               <input type="text" id="businessClosureClosedUntilInput">
           </div>
+          <div>
+            <label style="margin-right: auto">Certfication Details (Optional) <br><i>(Press <strong>ctrl+b</strong> for bold, <strong>ctrl+i</strong> for italic, and <strong>ctrl+u</strong> for underline)</i></label>
+          </div>
+          <div 
+            contenteditable="true"
+            style="
+              border: 1px solid #000;
+              padding: 8px;
+              min-height: 80px;
+              margin: 5px 0;
+              font-family: Arial, sans-serif;
+              border-radius: 10px;
+              outline: none;
+            "
+            onkeydown="handleFormatting(event, this)"
+            id="businessClossureCertificationDetailsInput"
+          ></div>
           <div class="inputWithLabel">
               <label for="">OR Nos</label>
               <input type="text" id="businessClosureORNosInput">
@@ -586,6 +603,7 @@ window.processCertificate = function (button) {
             document.getElementById("businessClosureOwnersAddress").innerText = document.getElementById("businessClosureBusinessOwnerAddressInput").value || "(OWNER'S ADDRESS)";
             document.getElementById("businessClosureClosedSince").innerText = document.getElementById("businessClosureClosedSinceInput").value || "(CLOSED SINCE)";
             document.getElementById("businessClosureClosedUntil").innerText = document.getElementById("businessClosureClosedUntilInput").value || "(CLOSED UNTIL)";
+            document.getElementById("businessClossureCertificationDetails").innerHTML = document.getElementById("businessClossureCertificationDetailsInput").innerHTML;
             document.getElementById("businessClosureORNos").innerText = document.getElementById("businessClosureORNosInput").value;
 
             if (certificatePurposeInput.type === "text") {
@@ -894,6 +912,39 @@ window.processCertificate = function (button) {
       viewCertificate.addEventListener('click', () => viewCertificateDetails("indigency"));
     }
     else if (purpose === 'Land no claim') {
+      certificateMainForm.innerHTML = `
+          <div>
+            <label style="margin-right: auto">Certfication Details <i>(Press <strong>ctrl+b</strong> for bold, <strong>ctrl+i</strong> for italic, and <strong>ctrl+u</strong> for underline)</i></label>
+          </div>
+          <div 
+            contenteditable="true"
+            style="
+              border: 1px solid #000;
+              padding: 8px;
+              min-height: 80px;
+              margin: 5px 0;
+              font-family: Arial, sans-serif;
+              border-radius: 10px;
+              outline: none;
+            "
+            onkeydown="handleFormatting(event, this)"
+            id="landNoClaimCertificationDetailsInput"
+          ></div>
+          <div class="inputWithLabel">
+              <label for="">OR Number</label>
+              <input type="number" id="landNoClaimORNosInput">
+          </div>
+      `;
+
+      document.addEventListener('click', function (event) {
+        if (event.target.classList.contains("applyChanges")) {
+
+          document.getElementById("landNoClaimCertficationDetails").innerHTML = document.getElementById("landNoClaimCertificationDetailsInput").innerHTML || "-- Certification Details will appear here--";
+          document.getElementById("landNoClaimORNos").innerText = document.getElementById("landNoClaimORNosInput").value;
+          alert("Changes applied");
+        }
+      });
+      viewCertificate.addEventListener('click', () => viewCertificateDetails("waterDistrict"));
       viewCertificate.addEventListener('click', () => viewCertificateDetails("landNoClaim"));
     }
     else if (purpose === 'Late Registration') {
@@ -1663,14 +1714,14 @@ window.processCertificate = function (button) {
             } else {
               period = "evening";
             }
-    
+
             // Convert to 12-hour format
             const hours12 = hour % 12 || 12; // Convert 0 -> 12 for midnight
             const ampm = hour < 12 ? "AM" : "PM";
             const formattedTime = `${hours12}:${minute.toString().padStart(2, "0")} ${ampm}`;
-    
+
             document.getElementById("deathTimeOfDeath").innerText = `around ${formattedTime} in the ${period}`;
-        }
+          }
 
 
           document.getElementById("deathNameofDeceased").innerText = document.getElementById("deathNameOfDeceasedInput").value.toLocaleUpperCase() || "(NAME OF DECEASED)";
@@ -1961,9 +2012,9 @@ function removeRequest(buttonElement) {
 
   // Optionally, confirm the removal
   if (confirm('Are you sure you want to remove this request?')) {
-      // Remove the row from the DOM
-      row.remove();
-      deleteItem(requestId);
+    // Remove the row from the DOM
+    row.remove();
+    deleteItem(requestId);
   }
 }
 
@@ -1971,22 +2022,22 @@ async function deleteItem(requestID) {
   console.log("Delete triggered for request ID:", requestID);
 
   try {
-      const response = await fetch(`/services/delete-request/${requestID}`, {
-          method: 'DELETE',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-      });
+    const response = await fetch(`/services/delete-request/${requestID}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
-      if (response.ok) {
-          console.log("Request deleted successfully.");
-          location.reload(); // Reload to reflect the changes
-      } else {
-          console.error("Error: Failed to delete the item. Status:", response.status);
-          alert('Failed to delete the request. Please try again.');
-      }
+    if (response.ok) {
+      console.log("Request deleted successfully.");
+      location.reload(); // Reload to reflect the changes
+    } else {
+      console.error("Error: Failed to delete the item. Status:", response.status);
+      alert('Failed to delete the request. Please try again.');
+    }
   } catch (error) {
-      console.error('Error deleting item:', error);
-      alert('An error occurred while deleting the request. Please try again.');
+    console.error('Error deleting item:', error);
+    alert('An error occurred while deleting the request. Please try again.');
   }
 }
