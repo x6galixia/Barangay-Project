@@ -10,7 +10,41 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
     document.getElementById('birthplaceLabel').innerText = "Birthplace (Optional)";
     document.getElementById('grossIncomeLabel').innerText = "Gross Income (Optional)";
     submitButton.removeAttribute('disabled');
+    document.getElementById("purpose").innerHTML = `
+    <option value=" default" disabled selected>
+      Select a Services
+    </option>
+    <option value="Business Clearance">Business Clearance</option>
+    <option value="Business Closure">Business Closure</option>
+    `
   } else {
+    document.getElementById("purpose").innerHTML = `
+    <option value=" default" disabled selected>
+      Select a Services
+    </option>
+    <option value="Brgy. Clearance">Brgy. Clearance</option>
+    <option value="Building Clearance">Building Clearance</option>
+    <option value="Burial Certificate">Burial Certificate</option>
+    <option value="Business Clearance">Business Clearance</option>
+    <option value="Business Closure">Business Closure</option>
+    <option value="Common Law">Common Law</option>
+    <option value="Death Certificate">Death Certificate</option>
+    <option value="Employment">Employment</option>
+    <option value="Good Moral">Good Moral</option>
+    <option value="Guardianship">Guardianship</option>
+    <option value="Income">Income</option>
+    <option value="Indigency">Indigency</option>
+    <option value="Land no claim">Land no claim</option>
+    <option value="Late Registration">Late Registration</option>
+    <option value="Panumduman">Panumduman</option>
+    <option value="RA 11261">RA 11261</option>
+    <option value="Oath Of Undertaking">RA 11261 (Oath Of Undertaking)</option>
+    <option value="Residency">Residency</option>
+    <option value="Same Person">Same Person</option>
+    <option value="Singleness">Singleness</option>
+    <option value="Solo Parent">Solo Parent</option>
+    <option value="Water District">Water District</option>
+    `
     executeElseLogic(); // Call the else logic as a separate function
   }
 
@@ -168,6 +202,15 @@ function populateFormFields(data) {
   document.getElementById("purok").value = data.purok || '';
   document.getElementById("grossIncome").value = data.income || '';
   document.getElementById("birthplace").value = data.birthplace || '';
+
+  // if (data.globalid === "MPDN0000"){
+  //   document.getElementById("purpose").innerHTML = `
+  //   <option value=" default" disabled selected>
+  //     Select a Services
+  //   </option>
+  //   <option value="Business Clearance">Business Clearance</option>
+  //   `
+  // }
 
   if (data.isresident === true) {
     document.getElementById("purpose").innerHTML = `

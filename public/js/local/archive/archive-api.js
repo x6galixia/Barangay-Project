@@ -163,21 +163,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                         const row = document.createElement('tr');
                         const date = new Date(detail.dateFiled);
                         const formattedDate = `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
-                        const statusColors = {
-                            "Pending": "#FF5733",       // Bright Red-Orange (bold)
-                            "Under Investigation": "#1F77B4", // Strong Blue
-                            "Withdrawn": "#7F8C8D",     // Dark Gray (easy to read on white)
-                            "Deferred": "#E67E22",      // Dark Orange (eye-catching)
-                            "For Hearing": "#2980B9",   // Strong Blue (professional and visible)
-                            "For Finality": "#27AE60",  // Vibrant Green (clear and noticeable)
-                            "Pending Resolution": "#8E44AD", // Bold Purple
-                            "Resolved": "#2ECC71",      // Bright Green (positive and vibrant)
-                            "Dismissed": "#C0392B",     // Dark Red (strong contrast)
-                            "Settled Guilty": "#FF0000",     // Darker Gray (subtle but visible)
-                            "Settled Not Guilty": "#95A5A6"        // Darker Gray (subtle but visible)
-                        };
-
-                        const statusColor = statusColors[detail.caseStage] || "#000000";
 
                         row.innerHTML = `
                             <td>${detail.caseNumber}</td>
@@ -185,7 +170,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                             <td>${detail.respondent}</td>
                             <td>${formattedDate}</td>
                             <td>${detail.caseType}</td>
-                            <td style="color: ${statusColor};">${detail.caseStage}</td> 
+                            <td>${detail.caseStage}</td> 
                             <td>${arch1.typename}</td>
                             <td class="menu-row">
                                 <img class="dot" src="../icon/triple-dot.svg" alt="">
@@ -456,23 +441,8 @@ function docChangesSelected(doctype, authorsLength, coAuthorsLength, sponsorsLen
                 <input type="text" aria-label="Date Filed" name="caseType" id="caseType" required>
             </div>
             <div class="inputWithLabel">
-            <label for="">Case Stage</label>
-            <select class="caseStage-dropdown" name="caseStage" id="caseStage">
-                <option value=" default" disabled selected>
-                Select a Status
-                </option>
-                <option value="Settled Guilty">Settled Guilty</option>
-                <option value="Settled Not Guilty">Settled Not Guilty</option>
-                <option value="Resolve">Resolve</option>
-                <option value="Dismissed">Dismissed</option>
-                <option value="Withdrawn">Withdrawn</option>
-                <option value="Deferred">Deferred</option>
-                <option value="Pending">Pending</option>
-                <option value="Under Investigation">Under Investigation</option>
-                <option value="For Hearing">For Hearing</option>
-                <option value="For Finality">For Finality</option>
-                <option value="Pending Resolution">Pending Resolution</option>
-            </select>
+                <label>Status</label>
+                <input type="text" aria-label="Date Filed" name="caseStage" id="caseStage" required>
             </div>
             `
     }
@@ -698,21 +668,8 @@ function popUp_button(button) {
                     <input type="text" aria-label="Type Of Case" name="caseType" id="caseType" required>
                 </div>
                 <div class="inputWithLabel">
-                    <label for="caseStage">Case Stage</label>
-                    <select class="caseStage-dropdown" name="caseStage" id="caseStage">
-                        <option value="" disabled selected>Select a Status</option>
-                        <option value="Settled Guilty">Settled Guilty</option>
-                        <option value="Settled Not Guilty">Settled Not Guilty</option>
-                        <option value="Resolve">Resolve</option>
-                        <option value="Dismissed">Dismissed</option>
-                        <option value="Withdrawn">Withdrawn</option>
-                        <option value="Deferred">Deferred</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Under Investigation">Under Investigation</option>
-                        <option value="For Hearing">For Hearing</option>
-                        <option value="For Finality">For Finality</option>
-                        <option value="Pending Resolution">Pending Resolution</option>
-                    </select>
+                    <label>Status</label>
+                    <input type="text" aria-label="Date Filed" name="caseStage" id="caseStage" required>
                 </div>
             `;
         }
