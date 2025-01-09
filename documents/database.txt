@@ -84,7 +84,7 @@ CREATE TABLE resolution (
     resolutionId SERIAL PRIMARY KEY,
     archiveId INT NOT NULL,
     resolutionNumber VARCHAR(50) NOT NULL,
-    seriesYear INT NOT NULL,
+    seriesYear VARCHAR(50) NOT NULL,
     image VARCHAR(255), -- Path to the image
     date DATE NOT NULL,
     FOREIGN KEY (archiveId) REFERENCES archive(archiveId)  ON DELETE CASCADE
@@ -93,7 +93,7 @@ CREATE TABLE resolution (
 CREATE TABLE regularization_minutes (
     regularizationId SERIAL PRIMARY KEY,
     archiveId INT NOT NULL,
-    regulationNumber INT NOT NULL,
+    regulationNumber VARCHAR(255) NOT NULL,
     image VARCHAR(255), -- Path to the image
     date DATE NOT NULL,
     FOREIGN KEY (archiveId) REFERENCES archive(archiveId) ON DELETE CASCADE

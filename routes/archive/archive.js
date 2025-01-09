@@ -177,6 +177,7 @@ router.get("/get-resident", async (req, res) => {
 router.post('/dashboard/add-archive', upload.single('image'), async (req, res) => {
     console.log("Request Body:", req.body);
     console.log("File:", req.file);
+    
 
     const docType = req.body.docType;
     const doctypeId = docTypeMap[docType]; // Mapping docType to doctypeId
@@ -208,6 +209,7 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
             [doctypeId]
         );
         const archiveId = archiveResult.rows[0].archiveid;
+        console.log("archiveId: ", archiveId);
 
         const contractingPersons = [req.body.parties1, req.body.parties2]
         .filter(Boolean)

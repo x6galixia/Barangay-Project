@@ -683,7 +683,7 @@ function popUp_button(button) {
                 </div>
                 <div class="inputWithLabel">
                     <label>Complainant</label>
-                    <input type="text" aria-label="Complainant" name="complainant " id="complainant" required>
+                    <input type="text" aria-label="Complainant" name="complainant" id="complainant" required>
                 </div>
                 <div class="inputWithLabel">
                     <label>Respondent</label>
