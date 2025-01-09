@@ -375,7 +375,7 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
                 value.first_name,    // fName
                 value.middle_name,   // mName
                 value.last_name,     // lName
-                value.nonResidentAddress.purok1,         // purok
+                value.nonResidentAddress.purok1,
                 value.street,        // street
                 value.barangay,      // barangay
                 value.city,          // city
@@ -580,7 +580,7 @@ router.post("/dashboard/update-non-resident", upload.single('picture'), async (r
                 value.first_name,    // fName
                 value.middle_name,   // mName
                 value.last_name,     // lName
-                value.purok,         // purok
+                value.nonResidentAddress.purok1,
                 value.street,        // street
                 value.barangay,      // barangay
                 value.city,          // city
