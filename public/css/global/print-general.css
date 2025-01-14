@@ -263,8 +263,10 @@
     color: black;
     background-size: cover;
     text-align: center;
-    height: 700px;
-    width: 35%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
     /* border: solid rgb(223, 35, 35) 1px; */
 }
 .lefttt-RA-1162 {
