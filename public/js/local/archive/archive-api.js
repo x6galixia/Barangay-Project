@@ -431,6 +431,7 @@ function docChangesSelected(doctype, authorsLength, coAuthorsLength, sponsorsLen
                 <div class="inputWithLabel" id="surubadan">
                 <label>Respondent</label>
                 <input type="text" aria-label="Respondent" id="respondent" name="respondent" id="respondent" required autocomplete="off">
+                <div id="results"></div>
             </div>
             <div class="inputWithLabel">
                 <label>Date Filed</label>
@@ -658,6 +659,7 @@ function popUp_button(button) {
                 <div class="inputWithLabel">
                     <label>Respondent</label>
                     <input type="text" aria-label="Respondent" id="respondent" name="respondent" required autocomplete="off">
+                    <div id="results" style="display:none"></div>
                 </div>
                 <div class="inputWithLabel">
                     <label>Date Filed</label>
@@ -672,6 +674,49 @@ function popUp_button(button) {
                     <input type="text" aria-label="Date Filed" name="caseStage" id="caseStage" required>
                 </div>
             `;
+            document.getElementById('respondent').addEventListener('input', function () {
+                const query = document.getElementById("respondent").value;
+            
+                if (query.length > 0) {
+                    fetch(`/archive/get-resident?query=${encodeURIComponent(query)}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            const resultsContainer = document.getElementById('results');
+                            resultsContainer.style.display = 'flex';
+                            resultsContainer.innerHTML = '';
+            
+                            if (data.length > 0) {
+                                data.forEach(resident => {
+                                    const listItem = document.createElement('div');
+                                    listItem.textContent = `${resident.fname} ${resident.mname} ${resident.lname}`;
+                                    listItem.classList.add('result-item');
+                                    resultsContainer.appendChild(listItem);
+            
+                                    // Add click event to each result item
+                                    listItem.addEventListener('click', () => {
+                                        document.getElementById('respondent').value = listItem.textContent;
+                                        resultsContainer.innerHTML = ''; // Clear the results
+                                        resultsContainer.style.display = 'none'; // Hide the container
+                                    });
+                                });
+                            } else {
+                                resultsContainer.textContent = '--No results found!--';
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error fetching residents:", error);
+                        });
+                } else {
+                    document.getElementById('results').innerHTML = '';
+                    document.getElementById('results').style.display = 'none';
+                }
+            });
+            
         }
         if (type === "Ordinance") {
             document.querySelector('#add-document .heading').innerHTML = `ADD ${type.toUpperCase()} DOCUMENT`;

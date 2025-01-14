@@ -5,7 +5,7 @@ const requestSchema = Joi.object({
     purpose: Joi.string().required().optional().allow(null),
     lastname: Joi.string().required().optional().allow(null),
     firstname: Joi.string().required().optional().allow(null),
-    middlename: Joi.string().required().optional().allow(null),
+    middlename: Joi.string().optional().allow(""),
     age: Joi.string().required().optional().allow(null),
     birthdate: Joi.date().required().optional().allow(null),
     birthplace: Joi.string().optional().allow(""),

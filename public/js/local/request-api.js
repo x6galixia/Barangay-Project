@@ -1,3 +1,95 @@
+const searchBar = document.getElementById('searchBar');
+const searchIcon = document.getElementById('searchIcon');
+
+searchIcon.addEventListener('click', () => {
+  searchBar.classList.toggle('open');
+  if (searchBar.classList.contains('open')) {
+    document.getElementById('scanSwitch').checked = false;
+    document.getElementById("purpose").innerHTML = `
+    <option value=" default" disabled selected>
+      Select a Services
+    </option>
+    <option value="Brgy. Clearance">Brgy. Clearance</option>
+    <option value="Building Clearance">Building Clearance</option>
+    <option value="Burial Certificate">Burial Certificate</option>
+    <option value="Business Clearance">Business Clearance</option>
+    <option value="Business Closure">Business Closure</option>
+    <option value="Common Law">Common Law</option>
+    <option value="Death Certificate">Death Certificate</option>
+    <option value="Employment">Employment</option>
+    <option value="Good Moral">Good Moral</option>
+    <option value="Guardianship">Guardianship</option>
+    <option value="Income">Income</option>
+    <option value="Indigency">Indigency</option>
+    <option value="Land no claim">Land no claim</option>
+    <option value="Late Registration">Late Registration</option>
+    <option value="Panumduman">Panumduman</option>
+    <option value="RA 11261">RA 11261</option>
+    <option value="Oath Of Undertaking">RA 11261 (Oath Of Undertaking)</option>
+    <option value="Residency">Residency</option>
+    <option value="Same Person">Same Person</option>
+    <option value="Singleness">Singleness</option>
+    <option value="Solo Parent">Solo Parent</option>
+    <option value="Water District">Water District</option>
+    `
+    searchBar.focus();
+    searchIcon.style.marginLeft = "-30px"
+    document.getElementById('searchBar').addEventListener('input', function () {
+          const query = document.getElementById("searchBar").value;
+
+          if (query.length > 3) {
+            fetch(`/home/dashboard/fetchManualData?residentId=${query}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+            })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json(); // Parse the JSON response
+              })
+              .then(data => {
+                const resultsContainer = document.getElementById('results');
+                resultsContainer.style.display = 'flex';
+                resultsContainer.innerHTML = '';
+
+                if (data.success && data.data.length > 0) {
+                  data.data.forEach(resident => {
+                    const listItem = document.createElement('div');
+                    listItem.textContent = `${resident.fname} ${resident.mname} ${resident.lname}`;
+                    listItem.classList.add('result-item');
+                    resultsContainer.appendChild(listItem);
+
+                    
+                    listItem.addEventListener('click', () => {
+                      document.getElementById('searchBar').value = listItem.textContent;
+                      populateFormFields(resident);
+                      resultsContainer.innerHTML = '';
+                      resultsContainer.style.display = 'none'; 
+                    });
+                  });
+                } else {
+                  resultsContainer.textContent = '--No results found!--';
+                }
+              })
+              .catch(error => {
+                console.error("Error fetching residents:", error);
+              });
+          } else {
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = '';
+            resultsContainer.style.display = 'none';
+          }
+        });
+  } else {
+    searchIcon.style.marginLeft = "0"
+    searchBar.value = '';
+  }
+});
+
+
 document.getElementById('scanSwitch').addEventListener('change', function () {
   let scanning = false;
   const inputFields = document.querySelectorAll('.formInputContainer input, .formInputContainer select');
@@ -5,9 +97,13 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
 
   if (this.checked) {
     // Switch is enabled
+    searchBar.classList.remove('open');
+    searchIcon.style.marginLeft = "0"
+    searchBar.value = '';
     inputFields.forEach(field => field.removeAttribute('readonly'));
     document.getElementById('purokLabel').innerText = "Address (Optional)";
     document.getElementById('birthplaceLabel').innerText = "Birthplace (Optional)";
+    document.getElementById('middlename1').innerText = "Middle Name (Optional)";
     document.getElementById('grossIncomeLabel').innerText = "Gross Income (Optional)";
     submitButton.removeAttribute('disabled');
     document.getElementById("purpose").innerHTML = `
@@ -53,6 +149,7 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
     document.getElementById('purokLabel').innerText = "Purok";
     document.getElementById('birthplaceLabel').innerText = "Birthplace";
     document.getElementById('grossIncomeLabel').innerText = "Gross Income";
+    document.getElementById('middlename1').innerText = "Middle Name";
     inputFields.forEach(field => field.setAttribute('readonly', true));
     submitButton.setAttribute('disabled', true);
     console.log("Inputs disabled. qrOutput cleared.");
@@ -122,7 +219,9 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
                   `${data.data.lname} ${data.data.mname} ${data.data.fname}`,
                   `${data.data.lname} ${data.data.fname} ${data.data.mname}`,
                   `${data.data.mname} ${data.data.fname} ${data.data.lname}`,
-                  `${data.data.mname} ${data.data.lname} ${data.data.fname}`
+                  `${data.data.mname} ${data.data.lname} ${data.data.fname}`,
+                  `${data.data.fname} ${data.data.lname}`,
+                  `${data.data.lname} ${data.data.fname}`
                 ];
 
                 let exists = false;
@@ -186,6 +285,7 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
 
 // Execute the else logic on page load
 document.addEventListener('DOMContentLoaded', () => {
+  executeElseLogic();
   document.getElementById('scanSwitch').checked = false;
   document.getElementById('scanSwitch').dispatchEvent(new Event('change'));
 });
