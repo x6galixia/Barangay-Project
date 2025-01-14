@@ -81,8 +81,8 @@ router.post("/service-request-form", async (req, res) => {
                 
                 //insert data to the mpdn000 row    
                 const insertResidentQuery = `
-                INSERT INTO residents (globalid, idnumber, lname, fname, mname, birthdate, birthplace, age, income, civilStatus, emergencyContactId, rClassificationId) 
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) 
+                INSERT INTO residents (globalid, idnumber, lname, fname, mname, birthdate, birthplace, age, income, civilStatus, emergencyContactId, rClassificationId, purok) 
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) 
                 RETURNING residentsid
             `;
                 const insertResult = await mPool.query(insertResidentQuery, [
@@ -97,7 +97,8 @@ router.post("/service-request-form", async (req, res) => {
                     value.income,
                     value.civilStatus,
                     0,
-                    12
+                    12,
+                    'Sitaw'
                 ]);
 
 

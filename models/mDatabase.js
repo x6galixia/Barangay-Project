@@ -9,11 +9,6 @@ const poolConfig = {
     connectionTimeoutMillis: 2000,
 };
 
-console.log('Database configuration:', {
-    connectionString: poolConfig.connectionString,
-    ssl: poolConfig.ssl,
-});
-
 const mPool = new Pool(poolConfig);
 
 mPool.on('error', (err) => {

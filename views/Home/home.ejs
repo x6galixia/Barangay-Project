@@ -17,16 +17,16 @@
   <%- include("../includes/header.ejs") %>
     <main class="mainContainer">
       <div class="heading">Service Request Form</div>
-      <input type="text" id="qrInput" required style="opacity: 0; position: fixed; transform: translate(-50%, -50%),;">
+      <input type="text" id="qrInput" required autocomplete="off" style="opacity: 0; position: fixed; transform: translate(-50%, -50%),;">
       <form action="/home/service-request-form" method="POST" class="requestForm">
         <div class="scanSwitch">
-          Manual Input
+          Outsiders
           <label class="switch">
               <input type="checkbox" id="scanSwitch">
               <span class="slider round"></span>
           </label>
       </div>
-        <input type="hidden" id="qrOutput" name="id" style="position: absolute;" value="MPDN0000" >
+        <input type="hidden" id="qrOutput" name="id" autocomplete="off" style="position: absolute;" value="MPDN0000" >
         <div class="formInputContainer">
           <div>
             <div class="inputWithLabel">
