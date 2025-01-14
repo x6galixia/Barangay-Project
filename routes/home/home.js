@@ -35,6 +35,32 @@ router.get("/dashboard/fetchScannedData", async (req, res) => {
     }
 });
 
+router.get("/dashboard/fetchManualData", async (req, res) => {
+    const { residentId } = req.query;
+    if (!residentId) {
+        return res.status(400).send("Query parameter is required");
+    }
+
+    try {
+        const result = await mPool.query(
+            `SELECT *
+             FROM residents 
+             WHERE idnumber ILIKE $1`, 
+            [`%${residentId}%`]
+        );
+
+        if (result.rows.length > 0) {
+            return res.json({ success: true, data: result.rows });
+        } else {
+            return res.json({ success: false, error: "No matching residents found." });
+        }
+    } catch (err) {
+        console.error("Error querying database:", err.stack, err.message);
+        return res.status(500).send("Internal server error");
+    }
+});
+
+
 router.post("/service-request-form", async (req, res) => {
     const { error, value } = requestSchema.validate(req.body);
     console.log("scannedData", value)
@@ -78,6 +104,8 @@ router.post("/service-request-form", async (req, res) => {
                  await mPool.query(`
                     INSERT INTO contactPerson (contactPersonId, fname, lname) 
                 VALUES ($1, $2, $3)`, [0, "fake-data", "fake-data"]);
+
+                const currentYear = new Date().getFullYear();
                 
                 //insert data to the mpdn000 row    
                 const insertResidentQuery = `
@@ -87,7 +115,7 @@ router.post("/service-request-form", async (req, res) => {
             `;
                 const insertResult = await mPool.query(insertResidentQuery, [
                     value.id,
-                    "2020-0000",
+                    `${currentYear}-0000`,
                     value.lastname,
                     value.firstname,
                     value.middlename,

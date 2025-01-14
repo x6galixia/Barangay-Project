@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                                   data-civilStatus="${request.civilstatus}"
                                   data-gender="${request.gender}"
                                   onclick="processCertificate(this)">Process</button>
+                                  <button id="update-id" onclick="">Mark as done</button>
                             <button id="update-id" onclick="removeRequest(this)">Remove</button>
                         </div>
                     </div>
