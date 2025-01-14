@@ -162,15 +162,13 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
 
         // Step 1: Get the last globalId and generate the next one
         let newId;
-
-        // Step 1: Get the last globalId and generate the next one
         const globalIdQuery = await mPool.query(
-            `SELECT globalid FROM residents ORDER BY globalid DESC LIMIT 1`
+            `SELECT last_global_id FROM last_id_generated`
         );
 
         let lastGlobalId = "MPDN0000"; // Default starting value
-        if (globalIdQuery.rows.length > 0 && globalIdQuery.rows[0]?.globalid) {
-            lastGlobalId = globalIdQuery.rows[0].globalid;
+        if (globalIdQuery.rows.length > 0 && globalIdQuery.rows[0].last_global_id) {
+            lastGlobalId = globalIdQuery.rows[0].last_global_id;
         }
 
         console.log("Last Global ID fetched:", lastGlobalId);
@@ -185,14 +183,14 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
 
         // Step 2: Get the last idNumber and generate the next one
         const idNumberQuery = await mPool.query(
-            `SELECT idnumber FROM residents ORDER BY residentsid DESC LIMIT 1`
+            `SELECT last_num_id FROM last_id_generated`
         );
 
         console.log("idNumber:", idNumberQuery);
 
         let lastNumId = `${getCurrentYear()}-0000`; // Default starting value
-        if (idNumberQuery.rows.length > 0 && idNumberQuery.rows[0]?.idnumber) {
-            lastNumId = idNumberQuery.rows[0].idnumber;
+        if (idNumberQuery.rows.length > 0 && idNumberQuery.rows[0].last_num_id) {
+            lastNumId = idNumberQuery.rows[0].last_num_id;
         }
 
         console.log("Fetched lastNumId from DB:", lastNumId);
@@ -258,6 +256,8 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
             ]
         );
 
+        await mPool.query(`UPDATE last_id_generated SET last_global_id = $1, last_num_id = $2`, [newId, numNewId]);
+
         req.flash('success', 'Resident Added Successfully!');
         res.redirect("/residents/dashboard?type=Residents");
     } catch (err) {
@@ -306,15 +306,15 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
             console.log("No file received or file upload failed");
         }
 
-        let newId;
         // Step 1: Get the last globalId and generate the next one
+        let newId;
         const globalIdQuery = await mPool.query(
-            `SELECT globalid FROM residents ORDER BY globalid DESC LIMIT 1`
+            `SELECT last_global_id FROM last_id_generated`
         );
 
-        let lastGlobalId = "MPDN0001"; // Default starting value
-        if (globalIdQuery.rows.length > 0 && globalIdQuery.rows[0]?.globalid) {
-            lastGlobalId = globalIdQuery.rows[0].globalid;
+        let lastGlobalId = "MPDN0000"; // Default starting value
+        if (globalIdQuery.rows.length > 0 && globalIdQuery.rows[0].last_global_id) {
+            lastGlobalId = globalIdQuery.rows[0].last_global_id;
         }
 
         console.log("Last Global ID fetched:", lastGlobalId);
@@ -329,14 +329,14 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
 
         // Step 2: Get the last idNumber and generate the next one
         const idNumberQuery = await mPool.query(
-            `SELECT idnumber FROM residents ORDER BY residentsid DESC LIMIT 1`
+            `SELECT last_num_id FROM last_id_generated`
         );
 
         console.log("idNumber:", idNumberQuery);
 
-        let lastNumId = `${getCurrentYear()}-0001`; // Default starting value
-        if (idNumberQuery.rows.length > 0 && idNumberQuery.rows[0]?.idnumber) {
-            lastNumId = idNumberQuery.rows[0].idnumber;
+        let lastNumId = `${getCurrentYear()}-0000`; // Default starting value
+        if (idNumberQuery.rows.length > 0 && idNumberQuery.rows[0].last_num_id) {
+            lastNumId = idNumberQuery.rows[0].last_num_id;
         }
 
         console.log("Fetched lastNumId from DB:", lastNumId);
@@ -422,6 +422,8 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
                 value.nonResidentAddress.landlord      // landlord
             ]
         );
+
+        await mPool.query(`UPDATE last_id_generated SET last_global_id = $1, last_num_id = $2`, [newId, numNewId]);
 
         console.log("Inserted data into the boarders table successfully.");
 

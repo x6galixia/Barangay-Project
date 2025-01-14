@@ -1,28 +1,26 @@
-const mPool = require("../../models/mDatabase");
-
 function extractPrefixAndNumber(lastId) {
   if (typeof lastId !== "string") {
-    console.error("Invalid lastId type:", lastId); // Debugging log
-    return null;
+      console.error("Invalid lastId type, expected string but got:", typeof lastId, lastId);
+      return null;
   }
 
-  // Check for "YYYY-####" format (e.g., 2024-0001)
   const idNumberWithHyphenMatch = lastId.match(/^(\d{4})-(\d+)$/);
   if (idNumberWithHyphenMatch) {
-    const prefix = idNumberWithHyphenMatch[1]; // "2024"
-    const number = parseInt(idNumberWithHyphenMatch[2], 10); // "0001"
-    return { prefix, number };
+      return {
+          prefix: idNumberWithHyphenMatch[1],
+          number: parseInt(idNumberWithHyphenMatch[2], 10),
+      };
   }
 
-  // Check for "PREFIX####" format (e.g., MPDN0001)
   const globalIdMatch = lastId.match(/^([A-Z]+)(\d+)$/);
   if (globalIdMatch) {
-    const prefix = globalIdMatch[1]; // "MPDN"
-    const number = parseInt(globalIdMatch[2], 10); // "0001"
-    return { prefix, number };
+      return {
+          prefix: globalIdMatch[1],
+          number: parseInt(globalIdMatch[2], 10),
+      };
   }
 
-  console.error("ID format mismatch:", lastId); // Debugging log
+  console.error("ID format mismatch:", lastId);
   return null;
 }
 

@@ -175,21 +175,11 @@ CREATE TABLE requests (
     isReleased BOOLEAN DEFAULT FALSE
 );
 
---inserts
-INSERT INTO rClassification (rClassificationName) VALUES 
-    ('Government employee'),
-    ('Private employee'),
-    ('Carpenters'),
-    ('Farmers'),
-    ('Fisherman'),
-    ('Business entrepreneurs'),
-    ('Drivers'),
-    ('OFW'),
-    ('Kasambahay'),
-    ('Entrepreneur'),
-    ('Unemployed'),
-    ('None'),
-    ('Boarders');
+CREATE TABLE last_id_generated(
+    id SERIAL PRIMARY KEY NOT NULL,
+    last_global_id VARCHAR(255),
+    last_num_id VARCHAR(255)
+);
 
 CREATE TABLE house_classification (
     id SERIAL PRIMARY KEY NOT NULL,
@@ -274,3 +264,20 @@ CREATE TABLE barangay_officials (
     barangayTreasurerMiddleName VARCHAR(255),
     barangayTreasurerImage TEXT
 );
+
+--inserts
+INSERT INTO rClassification (rClassificationName) VALUES 
+    ('Government employee'),
+    ('Private employee'),
+    ('Carpenters'),
+    ('Farmers'),
+    ('Fisherman'),
+    ('Business entrepreneurs'),
+    ('Drivers'),
+    ('OFW'),
+    ('Kasambahay'),
+    ('Entrepreneur'),
+    ('Unemployed'),
+    ('None'),
+    ('Boarders');
+
