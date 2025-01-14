@@ -64,7 +64,9 @@ searchIcon.addEventListener('click', () => {
 
                     
                     listItem.addEventListener('click', () => {
+                      console.log(resident);
                       document.getElementById('searchBar').value = listItem.textContent;
+                      document.getElementById('qrOutput').value = resident.globalid;
                       populateFormFields(resident);
                       resultsContainer.innerHTML = '';
                       resultsContainer.style.display = 'none'; 

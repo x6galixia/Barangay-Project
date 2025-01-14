@@ -668,7 +668,7 @@ window.processCertificate = function (button) {
           if (selectedPurpose && selectedPurpose !== "default") {
             const goodMoralPurpose = document.getElementById("goodMoralPurpose");
 
-            // document.getElementById("goodMoralORNos").innerText = document.getElementById("goodMoralORNosInput").value;
+            document.getElementById("goodMoralORNos").innerText = document.getElementById("goodMoralORNosInput").value;
 
             if (certificatePurposeInput.type === "text") {
               document.getElementById("goodMoralIfASelectedPurpose").style.display = "block";
