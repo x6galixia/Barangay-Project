@@ -95,7 +95,7 @@ async function fetchRequestLists(page, limit) {
 
     const getRequestList = await mPool.query(`
       SELECT 
-          r.residentsid, r.dateadded, r.purpose, r.isReleased,
+          r.id, r.residentsid, r.dateadded, r.purpose, r.isReleased,
           rd.fname, rd.mname, rd.lname, rd.gender, rd.age, rd.civilstatus, rd.street,
           rd.purok, rd.barangay, rd.city, rd.province, rd.birthdate, rd.birthplace,
           bo.punongbarangaylastname, bo.punongbarangayfirstname, bo.punongbarangaymiddlename,

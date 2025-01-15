@@ -98,5 +98,5 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`\n\n\n\n\n\t\t\t\t\t SERVER IS RUNNING DON'T CLOSE THIS WINDOW!!!`);
+    console.log(`SERVER IS RUNNING DON'T CLOSE THIS WINDOW!!!`);
 });
