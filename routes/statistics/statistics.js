@@ -341,5 +341,46 @@ router.post("/house-classification-survey", async (req, res) => {
     }
 });
 
+router.get('/available-years-for-certcount', async (req, res) => {
+    try {
+        const query = `
+            SELECT DISTINCT EXTRACT(YEAR FROM date_release) AS year
+            FROM cert_record
+            ORDER BY year DESC;
+        `;
+        const { rows } = await mPool.query(query);
+        res.json(rows);
+    } catch (err) {
+        console.error("Error:", err.message);
+        res.status(500).send("Internal server error");
+    }
+});
 
+router.get('/certcount', async (req, res) => {
+    const { year } = req.query;
+  
+    if (!year || isNaN(year)) {
+      return res.status(400).json({ error: 'Please provide a valid year.' });
+    }
+  
+    try {
+      const query = `
+        SELECT 
+          (cert_name::json ->> 'certName') AS cert_name, 
+          COUNT(*) AS total
+        FROM cert_record
+        WHERE EXTRACT(YEAR FROM date_release) = $1
+        GROUP BY (cert_name::json ->> 'certName')
+        ORDER BY total DESC;
+      `;
+  
+      const result = await mPool.query(query, [year]);
+  
+      res.json(result.rows);
+    } catch (error) {
+      console.error('Error fetching statistics:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
 module.exports = router;

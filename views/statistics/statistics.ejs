@@ -282,4 +282,51 @@
     });
 </script>
 
+        <script>
+        async function fetchAvailableYearsForCertcount() {
+            try {
+                const response = await fetch('/available-years-for-certcount');
+                const years = await response.json();
+
+                const yearDropdown = document.getElementById('yearDropdown');
+                yearDropdown.innerHTML = '<option value="">Select Year</option>';
+
+                years.forEach(({ year }) => {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    yearDropdown.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching years:', error);
+            }
+        }
+
+        async function fetchCertCount() {
+            const year = document.getElementById('yearDropdown').value;
+
+            if (!year) {
+                alert('Please select a year!');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/certcount?year=${year}`);
+                const data = await response.json();
+
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = `
+                    <h3>Certificate Count for ${year}</h3>
+                    <ul>
+                        ${data.map(item => `<li>${item.cert_name}: ${item.total}</li>`).join('')}
+                    </ul>
+                `;
+            } catch (error) {
+                console.error('Error fetching certificate count:', error);
+            }
+        }
+
+        window.onload = fetchAvailableYearsForCertcount;
+    </script>
+
 </html>
