@@ -177,8 +177,8 @@ CREATE TABLE requests (
 
 CREATE TABLE last_id_generated(
     id SERIAL PRIMARY KEY NOT NULL,
-    last_global_id VARCHAR(255),
-    last_num_id VARCHAR(255)
+    last_global_id VARCHAR(255) DEFAULT 'MPDN0000',
+    last_num_id VARCHAR(255) DEFAULT '2025-0000'
 );
 
 CREATE TABLE house_classification (
@@ -263,6 +263,12 @@ CREATE TABLE barangay_officials (
     barangayTreasurerFirstName VARCHAR(255) NOT NULL,
     barangayTreasurerMiddleName VARCHAR(255),
     barangayTreasurerImage TEXT
+);
+
+CREATE TABLE cert_record (
+    id SERIAL PRIMARY KEY NOT NULL,
+    cert_name VARCHAR(255) NOT NULL,
+    date_release DATE NOT NULL
 );
 
 --inserts

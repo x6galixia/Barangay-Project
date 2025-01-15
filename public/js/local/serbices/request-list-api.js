@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <td class="menu-row">
                     <img class="dot" src="../icon/triple-dot.svg" alt="">
                     <div class="triple-dot">
-                        <div class="menu" data-id="${request.residentsid}">
+                        <div class="menu" data-id="${request.residentsid}" data-r-id="${request.id}" data-purpose="${request.purpose}">
                             <button 
                                   data-purpose="${request.purpose}"
                                   data-punongBarangay="${request.punongbarangayfirstname.toLocaleUpperCase()} ${request.punongbarangaymiddlename.toLocaleUpperCase() ? request.punongbarangaymiddlename.toLocaleUpperCase() : ''} ${request.punongbarangaylastname.toLocaleUpperCase()}"
@@ -72,8 +72,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                                   data-civilStatus="${request.civilstatus}"
                                   data-gender="${request.gender}"
                                   onclick="processCertificate(this)">Process</button>
-                                  <button id="update-id" onclick="">Mark as done</button>
-                            <button id="update-id" onclick="removeRequest(this)">Remove</button>
+                                  <button id="update-id" onclick="markAsDone(this)">Mark as done</button>
+                                  <button id="update-id" onclick="removeRequest(this)">Remove</button>
                         </div>
                     </div>
                 </td>
@@ -2010,20 +2010,21 @@ function removeRequest(buttonElement) {
   // Get the parent `tr` element (row) of the clicked button
   const row = buttonElement.closest('tr');
   const requestId = buttonElement.parentElement.getAttribute('data-id');
+  const rId = buttonElement.parentElement.getAttribute('data-r-id');
 
   // Optionally, confirm the removal
   if (confirm('Are you sure you want to remove this request?')) {
     // Remove the row from the DOM
     row.remove();
-    deleteItem(requestId);
+    deleteItem(requestId,rId);
   }
 }
 
-async function deleteItem(requestID) {
+async function deleteItem(requestID,rId) {
   console.log("Delete triggered for request ID:", requestID);
 
   try {
-    const response = await fetch(`/services/delete-request/${requestID}`, {
+    const response = await fetch(`/services/delete-request/${requestID}/${rId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -2040,5 +2041,37 @@ async function deleteItem(requestID) {
   } catch (error) {
     console.error('Error deleting item:', error);
     alert('An error occurred while deleting the request. Please try again.');
+  }
+}
+
+function markAsDone(buttonElement){
+  const purpose = buttonElement.parentElement.getAttribute('data-purpose');
+
+  if (confirm('Are you sure you want to mark as done this request?')) {
+    sendDone(purpose)
+  }
+}
+
+async function sendDone(purpose){
+  try {
+
+    const response = await fetch(`/services/cert-record-insertion/${purpose}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      console.log("Request mark done successfully.");
+      location.reload(); // Reload to reflect the changes
+    } else {
+      console.error("Error: Failed to mark done the item. Status:", response.status);
+      alert('Failed to mark done the request. Please try again.');
+    }
+    
+  } catch (error) {
+    console.error('Error marking done:', error);
+    alert('An error occurred while marking done. Please try again.');
   }
 }

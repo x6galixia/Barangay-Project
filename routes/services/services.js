@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { fetchRequestLists } = require("../../middlewares/helper-functions/fetch-functions");
+const { getCurrentDate } = require("../../middlewares/helper-functions/calculations");
 const mPool = require('../../models/mDatabase');
 
 router.get("/dashboard", async (req, res) => {
@@ -41,22 +42,33 @@ router.get("/print-services", (req, res) => {
     res.render("services/print-services");
 });
 
-router.delete("/delete-request/:id", async (req, res) => {
-    const requestId = req.params.id;
-
+router.post("/cert-record-insertion/:certName", async (req, res) => {
+    const certName = req.params;
+    const dateNow = getCurrentDate();
     try {
-        // Execute the DELETE query
-        await mPool.query(`DELETE FROM requests WHERE residentsId = $1`, [requestId]);
+        await mPool.query(`INSERT INTO cert_record (cert_name, date_release) VALUES ($1, $2)`, [certName, dateNow]);
 
-        // Send a success response
         res.status(200).json({ message: "Request deleted successfully." });
     } catch (err) {
-        console.error("Error deleting request:", err.stack, err.message);
-
-        // Send an error response
-        res.status(500).json({ error: "Failed to delete the request. Please try again later." });
+        console.error("Error: ", err.stack, err.message);
+        res.status(500).json({error: "Internal server Error"});
     }
 });
 
+router.delete("/delete-request/:residentsId/:id", async (req, res) => {
+    const { residentsId, id } = req.params;
+
+    try {
+        await mPool.query(
+            `DELETE FROM requests WHERE residentsId = $1 AND id = $2`,
+            [residentsId, id]
+        );
+
+        res.status(200).json({ message: "Request deleted successfully." });
+    } catch (err) {
+        console.error("Error deleting request:", err.stack, err.message);
+        res.status(500).json({ error: "Failed to delete the request. Please try again later." });
+    }
+});
 
 module.exports = router;
