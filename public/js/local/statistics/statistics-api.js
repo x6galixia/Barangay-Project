@@ -368,32 +368,31 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch((err) => console.error("Error fetching resident status data:", err));
 
   // Fetch residents by Purok data and render chart
-  fetch("/statistics/residents-by-purok")
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      const labels = data.map((item) => item.purok);
-      const residentCount = data.map((item) => parseInt(item.resident_count)); // Convert to number
-      const ctx = document.getElementById("purokChart").getContext("2d");
-      new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: "Residents by Purok",
-              data: residentCount,
-              backgroundColor: "rgba(153, 102, 255, 0.2)",
-              borderColor: "rgba(153, 102, 255, 1)",
-              borderWidth: 1,
-            },
-          ],
-        },
-      });
-    })
-    .catch((err) =>
-      console.error("Error fetching residents by purok data:", err)
-    );
+  // fetch("/statistics/residents-by-purok")
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log(data);
+  //     const labels = data.map((item) => item.purok);
+  //     const residentCount = data.map((item) => parseInt(item.resident_count)); // Convert to number
+  //     new Chart(ctx, {
+  //       type: "bar",
+  //       data: {
+  //         labels: labels,
+  //         datasets: [
+  //           {
+  //             label: "Residents by Purok",
+  //             data: residentCount,
+  //             backgroundColor: "rgba(153, 102, 255, 0.2)",
+  //             borderColor: "rgba(153, 102, 255, 1)",
+  //             borderWidth: 1,
+  //           },
+  //         ],
+  //       },
+  //     });
+  //   })
+  //   .catch((err) =>
+  //     console.error("Error fetching residents by purok data:", err)
+  //   );
 
   // Fetch barangay population data and render chart
   fetch("/statistics/barangay-population")
@@ -481,66 +480,66 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("totalsByPurokDetails").innerHTML =
         totalsByPurokTable;
 
-      // Set up the chart
-      const ctx = document
-        .getElementById("barangayPopulationChart")
-        .getContext("2d");
-      new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: labels, // Purok names
-          datasets: [
-            {
-              label: "Male",
-              data: maleCount,
-              backgroundColor: "rgba(75, 192, 192, 0.5)",
-              borderColor: "rgba(75, 192, 192, 1)",
-              borderWidth: 1,
-            },
-            {
-              label: "Female",
-              data: femaleCount,
-              backgroundColor: "rgba(153, 102, 255, 0.5)",
-              borderColor: "rgba(153, 102, 255, 1)",
-              borderWidth: 1,
-            },
-            {
-              label: "Senior",
-              data: seniorCount,
-              backgroundColor: "rgba(255, 159, 64, 0.5)",
-              borderColor: "rgba(255, 159, 64, 1)",
-              borderWidth: 1,
-            },
-            {
-              label: "PWD",
-              data: pwdCount,
-              backgroundColor: "rgba(255, 99, 132, 0.5)",
-              borderColor: "rgba(255, 99, 132, 1)",
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-          plugins: {
-            legend: {
-              position: "top",
-            },
-            tooltip: {
-              callbacks: {
-                label: function (tooltipItem) {
-                  return tooltipItem.dataset.label + ": " + tooltipItem.raw;
-                },
-              },
-            },
-          },
-        },
-      });
+      // // Set up the chart
+      // const ctx = document
+      //   .getElementById("barangayPopulationChart")
+      //   .getContext("2d");
+      // new Chart(ctx, {
+      //   type: "bar",
+      //   data: {
+      //     labels: labels, // Purok names
+      //     datasets: [
+      //       {
+      //         label: "Male",
+      //         data: maleCount,
+      //         backgroundColor: "rgba(75, 192, 192, 0.5)",
+      //         borderColor: "rgba(75, 192, 192, 1)",
+      //         borderWidth: 1,
+      //       },
+      //       {
+      //         label: "Female",
+      //         data: femaleCount,
+      //         backgroundColor: "rgba(153, 102, 255, 0.5)",
+      //         borderColor: "rgba(153, 102, 255, 1)",
+      //         borderWidth: 1,
+      //       },
+      //       {
+      //         label: "Senior",
+      //         data: seniorCount,
+      //         backgroundColor: "rgba(255, 159, 64, 0.5)",
+      //         borderColor: "rgba(255, 159, 64, 1)",
+      //         borderWidth: 1,
+      //       },
+      //       {
+      //         label: "PWD",
+      //         data: pwdCount,
+      //         backgroundColor: "rgba(255, 99, 132, 0.5)",
+      //         borderColor: "rgba(255, 99, 132, 1)",
+      //         borderWidth: 1,
+      //       },
+      //     ],
+      //   },
+      //   options: {
+      //     responsive: true,
+      //     scales: {
+      //       y: {
+      //         beginAtZero: true,
+      //       },
+      //     },
+      //     plugins: {
+      //       legend: {
+      //         position: "top",
+      //       },
+      //       tooltip: {
+      //         callbacks: {
+      //           label: function (tooltipItem) {
+      //             return tooltipItem.dataset.label + ": " + tooltipItem.raw;
+      //           },
+      //         },
+      //       },
+      //     },
+      //   },
+      // });
     })
     .catch((err) =>
       console.error("Error fetching barangay population data:", err)

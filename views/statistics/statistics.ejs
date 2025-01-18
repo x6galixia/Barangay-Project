@@ -71,13 +71,17 @@
             </div>
             <hr>
             <div class="statsMainContainer">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin: 20px 3%; width: 100%;">
+                <div
+                    style="display: flex; align-items: center; justify-content: space-between; margin: 20px 3%; width: 100%;">
                     <h1>Household Classification</h1>
-                    <button id="add-survey-button" onclick="popUp_button(this)"><p>ADD SURVEY</p></button>
+                    <button id="add-survey-button" onclick="popUp_button(this)">
+                        <p>ADD SURVEY</p>
+                    </button>
                 </div>
                 <div id="meow">
                     <div class="separate">
-                        <div style="align-self: self-start; display: flex; flex-direction: column; gap: 4px; width: fit-content;">
+                        <div
+                            style="align-self: self-start; display: flex; flex-direction: column; gap: 4px; width: fit-content;">
                             <label for="year-dropdown">Select Year: </label>
                             <select id="year-dropdown"></select>
                         </div>
@@ -105,6 +109,28 @@
                     </div> -->
                     <div class="separate">
                         <div id="classificationByPurokDetails"></div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="statsMainContainer">
+                <div
+                    style="display: flex; align-items: center; justify-content: space-between; margin: 20px 3%; width: 100%;">
+                    <h1>Released Certificate</h1>
+                </div>
+                <div id="meow">
+                    <div class="separate">
+                        <div
+                            style="align-self: self-start; display: flex; flex-direction: column; gap: 4px; width: fit-content;">
+                            <label for="yearDropdown">Select Year: </label>
+                            <select id="yearDropdown"></select>
+                        </div>
+                        <div class="oberallContainer">
+                            <h3 style="margin-left: 0;" id="certificateHeading"></h3>
+                            <div id="result" class="oberall">
+                                <!-- Overall data will be inserted here -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -271,63 +297,107 @@
         });
     }
 
-    // Update statistics when a new year is selected
+    async function fetchAvailableYearsForCertcount() {
+        try {
+            const response = await fetch('/statistics/available-years-for-certcount');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const years = await response.json();
+
+            const yearDropdown = document.getElementById('yearDropdown');
+            yearDropdown.innerHTML = ''; // Clear existing options
+
+            // Populate the dropdown
+            years.forEach(({ year }) => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearDropdown.appendChild(option);
+            });
+
+
+            // Automatically call fetchCertCount for the first available year
+            if (years.length > 0) {
+                const defaultYear = years[0].year;
+                yearDropdown.value = defaultYear; // Set the dropdown value
+                fetchCertCount(defaultYear);
+            }
+        } catch (error) {
+            console.error('Error fetching years:', error);
+        }
+    }
+
+    // Fetch data for the selected year
+    async function fetchCertCount(year) {
+        if (!year) {
+            console.error('Year is not selected.');
+            return;
+        }
+
+
+        try {
+            const response = await fetch(`/statistics/certcount?year=${year}`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            const resultDiv = document.getElementById('result');
+
+            // Create the table structure
+
+            document.getElementById('certificateHeading').innerHTML = `<h3>Certificate Count for ${year}</h3>`;
+            resultDiv.innerHTML = `
+                    <table >
+                        <thead>
+                            <tr>
+                                <th>Certificate</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data
+                                    .map(
+                                        (item) => `
+                                <tr>
+                                    <td>${item.cert_name}</td>
+                                    <td>${item.total}</td>
+                                </tr>`
+                                    )
+                                    .join('')}
+                        </tbody>
+                    </table>
+                `;
+
+        } catch (error) {
+            console.error('Error fetching certificate count:', error);
+        }
+    }
+
     $('#year-dropdown').change(function () {
         const selectedYear = $(this).val();
         fetchStatistics(selectedYear); // Fetch and display data for the selected year
     });
 
-    // Fetch available years when the page is ready
+    // Initialize when the page loads
     $(document).ready(function () {
+        fetchAvailableYearsForCertcount();
         fetchAvailableYears();
+
+        // Attach change event to the dropdown
+        $(document).on('change', '#yearDropdown', function () {
+            const selectedYear = $(this).val();
+            fetchCertCount(selectedYear);
+        });
+
+        
     });
+
+
 </script>
-
-        <script>
-        async function fetchAvailableYearsForCertcount() {
-            try {
-                const response = await fetch('/available-years-for-certcount');
-                const years = await response.json();
-
-                const yearDropdown = document.getElementById('yearDropdown');
-                yearDropdown.innerHTML = '<option value="">Select Year</option>';
-
-                years.forEach(({ year }) => {
-                    const option = document.createElement('option');
-                    option.value = year;
-                    option.textContent = year;
-                    yearDropdown.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Error fetching years:', error);
-            }
-        }
-
-        async function fetchCertCount() {
-            const year = document.getElementById('yearDropdown').value;
-
-            if (!year) {
-                alert('Please select a year!');
-                return;
-            }
-
-            try {
-                const response = await fetch(`/certcount?year=${year}`);
-                const data = await response.json();
-
-                const resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = `
-                    <h3>Certificate Count for ${year}</h3>
-                    <ul>
-                        ${data.map(item => `<li>${item.cert_name}: ${item.total}</li>`).join('')}
-                    </ul>
-                `;
-            } catch (error) {
-                console.error('Error fetching certificate count:', error);
-            }
-        }
-
-        window.onload = fetchAvailableYearsForCertcount;
-    </script>
 
 </html>

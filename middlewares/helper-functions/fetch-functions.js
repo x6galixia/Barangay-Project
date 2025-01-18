@@ -86,8 +86,7 @@ async function fetchRequestLists(page, limit) {
   try {
     const totalItemsResult = await mPool.query(`
       SELECT COUNT(*) as count
-      FROM requests r
-      WHERE r.isReleased = false;
+      FROM requests r;
     `);
 
     const totalItems = parseInt(totalItemsResult.rows[0].count, 10);
@@ -112,7 +111,6 @@ async function fetchRequestLists(page, limit) {
       FROM requests r
       LEFT JOIN residents rd ON r.residentsid = rd.residentsid
       CROSS JOIN barangay_officials bo
-      WHERE r.isReleased = false
       ORDER BY r.id DESC
       LIMIT $1 OFFSET $2;
     `, [limit, offset]);
