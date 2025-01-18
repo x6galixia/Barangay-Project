@@ -358,29 +358,30 @@ router.get('/available-years-for-certcount', async (req, res) => {
 
 router.get('/certcount', async (req, res) => {
     const { year } = req.query;
-  
+
     if (!year || isNaN(year)) {
-      return res.status(400).json({ error: 'Please provide a valid year.' });
+        return res.status(400).json({ error: 'Year is required and must be a valid number.' });
     }
-  
+
     try {
-      const query = `
-        SELECT 
-          (cert_name::json ->> 'certName') AS cert_name, 
-          COUNT(*) AS total
-        FROM cert_record
-        WHERE EXTRACT(YEAR FROM date_release) = $1
-        GROUP BY (cert_name::json ->> 'certName')
-        ORDER BY total DESC;
-      `;
-  
-      const result = await mPool.query(query, [year]);
-  
-      res.json(result.rows);
+        const query = `
+            SELECT 
+                (cert_name::json ->> 'certName') AS cert_name, 
+                COUNT(*) AS total
+            FROM cert_record
+            WHERE EXTRACT(YEAR FROM date_release) = $1
+            GROUP BY (cert_name::json ->> 'certName')
+            ORDER BY total DESC;
+        `;
+
+        const result = await mPool.query(query, [parseInt(year, 10)]);
+        console.log("rowsss",result.rows)
+        res.json(result.rows);
     } catch (error) {
-      console.error('Error fetching statistics:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+        console.error('Error fetching statistics:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-  });
+});
+
   
 module.exports = router;

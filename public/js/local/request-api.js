@@ -4,6 +4,7 @@ const searchIcon = document.getElementById('searchIcon');
 searchIcon.addEventListener('click', () => {
   searchBar.classList.toggle('open');
   if (searchBar.classList.contains('open')) {
+    document.getElementById('searchLabel').innerText = 'Click the icon to close.';
     document.getElementById('scanSwitch').checked = false;
     document.getElementById("purpose").innerHTML = `
     <option value=" default" disabled selected>
@@ -34,6 +35,8 @@ searchIcon.addEventListener('click', () => {
     `
     searchBar.focus();
     searchIcon.style.marginLeft = "-30px"
+    searchIcon.style.backgroundColor = "transparent"
+    searchIcon.style.padding = "0"
     document.getElementById('searchBar').addEventListener('input', function () {
           const query = document.getElementById("searchBar").value;
 
@@ -65,7 +68,7 @@ searchIcon.addEventListener('click', () => {
                     
                     listItem.addEventListener('click', () => {
                       console.log(resident);
-                      document.getElementById('searchBar').value = listItem.textContent;
+                      document.getElementById('searchBar').value = resident.idnumber;
                       document.getElementById('qrOutput').value = resident.globalid;
                       populateFormFields(resident);
                       resultsContainer.innerHTML = '';
@@ -87,7 +90,10 @@ searchIcon.addEventListener('click', () => {
         });
   } else {
     searchIcon.style.marginLeft = "0"
+    searchIcon.style.backgroundColor = "rgb(180, 180, 180)"
+    searchIcon.style.padding = "4px"
     searchBar.value = '';
+    document.getElementById('searchLabel').innerHTML = 'Manual search.';
   }
 });
 
@@ -99,8 +105,12 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
 
   if (this.checked) {
     // Switch is enabled
+    document.getElementById('qrOutput').value = "MPDN0000";
     searchBar.classList.remove('open');
     searchIcon.style.marginLeft = "0"
+    searchIcon.style.backgroundColor = "rgb(180, 180, 180)"
+    searchIcon.style.padding = "4px"
+    document.getElementById('searchLabel').innerHTML = 'Manual search.';
     searchBar.value = '';
     inputFields.forEach(field => field.removeAttribute('readonly'));
     document.getElementById('purokLabel').innerText = "Address (Optional)";
@@ -346,3 +356,4 @@ function populateFormFields(data) {
   }
 
 }
+

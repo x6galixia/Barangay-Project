@@ -40,3 +40,13 @@ table {
   margin-bottom: -225px;
   margin-left: -130px;
 }
+
+.released-badge {
+  display: inline-block;
+  background-color: #28a745; /* Green for success */
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-right: 8px;
+}

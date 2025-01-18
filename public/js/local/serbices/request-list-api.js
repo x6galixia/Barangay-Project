@@ -33,53 +33,64 @@ document.addEventListener("DOMContentLoaded", async function () {
       requests.forEach(request => {
         const row = document.createElement('tr');
         const formattedDate = new Date(request.dateadded).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
         });
+    
+        // Add an indicator for released status
+        const releasedIndicator = request.isreleased 
+            ? '<span class="badge released-badge" style="margin-left: -20px">Released</span>' 
+            : '';
+    
+        const buttonDisabled = request.isreleased ? 'disabled' : '';
+    
         row.innerHTML = `
-                <td>${request.fname} ${request.mname ? request.mname : ''} ${request.lname}</td>
-                <td>${request.purpose}</td>
-                <td>${formattedDate}</td>
-                <td class="menu-row">
-                    <img class="dot" src="../icon/triple-dot.svg" alt="">
-                    <div class="triple-dot">
-                        <div class="menu" data-id="${request.residentsid}" data-r-id="${request.id}" data-purpose="${request.purpose}">
-                            <button 
-                                  data-purpose="${request.purpose}"
-                                  data-punongBarangay="${request.punongbarangayfirstname.toLocaleUpperCase()} ${request.punongbarangaymiddlename.toLocaleUpperCase() ? request.punongbarangaymiddlename.toLocaleUpperCase() : ''} ${request.punongbarangaylastname.toLocaleUpperCase()}"
-                                  data-skchairperson="${request.skchairpersonfirstname.toLocaleUpperCase()} ${request.skchairpersonmiddlename.toLocaleUpperCase() ? request.skchairpersonmiddlename.toLocaleUpperCase() : ''} ${request.skchairpersonlastname.toLocaleUpperCase()}"
-                                  data-secretary="${request.barangaysecretaryfirstname.toLocaleUpperCase()} ${request.barangaysecretarymiddlename.toLocaleUpperCase() ? request.barangaysecretarymiddlename.toLocaleUpperCase() : ''} ${request.barangaysecretarylastname.toLocaleUpperCase()}"
-                                  data-treasurer="${request.barangaytreasurerfirstname.toLocaleUpperCase()} ${request.barangaytreasurermiddlename.toLocaleUpperCase() ? request.barangaytreasurermiddlename.toLocaleUpperCase() : ''} ${request.barangaytreasurerlastname.toLocaleUpperCase()}"
-                                  data-kagawad1="${request.kagawad1firstname.toLocaleUpperCase()} ${request.kagawad1middlename.toLocaleUpperCase() ? request.kagawad1middlename.toLocaleUpperCase() : ''} ${request.kagawad1lastname.toLocaleUpperCase()}"
-                                  data-kagawad2="${request.kagawad2firstname.toLocaleUpperCase()} ${request.kagawad2middlename.toLocaleUpperCase() ? request.kagawad2middlename.toLocaleUpperCase() : ''} ${request.kagawad2lastname.toLocaleUpperCase()}"
-                                  data-kagawad3="${request.kagawad3firstname.toLocaleUpperCase()} ${request.kagawad3middlename.toLocaleUpperCase() ? request.kagawad3middlename.toLocaleUpperCase() : ''} ${request.kagawad3lastname.toLocaleUpperCase()}"
-                                  data-kagawad4="${request.kagawad4firstname.toLocaleUpperCase()} ${request.kagawad4middlename.toLocaleUpperCase() ? request.kagawad4middlename.toLocaleUpperCase() : ''} ${request.kagawad4lastname.toLocaleUpperCase()}"
-                                  data-kagawad5="${request.kagawad5firstname.toLocaleUpperCase()} ${request.kagawad5middlename.toLocaleUpperCase() ? request.kagawad5middlename.toLocaleUpperCase() : ''} ${request.kagawad5lastname.toLocaleUpperCase()}"
-                                  data-kagawad6="${request.kagawad6firstname.toLocaleUpperCase()} ${request.kagawad6middlename.toLocaleUpperCase() ? request.kagawad6middlename.toLocaleUpperCase() : ''} ${request.kagawad6lastname.toLocaleUpperCase()}"
-                                  data-kagawad7="${request.kagawad7firstname.toLocaleUpperCase()} ${request.kagawad7middlename.toLocaleUpperCase() ? request.kagawad7middlename.toLocaleUpperCase() : ''} ${request.kagawad7lastname.toLocaleUpperCase()}"
-                                  data-age="${request.age}"
-                                  data-birthdate="${request.birthdate}"
-                                  data-birthplace="${request.birthplace}"
-                                  data-firstName="${request.fname}"
-                                  data-lastName="${request.lname}"
-                                  data-middleName="${request.mname ? request.mname : ''}"
-                                  data-purok="${request.purok}"
-                                  data-street="${request.street}"
-                                  data-barangay="${request.barangay}"
-                                  data-city="${request.city}"
-                                  data-province="${request.province}"
-                                  data-civilStatus="${request.civilstatus}"
-                                  data-gender="${request.gender}"
-                                  onclick="processCertificate(this)">Process</button>
-                                  <button id="update-id" onclick="markAsDone(this)">Mark as done</button>
-                                  <button id="update-id" onclick="removeRequest(this)">Remove</button>
-                        </div>
+            <td>${releasedIndicator} ${request.fname} ${request.mname ? request.mname : ''} ${request.lname}</td>
+            <td>${request.purpose}</td>
+            <td>${formattedDate}</td>
+            <td class="menu-row">
+                 
+                <img class="dot" src="../icon/triple-dot.svg" alt="">
+                <div class="triple-dot">
+                    <div class="menu" data-id="${request.residentsid}" data-r-id="${request.id}" data-purpose="${request.purpose}">
+                        <button 
+                            data-purpose="${request.purpose}"
+                            data-punongBarangay="${request.punongbarangayfirstname.toLocaleUpperCase()} ${request.punongbarangaymiddlename.toLocaleUpperCase() ? request.punongbarangaymiddlename.toLocaleUpperCase() : ''} ${request.punongbarangaylastname.toLocaleUpperCase()}"
+                            data-skchairperson="${request.skchairpersonfirstname.toLocaleUpperCase()} ${request.skchairpersonmiddlename.toLocaleUpperCase() ? request.skchairpersonmiddlename.toLocaleUpperCase() : ''} ${request.skchairpersonlastname.toLocaleUpperCase()}"
+                            data-secretary="${request.barangaysecretaryfirstname.toLocaleUpperCase()} ${request.barangaysecretarymiddlename.toLocaleUpperCase() ? request.barangaysecretarymiddlename.toLocaleUpperCase() : ''} ${request.barangaysecretarylastname.toLocaleUpperCase()}"
+                            data-treasurer="${request.barangaytreasurerfirstname.toLocaleUpperCase()} ${request.barangaytreasurermiddlename.toLocaleUpperCase() ? request.barangaytreasurermiddlename.toLocaleUpperCase() : ''} ${request.barangaytreasurerlastname.toLocaleUpperCase()}"
+                            data-kagawad1="${request.kagawad1firstname.toLocaleUpperCase()} ${request.kagawad1middlename.toLocaleUpperCase() ? request.kagawad1middlename.toLocaleUpperCase() : ''} ${request.kagawad1lastname.toLocaleUpperCase()}"
+                            data-kagawad2="${request.kagawad2firstname.toLocaleUpperCase()} ${request.kagawad2middlename.toLocaleUpperCase() ? request.kagawad2middlename.toLocaleUpperCase() : ''} ${request.kagawad2lastname.toLocaleUpperCase()}"
+                            data-kagawad3="${request.kagawad3firstname.toLocaleUpperCase()} ${request.kagawad3middlename.toLocaleUpperCase() ? request.kagawad3middlename.toLocaleUpperCase() : ''} ${request.kagawad3lastname.toLocaleUpperCase()}"
+                            data-kagawad4="${request.kagawad4firstname.toLocaleUpperCase()} ${request.kagawad4middlename.toLocaleUpperCase() ? request.kagawad4middlename.toLocaleUpperCase() : ''} ${request.kagawad4lastname.toLocaleUpperCase()}"
+                            data-kagawad5="${request.kagawad5firstname.toLocaleUpperCase()} ${request.kagawad5middlename.toLocaleUpperCase() ? request.kagawad5middlename.toLocaleUpperCase() : ''} ${request.kagawad5lastname.toLocaleUpperCase()}"
+                            data-kagawad6="${request.kagawad6firstname.toLocaleUpperCase()} ${request.kagawad6middlename.toLocaleUpperCase() ? request.kagawad6middlename.toLocaleUpperCase() : ''} ${request.kagawad6lastname.toLocaleUpperCase()}"
+                            data-kagawad7="${request.kagawad7firstname.toLocaleUpperCase()} ${request.kagawad7middlename.toLocaleUpperCase() ? request.kagawad7middlename.toLocaleUpperCase() : ''} ${request.kagawad7lastname.toLocaleUpperCase()}"
+                            data-age="${request.age}"
+                            data-birthdate="${request.birthdate}"
+                            data-birthplace="${request.birthplace}"
+                            data-firstName="${request.fname}"
+                            data-lastName="${request.lname}"
+                            data-middleName="${request.mname ? request.mname : ''}"
+                            data-purok="${request.purok}"
+                            data-street="${request.street}"
+                            data-barangay="${request.barangay}"
+                            data-city="${request.city}"
+                            data-province="${request.province}"
+                            data-civilStatus="${request.civilstatus}"
+                            data-gender="${request.gender}"
+                            onclick="processCertificate(this)">Process</button>
+                        <button id="update-id" onclick="markAsDone(this)" ${buttonDisabled}>Mark as done</button>
+                        <button id="update-id" onclick="removeRequest(this)">Remove</button>
                     </div>
-                </td>
-            `;
+                </div>
+            </td>
+        `;
         requestTableBody.appendChild(row);
-      });
+    });
+    
+    
     }
     attachDotEventListeners();
     // Update pagination links
