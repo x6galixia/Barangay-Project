@@ -190,7 +190,7 @@ window.processCertificate = function (button) {
 
   if (purpose === 'Oath Of Undertaking') {
     document.getElementById("oathFullName").innerHTML = `${firstName} ${middleName} ${lastName}`.toLocaleUpperCase();
-    // document.getElementById("oathFullName1").innerHTML = `${firstName} ${middleName} ${lastName}`.toLocaleUpperCase();
+    document.getElementById("oathFullName1").innerHTML = `${firstName} ${middleName} ${lastName}`.toLocaleUpperCase();
     document.getElementById("oathAddress").innerText = `${barangay}, ${city}, ${province}`;
     document.getElementById("oathGender").innerHTML = `${gender}`;
     document.getElementById("oathAge").innerHTML = `${age}`;
