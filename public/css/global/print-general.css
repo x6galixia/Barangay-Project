@@ -107,7 +107,7 @@
 
 
 .context p {
-    text-indent: 30px;
+    text-indent: 30px !important;
     margin-bottom: 32px;
 }
 
@@ -137,10 +137,10 @@
 
 
 
-.wala {
-    text-indent: 0 !important;
+/* .wala {
+    text-indent: 0px !important;
     margin-bottom: 16px;
-}
+} */
 
 .seal {
     position: relative;
