@@ -120,13 +120,15 @@
                 </div>
                 <div id="meow">
                     <div class="separate">
-                        <div
-                            style="align-self: self-start; display: flex; flex-direction: column; gap: 4px; width: fit-content;">
-                            <label for="yearDropdown">Select Year: </label>
-                            <select id="yearDropdown"></select>
-                        </div>
                         <div class="oberallContainer">
-                            <h3 style="margin-left: 0;" id="certificateHeading"></h3>
+                            <div style="display: flex; justify-content: space-between; align-items: end;">
+                                <h3 style="margin-left: 0; margin-bottom: 0;" id="certificateHeading"></h3>
+                                <div
+                                    style="align-self: self-start; display: flex; flex-direction: column; gap: 4px; width: fit-content;">
+                                    <label for="yearDropdown">Select Year: </label>
+                                    <select id="yearDropdown"></select>
+                                </div>
+                            </div>
                             <div id="result" class="oberall">
                                 <!-- Overall data will be inserted here -->
                             </div>
@@ -350,7 +352,7 @@
 
             // Create the table structure
 
-            document.getElementById('certificateHeading').innerHTML = `<h3>Certificate Count for ${year}</h3>`;
+            document.getElementById('certificateHeading').innerText = `Certificate Count for ${year}`;
             resultDiv.innerHTML = `
                     <table >
                         <thead>

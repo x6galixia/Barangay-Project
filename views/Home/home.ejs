@@ -18,19 +18,17 @@
   <%- include("../includes/header.ejs") %>
     <main class="mainContainer">
       <div class="heading">Service Request Form</div>
-      <input type="text" id="qrInput" required autocomplete="off"
+      <input type="text" id="qrInput" autocomplete="off"
         style="opacity: 0; position: fixed; transform: translate(-50%, -50%),;">
       <div style="display: flex; align-items: center; justify-content: space-between; padding: 0 15%;">
         <div class="search-container" style="display: flex; align-items: center;">
           <div class="inputWithLabel search-wrapper">
             <div style="display: flex; align-items: center;">
-              <div>
+              <div class="search-containers">
+                <img class="search-icon" id="searchIcon" src="../icon/search2.svg" alt="Search">
                 <input type="text" class="search-bar" id="searchBar" autocomplete="off" placeholder="Search by ID-number">
                 <div id="results" style="display:none"></div>
-              </div>
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <img style="background-color: rgb(180, 180, 180); border-radius: 4px; padding: 2px;" class="search-icon" id="searchIcon" src="../icon/search_icon.svg" alt="">
-                <p id="searchLabel" style="font-style: normal; color: rgb(58, 126, 214); line-height: 20px; margin-top: -30px; text-align: center;">Manual search.</p>
+                <p id="searchLabel" style="margin-left: 10px;">Manual search.</p>
               </div>
             </div>
           </div>

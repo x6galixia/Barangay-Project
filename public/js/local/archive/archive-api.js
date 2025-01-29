@@ -35,28 +35,23 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     if (selectedValue1 === "Lupon") {
-        console.log("1 selected");
         // toggleColumns(true);
         addArchibeForm.style.height = '75vh';
         fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
         
     } else if (selectedValue1 === "Ordinance") {
-        console.log("2 selected");
         // toggleColumns(false);
         addArchibeForm.style.height = '75vh';
         fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
     } else if (selectedValue1 === "Panumduman") {
-        console.log("3 selected");
         // toggleColumns(false);
         addArchibeForm.style.height = 'fit-content';
         fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
     } else if (selectedValue1 === "Regularization Minutes") {
-        console.log("4 selected");
         // toggleColumns(false);
         addArchibeForm.style.height = 'fit-content';
         fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
     } else if (selectedValue1 === "Resolution") {
-        console.log("5 selected");
         // toggleColumns(false);
         addArchibeForm.style.height = 'fit-content';
         fetchArchiveLists(1, 10, searchQuery, selectedValue1).then(attachDotEventListeners);
@@ -146,7 +141,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             const data = await response.json();
             const archive = data.archiveList;
             archiveTableBody.innerHTML = '';
-            console.log(data);
             showColumnsForDoctype(doctype);
 
             if (doctype === 'Lupon') {
@@ -533,7 +527,6 @@ function docChangesSelected(doctype, authorsLength, coAuthorsLength, sponsorsLen
 function attachDotEventListeners() {
     document.querySelectorAll(".dot").forEach(function (dot) {
         dot.addEventListener("click", function () {
-            console.log("dot clicked");
             const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
             tripleDotContainer.classList.add("visible");
         });
@@ -646,6 +639,7 @@ function popUp_button(button) {
             `
         }
         if (type === "Lupon") {
+            document.querySelector('#results').style.display = 'flex';
             document.querySelector('#add-document .heading').innerHTML = `ADD ${type.toUpperCase()} DOCUMENT`;
             formContainer.innerHTML = `
                 <div class="inputWithLabel">
@@ -784,7 +778,6 @@ function popUp_button(button) {
 }
 
 function deleteItem(archiveID) {
-    console.log("delete triggered");
 
     try {
         const response = fetch(`/archive/delete-archive-item/${archiveID}`, {
@@ -809,7 +802,6 @@ function deleteItem(archiveID) {
 // Fills inputs dynamically based on data fetched from the server
 function fillInputs(data) {
     // clearFillInputs();
-    console.log('Data passed to fillInputs:', data);
 
     // Ensure typename exists and is in lowercase
     const docType = (data.data.typename || '').toLowerCase();
@@ -833,6 +825,7 @@ function fillInputs(data) {
 
     switch (docType) {
         case 'lupon':
+            document.querySelector('#results').style.display = 'none';
             if (data.data.luponDetails && data.data.luponDetails.length > 0) {
                 const details = data.data.luponDetails[0];
                 populateFields({
@@ -873,7 +866,6 @@ function fillInputs(data) {
         case 'resolution':
             if (data.data.resolutionDetails && data.data.resolutionDetails.length > 0) {
                 const details = data.data.resolutionDetails[0];
-                console.log("resolution:", details)
                 populateFields({
                     resolutionNumber: details.resolutionnumber,
                     yearSeries: details.seriesyear,
@@ -918,7 +910,6 @@ function fillInputs(data) {
 
 // Populate specific input fields
 function populateFields(fields) {
-    console.log("populating fields:", fields)
     Object.keys(fields).forEach(id => {
         const element = document.getElementById(id);
         if (element) {

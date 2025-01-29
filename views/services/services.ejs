@@ -76,7 +76,7 @@
             <%- include("../includes/new-f-brgy-clearance.ejs") %>      <!-- DONE -->
             <%- include("../includes/singleness.ejs") %>                <!-- DONE -->
             <%- include("../includes/new-f-residency.ejs") %>           <!-- DONE -->
-            <%- include("../includes/oath-undertaking.ejs") %>          <!-- DONE (sira yung certificate)-->
+            <%- include("../includes/oath-undertaking.ejs") %>          <!-- DONE -->
             <%- include("../includes/late-registration.ejs") %>         <!-- DONE -->
             <%- include("../includes/cet-of-guardianship.ejs") %>       <!-- DONE -->
             <%- include("../includes/good-moral.ejs") %>                <!-- DONE -->
@@ -86,7 +86,7 @@
             <%- include("../includes/burial-clearance.ejs") %>          <!-- DONE -->
             <%- include("../includes/panumduman.ejs") %>                <!-- DONE -->
             <%- include("../includes/same-person.ejs") %>               <!-- DONE -->
-            <%- include("../includes/income.ejs") %>                    <!-- (balyuan hin certificate) -->
+            <%- include("../includes/income-new.ejs") %>                <!-- DONE -->
             <%- include("../includes/solo-parent.ejs") %>               <!-- DONE -->
             <%- include("../includes/land-no-claim.ejs") %>             <!-- DONE --> 
             <%- include("../includes/new-f-common-law.ejs") %>          <!-- DONE -->  
@@ -96,7 +96,20 @@
             <button style="display: flex; justify-self: end; margin-top: 24px; padding: 12px 48px;"
                 onclick="printMeh()">Print</button>
         </div>
-        
+        <% if (messages.success) { %>
+            <div class="overlay"></div>
+            <div class="alert alert-success" id="submit_prompt">
+                <img src="../images/success-img.png" alt="">
+                <div>
+                    <h2>
+                        <%= messages.success %>
+                    </h2>
+                    <main>
+                        <button type="button" class="button-green" onclick="closePopup()">Ok</button>
+                    </main>
+                </div>
+            </div>
+            <% } %>
 
 </body>
 <img id="printCert" src="" alt="">

@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const data = await response.json();
     const requests = data.getRequestList;
-    console.log(data);
 
     requestTableBody.innerHTML = '';
 
@@ -120,7 +119,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 function attachDotEventListeners() {
   document.querySelectorAll(".dot").forEach(function (dot) {
     dot.addEventListener("click", function () {
-      console.log("dot clicked");
       const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
       tripleDotContainer.classList.add("visible");
     });
@@ -190,7 +188,7 @@ window.processCertificate = function (button) {
 
   if (purpose === 'Oath Of Undertaking') {
     document.getElementById("oathFullName").innerHTML = `${firstName} ${middleName} ${lastName}`.toLocaleUpperCase();
-    // document.getElementById("oathFullName1").innerHTML = `${firstName} ${middleName} ${lastName}`.toLocaleUpperCase();
+    document.getElementById("oathFullName1").innerHTML = `${firstName} ${middleName} ${lastName}`.toLocaleUpperCase();
     document.getElementById("oathAddress").innerText = `${barangay}, ${city}, ${province}`;
     document.getElementById("oathGender").innerHTML = `${gender}`;
     document.getElementById("oathAge").innerHTML = `${age}`;
@@ -789,14 +787,24 @@ window.processCertificate = function (button) {
               </select>
               <input type="hidden" id="certificatePurpose" style="margin-top:12px">
           </div>
-          <div class="inputWithLabel">
-              <label for="">Trabaho</label>
-              <input type="text" id="incomeTrabahoInput">
+          <div>
+            <label style="margin-right: auto">Source of Income <i>(Press <strong>ctrl+b</strong> for bold, <strong>ctrl+i</strong> for italic, and <strong>ctrl+u</strong> for underline)</i></label>
+            <p style="color:gray">Ex. Is the owner of CB HARDWARE with monthly income of 20,000.00.</p>
           </div>
-          <div class="inputWithLabel">
-              <label for="">Monthly Income (Ex. Php. 15,000.00)</label>
-              <input type="text" id="incomeMonthlyInput">
-          </div>
+          <div 
+            contenteditable="true"
+            style="
+              border: 1px solid #000;
+              padding: 8px;
+              min-height: 80px;
+              margin: 5px 0;
+              font-family: Arial, sans-serif;
+              border-radius: 10px;
+              outline: none;
+            "
+            onkeydown="handleFormatting(event, this)"
+            id="incomeDetailsInput"
+          ></div>
           <div class="inputWithLabel">
               <label for="">OR Nos</label>
               <input type="text" id="incomeORNosInput">
@@ -817,9 +825,10 @@ window.processCertificate = function (button) {
         }
       });
 
-
-      document.getElementById("brgyClearanceAddress").innerText = `Purok ${purok}, ${barangay}, ${city}, ${province}`;
-      document.getElementById("brgyClearanceAge").innerText = `${age}`;
+      document.getElementById("incomeFullname").innerText =
+      `${lastName}, ${firstName} ${middleName}`.toUpperCase();
+      document.getElementById("incomeAddress").innerText = `Purok ${purok}, Barangay ${barangay}, ${city}, Province of ${province}`;
+      document.getElementById("incomeStatus").innerText = `${civilStatus}`;
       document.getElementById("brgyClearanceCivilStatus").innerText = `${civilStatus}`;
 
       document.addEventListener('click', function (event) {
@@ -828,19 +837,14 @@ window.processCertificate = function (button) {
           const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
 
           if (selectedPurpose && selectedPurpose !== "default") {
-            // const brgyClearancePurpose = document.getElementById("brgyClearancePurpose");
-
-            // document.getElementById("brgyClearanceRemarks").innerText = document.getElementById("brgyClearanceRemarksInput").value.toUpperCase();
-            // document.getElementById("brgyClearanceOptID").innerText = document.getElementById("brgyClearanceOptIDInput").value;
-            // document.getElementById("brgyClearanceCTCNos").innerText = document.getElementById("brgyClearanceCTCNosInput").value;
-            // document.getElementById("brgyClearanceDateIssued").innerText = document.getElementById("brgyClearanceDateIssuedInput").value;
-            // document.getElementById("brgyClearanceORNos").innerText = document.getElementById("brgyClearanceORNosInput").value;
-            // document.getElementById("brgyClearanceDatePrinted").innerText = document.getElementById("brgyClearanceDatePrintedInput").value;
+            const incomePurpose = document.getElementById("incomePurpose");
+            document.getElementById("incomeDetails").innerHTML = document.getElementById("incomeDetailsInput").innerHTML || "";
+          document.getElementById("incomeORNos").innerText = document.getElementById("incomeORNosInput").value;
 
             if (certificatePurposeInput.type === "text") {
-              // brgyClearancePurpose.innerText = selectedPurpose.toUpperCase();
+              incomePurpose.innerText = selectedPurpose.toUpperCase();
             } else {
-              // brgyClearancePurpose.innerText = selectedPurpose.toUpperCase();
+              incomePurpose.innerText = selectedPurpose.toUpperCase();
             }
             alert("Changes applied: " + selectedPurpose);
           } else {
@@ -956,7 +960,6 @@ window.processCertificate = function (button) {
           alert("Changes applied");
         }
       });
-      viewCertificate.addEventListener('click', () => viewCertificateDetails("waterDistrict"));
       viewCertificate.addEventListener('click', () => viewCertificateDetails("landNoClaim"));
     }
     else if (purpose === 'Late Registration') {
@@ -1799,16 +1802,10 @@ window.processCertificate = function (button) {
       imageContainer.innerHTML = ""; // Clear previous images
       imageContainer.appendChild(imgElement);
 
-      console.log(selectedCertificate);
     });
     imageContainer.classList.remove("visible");
     convertToImage.classList.toggle("visible");
     // document.getElementById("certificate").classList.add("visible");
-
-
-
-
-
 
     document.querySelector(".closeCertificate").addEventListener("click", function () {
       if (selectedCertificate === "oathUndertaking") {
@@ -2032,7 +2029,6 @@ function removeRequest(buttonElement) {
 }
 
 async function deleteItem(requestID,rId) {
-  console.log("Delete triggered for request ID:", requestID);
 
   try {
     const response = await fetch(`/services/delete-request/${requestID}/${rId}`, {
@@ -2043,8 +2039,8 @@ async function deleteItem(requestID,rId) {
     });
 
     if (response.ok) {
-      console.log("Request deleted successfully.");
-      location.reload(); // Reload to reflect the changes
+      alert('Request deleted successfully!');
+      // location.reload(); // Reload to reflect the changes
     } else {
       console.error("Error: Failed to delete the item. Status:", response.status);
       alert('Failed to delete the request. Please try again.');
@@ -2057,16 +2053,15 @@ async function deleteItem(requestID,rId) {
 
 function markAsDone(buttonElement){
   const purpose = buttonElement.parentElement.getAttribute('data-purpose');
-
+  const requestID = buttonElement.parentElement.getAttribute('data-r-id');
   if (confirm('Are you sure you want to mark as done this request?')) {
-    sendDone(purpose)
+    sendDone(purpose, requestID)
   }
 }
 
-async function sendDone(purpose){
+async function sendDone(purpose, requestID) {
   try {
-
-    const response = await fetch(`/services/cert-record-insertion/${purpose}`, {
+    const response = await fetch(`/services/cert-record-insertion/${purpose}/${requestID}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -2074,15 +2069,15 @@ async function sendDone(purpose){
     });
 
     if (response.ok) {
-      console.log("Request mark done successfully.");
-      location.reload(); // Reload to reflect the changes
+      // Redirect to the updated services page after success
+      location.reload();
+      alert('Request marked as done successfully.');
     } else {
-      console.error("Error: Failed to mark done the item. Status:", response.status);
-      alert('Failed to mark done the request. Please try again.');
+      console.error("Error: Failed to mark the request as done. Status:", response.status);
+      alert('Failed to mark the request as done. Please try again.');
     }
-    
   } catch (error) {
-    console.error('Error marking done:', error);
+    console.error('Error marking request as done:', error);
     alert('An error occurred while marking done. Please try again.');
   }
 }

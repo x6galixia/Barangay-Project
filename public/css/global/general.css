@@ -137,6 +137,22 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  background-color: #d6d6d6; /* Light gray background */
+  color: #a0a0a0; /* Gray text */
+  cursor: not-allowed; /* Show 'not-allowed' cursor */
+  border: 1px solid #c0c0c0; /* Light border */
+  opacity: 0.6; /* Reduce opacity */
+  transition: 0.3s;
+}
+
+/* Optional: Add hover effect to show it's not clickable */
+button:disabled:hover {
+  background-color: #d6d6d6;
+  color: #a0a0a0;
+  cursor: not-allowed;
+}
+
 .scanSwitch {
   justify-self: end;
   align-self: self-end;

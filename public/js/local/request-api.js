@@ -4,7 +4,6 @@ const searchIcon = document.getElementById('searchIcon');
 searchIcon.addEventListener('click', () => {
   searchBar.classList.toggle('open');
   if (searchBar.classList.contains('open')) {
-    document.getElementById('searchLabel').innerText = 'Click the icon to close.';
     document.getElementById('scanSwitch').checked = false;
     document.getElementById("purpose").innerHTML = `
     <option value=" default" disabled selected>
@@ -34,66 +33,59 @@ searchIcon.addEventListener('click', () => {
     <option value="Water District">Water District</option>
     `
     searchBar.focus();
-    searchIcon.style.marginLeft = "-30px"
-    searchIcon.style.backgroundColor = "transparent"
-    searchIcon.style.padding = "0"
+    
     document.getElementById('searchBar').addEventListener('input', function () {
-          const query = document.getElementById("searchBar").value;
+      const query = document.getElementById("searchBar").value;
 
-          if (query.length > 3) {
-            fetch(`/home/dashboard/fetchManualData?residentId=${query}`, {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-            })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json(); // Parse the JSON response
-              })
-              .then(data => {
-                const resultsContainer = document.getElementById('results');
-                resultsContainer.style.display = 'flex';
-                resultsContainer.innerHTML = '';
-
-                if (data.success && data.data.length > 0) {
-                  data.data.forEach(resident => {
-                    const listItem = document.createElement('div');
-                    listItem.textContent = `${resident.fname} ${resident.mname} ${resident.lname}`;
-                    listItem.classList.add('result-item');
-                    resultsContainer.appendChild(listItem);
-
-                    
-                    listItem.addEventListener('click', () => {
-                      console.log(resident);
-                      document.getElementById('searchBar').value = resident.idnumber;
-                      document.getElementById('qrOutput').value = resident.globalid;
-                      populateFormFields(resident);
-                      resultsContainer.innerHTML = '';
-                      resultsContainer.style.display = 'none'; 
-                    });
-                  });
-                } else {
-                  resultsContainer.textContent = '--No results found!--';
-                }
-              })
-              .catch(error => {
-                console.error("Error fetching residents:", error);
-              });
-          } else {
+      if (query.length > 3) {
+        fetch(`/home/dashboard/fetchManualData?residentId=${query}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json(); // Parse the JSON response
+          })
+          .then(data => {
             const resultsContainer = document.getElementById('results');
+            resultsContainer.style.display = 'flex';
             resultsContainer.innerHTML = '';
-            resultsContainer.style.display = 'none';
-          }
-        });
+
+            if (data.success && data.data.length > 0) {
+              data.data.forEach(resident => {
+                const listItem = document.createElement('div');
+                listItem.textContent = `${resident.fname} ${resident.mname} ${resident.lname}`;
+                listItem.classList.add('result-item');
+                resultsContainer.appendChild(listItem);
+
+
+                listItem.addEventListener('click', () => {
+                  document.getElementById('searchBar').value = resident.idnumber;
+                  document.getElementById('qrOutput').value = resident.globalid;
+                  populateFormFields(resident);
+                  resultsContainer.innerHTML = '';
+                  resultsContainer.style.display = 'none';
+                });
+              });
+            } else {
+              resultsContainer.textContent = '--No results found!--';
+            }
+          })
+          .catch(error => {
+            console.error("Error fetching residents:", error);
+          });
+      } else {
+        const resultsContainer = document.getElementById('results');
+        resultsContainer.innerHTML = '';
+        resultsContainer.style.display = 'none';
+      }
+    });
   } else {
-    searchIcon.style.marginLeft = "0"
-    searchIcon.style.backgroundColor = "rgb(180, 180, 180)"
-    searchIcon.style.padding = "4px"
     searchBar.value = '';
-    document.getElementById('searchLabel').innerHTML = 'Manual search.';
   }
 });
 
@@ -105,12 +97,11 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
 
   if (this.checked) {
     // Switch is enabled
-    document.getElementById('qrOutput').value = "MPDN0000";
+    const resultsContainer = document.getElementById('results');
     searchBar.classList.remove('open');
-    searchIcon.style.marginLeft = "0"
-    searchIcon.style.backgroundColor = "rgb(180, 180, 180)"
-    searchIcon.style.padding = "4px"
-    document.getElementById('searchLabel').innerHTML = 'Manual search.';
+    resultsContainer.innerHTML = '';
+    resultsContainer.style.display = 'none';
+    document.getElementById('qrOutput').value = "MPDN0000";
     searchBar.value = '';
     inputFields.forEach(field => field.removeAttribute('readonly'));
     document.getElementById('purokLabel').innerText = "Address (Optional)";
@@ -164,15 +155,12 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
     document.getElementById('middlename1').innerText = "Middle Name";
     inputFields.forEach(field => field.setAttribute('readonly', true));
     submitButton.setAttribute('disabled', true);
-    console.log("Inputs disabled. qrOutput cleared.");
 
     function checkId() {
       const idInput = document.getElementById('qrOutput');
       if (idInput.value.trim() !== '') {
         submitButton.disabled = false;
-        console.log("false");
       } else {
-        console.log("true");
         submitButton.disabled = true;
       }
     }
@@ -219,7 +207,6 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
           .then(response => response.json())
           .then(data => {
             if (data.success) {
-              console.log(data);
               if (!data.data.ispaid) {
                 showPrompt("Payment Reminder", "This account shows an outstanding balance. Please settle the payment to avoid service interruptions.");
               } else {
@@ -252,10 +239,9 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
                     })
                     .then(data => {
                       if (data.exists) {
-                        console.log("Record found for the name:", nameVariant);
                         showPrompt("Record Found", "This account has a record in the Lupon documents. Please review the details.");
                       } else {
-                        console.log("No record found for the name:", nameVariant);
+                        // console.log("No record found for the name:", nameVariant);
                       }
                     })
                     .catch(error => {
@@ -282,7 +268,6 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
     }
 
     function showPrompt(header, message) {
-      console.log("scanneddddd");
       const submitPrompt1 = document.getElementById("submit_prompt1");
       submitPrompt1.classList.add("visible1");
       document.querySelector('.error-message').textContent = message;
@@ -297,7 +282,7 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
 
 // Execute the else logic on page load
 document.addEventListener('DOMContentLoaded', () => {
-  executeElseLogic();
+  // executeElseLogic();
   document.getElementById('scanSwitch').checked = false;
   document.getElementById('scanSwitch').dispatchEvent(new Event('change'));
 });
