@@ -789,14 +789,23 @@ window.processCertificate = function (button) {
               </select>
               <input type="hidden" id="certificatePurpose" style="margin-top:12px">
           </div>
-          <div class="inputWithLabel">
-              <label for="">Trabaho</label>
-              <input type="text" id="incomeTrabahoInput">
+          <div>
+            <label style="margin-right: auto">Certfication Details <i>(Press <strong>ctrl+b</strong> for bold, <strong>ctrl+i</strong> for italic, and <strong>ctrl+u</strong> for underline)</i></label>
           </div>
-          <div class="inputWithLabel">
-              <label for="">Monthly Income (Ex. Php. 15,000.00)</label>
-              <input type="text" id="incomeMonthlyInput">
-          </div>
+          <div 
+            contenteditable="true"
+            style="
+              border: 1px solid #000;
+              padding: 8px;
+              min-height: 80px;
+              margin: 5px 0;
+              font-family: Arial, sans-serif;
+              border-radius: 10px;
+              outline: none;
+            "
+            onkeydown="handleFormatting(event, this)"
+            id="incomeDetailsInput"
+          ></div>
           <div class="inputWithLabel">
               <label for="">OR Nos</label>
               <input type="text" id="incomeORNosInput">
@@ -817,9 +826,10 @@ window.processCertificate = function (button) {
         }
       });
 
-
-      document.getElementById("brgyClearanceAddress").innerText = `Purok ${purok}, ${barangay}, ${city}, ${province}`;
-      document.getElementById("brgyClearanceAge").innerText = `${age}`;
+      document.getElementById("incomeFullname").innerText =
+      `${lastName}, ${firstName} ${middleName}`.toUpperCase();
+      document.getElementById("incomeAddress").innerText = `Purok ${purok}, Barangay ${barangay}, ${city}, Province of ${province}`;
+      document.getElementById("incomeStatus").innerText = `${civilStatus}`;
       document.getElementById("brgyClearanceCivilStatus").innerText = `${civilStatus}`;
 
       document.addEventListener('click', function (event) {
@@ -828,19 +838,14 @@ window.processCertificate = function (button) {
           const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
 
           if (selectedPurpose && selectedPurpose !== "default") {
-            // const brgyClearancePurpose = document.getElementById("brgyClearancePurpose");
-
-            // document.getElementById("brgyClearanceRemarks").innerText = document.getElementById("brgyClearanceRemarksInput").value.toUpperCase();
-            // document.getElementById("brgyClearanceOptID").innerText = document.getElementById("brgyClearanceOptIDInput").value;
-            // document.getElementById("brgyClearanceCTCNos").innerText = document.getElementById("brgyClearanceCTCNosInput").value;
-            // document.getElementById("brgyClearanceDateIssued").innerText = document.getElementById("brgyClearanceDateIssuedInput").value;
-            // document.getElementById("brgyClearanceORNos").innerText = document.getElementById("brgyClearanceORNosInput").value;
-            // document.getElementById("brgyClearanceDatePrinted").innerText = document.getElementById("brgyClearanceDatePrintedInput").value;
+            const incomePurpose = document.getElementById("incomePurpose");
+            document.getElementById("incomeDetails").innerHTML = document.getElementById("incomeDetailsInput").innerHTML || "";
+          document.getElementById("incomeORNos").innerText = document.getElementById("incomeORNosInput").value;
 
             if (certificatePurposeInput.type === "text") {
-              // brgyClearancePurpose.innerText = selectedPurpose.toUpperCase();
+              incomePurpose.innerText = selectedPurpose.toUpperCase();
             } else {
-              // brgyClearancePurpose.innerText = selectedPurpose.toUpperCase();
+              incomePurpose.innerText = selectedPurpose.toUpperCase();
             }
             alert("Changes applied: " + selectedPurpose);
           } else {
@@ -956,7 +961,6 @@ window.processCertificate = function (button) {
           alert("Changes applied");
         }
       });
-      viewCertificate.addEventListener('click', () => viewCertificateDetails("waterDistrict"));
       viewCertificate.addEventListener('click', () => viewCertificateDetails("landNoClaim"));
     }
     else if (purpose === 'Late Registration') {
