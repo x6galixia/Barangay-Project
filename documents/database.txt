@@ -151,8 +151,19 @@ CREATE TABLE residents (
     isOutOfSchoolYouth BOOLEAN DEFAULT FALSE, 
     isSkm BOOLEAN DEFAULT FALSE,              
     isKm BOOLEAN DEFAULT FALSE,
-    isPaid BOOLEAN DEFAULT FALSE NULL                 
+    isPaid BOOLEAN DEFAULT FALSE NULL,
+    lastPaidReset DATE DEFAULT NULL               
 );
+
+// this will reset the isPaid every january first 
+CREATE OR REPLACE FUNCTION reset_isPaid_nonResidents()
+RETURNS VOID AS $$
+BEGIN
+    UPDATE residents
+    SET isPaid = FALSE, lastPaidReset = CURRENT_DATE
+    WHERE isResident = FALSE;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE boarders (
     boardID SERIAL PRIMARY KEY NOT NULL,
