@@ -352,48 +352,56 @@ router.post("/house-classification-survey", async (req, res) => {
 });
 
 router.get("/available-years-for-certcount", async (req, res) => {
-  try {
-    const query = `
-            SELECT DISTINCT EXTRACT(YEAR FROM date_release) AS year
-            FROM cert_record
-            ORDER BY year DESC;
-        `;
-    const { rows } = await mPool.query(query);
-    res.json(rows);
-  } catch (err) {
-    console.error("Error:", err.message);
-    res.status(500).send("Internal server error");
-  }
-});
-
-router.get("/certcount", async (req, res) => {
-  const { year } = req.query;
-
-  if (!year || isNaN(year)) {
-    return res
-      .status(400)
-      .json({ error: "Year is required and must be a valid number." });
-  }
-
-  try {
-    const query = `
-            SELECT 
-                (cert_name::json ->> 'certName') AS cert_name, 
-                COUNT(*) AS total
-            FROM cert_record
-            WHERE EXTRACT(YEAR FROM date_release) = $1
-            GROUP BY (cert_name::json ->> 'certName')
-            ORDER BY total DESC;
-        `;
-
-    const result = await mPool.query(query, [parseInt(year, 10)]);
-    console.log("rowsss", result.rows);
-    res.json(result.rows);
-  } catch (error) {
-    console.error("Error fetching statistics:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+    try {
+      const query = `
+        SELECT DISTINCT EXTRACT(YEAR FROM date_release) AS year
+        FROM cert_record
+        ORDER BY year DESC;
+      `;
+      const { rows } = await mPool.query(query);
+      res.json(rows);
+    } catch (err) {
+      console.error("Error:", err.message);
+      res.status(500).send("Internal server error");
+    }
+  });
+  
+  router.get("/certcount", async (req, res) => {
+    const { year, month } = req.query;
+  
+    if (!year || isNaN(year)) {
+      return res.status(400).json({ error: "Year is required and must be a valid number." });
+    }
+  
+    let query = `
+      SELECT 
+        (cert_name::json ->> 'certName') AS cert_name, 
+        COUNT(*) AS total
+      FROM cert_record
+      WHERE EXTRACT(YEAR FROM date_release) = $1
+    `;
+  
+    const queryParams = [parseInt(year, 10)];
+  
+    if (month && !isNaN(month) && month >= 1 && month <= 12) {
+      query += ` AND EXTRACT(MONTH FROM date_release) = $2`;
+      queryParams.push(parseInt(month, 10));
+    }
+  
+    query += `
+      GROUP BY (cert_name::json ->> 'certName')
+      ORDER BY total DESC;
+    `;
+  
+    try {
+      const result = await mPool.query(query, queryParams);
+      console.log("rowsss", result.rows);
+      res.json(result.rows);
+    } catch (error) {
+      console.error("Error fetching statistics:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
 
 router.get("/kan-sk-data/demographics", async (req, res) => {
     const { month } = req.query;
@@ -423,7 +431,7 @@ router.get("/kan-sk-data/demographics", async (req, res) => {
             COUNT(CASE WHEN EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 15 AND 30 AND isPwd = TRUE AND gender = 'Female' THEN 1 END) AS female_youth_with_disabilities
 
         FROM residents 
-        WHERE EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 15 AND 30  -- Filter by age based on birthDate
+        WHERE EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 15 AND 30  AND isResident = TRUE-- Filter by age based on birthDate
     `;
 
     const values = [];
