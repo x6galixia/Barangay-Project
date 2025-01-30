@@ -595,7 +595,7 @@ function fillInputs(data) {
     console.log(data);
     const elements = {
         globalId: data.globalid,
-        isResident: data.isresident ? " resident" : "non-resident",
+        isResident: data.isresident ? "resident" : "non-resident",
         last_name: data.lname,
         first_name: data.fname,
         middle_name: data.mname,
@@ -649,6 +649,15 @@ function fillInputs(data) {
         }
     });
 
+    // Handle isPaid dropdown
+    const isPaidDropdown = document.getElementById('isPaid');
+    if (isPaidDropdown) {
+        const isPaidValue = data.isPaid ? "true" : "false"; // Assuming data.isPaid is a boolean
+        isPaidDropdown.value = isPaidValue; // Set the selected option
+    } else {
+        console.warn('isPaid dropdown not found');
+    }
+
     const pictureElement = document.getElementById('fileInput');
     const preview = document.getElementById("imagePreview");
     if (pictureElement) {
@@ -661,46 +670,53 @@ function fillInputs(data) {
 
 function clearFillInputs() {
     const elements = {
-        last_name,
-        first_name,
-        middle_name,
-        gender,
-        birthdate,
-        age,
-        educAttainment,
-        occupation,
-        placeOfBirth,
-        grossIncome,
-        civilStatus,
-        senior,
-        soloParent,
-        pwd,
-        youth,
-        is4ps,
-        isOutOfSchoolYouth,
-        isSkm,
-        isKm,
-        isPaid,
-        barangay,
-        city,
-        province,
-        emergencyLastName,
-        emergencyFirstName,
-        emergencyMiddleName,
-        emergencyContactNumber,
-        emergencyBarangay,
-        emergencyCity,
-        emergencyProvince,
+        "last_name": '',
+        "first_name": '',
+        "middle_name": '',
+        "gender": '',
+        "birthdate": '',
+        "age": '',
+        "educAttainment": '',
+        "occupation": '',
+        "placeOfBirth": '',
+        "grossIncome": '',
+        "civilStatus": '',
+        "senior": '',
+        "soloParent": '',
+        "pwd": '',
+        "youth": '',
+        "is4ps": '',
+        "isOutOfSchoolYouth": '',
+        "isSkm": '',
+        "isKm": '',
+        "barangay": '',
+        "city": '',
+        "province": '',
+        "emergencyLastName": '',
+        "emergencyFirstName": '',
+        "emergencyMiddleName": '',
+        "emergencyContactNumber": '',
+        "emergencyBarangay": '',
+        "emergencyCity": '',
+        "emergencyProvince": '',
     };
 
     Object.keys(elements).forEach(id => {
         const element = document.getElementById(id);
         if (element) {
-            element.value = '';
+            element.value = elements[id] || '';
         } else {
             console.warn(`Element with ID ${id} not found`);
         }
     });
+
+    // Handle isPaid dropdown
+    const isPaidDropdown = document.getElementById('isPaid');
+    if (isPaidDropdown) {
+        isPaidDropdown.value = ''; // Reset to default or empty value
+    } else {
+        console.warn('isPaid dropdown not found');
+    }
 
     const optionalElements = [
         'purokIn',

@@ -36,7 +36,7 @@ const residentSchema = Joi.object({
     occupation: Joi.string().optional().allow(null),
     sectors: Joi.number().integer().optional().allow(null),
     placeOfBirth: Joi.string().optional().allow(null),
-    grossIncome: Joi.number().integer().optional().allow(null),
+    grossIncome: Joi.string().optional().allow(null),
     senior: Joi.boolean().optional().allow(null),
     soloParent: Joi.boolean().optional().allow(null),
     pwd: Joi.boolean().optional().allow(null),

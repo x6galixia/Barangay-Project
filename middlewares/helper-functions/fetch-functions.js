@@ -24,6 +24,7 @@ async function fetchResidentsLists(page, limit, searchQuery = '', isNonResident 
       r.globalId, r.residentsId, r.idNumber, r.fname, r.mname, r.lname,
       r.street, r.purok, r.barangay, r.city, r.province, r.birthDate, r.age,
       r.gender, r.picture, r.signature, r.eAttainment, r.occupation, r.isresident,
+      isPaid,
       rc.rClassificationName AS residentClassification,
       cp.fname AS emergencyContactFName, cp.mname AS emergencyContactMName,
       cp.lname AS emergencyContactLName, cp.contactNumber AS emergencyContactNumber,
