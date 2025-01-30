@@ -788,7 +788,8 @@ window.processCertificate = function (button) {
               <input type="hidden" id="certificatePurpose" style="margin-top:12px">
           </div>
           <div>
-            <label style="margin-right: auto">Certfication Details <i>(Press <strong>ctrl+b</strong> for bold, <strong>ctrl+i</strong> for italic, and <strong>ctrl+u</strong> for underline)</i></label>
+            <label style="margin-right: auto">Source of Income <i>(Press <strong>ctrl+b</strong> for bold, <strong>ctrl+i</strong> for italic, and <strong>ctrl+u</strong> for underline)</i></label>
+            <p style="color:gray">Ex. Is the owner of CB HARDWARE with monthly income of 20,000.00.</p>
           </div>
           <div 
             contenteditable="true"
@@ -1805,11 +1806,6 @@ window.processCertificate = function (button) {
     imageContainer.classList.remove("visible");
     convertToImage.classList.toggle("visible");
     // document.getElementById("certificate").classList.add("visible");
-
-
-
-
-
 
     document.querySelector(".closeCertificate").addEventListener("click", function () {
       if (selectedCertificate === "oathUndertaking") {
