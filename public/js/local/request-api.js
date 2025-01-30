@@ -4,6 +4,7 @@ const searchIcon = document.getElementById('searchIcon');
 searchIcon.addEventListener('click', () => {
   searchBar.classList.toggle('open');
   if (searchBar.classList.contains('open')) {
+    searchBar.focus();
     document.getElementById('scanSwitch').checked = false;
     document.getElementById("purpose").innerHTML = `
     <option value=" default" disabled selected>
@@ -32,8 +33,6 @@ searchIcon.addEventListener('click', () => {
     <option value="Solo Parent">Solo Parent</option>
     <option value="Water District">Water District</option>
     `
-    searchBar.focus();
-    
     document.getElementById('searchBar').addEventListener('input', function () {
       const query = document.getElementById("searchBar").value;
 
@@ -110,7 +109,6 @@ searchIcon.addEventListener('click', () => {
                     }
                     populateFormFields(data.data);
                   }
-                  console.log(resident);
                   populateFormFields(resident);
                   resultsContainer.innerHTML = '';
                   resultsContainer.style.display = 'none';
@@ -130,7 +128,10 @@ searchIcon.addEventListener('click', () => {
       }
     });
   } else {
+    const resultsContainer = document.getElementById('results');
     searchBar.value = '';
+    resultsContainer.innerHTML = '';
+    resultsContainer.style.display = 'none';
   }
   function showPrompt(header, message) {
     const submitPrompt1 = document.getElementById("submit_prompt1");
@@ -227,7 +228,7 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
     // Enable scanning and focus the QR input field
     document.addEventListener('keydown', handleKeyDown);
     qrInputField.addEventListener('keypress', handleKeyPress);
-    qrInputField.focus(); // Focus on the QR input field when scanning is enabled
+    qrInputField.focus();
 
     // Function to handle keydown event
     function handleKeyDown(event) {
@@ -349,11 +350,22 @@ function populateFormFields(data) {
   document.getElementById("firstname").value = data.fname || '';
   document.getElementById("middlename").value = data.mname || '';
   document.getElementById("age").value = data.age || '';
-  document.getElementById("birthdate").value = new Date(data.birthdate).toISOString().split("T")[0] || '';
+  // document.getElementById("birthdate").value = new Date(data.birthdate).toISOString().split("T")[0] || '';
   document.getElementById("civilStatus").value = data.civilstatus || '';
   document.getElementById("purok").value = data.purok || '';
   document.getElementById("grossIncome").value = data.income || '';
   document.getElementById("birthplace").value = data.birthplace || '';
+
+  let birthdate = new Date(data.birthdate);
+  if (!isNaN(birthdate.getTime())) {
+    let formattedDate = birthdate.getFullYear() + '-' +
+                        String(birthdate.getMonth() + 1).padStart(2, '0') + '-' +
+                        String(birthdate.getDate()).padStart(2, '0');
+
+    document.getElementById("birthdate").value = formattedDate;
+  } else {
+    document.getElementById("birthdate").value = ''; // Handle invalid date
+  }
 
   if (data.isresident === true) {
     document.getElementById("purpose").innerHTML = `

@@ -123,27 +123,29 @@
                         <div class="oberallContainer">
                             <div style="display: flex; justify-content: space-between; align-items: end;">
                                 <h3 style="margin-left: 0; margin-bottom: 0;" id="certificateHeading"></h3>
-                                <div style="align-self: self-start; display: flex; flex-direction: column; gap: 4px; width: fit-content;">
-                                    <label for="yearDropdown">Select Year: </label>
-                                    <select id="yearDropdown"></select>
-                                </div>
-                                <div style="align-self: self-start; display: flex; flex-direction: column; gap: 4px; width: fit-content;">
-                                    <label for="monthDropdown">Select Month: </label>
-                                    <select id="monthDropdown">
-                                        <option value="">All Months</option>
-                                        <option value="1">January</option>
-                                        <option value="2">February</option>
-                                        <option value="3">March</option>
-                                        <option value="4">April</option>
-                                        <option value="5">May</option>
-                                        <option value="6">June</option>
-                                        <option value="7">July</option>
-                                        <option value="8">August</option>
-                                        <option value="9">September</option>
-                                        <option value="10">October</option>
-                                        <option value="11">November</option>
-                                        <option value="12">December</option>
-                                    </select>
+                                <div style="display: flex; gap: 20px;">
+                                    <div style="align-self: self-start; display: flex; flex-direction: column; gap: 4px; width: fit-content;">
+                                        <label for="yearDropdown">Select Year: </label>
+                                        <select id="yearDropdown"></select>
+                                    </div>
+                                    <div style="align-self: self-start; display: flex; flex-direction: column; gap: 4px; width: fit-content;">
+                                        <label for="monthDropdown">Select Month: </label>
+                                        <select id="monthDropdown">
+                                            <option value="">All Months</option>
+                                            <option value="1">January</option>
+                                            <option value="2">February</option>
+                                            <option value="3">March</option>
+                                            <option value="4">April</option>
+                                            <option value="5">May</option>
+                                            <option value="6">June</option>
+                                            <option value="7">July</option>
+                                            <option value="8">August</option>
+                                            <option value="9">September</option>
+                                            <option value="10">October</option>
+                                            <option value="11">November</option>
+                                            <option value="12">December</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div id="result" class="oberall">
@@ -154,6 +156,31 @@
                 </div>
                 
             </div>
+
+            <div class="statsMainContainer">
+                <div
+                    style="display: flex; align-items: center; justify-content: space-between; margin: 20px 3%; width: 100%;">
+                    <h1>SK Youth Classification</h1>
+                </div>
+                <div id="meow">
+                    <div class="separate">
+                        <div class="oberallContainer">
+                            <table id="demographicsTable">
+                                <thead>
+                                    <tr>
+                                    <th>Classification</th>
+                                    <th>Male</th>
+                                    <th>Female</th>
+                                    <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="demographicsTableBody"></tbody>
+                                </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div class="pop-up" id="add-survey">
 
@@ -246,36 +273,7 @@
             </main>
         </div>
 
-        <!-- kan sk request -->
-        <div> 
-            <label for="monthDropdown">Select Month:</label>
-            <select id="monthDropdown" onchange="loadDemographics()">
-            <option value="1">January</option>
-            <option value="2">February</option>
-            <option value="3">March</option>
-            <option value="4">April</option>
-            <option value="5">May</option>
-            <option value="6">June</option>
-            <option value="7">July</option>
-            <option value="8">August</option>
-            <option value="9">September</option>
-            <option value="10">October</option>
-            <option value="11">November</option>
-            <option value="12">December</option>
-            </select>
         
-            <table id="demographicsTable">
-            <thead>
-                <tr>
-                <th>Classification</th>
-                <th>Male</th>
-                <th>Female</th>
-                <th>Total</th>
-                </tr>
-            </thead>
-            <tbody id="demographicsTableBody"></tbody>
-            </table>
-        </div>
         
 </body>
 <script src="../../js/global/pop-up.js"></script>

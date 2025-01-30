@@ -662,11 +662,12 @@ window.processCertificate = function (button) {
         }
       });
 
-
+      let pronoun = (gender === "Male") ? "he" : "she";
       document.getElementById("goodMoralFullName").innerText = `${lastName}, ${firstName} ${middleName}`.toUpperCase();
       document.getElementById("goodMoralAddress").innerText = `Purok ${purok}, ${barangay}, ${city}, ${province}`;
       document.getElementById("goodMoralAge").innerText = `${age}`;
       document.getElementById("goodMoralGender").innerText = `${gender}`;
+      document.getElementById("goodMoralGender1").innerText = pronoun;
       document.getElementById("goodMoralStatus").innerText = `${civilStatus}`;
 
       document.addEventListener('click', function (event) {
@@ -1529,7 +1530,7 @@ window.processCertificate = function (button) {
               <label for="certificatePurpose">Purpose</label>
               <select class="certficate-purpose-dropdown" id="selectPurpose">
                   <option value="default" disabled selected>Select a Purpose</option>
-                  <option value="DSWD Financial Assistance Requirement Only">DSWD Financial Assistance Requirement Only</option>
+                  <option value="DSWD Financial Assistance Requirement">DSWD Financial Assistance Requirement</option>
                   <option value="Others">Others</option>
               </select>
               <input type="hidden" id="certificatePurpose" style="margin-top:12px">

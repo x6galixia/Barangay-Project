@@ -19,6 +19,22 @@
     page-break-inside: avoid;
 }
 
+.punongBarangayLabel{
+    margin-left: -110px;
+}
+
+.adjustEm{
+    margin-left: 20px !important;
+}
+
+
+.seal, .footerLineHeight{
+    line-height: 15px !important;
+}
+
+.certificationHeading{
+    letter-spacing: 5px;
+}
 
 
 
