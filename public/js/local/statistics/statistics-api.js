@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   // Fetch resident classification data and render chart
   fetch("/statistics/resident-classification"
     , {
@@ -545,3 +545,53 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Error fetching barangay population data:", err)
     );
 });
+
+async function loadDemographics() {
+  const month = document.getElementById("monthDropdown").value; // Get the selected month (1-12)
+
+  let apiUrl = "/statistics/kan-sk-data/demographics"; // Default to current year and month
+
+  // Append the selected month to the URL if it's provided
+  if (month) {
+    apiUrl += `?month=${month}`;
+  }
+
+  try {
+    const response = await fetch(apiUrl);
+
+    if (response.ok) {
+      const demographics = await response.json();
+      const tableBody = document.getElementById("demographicsTableBody");
+      tableBody.innerHTML = ""; // Clear previous data
+
+      // Process and display the data (demographics is now a single object, not an array)
+      const classifications = [
+        { label: "Child Youth 15-17", male: demographics.male_child_youth, female: demographics.female_child_youth, total: demographics.total_child_youth },
+        { label: "Core Youth 18-24", male: demographics.male_core_youth, female: demographics.female_core_youth, total: demographics.total_core_youth },
+        { label: "Adult Youth 25-30", male: demographics.male_adult_youth, female: demographics.female_adult_youth, total: demographics.total_adult_youth },
+        { label: "Out-of-School Youth 15-30", male: demographics.male_out_of_school_youth, female: demographics.female_out_of_school_youth, total: demographics.total_out_of_school_youth },
+        { label: "Youth with Disabilities 15-30", male: demographics.male_youth_with_disabilities, female: demographics.female_youth_with_disabilities, total: demographics.total_youth_with_disabilities }
+      ];
+
+      classifications.forEach(classification => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${classification.label}</td>
+          <td>${classification.male}</td>
+          <td>${classification.female}</td>
+          <td>${classification.total}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    } else {
+      console.error("Error fetching demographics:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Error fetching demographics:", error);
+  }
+}
+
+// Load demographics data when the page loads
+window.onload = function () {
+  loadDemographics();
+};

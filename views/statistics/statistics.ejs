@@ -123,10 +123,27 @@
                         <div class="oberallContainer">
                             <div style="display: flex; justify-content: space-between; align-items: end;">
                                 <h3 style="margin-left: 0; margin-bottom: 0;" id="certificateHeading"></h3>
-                                <div
-                                    style="align-self: self-start; display: flex; flex-direction: column; gap: 4px; width: fit-content;">
+                                <div style="align-self: self-start; display: flex; flex-direction: column; gap: 4px; width: fit-content;">
                                     <label for="yearDropdown">Select Year: </label>
                                     <select id="yearDropdown"></select>
+                                </div>
+                                <div style="align-self: self-start; display: flex; flex-direction: column; gap: 4px; width: fit-content;">
+                                    <label for="monthDropdown">Select Month: </label>
+                                    <select id="monthDropdown">
+                                        <option value="">All Months</option>
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
                                 </div>
                             </div>
                             <div id="result" class="oberall">
@@ -135,6 +152,7 @@
                         </div>
                     </div>
                 </div>
+                
             </div>
         </div>
         <div class="pop-up" id="add-survey">
@@ -142,6 +160,7 @@
             <div class="close-container">
                 <img src="../icon/close.svg" alt="" class="close_popUp">
             </div>
+
             <h1 class="heading">HOUSE CLASSIFICATION</h1>
             <main>
                 <form id="formToAddResident" action="/statistics/house-classification-survey" method="POST">
@@ -227,6 +246,37 @@
             </main>
         </div>
 
+        <!-- kan sk request -->
+        <div> 
+            <label for="monthDropdown">Select Month:</label>
+            <select id="monthDropdown" onchange="loadDemographics()">
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+            </select>
+        
+            <table id="demographicsTable">
+            <thead>
+                <tr>
+                <th>Classification</th>
+                <th>Male</th>
+                <th>Female</th>
+                <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="demographicsTableBody"></tbody>
+            </table>
+        </div>
+        
 </body>
 <script src="../../js/global/pop-up.js"></script>
 <script src="../../js/local/statistics/statistics-api.js"></script>
@@ -332,53 +382,69 @@
     }
 
     // Fetch data for the selected year
-    async function fetchCertCount(year) {
-        if (!year) {
-            console.error('Year is not selected.');
-            return;
-        }
-
-
-        try {
-            const response = await fetch(`/statistics/certcount?year=${year}`);
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            const resultDiv = document.getElementById('result');
-
-            // Create the table structure
-
-            document.getElementById('certificateHeading').innerText = `Certificate Count for ${year}`;
-            resultDiv.innerHTML = `
-                    <table >
-                        <thead>
-                            <tr>
-                                <th>Certificate</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${data
-                                    .map(
-                                        (item) => `
-                                <tr>
-                                    <td>${item.cert_name}</td>
-                                    <td>${item.total}</td>
-                                </tr>`
-                                    )
-                                    .join('')}
-                        </tbody>
-                    </table>
-                `;
-
-        } catch (error) {
-            console.error('Error fetching certificate count:', error);
-        }
+// Fetch data for the selected year and month
+async function fetchCertCount(year, month) {
+    if (!year) {
+        console.error('Year is not selected.');
+        return;
     }
+
+    try {
+        let url = `/statistics/certcount?year=${year}`;
+        if (month) {
+            url += `&month=${month}`;
+        }
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        const resultDiv = document.getElementById('result');
+        document.getElementById('certificateHeading').innerText = `Certificate Count for ${year} ${month ? `- ${document.querySelector('#monthDropdown option[value="'+month+'"]').innerText}` : ''}`;
+
+        // Create the table structure
+        resultDiv.innerHTML = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Certificate</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${data
+                        .map(
+                            (item) => `
+                        <tr>
+                            <td>${item.cert_name}</td>
+                            <td>${item.total}</td>
+                        </tr>`
+                        )
+                        .join('')}
+                </tbody>
+            </table>
+        `;
+    } catch (error) {
+        console.error('Error fetching certificate count:', error);
+    }
+}
+
+// Update event listeners to include month selection
+$(document).ready(function () {
+    fetchAvailableYearsForCertcount();
+    fetchAvailableYears();
+
+    // Attach change event to the dropdowns
+    $(document).on('change', '#yearDropdown, #monthDropdown', function () {
+        const selectedYear = $('#yearDropdown').val();
+        const selectedMonth = $('#monthDropdown').val();
+        fetchCertCount(selectedYear, selectedMonth);
+    });
+});
 
     $('#year-dropdown').change(function () {
         const selectedYear = $(this).val();
