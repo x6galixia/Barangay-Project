@@ -157,17 +157,25 @@ CREATE TABLE residents (
 
 -- this will reset the isPaid every january first 
 CREATE OR REPLACE FUNCTION reset_isPaid()
-RETURNS VOID AS $$
+RETURNS VOID AS $$ 
 BEGIN
+    -- Ensure every resident has a valid lastPaidReset date
+    UPDATE residents
+    SET lastPaidReset = CURRENT_DATE
+    WHERE lastPaidReset IS NULL;
+
+    -- Reset for non-residents every 6 months
     UPDATE residents
     SET isPaid = FALSE, lastPaidReset = CURRENT_DATE
     WHERE isResident = FALSE AND lastPaidReset <= CURRENT_DATE - INTERVAL '6 months';
-    
+
+    -- Reset for residents every 4 years
     UPDATE residents
     SET isPaid = FALSE, lastPaidReset = CURRENT_DATE
     WHERE isResident = TRUE AND lastPaidReset <= CURRENT_DATE - INTERVAL '4 years';
 END;
 $$ LANGUAGE plpgsql;
+
 
 CREATE TABLE boarders (
     boardID SERIAL PRIMARY KEY NOT NULL,
