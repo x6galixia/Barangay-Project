@@ -60,7 +60,6 @@
             <button id="add-resident-button" onclick="popUp_button(this)" class="addingForTable">
                 ADD RESIDENT
             </button>
-
             <!-- Pop Up -->
             <!-- Add Resident -->
             <div class="pop-up" id="add-resident">
@@ -160,8 +159,8 @@
                                 </div>
                                 <div class="inputWithLabel">
                                     <label>Gross Income</label>
-                                    <input id="grossIncome" type="number" aria-label="Gross Income" name="grossIncome"
-                                        required>
+                                    <input id="grossIncome" type="number" min="0" value="0" aria-label="Gross Income"
+                                        name="grossIncome" required>
                                 </div>
                                 <div class="inputWithLabel">
                                     <label for="">Civil Status</label>
@@ -398,7 +397,10 @@
                                 <div class="buttons">
                                     <button type="button" class="button capture"
                                         onclick="captureImage()">Capture</button>
-                                    <button type="button" class="button upload"
+                                    <button id="residentCloseCaptureButton"
+                                        style="background-color: red; display: none;" type="button"
+                                        class="button capture" onclick="closeCamera()">Close</button>
+                                    <button id="residentUploadButton" type="button" class="button upload"
                                         onclick="triggerUpload()">Upload</button>
                                     <input type="file" id="fileInput" name="picture" accept="image/*"
                                         onchange="displayImage(event)">
@@ -436,7 +438,7 @@
                     }
                 }
             </style>
-            <div class="pop-up"  id="generate-ID" style="overflow: auto;">
+            <div class="pop-up" id="generate-ID" style="overflow: auto;">
                 <div class="close-container">
                     <img src="../icon/close.svg" alt="" class="close_popUp">
                 </div>
@@ -579,35 +581,32 @@
         const canvas = document.getElementById("canvas");
         const preview = document.getElementById("imagePreview");
         const fileInput = document.getElementById("fileInput");
+        const close = document.getElementById("residentCloseCaptureButton");
+        const upload = document.getElementById("residentUploadButton");
+
 
         // Check if webcam is already streaming
         if (!webcam.srcObject) {
-            console.log("asdsad");
             // Access the user's webcam
             navigator.mediaDevices.getUserMedia({ video: true })
                 .then(stream => {
                     webcam.srcObject = stream;
                     preview.style.display = "none";
-                    webcam.style.display = "block"; // Show the webcam
+                    webcam.style.display = "block";
+                    close.style.display = "block";
+                    upload.style.display = "none";
                 })
                 .catch(err => {
                     alert("Unable to access the camera: " + err.message);
                 });
         } else {
             // Capture image from webcam
-            preview.style.display = "flex";
             const context = canvas.getContext("2d");
             canvas.width = webcam.videoWidth;
             canvas.height = webcam.videoHeight;
             context.drawImage(webcam, 0, 0, canvas.width, canvas.height);
 
-            // Stop webcam stream
-            const stream = webcam.srcObject;
-            const tracks = stream.getTracks();
-            tracks.forEach(track => track.stop());
-            webcam.srcObject = null;
-            webcam.style.display = "none";
-
+            closeCamera();
             // Display captured image
             const imageData = canvas.toDataURL("image/png");
             preview.innerHTML = `<img src="${imageData}" alt="Captured Image">`;
@@ -631,6 +630,20 @@
         }
     }
 
+    function closeCamera() {
+        const webcam = document.getElementById("webcam");
+        const stream = webcam.srcObject;
+        const tracks = stream.getTracks();
+        const close = document.getElementById("residentCloseCaptureButton");
+        const upload = document.getElementById("residentUploadButton");
+        const preview = document.getElementById("imagePreview");
+        tracks.forEach(track => track.stop());
+        webcam.srcObject = null;
+        webcam.style.display = "none";
+        close.style.display = "none";
+        upload.style.display = "block";
+        preview.style.display = "flex";
+    }
     // Function to trigger file input click
     function triggerUpload() {
         document.getElementById("fileInput").click();

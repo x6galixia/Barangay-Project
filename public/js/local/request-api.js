@@ -64,7 +64,6 @@ searchIcon.addEventListener('click', () => {
 
 
                 listItem.addEventListener('click', () => {
-                  console.log(resident);
                   document.getElementById('searchBar').value = resident.idnumber;
                   document.getElementById('qrOutput').value = resident.globalid;
                   populateFormFields(resident);
@@ -99,7 +98,7 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
   if (this.checked) {
     // Switch is enabled
     const resultsContainer = document.getElementById('results');
-    searchBar.classList.toggle('open');
+    searchBar.classList.remove('open');
     resultsContainer.innerHTML = '';
     resultsContainer.style.display = 'none';
     document.getElementById('qrOutput').value = "MPDN0000";
@@ -156,15 +155,12 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
     document.getElementById('middlename1').innerText = "Middle Name";
     inputFields.forEach(field => field.setAttribute('readonly', true));
     submitButton.setAttribute('disabled', true);
-    console.log("Inputs disabled. qrOutput cleared.");
 
     function checkId() {
       const idInput = document.getElementById('qrOutput');
       if (idInput.value.trim() !== '') {
         submitButton.disabled = false;
-        console.log("false");
       } else {
-        console.log("true");
         submitButton.disabled = true;
       }
     }
@@ -211,7 +207,6 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
           .then(response => response.json())
           .then(data => {
             if (data.success) {
-              console.log(data);
               if (!data.data.ispaid) {
                 showPrompt("Payment Reminder", "This account shows an outstanding balance. Please settle the payment to avoid service interruptions.");
               } else {
@@ -244,10 +239,9 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
                     })
                     .then(data => {
                       if (data.exists) {
-                        console.log("Record found for the name:", nameVariant);
                         showPrompt("Record Found", "This account has a record in the Lupon documents. Please review the details.");
                       } else {
-                        console.log("No record found for the name:", nameVariant);
+                        // console.log("No record found for the name:", nameVariant);
                       }
                     })
                     .catch(error => {
@@ -274,7 +268,6 @@ document.getElementById('scanSwitch').addEventListener('change', function () {
     }
 
     function showPrompt(header, message) {
-      console.log("scanneddddd");
       const submitPrompt1 = document.getElementById("submit_prompt1");
       submitPrompt1.classList.add("visible1");
       document.querySelector('.error-message').textContent = message;

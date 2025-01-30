@@ -42,22 +42,34 @@ router.get("/print-services", (req, res) => {
     res.render("services/print-services");
 });
 
-router.post("/cert-record-insertion/:certName", async (req, res) => {
-    const certName = req.params;
+router.post("/cert-record-insertion/:certName/:requestID", async (req, res) => {
+    const { certName, requestID } = req.params;
     const dateNow = getCurrentDate();
-    try {
-        await mPool.query(`INSERT INTO cert_record (cert_name, date_release) VALUES ($1, $2)`, [certName, dateNow]);
 
-        res.status(200).json({ message: "Request deleted successfully." });
+    try {
+        // Convert certName to JSON format
+        const certJson = JSON.stringify({ certName: certName });
+
+        // Insert into cert_record with JSON data
+        await mPool.query(
+            `INSERT INTO cert_record (cert_name, date_release) VALUES ($1::jsonb, $2)`, 
+            [certJson, dateNow]
+        );
+
+        // Update request status
+        await mPool.query(`UPDATE requests SET isreleased = true WHERE id = $1`, [requestID]);
+
+        res.status(200).json({ message: "Request marked as done successfully." });
     } catch (err) {
         console.error("Error: ", err.stack, err.message);
-        res.status(500).json({error: "Internal server Error"});
+
+        res.status(500).json({ error: "Failed to mark the request as done. Please try again." });
     }
 });
 
+
 router.delete("/delete-request/:residentsId/:id", async (req, res) => {
     const { residentsId, id } = req.params;
-
     try {
         await mPool.query(
             `DELETE FROM requests WHERE residentsId = $1 AND id = $2`,

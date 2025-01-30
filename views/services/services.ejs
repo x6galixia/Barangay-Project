@@ -96,7 +96,20 @@
             <button style="display: flex; justify-self: end; margin-top: 24px; padding: 12px 48px;"
                 onclick="printMeh()">Print</button>
         </div>
-        
+        <% if (messages.success) { %>
+            <div class="overlay"></div>
+            <div class="alert alert-success" id="submit_prompt">
+                <img src="../images/success-img.png" alt="">
+                <div>
+                    <h2>
+                        <%= messages.success %>
+                    </h2>
+                    <main>
+                        <button type="button" class="button-green" onclick="closePopup()">Ok</button>
+                    </main>
+                </div>
+            </div>
+            <% } %>
 
 </body>
 <img id="printCert" src="" alt="">

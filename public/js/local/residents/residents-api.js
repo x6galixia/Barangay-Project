@@ -49,11 +49,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     if (selectedValue1 === "Residents") {
-        console.log("Residents selected");
         toggleColumns(true);
         fetchResidents(1, 10, searchQuery, false).then(attachDotEventListeners);
     } else if (selectedValue1 === "Non-residents") {
-        console.log("Non-Residents selected");
         toggleColumns(false);
         fetchResidents(1, 10, searchQuery, true).then(attachDotEventListeners);
     }
@@ -273,7 +271,6 @@ window.popUp_three_dot = function (button) {
         }
 
         const globalIDForQR = button.getAttribute('data-globalId');
-        console.log(isResident);
         updateContainer.classList.add("visible");
         overlay.classList.toggle("visible");
 
@@ -595,7 +592,6 @@ function fillSector(data) {
 
 function fillInputs(data) {
     clearFillInputs();
-    console.log('Data passed to fillInputs:', data);
 
     const elements = {
         globalId: data.globalid,

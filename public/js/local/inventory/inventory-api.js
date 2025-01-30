@@ -132,11 +132,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 function attachDotEventListeners() {
-    console.log("ebent attached");
     document.querySelectorAll(".dot").forEach(function (dot) {
-        console.log(dot);
         dot.addEventListener("click", function () {
-            console.log("dot clicked");
             const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
             if (tripleDotContainer) {
                 tripleDotContainer.classList.toggle("visible");
@@ -227,7 +224,6 @@ function popUp_button(button) {
 }
 
 function deleteItem(inventoryID) {
-    console.log("delete triggered");
 
     try {
         const response = fetch(`/inventory/delete-item/${inventoryID}`, {
@@ -251,7 +247,6 @@ function deleteItem(inventoryID) {
 
 function fillInputs(data) {
     clearFillInputs();
-    console.log('Data passed to fillInputs:', data);
 
     const elements = {
         itemId: data.id,

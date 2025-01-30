@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const data = await response.json();
     const requests = data.getRequestList;
-    console.log(data);
 
     requestTableBody.innerHTML = '';
 
@@ -120,7 +119,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 function attachDotEventListeners() {
   document.querySelectorAll(".dot").forEach(function (dot) {
     dot.addEventListener("click", function () {
-      console.log("dot clicked");
       const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
       tripleDotContainer.classList.add("visible");
     });
@@ -1803,7 +1801,6 @@ window.processCertificate = function (button) {
       imageContainer.innerHTML = ""; // Clear previous images
       imageContainer.appendChild(imgElement);
 
-      console.log(selectedCertificate);
     });
     imageContainer.classList.remove("visible");
     convertToImage.classList.toggle("visible");
@@ -2036,7 +2033,6 @@ function removeRequest(buttonElement) {
 }
 
 async function deleteItem(requestID,rId) {
-  console.log("Delete triggered for request ID:", requestID);
 
   try {
     const response = await fetch(`/services/delete-request/${requestID}/${rId}`, {
@@ -2047,8 +2043,8 @@ async function deleteItem(requestID,rId) {
     });
 
     if (response.ok) {
-      console.log("Request deleted successfully.");
-      location.reload(); // Reload to reflect the changes
+      alert('Request deleted successfully!');
+      // location.reload(); // Reload to reflect the changes
     } else {
       console.error("Error: Failed to delete the item. Status:", response.status);
       alert('Failed to delete the request. Please try again.');
@@ -2061,16 +2057,15 @@ async function deleteItem(requestID,rId) {
 
 function markAsDone(buttonElement){
   const purpose = buttonElement.parentElement.getAttribute('data-purpose');
-
+  const requestID = buttonElement.parentElement.getAttribute('data-r-id');
   if (confirm('Are you sure you want to mark as done this request?')) {
-    sendDone(purpose)
+    sendDone(purpose, requestID)
   }
 }
 
-async function sendDone(purpose){
+async function sendDone(purpose, requestID) {
   try {
-
-    const response = await fetch(`/services/cert-record-insertion/${purpose}`, {
+    const response = await fetch(`/services/cert-record-insertion/${purpose}/${requestID}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -2078,15 +2073,15 @@ async function sendDone(purpose){
     });
 
     if (response.ok) {
-      console.log("Request mark done successfully.");
-      location.reload(); // Reload to reflect the changes
+      // Redirect to the updated services page after success
+      location.reload();
+      alert('Request marked as done successfully.');
     } else {
-      console.error("Error: Failed to mark done the item. Status:", response.status);
-      alert('Failed to mark done the request. Please try again.');
+      console.error("Error: Failed to mark the request as done. Status:", response.status);
+      alert('Failed to mark the request as done. Please try again.');
     }
-    
   } catch (error) {
-    console.error('Error marking done:', error);
+    console.error('Error marking request as done:', error);
     alert('An error occurred while marking done. Please try again.');
   }
 }

@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       populateForm(official)
       
     } else {
-        console.log("No rows available.");
+        // console.log("No rows available.");
     }
 
 
