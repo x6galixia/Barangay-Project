@@ -592,7 +592,7 @@ function fillSector(data) {
 
 function fillInputs(data) {
     clearFillInputs();
-
+    console.log(data);
     const elements = {
         globalId: data.globalid,
         isResident: data.isresident ? " resident" : "non-resident",
@@ -609,6 +609,7 @@ function fillInputs(data) {
         grossIncome: data.income,
         civilStatus: data.civilstatus,
         senior: data.issenior ? "true" : "false",
+        isPaid: data.isPaid ? "true" : "false",
         soloParent: data.issoloparent ? "true" : "false",
         pwd: data.ispwd ? "true" : "false",
         youth: data.isyouth ? "true" : "false",
@@ -679,6 +680,7 @@ function clearFillInputs() {
         isOutOfSchoolYouth,
         isSkm,
         isKm,
+        isPaid,
         barangay,
         city,
         province,
