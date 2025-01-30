@@ -110,7 +110,6 @@ searchIcon.addEventListener('click', () => {
                     }
                     populateFormFields(data.data);
                   }
-                  console.log(resident);
                   populateFormFields(resident);
                   resultsContainer.innerHTML = '';
                   resultsContainer.style.display = 'none';
