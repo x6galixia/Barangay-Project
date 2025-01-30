@@ -66,6 +66,51 @@ searchIcon.addEventListener('click', () => {
                 listItem.addEventListener('click', () => {
                   document.getElementById('searchBar').value = resident.idnumber;
                   document.getElementById('qrOutput').value = resident.globalid;
+                  if (!resident.ispaid) {
+                    showPrompt("Payment Reminder", "This account shows an outstanding balance. Please settle the payment to avoid service interruptions.");
+                  } else {
+                    const scannedName = `${resident.fname} ${resident.mname} ${resident.lname}`;
+                    // Generate permutations of the name
+                    const nameVariants = [
+                      `${resident.fname} ${resident.mname} ${resident.lname}`,
+                      `${resident.fname} ${resident.lname} ${resident.mname}`,
+                      `${resident.lname} ${resident.mname} ${resident.fname}`,
+                      `${resident.lname} ${resident.fname} ${resident.mname}`,
+                      `${resident.mname} ${resident.fname} ${resident.lname}`,
+                      `${resident.mname} ${resident.lname} ${resident.fname}`,
+                      `${resident.fname} ${resident.lname}`,
+                      `${resident.lname} ${resident.fname}`
+                    ];
+    
+                    let exists = false;
+                    for (const nameVariant of nameVariants) {
+                      fetch(`/home/dashboard/checkIfHasARecord?name=${encodeURIComponent(nameVariant)}`, {
+                        method: 'GET',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        }
+                      })
+                        .then(response => {
+                          if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                          }
+                          return response.json();
+                        })
+                        .then(data => {
+                          if (data.exists) {
+                            showPrompt("Record Found", "This account has a record in the Lupon documents. Please review the details.");
+                          } else {
+                            // console.log("No record found for the name:", nameVariant);
+                          }
+                        })
+                        .catch(error => {
+                          console.error('Error:', error.message);
+                          alert('An unexpected error occurred. Please try again later.');
+                        });
+                    }
+                    populateFormFields(data.data);
+                  }
+                  console.log(resident);
                   populateFormFields(resident);
                   resultsContainer.innerHTML = '';
                   resultsContainer.style.display = 'none';
@@ -86,6 +131,16 @@ searchIcon.addEventListener('click', () => {
     });
   } else {
     searchBar.value = '';
+  }
+  function showPrompt(header, message) {
+    const submitPrompt1 = document.getElementById("submit_prompt1");
+    submitPrompt1.classList.add("visible1");
+    document.querySelector('.error-message').textContent = message;
+    document.getElementById('scanningHeaderMessage').innerText = header;
+    const overlay = document.querySelector('.overlay');
+    if (overlay) {
+      overlay.classList.add("visible");
+    }
   }
 });
 
