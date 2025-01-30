@@ -1,26 +1,28 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const mPool = require("../../models/mDatabase");
-const { getCurrentDate } = require("../../middlewares/helper-functions/calculations");
+const {
+  getCurrentDate,
+} = require("../../middlewares/helper-functions/calculations");
 const { houseClassification } = require("../../middlewares/schemas/schemas");
 
 router.get("/dashboard", (req, res) => {
-    res.render("statistics/statistics", {
-        title: "Statistics"
-    });
+  res.render("statistics/statistics", {
+    title: "Statistics",
+  });
 });
 
 router.get("/resident-classification", async (req, res) => {
-    try {
-        // Get the total population
-        const totalPopulationResult = await mPool.query(`
+  try {
+    // Get the total population
+    const totalPopulationResult = await mPool.query(`
             SELECT COUNT(*) AS total_population
             FROM residents
             WHERE isResident = TRUE;
         `);
 
-        // Get the classification data grouped by Purok and Classification
-        const classificationResults = await mPool.query(`
+    // Get the classification data grouped by Purok and Classification
+    const classificationResults = await mPool.query(`
             SELECT 
                 r.purok, 
                 rc.rClassificationName, 
@@ -37,47 +39,46 @@ router.get("/resident-classification", async (req, res) => {
                 r.purok, rc.rClassificationName;
         `);
 
-        // Organize classification data by Purok
-        const classificationData = {};
-        const classificationTotalCount = {};  // New object to store the total count of each rClassification
+    // Organize classification data by Purok
+    const classificationData = {};
+    const classificationTotalCount = {}; // New object to store the total count of each rClassification
 
-        classificationResults.rows.forEach(row => {
-            const { purok, rclassificationname, resident_count } = row;
+    classificationResults.rows.forEach((row) => {
+      const { purok, rclassificationname, resident_count } = row;
 
-            // Group by Purok
-            if (!classificationData[purok]) {
-                classificationData[purok] = [];
-            }
-            classificationData[purok].push({
-                rClassificationName: rclassificationname,
-                resident_count: parseInt(resident_count) // Ensure it's a number
-            });
+      // Group by Purok
+      if (!classificationData[purok]) {
+        classificationData[purok] = [];
+      }
+      classificationData[purok].push({
+        rClassificationName: rclassificationname,
+        resident_count: parseInt(resident_count), // Ensure it's a number
+      });
 
-            // Aggregate the total count by rClassificationName
-            if (!classificationTotalCount[rclassificationname]) {
-                classificationTotalCount[rclassificationname] = 0;
-            }
-            classificationTotalCount[rclassificationname] += parseInt(resident_count);
-        });
+      // Aggregate the total count by rClassificationName
+      if (!classificationTotalCount[rclassificationname]) {
+        classificationTotalCount[rclassificationname] = 0;
+      }
+      classificationTotalCount[rclassificationname] += parseInt(resident_count);
+    });
 
-        // Send response with the totals by classification
-        res.json({
-            overall: {
-                total_population: totalPopulationResult.rows[0].total_population
-            },
-            perPurok: classificationData,
-            totalClassificationData: classificationTotalCount
-        });
-
-    } catch (err) {
-        console.error("Error: ", err.message, err.stack);
-        res.status(500).send("Internal server error");
-    }
+    // Send response with the totals by classification
+    res.json({
+      overall: {
+        total_population: totalPopulationResult.rows[0].total_population,
+      },
+      perPurok: classificationData,
+      totalClassificationData: classificationTotalCount,
+    });
+  } catch (err) {
+    console.error("Error: ", err.message, err.stack);
+    res.status(500).send("Internal server error");
+  }
 });
 
 router.get("/age-demographics", async (req, res) => {
-    try {
-        const ageDemographicResult = await mPool.query(`
+  try {
+    const ageDemographicResult = await mPool.query(`
             SELECT 
                 r.purok, 
                 CASE
@@ -96,17 +97,16 @@ router.get("/age-demographics", async (req, res) => {
             ORDER BY 
                 r.purok, age_range;
         `);
-        res.json(ageDemographicResult.rows);
-        
-    } catch (err) {
-        console.error("Error: ", err.message, err.stack);
-        res.status(500).send("Internal server error");
-    }
+    res.json(ageDemographicResult.rows);
+  } catch (err) {
+    console.error("Error: ", err.message, err.stack);
+    res.status(500).send("Internal server error");
+  }
 });
 
 router.get("/resident-status", async (req, res) => {
-    try {
-        const statusResults = await mPool.query(`
+  try {
+    const statusResults = await mPool.query(`
             SELECT 
                 r.purok,
                 COUNT(CASE WHEN r.isPwd = TRUE THEN 1 END) AS pwd_count,
@@ -125,16 +125,16 @@ router.get("/resident-status", async (req, res) => {
                 r.purok;
         `);
 
-        res.json(statusResults.rows);
-    } catch (err) {
-        console.error("Error: ", err.message, err.stack);
-        res.status(500).send("Internal server error");
-    }
+    res.json(statusResults.rows);
+  } catch (err) {
+    console.error("Error: ", err.message, err.stack);
+    res.status(500).send("Internal server error");
+  }
 });
 
 router.get("/residents-by-purok", async (req, res) => {
-    try {
-        const purokResults = await mPool.query(`
+  try {
+    const purokResults = await mPool.query(`
             SELECT 
                 r.purok,
                 COUNT(r.residentsId) AS resident_count
@@ -148,16 +148,16 @@ router.get("/residents-by-purok", async (req, res) => {
                 resident_count DESC;
         `);
 
-        res.json(purokResults.rows);
-    } catch (err) {
-        console.error("Error: ", err.message, err.stack);
-        res.status(500).send("Internal server error");
-    }
+    res.json(purokResults.rows);
+  } catch (err) {
+    console.error("Error: ", err.message, err.stack);
+    res.status(500).send("Internal server error");
+  }
 });
 
 router.get("/barangay-population", async (req, res) => {
-    try {
-        const totalPopulationResult = await mPool.query(`
+  try {
+    const totalPopulationResult = await mPool.query(`
             SELECT 
                 r.purok,
                 COUNT(*) AS total_population,
@@ -175,7 +175,7 @@ router.get("/barangay-population", async (req, res) => {
                 r.purok;
         `);
 
-        const overallPopulationResult = await mPool.query(`
+    const overallPopulationResult = await mPool.query(`
             SELECT
                 COUNT(*) AS total_population,
                 COUNT(CASE WHEN r.gender = 'Male' THEN 1 END) AS male_count,
@@ -188,41 +188,41 @@ router.get("/barangay-population", async (req, res) => {
                 r.isResident = TRUE;
         `);
 
-        res.json({
-            overall: overallPopulationResult.rows[0],
-            perPurok: totalPopulationResult.rows
-        });
-    } catch (err) {
-        console.error("Error: ", err.message, err.stack);
-        res.status(500).send("Internal server error");
-    }
+    res.json({
+      overall: overallPopulationResult.rows[0],
+      perPurok: totalPopulationResult.rows,
+    });
+  } catch (err) {
+    console.error("Error: ", err.message, err.stack);
+    res.status(500).send("Internal server error");
+  }
 });
 
-router.get('/available-years', async (req, res) => {
-    try {
-        const query = `
+router.get("/available-years", async (req, res) => {
+  try {
+    const query = `
             SELECT DISTINCT EXTRACT(YEAR FROM date) AS year
             FROM house_classification
             ORDER BY year DESC;
         `;
-        const { rows } = await mPool.query(query);
-        res.json(rows);
-    } catch (err) {
-        console.error("Error:", err.message);
-        res.status(500).send("Internal server error");
-    }
+    const { rows } = await mPool.query(query);
+    res.json(rows);
+  } catch (err) {
+    console.error("Error:", err.message);
+    res.status(500).send("Internal server error");
+  }
 });
 
 router.get("/house-classification", async (req, res) => {
-    const { year } = req.query;
+  const { year } = req.query;
 
-    if (!year) {
-        return res.status(400).json({ error: 'Year is required' });
-    }
+  if (!year) {
+    return res.status(400).json({ error: "Year is required" });
+  }
 
-    try {
-        // Query for house classification statistics by year, grouped by purok, housingMaterials, and waterSource
-        const query = `
+  try {
+    // Query for house classification statistics by year, grouped by purok, housingMaterials, and waterSource
+    const query = `
             SELECT 
                 EXTRACT(YEAR FROM date) AS year,
                 purok,
@@ -244,12 +244,12 @@ router.get("/house-classification", async (req, res) => {
             GROUP BY year, purok
             ORDER BY year, purok;
         `;
-        
-        // Execute the query
-        const { rows } = await mPool.query(query, [year]);
 
-        // Query for overall statistics (without grouping by purok)
-        const overallQuery = `
+    // Execute the query
+    const { rows } = await mPool.query(query, [year]);
+
+    // Query for overall statistics (without grouping by purok)
+    const overallQuery = `
             SELECT 
                 COUNT(id) AS overall_house_classifications,
                 SUM(numberOfFamilies) AS overall_families,
@@ -260,111 +260,123 @@ router.get("/house-classification", async (req, res) => {
             WHERE EXTRACT(YEAR FROM date) = $1;
         `;
 
-        const { rows: overallRows } = await mPool.query(overallQuery, [year]);
+    const { rows: overallRows } = await mPool.query(overallQuery, [year]);
 
-        // Map rows to ensure numeric values
-        const formattedRows = rows.map(row => ({
-            ...row,
-            concrete_count: Number(row.concrete_count),
-            semi_concrete_count: Number(row.semi_concrete_count),
-            wood_count: Number(row.wood_count),
-            deep_well_count: Number(row.deep_well_count),
-            water_pump_count: Number(row.water_pump_count),
-            mineral_count: Number(row.mineral_count),
-            total_house_classifications: Number(row.total_house_classifications),
-            total_families: Number(row.total_families),
-            total_with_cr: Number(row.total_with_cr),
-            total_with_40m_zone: Number(row.total_with_40m_zone),
-            total_energized: Number(row.total_energized)
-        }));
+    // Map rows to ensure numeric values
+    const formattedRows = rows.map((row) => ({
+      ...row,
+      concrete_count: Number(row.concrete_count),
+      semi_concrete_count: Number(row.semi_concrete_count),
+      wood_count: Number(row.wood_count),
+      deep_well_count: Number(row.deep_well_count),
+      water_pump_count: Number(row.water_pump_count),
+      mineral_count: Number(row.mineral_count),
+      total_house_classifications: Number(row.total_house_classifications),
+      total_families: Number(row.total_families),
+      total_with_cr: Number(row.total_with_cr),
+      total_with_40m_zone: Number(row.total_with_40m_zone),
+      total_energized: Number(row.total_energized),
+    }));
 
-        // Overall statistics
-        const overall = overallRows[0] ? {
-            overall_house_classifications: Number(overallRows[0].overall_house_classifications),
-            overall_families: Number(overallRows[0].overall_families),
-            overall_with_cr: Number(overallRows[0].overall_with_cr),
-            overall_with_40m_zone: Number(overallRows[0].overall_with_40m_zone),
-            overall_energized: Number(overallRows[0].overall_energized)
-        } : {};
+    // Overall statistics
+    const overall = overallRows[0]
+      ? {
+          overall_house_classifications: Number(
+            overallRows[0].overall_house_classifications
+          ),
+          overall_families: Number(overallRows[0].overall_families),
+          overall_with_cr: Number(overallRows[0].overall_with_cr),
+          overall_with_40m_zone: Number(overallRows[0].overall_with_40m_zone),
+          overall_energized: Number(overallRows[0].overall_energized),
+        }
+      : {};
 
-        // Send the response
-        res.json({
-            year: year,
-            statistics: formattedRows,
-            overall: overall
-        });
-    } catch (err) {
-        console.error("Error: ", err.message, err.stack);
-        res.status(500).send("Internal server error");
-    }
+    // Send the response
+    res.json({
+      year: year,
+      statistics: formattedRows,
+      overall: overall,
+    });
+  } catch (err) {
+    console.error("Error: ", err.message, err.stack);
+    res.status(500).send("Internal server error");
+  }
 });
 
 router.post("/house-classification-survey", async (req, res) => {
+  // Parse number fields
+  req.body.houseNumber = req.body.houseNumber
+    ? parseInt(req.body.houseNumber, 10)
+    : null;
+  req.body.numberOfFamilies = parseInt(req.body.numberOfFamilies, 10);
 
-    // Parse number fields
-    req.body.houseNumber = req.body.houseNumber ? parseInt(req.body.houseNumber, 10) : null;
-    req.body.numberOfFamilies = parseInt(req.body.numberOfFamilies, 10);
+  // Joi validation
+  const { error, value } = houseClassification.validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.details.map((e) => e.message) });
+  }
 
-    // Joi validation
-    const { error, value } = houseClassification.validate(req.body);
-    if (error) {
-        return res.status(400).json({ error: error.details.map(e => e.message) });
-    }
+  // Water source aggregation
+  const waterSource = [value.deepWell, value.waterPump, value.mineral]
+    .filter(Boolean)
+    .join(",");
 
-    // Water source aggregation
-    const waterSource = [value.deepWell, value.waterPump, value.mineral].filter(Boolean).join(',');
-
-    const date = getCurrentDate();
-    try {
-        await mPool.query(`
+  const date = getCurrentDate();
+  try {
+    await mPool.query(
+      `
             INSERT INTO house_classification 
             (date, purok, houseNumber, houseRepresentative, numberOfFamilies, isWithCr, isWith40mZone, isEnergized, housingMaterials, waterSource)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-        `, [
-            date,
-            value.surveyPurok,
-            value.houseNumber,
-            value.houseRepresentative,
-            value.numberOfFamilies,
-            value.isWithCr,
-            value.isWith40mZone,
-            value.isEnergized,
-            value.housingMaterials,
-            waterSource
-        ]);
+        `,
+      [
+        date,
+        value.surveyPurok,
+        value.houseNumber,
+        value.houseRepresentative,
+        value.numberOfFamilies,
+        value.isWithCr,
+        value.isWith40mZone,
+        value.isEnergized,
+        value.housingMaterials,
+        waterSource,
+      ]
+    );
 
-        req.flash('success', 'Survey added successfully!');
-        res.redirect('/statistics/dashboard');
-    } catch (err) {
-        console.error("Database Error:", err.message);
-        res.status(500).send("Internal server error");
-    }
+    req.flash("success", "Survey added successfully!");
+    res.redirect("/statistics/dashboard");
+  } catch (err) {
+    console.error("Database Error:", err.message);
+    res.status(500).send("Internal server error");
+  }
 });
 
-router.get('/available-years-for-certcount', async (req, res) => {
-    try {
-        const query = `
+router.get("/available-years-for-certcount", async (req, res) => {
+  try {
+    const query = `
             SELECT DISTINCT EXTRACT(YEAR FROM date_release) AS year
             FROM cert_record
             ORDER BY year DESC;
         `;
-        const { rows } = await mPool.query(query);
-        res.json(rows);
-    } catch (err) {
-        console.error("Error:", err.message);
-        res.status(500).send("Internal server error");
-    }
+    const { rows } = await mPool.query(query);
+    res.json(rows);
+  } catch (err) {
+    console.error("Error:", err.message);
+    res.status(500).send("Internal server error");
+  }
 });
 
-router.get('/certcount', async (req, res) => {
-    const { year } = req.query;
+router.get("/certcount", async (req, res) => {
+  const { year } = req.query;
 
-    if (!year || isNaN(year)) {
-        return res.status(400).json({ error: 'Year is required and must be a valid number.' });
-    }
+  if (!year || isNaN(year)) {
+    return res
+      .status(400)
+      .json({ error: "Year is required and must be a valid number." });
+  }
 
-    try {
-        const query = `
+  try {
+    const query = `
             SELECT 
                 (cert_name::json ->> 'certName') AS cert_name, 
                 COUNT(*) AS total
@@ -374,69 +386,64 @@ router.get('/certcount', async (req, res) => {
             ORDER BY total DESC;
         `;
 
-        const result = await mPool.query(query, [parseInt(year, 10)]);
-        console.log("rowsss",result.rows)
-        res.json(result.rows);
+    const result = await mPool.query(query, [parseInt(year, 10)]);
+    console.log("rowsss", result.rows);
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error fetching statistics:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/kan-sk-data/demographics", async (req, res) => {
+    const { month } = req.query;
+    const currentYear = new Date().getFullYear();  // Get the current year
+    const currentMonth = new Date().getMonth() + 1;  // Get the current month (1-12)
+
+    let query = `
+        SELECT 
+            COUNT(CASE WHEN EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 15 AND 17 AND gender = 'Male' THEN 1 END) AS male_child_youth,
+            COUNT(CASE WHEN EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 15 AND 17 AND gender = 'Female' THEN 1 END) AS female_child_youth,
+            COUNT(CASE WHEN EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 15 AND 17 THEN 1 END) AS total_child_youth,
+
+            COUNT(CASE WHEN EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 18 AND 24 AND gender = 'Male' THEN 1 END) AS male_core_youth,
+            COUNT(CASE WHEN EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 18 AND 24 AND gender = 'Female' THEN 1 END) AS female_core_youth,
+            COUNT(CASE WHEN EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 18 AND 24 THEN 1 END) AS total_core_youth,
+
+            COUNT(CASE WHEN EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 25 AND 30 AND gender = 'Male' THEN 1 END) AS male_adult_youth,
+            COUNT(CASE WHEN EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 25 AND 30 AND gender = 'Female' THEN 1 END) AS female_adult_youth,
+            COUNT(CASE WHEN EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 25 AND 30 THEN 1 END) AS total_adult_youth,
+
+            COUNT(CASE WHEN EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 15 AND 30 AND isOutOfSchoolYouth = TRUE THEN 1 END) AS total_out_of_school_youth,
+            COUNT(CASE WHEN EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 15 AND 30 AND isOutOfSchoolYouth = TRUE AND gender = 'Male' THEN 1 END) AS male_out_of_school_youth,
+            COUNT(CASE WHEN EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 15 AND 30 AND isOutOfSchoolYouth = TRUE AND gender = 'Female' THEN 1 END) AS female_out_of_school_youth,
+
+            COUNT(CASE WHEN EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 15 AND 30 AND isPwd = TRUE THEN 1 END) AS total_youth_with_disabilities,
+            COUNT(CASE WHEN EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 15 AND 30 AND isPwd = TRUE AND gender = 'Male' THEN 1 END) AS male_youth_with_disabilities,
+            COUNT(CASE WHEN EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 15 AND 30 AND isPwd = TRUE AND gender = 'Female' THEN 1 END) AS female_youth_with_disabilities
+
+        FROM residents 
+        WHERE EXTRACT(YEAR FROM AGE(birthDate)) BETWEEN 15 AND 30  -- Filter by age based on birthDate
+    `;
+
+    const values = [];
+
+    // Apply the month filter if the month is provided in the query
+    if (month) {
+      query += " AND EXTRACT(MONTH FROM CURRENT_DATE) = $1"; // Filter by the selected month (current date)
+      values.push(month); // Pass the selected month
+    } else {
+      query += " AND EXTRACT(MONTH FROM CURRENT_DATE) = $1"; // Default to current month if no month is provided
+      values.push(currentMonth); // Pass the current month
+    }
+
+    try {
+      const result = await mPool.query(query, values);
+      res.json(result.rows[0]); // Return the first (and only) row since we're aggregating all data
     } catch (error) {
-        console.error('Error fetching statistics:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+      console.error("Error fetching demographics:", error);
+      res.status(500).json({ error: "Internal Server Error" });
     }
 });
 
-router.get('/kan-sk-data/demographics/:year', async (req, res) => {
-    const { year } = req.params;
-  
-    if (!year || isNaN(year)) {
-      return res.status(400).json({ error: 'Invalid year parameter' });
-    }
-  
-    try {
-        const query = `
-        WITH AgeGroups AS (
-            SELECT 
-                purok,
-                gender,
-                COUNT(*) FILTER (WHERE ($1 - EXTRACT(YEAR FROM birthDate)) BETWEEN 15 AND 17) AS child_youth,
-                COUNT(*) FILTER (WHERE ($1 - EXTRACT(YEAR FROM birthDate)) BETWEEN 18 AND 24) AS core_youth,
-                COUNT(*) FILTER (WHERE ($1 - EXTRACT(YEAR FROM birthDate)) BETWEEN 25 AND 30) AS adult_youth,
-                COUNT(*) FILTER (WHERE ($1 - EXTRACT(YEAR FROM birthDate)) BETWEEN 15 AND 30 AND isOutOfSchoolYouth = TRUE) AS out_of_school_youth,
-                COUNT(*) FILTER (WHERE ($1 - EXTRACT(YEAR FROM birthDate)) BETWEEN 15 AND 30 AND isPwd = TRUE) AS youth_with_disabilities
-            FROM residents
-            GROUP BY purok, gender
-        )
-        SELECT 
-            purok,
-            COALESCE(SUM(child_youth) FILTER (WHERE gender = 'Male'), 0) AS male_child_youth,
-            COALESCE(SUM(child_youth) FILTER (WHERE gender = 'Female'), 0) AS female_child_youth,
-            COALESCE(SUM(child_youth), 0) AS total_child_youth,
-
-            COALESCE(SUM(core_youth) FILTER (WHERE gender = 'Male'), 0) AS male_core_youth,
-            COALESCE(SUM(core_youth) FILTER (WHERE gender = 'Female'), 0) AS female_core_youth,
-            COALESCE(SUM(core_youth), 0) AS total_core_youth,
-
-            COALESCE(SUM(adult_youth) FILTER (WHERE gender = 'Male'), 0) AS male_adult_youth,
-            COALESCE(SUM(adult_youth) FILTER (WHERE gender = 'Female'), 0) AS female_adult_youth,
-            COALESCE(SUM(adult_youth), 0) AS total_adult_youth,
-
-            COALESCE(SUM(out_of_school_youth) FILTER (WHERE gender = 'Male'), 0) AS male_out_of_school_youth,
-            COALESCE(SUM(out_of_school_youth) FILTER (WHERE gender = 'Female'), 0) AS female_out_of_school_youth,
-            COALESCE(SUM(out_of_school_youth), 0) AS total_out_of_school_youth,
-
-            COALESCE(SUM(youth_with_disabilities) FILTER (WHERE gender = 'Male'), 0) AS male_youth_with_disabilities,
-            COALESCE(SUM(youth_with_disabilities) FILTER (WHERE gender = 'Female'), 0) AS female_youth_with_disabilities,
-            COALESCE(SUM(youth_with_disabilities), 0) AS total_youth_with_disabilities
-        FROM AgeGroups
-        GROUP BY purok
-        ORDER BY purok;
-      `;      
-  
-      const result = await mPool.query(query, [year]);
-      res.json(result.rows);
-    } catch (error) {
-      console.error('Error fetching demographics:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  });
-
-  
 module.exports = router;
