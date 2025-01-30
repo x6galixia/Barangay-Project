@@ -156,12 +156,16 @@ CREATE TABLE residents (
 );
 
 // this will reset the isPaid every january first 
-CREATE OR REPLACE FUNCTION reset_isPaid_nonResidents()
+CREATE OR REPLACE FUNCTION reset_isPaid()
 RETURNS VOID AS $$
 BEGIN
     UPDATE residents
     SET isPaid = FALSE, lastPaidReset = CURRENT_DATE
-    WHERE isResident = FALSE;
+    WHERE isResident = FALSE AND lastPaidReset <= CURRENT_DATE - INTERVAL '6 months';
+    
+    UPDATE residents
+    SET isPaid = FALSE, lastPaidReset = CURRENT_DATE
+    WHERE isResident = TRUE AND lastPaidReset <= CURRENT_DATE - INTERVAL '4 years';
 END;
 $$ LANGUAGE plpgsql;
 

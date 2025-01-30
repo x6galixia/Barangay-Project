@@ -383,5 +383,60 @@ router.get('/certcount', async (req, res) => {
     }
 });
 
+router.get('/kan-sk-data/demographics/:year', async (req, res) => {
+    const { year } = req.params;
+  
+    if (!year || isNaN(year)) {
+      return res.status(400).json({ error: 'Invalid year parameter' });
+    }
+  
+    try {
+        const query = `
+        WITH AgeGroups AS (
+            SELECT 
+                purok,
+                gender,
+                COUNT(*) FILTER (WHERE ($1 - EXTRACT(YEAR FROM birthDate)) BETWEEN 15 AND 17) AS child_youth,
+                COUNT(*) FILTER (WHERE ($1 - EXTRACT(YEAR FROM birthDate)) BETWEEN 18 AND 24) AS core_youth,
+                COUNT(*) FILTER (WHERE ($1 - EXTRACT(YEAR FROM birthDate)) BETWEEN 25 AND 30) AS adult_youth,
+                COUNT(*) FILTER (WHERE ($1 - EXTRACT(YEAR FROM birthDate)) BETWEEN 15 AND 30 AND isOutOfSchoolYouth = TRUE) AS out_of_school_youth,
+                COUNT(*) FILTER (WHERE ($1 - EXTRACT(YEAR FROM birthDate)) BETWEEN 15 AND 30 AND isPwd = TRUE) AS youth_with_disabilities
+            FROM residents
+            GROUP BY purok, gender
+        )
+        SELECT 
+            purok,
+            COALESCE(SUM(child_youth) FILTER (WHERE gender = 'Male'), 0) AS male_child_youth,
+            COALESCE(SUM(child_youth) FILTER (WHERE gender = 'Female'), 0) AS female_child_youth,
+            COALESCE(SUM(child_youth), 0) AS total_child_youth,
+
+            COALESCE(SUM(core_youth) FILTER (WHERE gender = 'Male'), 0) AS male_core_youth,
+            COALESCE(SUM(core_youth) FILTER (WHERE gender = 'Female'), 0) AS female_core_youth,
+            COALESCE(SUM(core_youth), 0) AS total_core_youth,
+
+            COALESCE(SUM(adult_youth) FILTER (WHERE gender = 'Male'), 0) AS male_adult_youth,
+            COALESCE(SUM(adult_youth) FILTER (WHERE gender = 'Female'), 0) AS female_adult_youth,
+            COALESCE(SUM(adult_youth), 0) AS total_adult_youth,
+
+            COALESCE(SUM(out_of_school_youth) FILTER (WHERE gender = 'Male'), 0) AS male_out_of_school_youth,
+            COALESCE(SUM(out_of_school_youth) FILTER (WHERE gender = 'Female'), 0) AS female_out_of_school_youth,
+            COALESCE(SUM(out_of_school_youth), 0) AS total_out_of_school_youth,
+
+            COALESCE(SUM(youth_with_disabilities) FILTER (WHERE gender = 'Male'), 0) AS male_youth_with_disabilities,
+            COALESCE(SUM(youth_with_disabilities) FILTER (WHERE gender = 'Female'), 0) AS female_youth_with_disabilities,
+            COALESCE(SUM(youth_with_disabilities), 0) AS total_youth_with_disabilities
+        FROM AgeGroups
+        GROUP BY purok
+        ORDER BY purok;
+      `;      
+  
+      const result = await mPool.query(query, [year]);
+      res.json(result.rows);
+    } catch (error) {
+      console.error('Error fetching demographics:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
   
 module.exports = router;

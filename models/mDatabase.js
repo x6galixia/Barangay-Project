@@ -12,30 +12,32 @@ const poolConfig = {
 
 const mPool = new Pool(poolConfig);
 
-// Function to reset isPaid and log the last reset date
+// Function to reset isPaid
 async function resetPaidStatus() {
     try {
-        const res = await mPool.query('SELECT reset_isPaid_nonResidents();');
-        console.log(`Reset isPaid for non-residents: ${res.rowCount} rows updated.`);
+        const res = await mPool.query('SELECT reset_isPaid();');
+        console.log(`Reset isPaid for residents and non-residents: ${res.rowCount} rows updated.`);
     } catch (err) {
         console.error('Error resetting isPaid:', err);
     }
 }
 
-// Check if the last reset was missed when the server starts
+// Check and run missed reset on server startup
 async function checkAndRunMissedReset() {
     try {
         const { rows } = await mPool.query("SELECT MAX(lastPaidReset) AS last_reset FROM residents;");
         const lastReset = rows[0]?.last_reset;
-
         const today = new Date();
-        const firstOfJanuary = new Date(today.getFullYear(), 0, 1);
+        const sixMonthsAgo = new Date();
+        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+        const fourYearsAgo = new Date();
+        fourYearsAgo.setFullYear(fourYearsAgo.getFullYear() - 4);
 
-        if (!lastReset || new Date(lastReset) < firstOfJanuary) {
+        if (!lastReset || new Date(lastReset) < sixMonthsAgo || new Date(lastReset) < fourYearsAgo) {
             console.log("Missed reset detected! Running reset now...");
             await resetPaidStatus();
         } else {
-            console.log("Reset already performed this year. No action needed.");
+            console.log("Reset already performed as per the required intervals. No action needed.");
         }
     } catch (err) {
         console.error("Error checking last reset date:", err);
@@ -45,8 +47,8 @@ async function checkAndRunMissedReset() {
 // Run check on server startup
 checkAndRunMissedReset();
 
-// Schedule yearly reset on January 1st at midnight
-cron.schedule('0 0 1 1 *', async () => {
+// Schedule reset check every day at midnight
+cron.schedule('0 0 * * *', async () => {
     await resetPaidStatus();
 });
 
