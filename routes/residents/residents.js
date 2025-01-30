@@ -100,6 +100,7 @@ router.get("/dashboard/resident/:id", async (req, res) => {
                 r.isOutOfSchoolYouth,
                 r.isSkm,
                 r.isKm,
+                r.isPaid,
                 rc.rClassificationName,  -- From rClassification
                 cp.fName AS emergencyFirstName,  -- From contactPerson
                 cp.mName AS emergencyMiddleName,

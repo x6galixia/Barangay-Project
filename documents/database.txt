@@ -138,7 +138,7 @@ CREATE TABLE residents (
     signature TEXT DEFAULT '',
     eAttainment VARCHAR(255) NULL,                                 
     occupation VARCHAR(255) NULL,                                  
-    income INT NULL,                                               
+    income VARCHAR(10) NULL,                                               
     civilStatus VARCHAR(50) NULL CHECK (civilStatus IN ('Single', 'Married', 'Divorced', 'Widow', 'Widower')),   
     isResident BOOLEAN NULL,                                              
     emergencyContactId INT REFERENCES contactPerson(contactPersonId) ON DELETE CASCADE NOT NULL,       
@@ -155,7 +155,7 @@ CREATE TABLE residents (
     lastPaidReset DATE DEFAULT NULL               
 );
 
-// this will reset the isPaid every january first 
+-- this will reset the isPaid every january first 
 CREATE OR REPLACE FUNCTION reset_isPaid()
 RETURNS VOID AS $$
 BEGIN
@@ -184,7 +184,7 @@ CREATE TABLE boarders (
 -- documents requests
 CREATE TABLE requests (
     id SERIAL PRIMARY KEY NOT NULL,
-    residentsId INT REFERENCES residents(residentsId) NOT NULL,    
+    residentsId INT REFERENCES residents(residentsId) ON DELETE CASCADE NOT NULL,    
     dateAdded DATE NULL,
     purpose TEXT NULL,
     isReleased BOOLEAN DEFAULT FALSE
