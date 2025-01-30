@@ -652,7 +652,7 @@ function fillInputs(data) {
     // Handle isPaid dropdown
     const isPaidDropdown = document.getElementById('isPaid');
     if (isPaidDropdown) {
-        const isPaidValue = data.isPaid ? "true" : "false"; // Assuming data.isPaid is a boolean
+        const isPaidValue = data.isPaid ? "false" : "true"; // Assuming data.isPaid is a boolean
         isPaidDropdown.value = isPaidValue; // Set the selected option
     } else {
         console.warn('isPaid dropdown not found');
