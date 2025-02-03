@@ -395,7 +395,6 @@ router.get("/available-years-for-certcount", async (req, res) => {
   
     try {
       const result = await mPool.query(query, queryParams);
-      console.log("rowsss", result.rows);
       res.json(result.rows);
     } catch (error) {
       console.error("Error fetching statistics:", error);

@@ -146,7 +146,6 @@ router.get("/dashboard/resident/:id", async (req, res) => {
 router.post("/dashboard/add-resident", upload.single('picture'), async (req, res) => {
     const { error, value } = residentSchema.validate(req.body);
     const picture = req.file ? req.file.filename : null;
-    console.log("req.bodyyyy: ", value);
     if (error) {
         console.error("Validation error:", error.details.map(e => e.message).join(", "));
         return res.status(400).json({ error: error.details.map(e => e.message) });
@@ -154,11 +153,11 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
 
     try {
         // Log uploaded picture
-        if (picture) {
-            console.log(`Processed file: ${picture}`);
-        } else {
-            console.log("No file uploaded or file upload failed.");
-        }
+        // if (picture) {
+        //     console.log(`Processed file: ${picture}`);
+        // } else {
+        //     console.log("No file uploaded or file upload failed.");
+        // }
 
         // Step 1: Get the last globalId and generate the next one
         let newId;
@@ -171,11 +170,9 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
             lastGlobalId = globalIdQuery.rows[0].last_global_id;
         }
 
-        console.log("Last Global ID fetched:", lastGlobalId);
 
         try {
             newId = generateGlobalNextId(lastGlobalId); // Generate the new global ID
-            console.log("Generated New Global ID:", newId);
         } catch (err) {
             console.error("Error generating Global ID:", err.message);
             return res.status(500).json({ error: "Failed to generate Global ID" });
@@ -186,17 +183,14 @@ router.post("/dashboard/add-resident", upload.single('picture'), async (req, res
             `SELECT last_num_id FROM last_id_generated`
         );
 
-        console.log("idNumber:", idNumberQuery);
 
         let lastNumId = `${getCurrentYear()}-0000`; // Default starting value
         if (idNumberQuery.rows.length > 0 && idNumberQuery.rows[0].last_num_id) {
             lastNumId = idNumberQuery.rows[0].last_num_id;
         }
 
-        console.log("Fetched lastNumId from DB:", lastNumId);
 
         const numNewId = generateIdNumberNextId(lastNumId); // Generate the new idNumber
-        console.log("Generated New ID Number:", numNewId);
 
         // Step 3: Insert emergency contact into the contactPerson table
         const emergencyContactResult = await mPool.query(
@@ -294,17 +288,16 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
         // Step 2: Validate the data
         const { error, value } = residentSchema.validate(req.body);
         const picture = req.file ? req.file.filename : null;
-        console.log("req.bodyyyy: ", value);
         if (error) {
             console.error("Validation error:", error.details.map(e => e.message).join(", "));
             return res.status(400).json({ error: error.details.map(e => e.message) });
         }
         // Log the picture file name if uploaded
-        if (picture) {
-            console.log(`Processed file: ${picture}`);
-        } else {
-            console.log("No file received or file upload failed");
-        }
+        // if (picture) {
+        //     console.log(`Processed file: ${picture}`);
+        // } else {
+        //     console.log("No file received or file upload failed");
+        // }
 
         // Step 1: Get the last globalId and generate the next one
         let newId;
@@ -317,11 +310,9 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
             lastGlobalId = globalIdQuery.rows[0].last_global_id;
         }
 
-        console.log("Last Global ID fetched:", lastGlobalId);
 
         try {
             newId = generateGlobalNextId(lastGlobalId); // Generate the new global ID
-            console.log("Generated New Global ID:", newId);
         } catch (err) {
             console.error("Error generating Global ID:", err.message);
             return res.status(500).json({ error: "Failed to generate Global ID" });
@@ -332,17 +323,14 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
             `SELECT last_num_id FROM last_id_generated`
         );
 
-        console.log("idNumber:", idNumberQuery);
 
         let lastNumId = `${getCurrentYear()}-0000`; // Default starting value
         if (idNumberQuery.rows.length > 0 && idNumberQuery.rows[0].last_num_id) {
             lastNumId = idNumberQuery.rows[0].last_num_id;
         }
 
-        console.log("Fetched lastNumId from DB:", lastNumId);
 
         const numNewId = generateIdNumberNextId(lastNumId); // Generate the new idNumber
-        console.log("Generated New ID Number:", numNewId);
 
         // Step 3: Insert emergency contact into contactPerson table
         const emergencyContactResult = await mPool.query(
@@ -405,7 +393,6 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
 
         // Get the newly generated residentsid
         const residentsId = residentInsertResult.rows[0].residentsid;
-        console.log("Generated residentsid:", residentsId);
 
         // Step 5: Insert the resident information into the boarders table
         await mPool.query(
@@ -425,7 +412,6 @@ router.post("/dashboard/add-non-resident", upload.single('picture'), async (req,
 
         await mPool.query(`UPDATE last_id_generated SET last_global_id = $1, last_num_id = $2`, [newId, numNewId]);
 
-        console.log("Inserted data into the boarders table successfully.");
 
         req.flash('success', 'Non-Resident Added Successfully!');
         res.redirect("/residents/dashboard?type=Non-residents");
@@ -439,18 +425,17 @@ router.post("/dashboard/update-resident", upload.single('picture'), async (req, 
     const { error, value } = residentSchema.validate(req.body);
     const picture = req.file ? req.file.filename : null;
 
-    console.log("req.bodyyyy:", value);
     if (error) {
         console.error("Validation error:", error.details.map(e => e.message).join(", "));
         return res.status(400).json({ error: error.details.map(e => e.message) });
     }
 
     try {
-        if (picture) {
-            console.log(`Processed file: ${picture}`);
-        } else {
-            console.log("No file uploaded or file upload failed.");
-        }
+        // if (picture) {
+        //     console.log(`Processed file: ${picture}`);
+        // } else {
+        //     console.log("No file uploaded or file upload failed.");
+        // }
 
         const birthDate = new Date(value.birthdate).toISOString().split("T")[0];
 
@@ -544,7 +529,6 @@ router.post("/dashboard/update-non-resident", upload.single('picture'), async (r
         const { error, value } = residentSchema.validate(req.body);
         const picture = req.file ? req.file.filename : null;
 
-        console.log("req.bodyyyy:", value);
         if (error) {
             console.error("Validation error:", error.details.map(e => e.message).join(", "));
             return res.status(400).json({ error: error.details.map(e => e.message) });
@@ -626,7 +610,6 @@ router.post("/dashboard/update-non-resident", upload.single('picture'), async (r
             ]
         );
 
-        console.log("Non-resident information updated successfully.");
 
         req.flash('success', 'Non-Resident Updated Successfully!');
         res.redirect("/residents/dashboard?type=Non-residents");

@@ -194,12 +194,9 @@ async function fetchInventoryLists(page, limit, searchQuery = '', isFunctional =
   try {
     const totalItemsResult = await mPool.query(totalItemsQuery, totalItemsValues);
     const totalItems = parseInt(totalItemsResult.rows[0].count, 10);
-    console.log("Total Items:", totalItems);  // Debugging line
     const totalPages = Math.ceil(totalItems / limit);
-    console.log("Total Pages:", totalPages);  // Debugging line
 
     const inventoryResult = await mPool.query(inventoryQuery, inventoryValues);
-    console.log("Inventory Results:", inventoryResult.rows);  // Debugging line
     return { getInventoryList: inventoryResult.rows, totalItems, totalPages };
   } catch (err) {
     console.error('Error fetching INVENTORY list:', err.message);

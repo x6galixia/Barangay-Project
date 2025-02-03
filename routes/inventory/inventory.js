@@ -119,7 +119,6 @@ router.post("/dashboard/update-item", async (req, res) => {
                 SELECT categoryid FROM categories WHERE categoryName = $1
             `, [value.categoryName]);
 
-            console.log("Category Find Result:", categoryIdResult);
 
             if (!categoryIdResult.rows || categoryIdResult.rows.length === 0) {
                 return res.status(404).json({ error: "Category not found" });

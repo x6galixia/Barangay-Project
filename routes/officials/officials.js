@@ -96,7 +96,6 @@ router.post('/update-barangay-officials', upload.fields([
         }
     }
 
-    console.log("Images Uploaded: ", uploadedImages);
 
     try {
         // Check if any officials already exist

@@ -16,7 +16,6 @@ const mPool = new Pool(poolConfig);
 async function resetPaidStatus() {
     try {
         const res = await mPool.query('SELECT reset_isPaid();');
-        console.log(`Reset isPaid for residents and non-residents: ${res.rowCount} rows updated.`);
     } catch (err) {
         console.error('Error resetting isPaid:', err);
     }
@@ -47,6 +46,7 @@ async function checkAndRunMissedReset() {
         const fourYearsAgo = new Date();
         fourYearsAgo.setFullYear(fourYearsAgo.getFullYear() - 4);
 
+
         const needsNonResidentReset = lastResetDate <= sixMonthsAgo;
         const needsResidentReset = lastResetDate <= fourYearsAgo;
 
@@ -54,7 +54,6 @@ async function checkAndRunMissedReset() {
             console.log("Missed reset detected! Running reset now...");
             await resetPaidStatus();
         } else {
-            console.log("Reset already performed as per the required intervals. No action needed.");
         }
     } catch (err) {
         console.error("Error checking last reset date:", err);

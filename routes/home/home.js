@@ -11,7 +11,6 @@ router.get("/dashboard", (req, res) => {
 
 router.get("/dashboard/fetchScannedData", async (req, res) => {
     const { qrCode } = req.query;
-    console.log("Received scanned QR Code:", qrCode);
 
     try {
         const residentQuery = `
@@ -63,7 +62,6 @@ router.get("/dashboard/fetchManualData", async (req, res) => {
 
 router.post("/service-request-form", async (req, res) => {
     const { error, value } = requestSchema.validate(req.body);
-    console.log("scannedData", value)
     if (error) { return res.status(400).json({ error: error.details[0].message }); }
 
     try {
