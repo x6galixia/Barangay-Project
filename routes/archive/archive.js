@@ -141,7 +141,6 @@ router.get("/archive-item/:id", async (req, res) => {
                     console.log(`Unknown document type: ${archiveItem.doctypeId}`);
             }
 
-            console.log("Archive data:", archiveItem);
             res.json({ success: true, data: archiveItem });
         } else {
             console.log(`No Archive data found for archive ID: ${itemId}`);
@@ -175,8 +174,6 @@ router.get("/get-resident", async (req, res) => {
 });
 
 router.post('/dashboard/add-archive', upload.single('image'), async (req, res) => {
-    console.log("Request Body:", req.body);
-    console.log("File:", req.file);
     
 
     const docType = req.body.docType;
@@ -209,7 +206,6 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
             [doctypeId]
         );
         const archiveId = archiveResult.rows[0].archiveid;
-        console.log("archiveId: ", archiveId);
 
         const contractingPersons = [req.body.parties1, req.body.parties2]
         .filter(Boolean)
@@ -227,7 +223,6 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
         .filter(Boolean)
         .join(',');
 
-        console.log(contractingPersons);
 
         // Insert into the specific document table based on docType
         if (doctypeId === 1) { // Panumduman
@@ -303,8 +298,6 @@ router.post('/dashboard/add-archive', upload.single('image'), async (req, res) =
 });
 
 router.post('/dashboard/update-archive', upload.single('image'), async (req, res) => {
-    console.log("Request Body:", req.body);
-    console.log("File:", req.file);
 
     const docType = req.body.docType;
     const doctypeId = docTypeMap[docType]; // Mapping docType to doctypeId
@@ -329,7 +322,6 @@ router.post('/dashboard/update-archive', upload.single('image'), async (req, res
 
     try {
         const archiveId = requestData.documentData.itemId;
-        console.log("Archive ID: ", archiveId);
 
         // Start a transaction
         await mPool.query('BEGIN');
@@ -446,7 +438,6 @@ router.post('/dashboard/update-archive', upload.single('image'), async (req, res
 
 router.delete("/delete-archive-item/:id", async (req, res) => {
     const archiveId = req.params.id;
-    console.log(archiveId);
 
     try {
         await mPool.query(`DELETE FROM archive WHERE archiveId = $1`, [archiveId]);
