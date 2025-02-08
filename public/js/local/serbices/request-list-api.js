@@ -120,7 +120,7 @@ function attachDotEventListeners() {
   document.querySelectorAll(".dot").forEach(function (dot) {
     dot.addEventListener("click", function () {
       const tripleDotContainer = dot.closest("td").querySelector(".triple-dot");
-      tripleDotContainer.classList.add("visible");
+      tripleDotContainer.classList.toggle("visible");
     });
 
     document.addEventListener("click", function (event) {
@@ -258,10 +258,6 @@ window.processCertificate = function (button) {
               <label for="">Date Printed</label>
               <input type="date" id="brgyClearanceDatePrintedInput">
           </div>
-          <div class="inputWithLabel">
-              <label for="">Validation Days (Ex. 90 days)</label>
-              <input type="text" id="brgyClearanceValidationInput">
-          </div>
       `;
 
       document.getElementById("selectPurpose").addEventListener('change', function () {
@@ -298,15 +294,15 @@ window.processCertificate = function (button) {
 
           if (selectedPurpose && selectedPurpose !== "default") {
             const brgyClearancePurpose = document.getElementById("brgyClearancePurpose");
-
+            const date = new Date(document.getElementById("brgyClearanceDateIssuedInput").value);
+            const formattedDate = `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
             document.getElementById("brgyClearanceRemarks").innerText = document.getElementById("brgyClearanceRemarksInput").value.toUpperCase();
             document.getElementById("brgyClearanceOptID").innerText = document.getElementById("brgyClearanceOptIDInput").value;
             document.getElementById("brgyClearanceCTCNos").innerText = document.getElementById("brgyClearanceCTCNosInput").value;
             document.getElementById("brgyClearanceCTCIssued").innerText = document.getElementById("brgyClearanceCTCIssuedInput").value;
-            document.getElementById("brgyClearanceDateIssued").innerText = document.getElementById("brgyClearanceDateIssuedInput").value;
+            document.getElementById("brgyClearanceDateIssued").innerText = formattedDate;
             document.getElementById("brgyClearanceORNos").innerText = document.getElementById("brgyClearanceORNosInput").value;
             document.getElementById("brgyClearanceDatePrinted").innerText = document.getElementById("brgyClearanceDatePrintedInput").value;
-            document.getElementById("brgyClearanceValidation").innerText = document.getElementById("brgyClearanceValidationInput").value;
 
             if (certificatePurposeInput.type === "text") {
               brgyClearancePurpose.innerText = selectedPurpose.toUpperCase();
@@ -435,10 +431,6 @@ window.processCertificate = function (button) {
               <label for="">OR Nos</label>
               <input type="text" id="burialORNosInput">
           </div>
-          <div class="inputWithLabel">
-              <label for="">Validation Days (Ex. 90 days)</label>
-              <input type="text" id="burialValidationInput">
-          </div>
       `;
 
 
@@ -466,7 +458,6 @@ window.processCertificate = function (button) {
           document.getElementById("burialPlace").innerText = document.getElementById("burialPlaceInput").value || "(BURIAL PLACE)";
           document.getElementById("burialDate").innerText = burialFormattedDate || "(BURIAL DATE)";
           document.getElementById("burialORNos").innerText = document.getElementById("burialORNosInput").value;
-          document.getElementById("burialValication").innerText = document.getElementById("burialValidationInput").value;
 
           if (document.getElementById("burialGenderInput").value === "Male") {
             document.getElementById("burialCourtesyTitle").innerText = `Mr. ${burialLastName}`;
@@ -515,6 +506,7 @@ window.processCertificate = function (button) {
         if (event.target.classList.contains("applyChanges")) {
           const status = document.getElementById("businessClearanceStatusInput");
           const selectedStatus = status.value.toUpperCase();
+          
           document.getElementById("businessClearanceBusinessName").innerText = document.getElementById("businessClearanceBusinessNameInput").value.toUpperCase() || "(BUSINESS NAME)";
           document.getElementById("businessClearanceBusinessLocation").innerText = document.getElementById("businessClearanceBusinessLocationInput").value.toUpperCase() || "(LOCATION OF BUSINESS)";
           document.getElementById("busnessClearanceOperator").innerText = document.getElementById("businessClearanceBusinessOwnerInput").value.toUpperCase() || "(OPERATE/MANAGER)";
@@ -869,10 +861,6 @@ window.processCertificate = function (button) {
               </select>
               <input type="hidden" id="certificatePurpose" style="margin-top:12px">
           </div>
-          <div class="inputWithLabel">
-              <label for="">Validation Days (Ex. 90 days)</label>
-              <input type="text" id="indigencyValidationInput">
-          </div>
       `;
 
       document.getElementById("selectPurpose").addEventListener('change', function () {
@@ -900,7 +888,6 @@ window.processCertificate = function (button) {
         if (event.target.classList.contains("applyChanges")) {
           const certificatePurposeInput = document.getElementById("certificatePurpose");
           const selectedPurpose = certificatePurposeInput.type === "text" ? certificatePurposeInput.value.trim() : certificatePurposeInput.value;
-          document.getElementById("indigencyValidation").innerText = document.getElementById("indigencyValidationInput").value;
 
           if (selectedPurpose && selectedPurpose !== "default") {
             const indigencyPurpose = document.getElementById("indigencyPurpose");
@@ -910,13 +897,13 @@ window.processCertificate = function (button) {
             } else {
               switch (selectedPurpose) {
                 case "Scholarship Assistance":
-                  indigencyPurpose.innerText = "SCHOLARSHIP ASSISTANCE REQUIREMENT ONLY";
+                  indigencyPurpose.innerText = "SCHOLARSHIP ASSISTANCE REQUIREMENT";
                   break;
                 case "PhilHealth Enrollment":
                   indigencyPurpose.innerText = "PHILHEALTH ENROLLMENT REQUIREMENT";
                   break;
                 case "Medical Assistance":
-                  indigencyPurpose.innerText = "MEDICAL ASSISTANCE";
+                  indigencyPurpose.innerText = "MEDICAL ASSISTANCE REQUIREMENT";
                   break;
               }
             }
@@ -990,10 +977,6 @@ window.processCertificate = function (button) {
           <label for="">OR Nos</label>
           <input type="number" id="lateRegistrationORNumberInput">
       </div>
-      <div class="inputWithLabel">
-          <label for="">Validation Days (Ex. 90 Days)</label>
-          <input type=" text" id="lateRegistrationValidationInput">
-      </div>
   `;
 
       document.getElementById("lateRegistrationFullName").innerText = `${firstName} ${middleName} ${lastName}`.toUpperCase();
@@ -1015,7 +998,6 @@ window.processCertificate = function (button) {
           document.getElementById("lateRegistrationPagAnak").innerText = document.getElementById("lateRegistrationPagAnakInput").value || "(TYPE OF BIRTH ASSISTANCE)";
           document.getElementById("lateRegistrationNameNagAnak").innerText = document.getElementById("lateRegistrationNagAnakInput").value;
           document.getElementById("lateRegistrationORNumber").innerText = document.getElementById("lateRegistrationORNumberInput").value;
-          document.getElementById("lateRegistrationValiddation").innerText = document.getElementById("lateRegistrationValidationInput").value || "(VALIDATION)";
           alert("Changes applied");
         }
       });
@@ -1226,10 +1208,6 @@ window.processCertificate = function (button) {
               <label for="">Position or Role (Ex. Barangay Secretary)</label>
               <input type="text" id="residencyAttestedPositionInput">
           </div>
-          <div class="inputWithLabel">
-              <label for="">Validation Days (Ex. 90 Days)</label>
-              <input type="text" id="residencyValidationInput">
-          </div>
       `;
 
       document.getElementById("selectPurpose").addEventListener('change', function () {
@@ -1269,17 +1247,20 @@ window.processCertificate = function (button) {
               const residencyPurpose = document.getElementById("residencyPurpose");
               residencyPurpose.innerText = selectedPurpose;
             }
+            const date = new Date(document.getElementById("residencyDateIssuedInput").value);
+            const formattedDate = `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
+            const date1 = new Date(document.getElementById("residencyDatePrintedInput").value);
+            const formattedDate1 = `${date1.toLocaleString('default', { month: 'long' })} ${date1.getDate()}, ${date1.getFullYear()}`;
             document.getElementById("residencySince").innerText = document.getElementById("residencyResidentSinceInput").value;
             document.getElementById("residencyYearsLiving").innerText = document.getElementById("residencyResidentYearsLivingInput").value;
             document.getElementById("residencyOPTID").innerText = document.getElementById("residencyOptIDInput").value;
             document.getElementById("residencyCTCNumber").innerText = document.getElementById("residencyCTCNosInput").value;
             document.getElementById("residencyCTCIssued").innerText = document.getElementById("residencyCTCIssuedInput").value;
-            document.getElementById("residencyCTCDate").innerText = document.getElementById("residencyDateIssuedInput").value;
+            document.getElementById("residencyCTCDate").innerText = formattedDate;
             document.getElementById("residencyORNos").innerText = document.getElementById("residencyORNumberInput").value;
-            document.getElementById("residencyDatePrinted").innerText = document.getElementById("residencyDatePrintedInput").value;
+            document.getElementById("residencyDatePrinted").innerText = formattedDate1;
             document.getElementById("residencyAttestedBy").innerText = document.getElementById("residencyAttestedInput").value.toUpperCase();
             document.getElementById("residencyPositionOrRole").innerText = document.getElementById("residencyAttestedPositionInput").value;
-            document.getElementById("residencyBalidationDays").innerText = document.getElementById("residencyValidationInput").value;
 
             alert("Changes applied: " + selectedPurpose);
           } else {
@@ -1371,10 +1352,6 @@ window.processCertificate = function (button) {
               <label for="">Amount Paid</label>
               <input type="number" id="singlenessAmountPaidInput">
           </div>
-          <div class="inputWithLabel">
-              <label for="">Validation Days (Ex. 90 days)</label>
-              <input type="text" id="singlenessValidationInput">
-          </div>
       `;
 
       document.getElementById("singlenessFullName").innerText = `${lastName}, ${firstName} ${middleName}`.toUpperCase();
@@ -1387,7 +1364,6 @@ window.processCertificate = function (button) {
           document.getElementById("singlessCertificateNumber").innerText = document.getElementById("singlenessCertificateNumberInput").value || "(TEXT CERTIFICATE NUMBER)";
           document.getElementById("singlenessORNumber").innerText = document.getElementById("singlenessORNumberInput").value || "(OR NUMBER)";
           document.getElementById("singlenessAmountPaid").innerText = `P ${document.getElementById("singlenessAmountPaidInput").value}` || "(AMOUNT)";
-          document.getElementById("singlenessValidationDays").innerText = document.getElementById("singlenessValidationInput").value || "VALIDATION DAYS";
           alert("Changes applied");
         }
       });
@@ -1402,7 +1378,7 @@ window.processCertificate = function (button) {
               <input type="text" id="soloParentPartnerInput">
           </div>
           <div class="inputWithLabel">
-              <label for="">Time Apar(13 years)</label>
+              <label for="">Time Apart (Ex. 13 years)</label>
               <input type="text" id="soloParentTimeApartInput">
           </div>
           <div style="display: flex; align-items: center; gap: 8px;">
@@ -1536,20 +1512,16 @@ window.processCertificate = function (button) {
               <input type="hidden" id="certificatePurpose" style="margin-top:12px">
           </div>
           <div class="inputWithLabel">
-              <label for="">Job Title</label>
+              <label for="">Job Title (Ex. Food Attendant)</label>
               <input type="text" id="employmentJobTitleInput">
           </div>
           <div class="inputWithLabel">
-              <label for="">Workplace</label>
+              <label for="">Workplace (Ex. Food Stall)</label>
               <input type="text" id="employmentWorkplaceInput">
           </div>
           <div class="inputWithLabel">
-              <label for="">Work Location</label>
+              <label for="">Work Location (Ex. Business Center, Eastern Samar State University (ESSU) Compound)</label>
               <input type="text" id="employmentWorkLocationInput">
-          </div>
-          <div class="inputWithLabel">
-              <label for="">Validation Days (Ex. 90 days)</label>
-              <input type="text" id="employmentValidationInput">
           </div>
       `;
 
@@ -1585,7 +1557,6 @@ window.processCertificate = function (button) {
             document.getElementById("employmentJobTitle").innerText = document.getElementById("employmentJobTitleInput").value || "(JOB TITLE)";
             document.getElementById("employmentWorkplace").innerText = document.getElementById("employmentWorkplaceInput").value || "(WORKPLACE)";
             document.getElementById("employmentWorkLocation").innerText = document.getElementById("employmentWorkLocationInput").value || "(WORK LOCATION)";
-            document.getElementById("employmentValidation").innerText = document.getElementById("employmentValidationInput").value || "(VALIDATION)";
 
             if (certificatePurposeInput.type === "text") {
               employmentPurpose.innerText = selectedPurpose.toUpperCase();

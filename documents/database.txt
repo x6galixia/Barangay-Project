@@ -152,7 +152,7 @@ CREATE TABLE residents (
     isSkm BOOLEAN DEFAULT FALSE,              
     isKm BOOLEAN DEFAULT FALSE,
     isPaid BOOLEAN DEFAULT FALSE NULL,
-    lastPaidReset DATE DEFAULT NULL               
+    lastPaidReset DATE DEFAULT '2025-01-01'               
 );
 
 -- this will reset the isPaid every january first 
