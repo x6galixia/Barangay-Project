@@ -24,15 +24,34 @@ async function resetPaidStatus() {
 // Check and run missed reset on server startup
 async function checkAndRunMissedReset() {
     try {
-        const { rows } = await mPool.query("SELECT MAX(lastPaidReset) AS last_reset FROM residents;");
-        const lastReset = rows[0]?.last_reset;
-        const today = new Date();
+        const { rows } = await mPool.query("SELECT lastPaidReset FROM residents ORDER BY lastPaidReset DESC LIMIT 5;");
+        
+        if (rows.length === 0) {
+            console.log("No residents found in the database.");
+            return;
+        }
+
+        console.log("Last 5 reset dates:", rows.map(r => r.lastpaidreset));
+
+        const lastReset = rows[0]?.lastpaidreset; // Ensure correct case in column name
+        if (!lastReset) {
+            console.log("No previous reset date found. Running reset...");
+            await resetPaidStatus();
+            return;
+        }
+
+        const lastResetDate = new Date(lastReset);
         const sixMonthsAgo = new Date();
         sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
         const fourYearsAgo = new Date();
         fourYearsAgo.setFullYear(fourYearsAgo.getFullYear() - 4);
 
-        if (!lastReset || new Date(lastReset) < sixMonthsAgo || new Date(lastReset) < fourYearsAgo) {
+
+        const needsNonResidentReset = lastResetDate <= sixMonthsAgo;
+        const needsResidentReset = lastResetDate <= fourYearsAgo;
+
+        if (needsNonResidentReset || needsResidentReset) {
+            console.log("Missed reset detected! Running reset now...");
             await resetPaidStatus();
         } else {
         }
