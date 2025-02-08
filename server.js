@@ -19,6 +19,7 @@ const residentsRouter = require("./routes/residents/residents");
 const servicesRouter = require("./routes/services/services");
 const statisticsRouter = require("./routes/statistics/statistics");
 const officialsRouter = require("./routes/officials/officials");
+const csvDataRouter = require("./routes/data/data");
 
 //-------CONNECTING TO DATABASE-------//
 mPool.connect()
@@ -84,6 +85,7 @@ app.use('/archive', archiveRouter);
 app.use("/services", servicesRouter);
 app.use("/statistics", statisticsRouter);
 app.use("/officials", officialsRouter);
+app.use("/csvData", csvDataRouter);
 
 app.get("/", (req, res) => res.redirect("/home/dashboard"));
 

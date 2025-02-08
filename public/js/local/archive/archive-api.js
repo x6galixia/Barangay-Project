@@ -365,7 +365,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             updatePaginationLinks(data.currentPage, data.totalPages);
         } catch (error) {
             console.error("Error fetching inventory data: ", error);
-            archiveTableBody.innerHTML = '<tr><td colspan="4">Error loading data</td></tr>';
+            archiveTableBody.innerHTML = '<tr><td colspan="8">Error loading data</td></tr>';
         }
     }
 
