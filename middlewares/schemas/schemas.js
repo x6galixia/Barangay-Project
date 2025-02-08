@@ -11,7 +11,7 @@ const requestSchema = Joi.object({
     birthplace: Joi.string().optional().allow(""),
     civilStatus: Joi.string().required().optional().allow(null),
     purok: Joi.string().optional().allow(""),
-    grossIncome: Joi.number().optional().allow("")
+    grossIncome: Joi.string().optional().allow("")
 });
 
 const nonResidentAddressSchema = Joi.object({

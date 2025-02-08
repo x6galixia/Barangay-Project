@@ -107,13 +107,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             residents.forEach(resident => {
                 const row = document.createElement('tr');
-
+                const date = new Date(resident.birthdate);
+                const formattedDate = `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
                 const remarksColumn = isNonResident ? '' : `<td>${generateRemarks(resident)}</td>`;
 
                 row.innerHTML = `
                     <td>${resident.purok || resident.originalpurok || 'N/A'}</td>
                     <td>${resident.fname} ${resident.mname ? resident.mname : ''} ${resident.lname}</td>
-                    <td>${new Date(resident.birthdate).toLocaleDateString()}</td>
+                    <td>${formattedDate}</td>
                     <td>${resident.age}</td>
                     <td>${resident.gender}</td>
                     <td>${resident.eattainment || 'N/A'}</td>
