@@ -31,7 +31,7 @@ async function checkAndRunMissedReset() {
             return;
         }
 
-        console.log("Last 5 reset dates:", rows.map(r => r.lastpaidreset));
+        console.log("--RESET RUNS--");
 
         const lastReset = rows[0]?.lastpaidreset; // Ensure correct case in column name
         if (!lastReset) {
