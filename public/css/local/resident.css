@@ -18,11 +18,12 @@
   height: 80%;
   overflow: auto;
 }
+
 #add-resident main::-webkit-scrollbar {
- display: none;
+  display: none;
 }
 
-.pop-up{
+.pop-up {
   overflow: hidden;
 }
 
@@ -177,4 +178,29 @@
 
 .reject-heading h2 {
   text-align: left;
+}
+
+#download-buttons {
+  width: 30% !important;
+}
+
+#download-buttons main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+#download-buttons main>button,
+#download-buttons main>select
+ {
+  width: 80%;
+  padding: 20px;
+  font-size: 18px;
+  font-weight: normal;
+  font-family: 'Poppins', sans-serif;
+}
+#download-buttons main>select{
+  padding: 0;
 }

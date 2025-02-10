@@ -394,6 +394,7 @@ window.popUp_three_dot = function (button) {
 };
 
 const addResident = document.getElementById("add-resident");
+const download_buttons = document.getElementById("download-buttons");
 function popUp_button(button) {
     var buttonId = button.id;
     if (buttonId === "add-resident-button") {
@@ -405,6 +406,11 @@ function popUp_button(button) {
             nonResidentFormField();
         }
     }
+    if (buttonId === "download-excel") {
+        console.log("excel");
+        download_buttons.classList.toggle("visible");
+    }
+    overlay.classList.add("visible");
 }
 
 document.querySelectorAll(".close_popUp_for_resident").forEach(function (closeBtn) {
