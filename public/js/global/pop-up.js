@@ -7,6 +7,7 @@ function formatDate(date) {
 }
 
 const addSurvey = document.getElementById("add-survey");
+const downloadHousehold = document.getElementById("download-buttons1");
 const addOfficials = document.getElementById("add-officials");
 const overlay = document.querySelector(".overlay");
 
@@ -16,6 +17,9 @@ function popUp_button(button) {
 
   if (buttonId === "add-survey-button") {
     addSurvey.classList.toggle("visible");
+  }
+  if (buttonId === "household-download-excel") {
+    downloadHousehold.classList.toggle("visible");
   }
   if (buttonId === "add-official-button") {
     addOfficials.classList.toggle("visible");

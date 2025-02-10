@@ -57,9 +57,12 @@
                                 <% } %>
                                     <% } %>
             </nav>
-            <button id="add-resident-button" onclick="popUp_button(this)" class="addingForTable">
-                ADD RESIDENT
-            </button>
+            <div style="width: 100%; justify-content: end; gap: 10px;" class="addingForTable">
+                <button id="download-excel" onclick="popUp_button(this)">DOWNLOAD EXCEL</button>
+                <button id="add-resident-button" onclick="popUp_button(this)">
+                    ADD RESIDENT
+                </button>
+            </div>
             <!-- Pop Up -->
             <!-- Add Resident -->
             <div class="pop-up" id="add-resident">
@@ -553,6 +556,42 @@
                     </main>
                 </div>
             </div>
+            <!-- Download Files -->
+            <div class="pop-up" id="download-buttons">
+                <div class="close-container">
+                    <img src="../icon/close.svg" alt="" class="close_popUp">
+                </div>
+                <h1 class="heading">Select what to download</h1>
+                <main>
+                    <select style="margin-bottom: 24px;" id="download-type">
+                        <option value="/csvData/download/bundle-csv">All as ZIP</option>
+                        <option value="/csvData/download/residents-csv">Residents CSV</option>
+                        <option value="/csvData/download/non-residents-csv">Non-Residents CSV</option>
+                        <optgroup label="Sectors">
+                            <option value="/csvData/download/government_employees-csv">Government Employees</option>
+                            <option value="/csvData/download/private_employees-csv">Private Employees</option>
+                            <option value="/csvData/download/carpenters-csv">Carpenters</option>
+                            <option value="/csvData/download/farmers-csv">Farmers</option>
+                            <option value="/csvData/download/fishermen-csv">Fishermen</option>
+                            <option value="/csvData/download/business_entrepreneurs-csv">Business Entrepreneurs</option>
+                            <option value="/csvData/download/drivers-csv">Drivers</option>
+                            <option value="/csvData/download/ofw-csv">OFW</option>
+                            <option value="/csvData/download/kasambahay-csv">Kasambahay</option>
+                            <option value="/csvData/download/entrepreneurs-csv">Entrepreneurs</option>
+                            <option value="/csvData/download/unemployed-csv">Unemployed</option>
+                            <option value="/csvData/download/boarders-csv">Boarders</option>
+                        </optgroup>
+                        <optgroup label="Remarks">
+                            <option value="/csvData/download/seniors-csv">Seniors</option>
+                            <option value="/csvData/download/pwd-csv">Persons with Disabilities (PWD)</option>
+                            <option value="/csvData/download/solo-parents-csv">Solo Parents</option>
+                            <option value="/csvData/download/4ps-csv">4Ps Beneficiaries</option>
+                            <option value="/csvData/download/youth-csv">Youth</option>
+                        </optgroup>
+                    </select>
+                    <button id="download-btn" onclick="downloadCSV()">Download All as ZIP</button>
+                </main>
+            </div>
 
             <% if (messages.success) { %>
                 <div class="overlay"></div>
@@ -574,6 +613,21 @@
 <script src="../../js/local/residents/residents-api.js"></script>
 <script>
     document.querySelector("header>nav>ul>li:nth-child(3)").classList.toggle("selected");
+
+    const downloadType = document.getElementById("download-type");
+    const downloadBtn = document.getElementById("download-btn");
+
+    // Update button text when dropdown selection changes
+    downloadType.addEventListener("change", function () {
+        const selectedOption = downloadType.options[downloadType.selectedIndex].text;
+        downloadBtn.textContent = `Download ${selectedOption}`;
+    });
+
+    // Function to trigger the download
+    function downloadCSV() {
+        const selectedUrl = downloadType.value;
+        window.location.href = selectedUrl;
+    }
 
     // Function to simulate image capture
     function captureImage() {

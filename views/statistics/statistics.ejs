@@ -74,9 +74,12 @@
                 <div
                     style="display: flex; align-items: center; justify-content: space-between; margin: 20px 3%; width: 100%;">
                     <h1>Household Classification</h1>
-                    <button id="add-survey-button" onclick="popUp_button(this)">
-                        <p>ADD SURVEY</p>
-                    </button>
+                    <div style="display: flex; justify-content: end; gap: 10px;">
+                        <button id="household-download-excel" onclick="popUp_button(this)">DOWNLOAD EXCEL</button>
+                        <button id="add-survey-button" onclick="popUp_button(this)">
+                            <p>ADD SURVEY</p>
+                        </button>
+                    </div>
                 </div>
                 <div id="meow">
                     <div class="separate">
@@ -273,7 +276,15 @@
             </main>
         </div>
 
-        
+        <div class="pop-up" id="download-buttons1">
+            <div class="close-container">
+                <img src="../icon/close.svg" alt="" class="close_popUp">
+            </div>
+            <h1 class="heading">Select what to download</h1>
+            <main>
+                <button onclick="window.location.href='/csvData/download/house-classification-csv'" download>Households CSV</button>
+            </main>
+        </div>
         
 </body>
 <script src="../../js/global/pop-up.js"></script>

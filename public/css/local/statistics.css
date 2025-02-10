@@ -195,3 +195,23 @@ table>thead>tr>th {
 .subContainer > div{
    flex: 1;
 }
+
+#download-buttons1 {
+    width: 30% !important;
+  }
+  
+  #download-buttons1 main {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #download-buttons1 main>button {
+    width: 80%;
+    padding: 20px;
+    font-size: 18px;
+    font-weight: normal;
+    font-family: 'Poppins', sans-serif;
+  }
