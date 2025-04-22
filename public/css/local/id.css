@@ -251,3 +251,17 @@ html {
     border: 1px solid #000;
 }
 
+
+ #address, #emergencyContactAddress {
+    display: block;
+    max-width: 200px;
+    white-space: pre-wrap;
+    padding-left: 2.4em;
+    text-indent: -2.4em;
+    text-align: justify;
+  }
+  
+  #address::first-line, #emergencyContactAddress::first-line {
+    text-indent: -2.4em;
+  }
+  
