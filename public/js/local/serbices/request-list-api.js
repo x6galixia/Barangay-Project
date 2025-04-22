@@ -1762,7 +1762,7 @@ window.processCertificate = function (button) {
 
 
     convertToImage.classList.add("visible");
-    html2canvas(convertToImage).then((canvas) => {
+    html2canvas(convertToImage, { scale: 3 }).then((canvas) => {
       const img = canvas.toDataURL("image/png"); // Convert canvas to image data
       const imgElement = document.createElement("img");
       imgElement.src = img;
